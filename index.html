@@ -330,9 +330,9 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 }
 </style>
 
-<script>/* temporary diagnostics: show any script error on screen */
-window.addEventListener('error', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:#B23A2E;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='JS error: '+(e.message||e)+' @ line '+e.lineno+':'+e.colno+'  ['+(navigator.userAgent.match(/(Chrome|Edg|Firefox|Safari)\/[\d.]+/g)||[]).join(' ')+']'; document.body.appendChild(d); });
-window.addEventListener('unhandledrejection', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:40px;left:0;right:0;z-index:9999;background:#8A5A00;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='Promise error: '+((e.reason&&e.reason.message)||e.reason); document.body.appendChild(d); });
+<script>/* diagnostics: on-screen error banner only when the URL contains ?debug (otherwise errors go to the console as usual) */
+if (location.search.indexOf('debug') !== -1) window.addEventListener('error', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:#B23A2E;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='JS error: '+(e.message||e)+' @ line '+e.lineno+':'+e.colno+'  ['+(navigator.userAgent.match(/(Chrome|Edg|Firefox|Safari)\/[\d.]+/g)||[]).join(' ')+']'; document.body.appendChild(d); });
+if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledrejection', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:40px;left:0;right:0;z-index:9999;background:#8A5A00;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='Promise error: '+((e.reason&&e.reason.message)||e.reason); document.body.appendChild(d); });
 </script>
 <div class="gate" id="gate">
   <canvas id="gateBg" aria-hidden="true"></canvas>
