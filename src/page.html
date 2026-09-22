@@ -263,9 +263,26 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .hero-l .kicker{color:#5CC3D9;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;direction:ltr;text-align:start;display:block;margin-bottom:.9rem}
 .hero-l h1{font-size:clamp(2.1rem,3.8vw,3.4rem);color:#fff;line-height:1.1;font-weight:900}
 .hero-l p{color:#93A5A1;font-size:1.08rem;max-width:52ch;margin-top:.9rem}
-.demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;min-height:23rem;overflow:hidden;transition:height .55s cubic-bezier(.2,.8,.2,1)}
-.demo pre.live{min-height:9.5rem}
+.demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;height:25rem;overflow:hidden}
+.demo pre.live{min-height:10.5rem;flex:none}
+.demo .out{flex:none}
 .demo table.data tr{animation:rowin .6s ease-out}
+.demo .viz{width:100%;height:auto;max-height:19rem;display:block}
+.viz rect{fill:#0B1416;stroke:#2B3A37;stroke-width:1.2}
+.viz text{fill:#E6EEEC;font:600 12px var(--mono)}
+.viz .col{fill:#93A5A1;font-weight:400;font-size:10.5px}
+.viz .pk{fill:#F2B75A}
+.viz .fk{fill:#5CC3D9}
+.viz .sep{stroke:#2B3A37}
+.viz .tbl{opacity:0;animation:vfade .6s ease forwards}
+.viz .t2{animation-delay:.35s}
+.viz .t3{animation-delay:.7s}
+.viz .link{fill:none;stroke:#5CC3D9;stroke-width:1.6;stroke-dasharray:420;stroke-dashoffset:420;animation:vdraw 1.4s ease forwards 1.1s;opacity:.9}
+.viz .dot{fill:#5CC3D9;filter:url(#vgl);opacity:0;animation:vfade .3s ease forwards 2.5s}
+.viz .lbl{fill:#5CC3D9;font-size:11px;opacity:0;animation:vfade .5s ease forwards 2.6s}
+@keyframes vfade{to{opacity:1}}
+@keyframes vdraw{to{stroke-dashoffset:0}}
+@media (max-width:900px){.demo{height:auto;min-height:0}}
 .demo .dh{display:flex;gap:.4rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:#93A5A1;direction:ltr}
 .demo .dh i{width:.6rem;height:.6rem;border-radius:50%;background:#2B3A37}
 .demo .dh i:nth-child(1){background:#F28B7E}.demo .dh i:nth-child(2){background:#F2B75A}.demo .dh i:nth-child(3){background:#6BD09A}
@@ -374,6 +391,8 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 }
 @media (prefers-reduced-motion: reduce){
   *{transition:none!important;animation:none!important}
+  .viz .tbl,.viz .dot,.viz .lbl{opacity:1!important}
+  .viz .link{stroke-dashoffset:0!important}
 }
 </style>
 
@@ -396,7 +415,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
           <p data-i18n="l_sub"></p>
           <div class="controls" style="margin-top:1.3rem"><button type="button" class="gbtn primary" id="ctaUp" data-i18n="l_cta"></button><button type="button" class="gbtn" id="ctaIn" data-i18n="l_have"></button></div>
         </div>
-        <div class="demo"><div class="dh"><i></i><i></i><i></i><span>rowdyql · live</span></div><pre class="live" id="demoLive"></pre><div class="out" id="demoOut"></div><div id="demoTable"></div></div>
+        <div class="demo"><div class="dh"><i></i><i></i><i></i><span>rowdyql · live</span></div><pre class="live" id="demoLive"></pre><div id="demoViz" hidden></div><div class="out" id="demoOut"></div><div id="demoTable"></div></div>
       </div>
       <h2 class="lh" data-i18n="l_feat_h"></h2>
       <div class="feat" id="feat"></div>
@@ -887,7 +906,7 @@ l_cta:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשב�
 l_feat_h:"מה יש בפנים", l_how_h:"איך זה עובד",
 l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."]],
 l_how:[["פותחים חשבון",""],["לומדים לפי המפגשים","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","ממחישים, תרגילים ובחינות עצמיות."]],
-lq_d1:"מי קנה כרטיס לפסטיבל האביב?", lq_d2:"מי הזמין הכי הרבה כרטיסים?", lq_d3:"אותה שאלה, באלגברה רלציונית", lq_pw:"הסיסמה לעולם לא נשמרת כטקסט, רק כגיבוב",
+lq_d1:"מי קנה כרטיס לפסטיבל האביב?", lq_d2:"מי הזמין הכי הרבה כרטיסים?", lq_d3:"אותה שאלה, באלגברה רלציונית", lq_d4:"איך טבלאות מוצאות זו את זו: מפתח זר פוגש מפתח ראשי", lq_d5:"אלגברה רלציונית: סטודנטים מהנדסת תעשייה", lq_d6:"חילוק: ספקים שעבדו בכל הפסטיבלים", lq_d7:"הפרש: סטודנטים שלא קנו אף כרטיס", lq_pw:"הסיסמה לעולם לא נשמרת כטקסט, רק כגיבוב",
 ch_details:"פרטים", ch_terms:"תנאים", ch_meet:"היכרות", ch_done:"סיום",
 d_h:"בואו נכיר", d_email_why:"האימייל הוא המזהה שלכם. אליו יגיע קישור האימות.", d_pass_why:"8 תווים לפחות. היא נשמרת כגיבוב, אף אחד לא יכול לקרוא אותה, גם לא אנחנו.", d_name_why:"כמו שתרצו שיופיע אצל המרצה.",
 in_why:"ברוכים השבים. אימייל וסיסמה, וממשיכים מאיפה שעצרתם.", in_to_up:"עדיין אין לכם חשבון? הרשמה", up_to_in:"כבר יש חשבון? כניסה",
@@ -1079,7 +1098,7 @@ l_cta:"Create an account, one minute", l_have:"I already have an account",
 l_feat_h:"What is inside", l_how_h:"How it works",
 l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."]],
 l_how:[["Create an account",""],["Learn by session","at your own pace, as much as you like."],["Practice until it sticks","visualizers, exercises and self-checks."]],
-lq_d1:"Who bought a ticket to the Spring Festival?", lq_d2:"Who ordered the most tickets?", lq_d3:"The same question, in relational algebra", lq_pw:"The password is never stored as text, only as a hash",
+lq_d1:"Who bought a ticket to the Spring Festival?", lq_d2:"Who ordered the most tickets?", lq_d3:"The same question, in relational algebra", lq_d4:"How tables find each other: a foreign key meets a primary key", lq_d5:"Relational algebra: Industrial Engineering students", lq_d6:"Division: suppliers who worked every festival", lq_d7:"Difference: students who never bought a ticket", lq_pw:"The password is never stored as text, only as a hash",
 ch_details:"Details", ch_terms:"Terms", ch_meet:"Meet", ch_done:"Done",
 d_h:"Let us meet", d_email_why:"Your email is your identifier. The confirmation link goes there.", d_pass_why:"At least 8 characters. Stored as a hash: nobody can read it, not even us.", d_name_why:"As you want it to appear to the teacher.",
 in_why:"Welcome back. Email and password, and continue where you stopped.", in_to_up:"No account yet? Sign up", up_to_in:"Already have an account? Sign in",
@@ -1573,19 +1592,34 @@ $('#gateForm').addEventListener('submit', async e => {
 /* ---- landing demo: a query types itself, then its result appears ---- */
 const DEMOS = [
   { c: 'lq_d1', sql: "SELECT s.StudentName\nFROM Students AS s\nJOIN Ticket_Purchases AS tp ON s.StudentID = tp.StudentID\nJOIN Events AS e ON tp.EventID = e.EventID\nWHERE e.EventName = 'Spring Festival';", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
+  { c: 'lq_d5', ra: "π StudentName ( σ Faculty = 'IE' ( Students ) )", cols: ['StudentName'], rows: [['Dana'], ['Amir'], ['Lihi']] },
+  { viz: true },
   { c: 'lq_d2', sql: "SELECT s.StudentName,\n       RANK() OVER (ORDER BY SUM(tp.Quantity) DESC) AS Rnk\nFROM Ticket_Purchases AS tp\nJOIN Students AS s ON s.StudentID = tp.StudentID\nGROUP BY s.StudentName;", cols: ['StudentName','Rnk'], rows: [['Dana','1'], ['Tom','2'], ['Noa','3']] },
-  { c: 'lq_d3', sql: "π StudentName ( σ EventName = 'Spring Festival' ( Students ⋈ Ticket_Purchases ⋈ Events ) )", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
+  { c: 'lq_d6', ra: "π SupplierID ( Event_Suppliers ) ÷ π EventID ( σ EventType = 'Festival' ( Events ) )", cols: ['SupplierID'], rows: [['S-04'], ['S-11']] },
+  { c: 'lq_d7', ra: "π StudentName ( Students ) − π StudentName ( Students ⋈ Ticket_Purchases )", cols: ['StudentName'], rows: [['Lihi']] },
+  { viz: true },
+  { c: 'lq_d3', ra: "π StudentName ( σ EventName = 'Spring Festival' ( Students ⋈ Ticket_Purchases ⋈ Events ) )", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
 ];
-function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c' dir='auto' style='display:inline-block'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>"); }
+const VIZ = '<svg class="viz" viewBox="0 0 520 250" aria-hidden="true"><defs><filter id="vgl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
+ + '<g class="tbl t1"><rect x="20" y="26" width="150" height="88" rx="10"/><text x="30" y="48">Students</text><line class="sep" x1="20" y1="56" x2="170" y2="56"/><text class="col pk" x="30" y="74">StudentID</text><text class="col" x="30" y="90">StudentName</text><text class="col" x="30" y="106">Faculty</text></g>'
+ + '<g class="tbl t2"><rect x="350" y="26" width="150" height="88" rx="10"/><text x="360" y="48">Events</text><line class="sep" x1="350" y1="56" x2="500" y2="56"/><text class="col pk" x="360" y="74">EventID</text><text class="col" x="360" y="90">EventName</text><text class="col" x="360" y="106">EventDate</text></g>'
+ + '<g class="tbl t3"><rect x="175" y="150" width="170" height="88" rx="10"/><text x="185" y="172">Ticket_Purchases</text><line class="sep" x1="175" y1="180" x2="345" y2="180"/><text class="col pk" x="185" y="198">OrderNo</text><text class="col fk" x="185" y="214">StudentID</text><text class="col fk" x="270" y="214">EventID</text><text class="col" x="185" y="230">Quantity</text></g>'
+ + '<path id="vl1" class="link" d="M180,212 C110,212 170,130 170,74"/><path id="vl2" class="link" d="M340,212 C410,212 350,130 350,74"/>'
+ + '<circle class="dot" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="2.5s"><mpath href="#vl1"/></animateMotion></circle><circle class="dot" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="3.1s"><mpath href="#vl2"/></animateMotion></circle>'
+ + '<text class="lbl" x="235" y="120" text-anchor="middle">⋈  JOIN ON StudentID  ·  ⋈  JOIN ON EventID</text></svg>';
+function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c' dir='auto' style='display:inline-block'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>").replace(/(π|σ|⋈|÷|−|∪|∩)/g, "<span class='k'>$1</span>"); }
 let demoStarted = false;
-function fitDemo(){ const d = document.querySelector('.demo'); if (!d) return; const prev = d.offsetHeight; d.style.height = 'auto'; const next = Math.max(d.scrollHeight, parseFloat(getComputedStyle(d).minHeight) || 0); if (Math.abs(next - prev) < 2) { d.style.height = next + 'px'; return; } d.style.height = prev + 'px'; void d.offsetHeight; d.style.height = next + 'px'; }
-window.addEventListener('resize', () => { const d = document.querySelector('.demo'); if (d) d.style.height = 'auto'; });
 function startDemo(){
   if (demoStarted) return; demoStarted = true;
-  const pre = $('#demoLive'), out = $('#demoOut'), tb = $('#demoTable'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; let i = 0;
-  const run = () => { if ($('#gate').hidden || W.view !== 'landing') { setTimeout(run, 1500); return; } const dm = DEMOS[i % DEMOS.length]; i++; const text = '-- ' + t(dm.c) + '\n' + dm.sql; out.textContent = ''; tb.innerHTML = ''; fitDemo(); let pos = 0;
-    const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; fitDemo(); if (pos < text.length) setTimeout(step, 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>'; tb.appendChild(table(dm.cols, dm.rows.map(r => { const o = {}; dm.cols.forEach((c, j) => o[c] = r[j]); return o; }))); fitDemo(); setTimeout(run, 4500); }, 450); };
-    step(); };
+  const pre = $('#demoLive'), out = $('#demoOut'), tb = $('#demoTable'), viz = $('#demoViz'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; let i = 0;
+  const run = () => {
+    if ($('#gate').hidden || W.view !== 'landing') { setTimeout(run, 1500); return; }
+    const dm = DEMOS[i % DEMOS.length]; i++; out.textContent = ''; tb.innerHTML = '';
+    if (dm.viz) { pre.hidden = true; viz.hidden = false; viz.innerHTML = VIZ; out.innerHTML = "<span class='c' dir='auto' style='display:inline-block'>-- " + t('lq_d4') + "</span>"; setTimeout(run, reduce ? 4000 : 7500); return; }
+    viz.hidden = true; pre.hidden = false; const text = '-- ' + t(dm.c) + '\n' + (dm.sql || dm.ra); let pos = 0;
+    const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; if (pos < text.length) setTimeout(step, dm.ra ? 34 : 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>'; tb.appendChild(table(dm.cols, dm.rows.map(r => { const o = {}; dm.cols.forEach((c, j) => o[c] = r[j]); return o; }))); setTimeout(run, 4200); }, 450); };
+    step();
+  };
   run();
 }
 function renderLanding(){
