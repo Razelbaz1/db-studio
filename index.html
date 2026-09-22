@@ -300,7 +300,7 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .gate .row-in td{animation:rowin .6s ease-out}
 @keyframes rowin{from{background:rgba(107,208,154,.35)}to{background:transparent}}
 .gate .sidefoot{margin-top:auto;font-size:.78rem;color:#93A5A1}
-.gate .sidefoot code{color:#5CC3D9}
+.gate .sidefoot code{color:#5CC3D9;direction:ltr;unicode-bidi:isolate;background:rgba(92,195,217,.12);padding:.05rem .4rem;border-radius:4px}
 .modal{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:1rem}
 .modal>div{background:var(--surface);color:var(--ink);border-radius:14px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:.7rem;box-shadow:var(--shadow);font-size:.95rem}
 .modal h3{font-size:1.2rem}
@@ -1477,14 +1477,15 @@ async function showDashboard(){
   $('#dashCsv').addEventListener('click', () => { const csv = [heads.join(',')].concat(rows.map(r => cols.map(c => '"' + String(r[c] == null ? '' : r[c]).replace(/"/g,'""') + '"').join(','))).join('\n'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], {type:'text/csv;charset=utf-8'})); a.download = 'rowdyql-roster.csv'; a.click(); });
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
+const withTimeout = (pr, ms) => Promise.race([pr, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
 async function initAuth(){
-  $('#gateHost').textContent = location.hostname || 'localhost';
+  $('#gateHost').textContent = location.hostname || 'localhost'; startGateBg();
   const LIVE_HOSTS = ['rowdyql.com','www.rowdyql.com','razelbaz1.github.io','localhost','127.0.0.1'];
   if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey && LIVE_HOSTS.includes(location.hostname)) {
-    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await sb.auth.getSession(); session = data.session; await loadProfile(); sb.auth.onAuthStateChange(async (_ev, s) => { if (!!s !== !!session) { session = s; await loadProfile(); onSession(); } }); }
+    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await withTimeout(sb.auth.getSession(), 8000); session = data.session; await withTimeout(loadProfile(), 8000); sb.auth.onAuthStateChange(async (_ev, s) => { if (!!s !== !!session) { session = s; await loadProfile(); onSession(); } }); }
     catch (e) { sb = null; $('#gDemo').hidden = false; }
   } else { $('#gDemo').hidden = false; const p = load('dbs_profile', null); if (p) { profile = p; session = { demo: true }; } }
-  onSession(); startGateBg();
+  onSession();
 }
 /* animated background: a schema slowly wiring itself */
 function startGateBg(){
