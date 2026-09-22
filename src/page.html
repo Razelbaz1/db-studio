@@ -258,11 +258,14 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .gate .brandline i{width:.55rem;height:.55rem;border-radius:50%;background:#5CC3D9;box-shadow:0 0 12px #5CC3D9;animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 /* landing */
-.hero-l{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:2.5rem;align-items:center;padding:1.2rem 0 2.6rem}
+.hero-l{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:2.5rem;align-items:start;padding:1.2rem 0 2.6rem}
+.hero-l>div:first-child{padding-top:1.2rem}
 .hero-l .kicker{color:#5CC3D9;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;direction:ltr;text-align:start;display:block;margin-bottom:.9rem}
 .hero-l h1{font-size:clamp(2.1rem,3.8vw,3.4rem);color:#fff;line-height:1.1;font-weight:900}
 .hero-l p{color:#93A5A1;font-size:1.08rem;max-width:52ch;margin-top:.9rem}
-.demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;min-height:19rem}
+.demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;min-height:23rem;overflow:hidden;transition:height .55s cubic-bezier(.2,.8,.2,1)}
+.demo pre.live{min-height:9.5rem}
+.demo table.data tr{animation:rowin .6s ease-out}
 .demo .dh{display:flex;gap:.4rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:#93A5A1;direction:ltr}
 .demo .dh i{width:.6rem;height:.6rem;border-radius:50%;background:#2B3A37}
 .demo .dh i:nth-child(1){background:#F28B7E}.demo .dh i:nth-child(2){background:#F2B75A}.demo .dh i:nth-child(3){background:#6BD09A}
@@ -1575,11 +1578,13 @@ const DEMOS = [
 ];
 function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c' dir='auto' style='display:inline-block'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>"); }
 let demoStarted = false;
+function fitDemo(){ const d = document.querySelector('.demo'); if (!d) return; const prev = d.offsetHeight; d.style.height = 'auto'; const next = Math.max(d.scrollHeight, parseFloat(getComputedStyle(d).minHeight) || 0); if (Math.abs(next - prev) < 2) { d.style.height = next + 'px'; return; } d.style.height = prev + 'px'; void d.offsetHeight; d.style.height = next + 'px'; }
+window.addEventListener('resize', () => { const d = document.querySelector('.demo'); if (d) d.style.height = 'auto'; });
 function startDemo(){
   if (demoStarted) return; demoStarted = true;
   const pre = $('#demoLive'), out = $('#demoOut'), tb = $('#demoTable'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; let i = 0;
-  const run = () => { if ($('#gate').hidden || W.view !== 'landing') { setTimeout(run, 1500); return; } const dm = DEMOS[i % DEMOS.length]; i++; const text = '-- ' + t(dm.c) + '\n' + dm.sql; out.textContent = ''; tb.innerHTML = ''; let pos = 0;
-    const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; if (pos < text.length) setTimeout(step, 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>'; tb.appendChild(table(dm.cols, dm.rows.map(r => { const o = {}; dm.cols.forEach((c, j) => o[c] = r[j]); return o; }))); setTimeout(run, 4500); }, 450); };
+  const run = () => { if ($('#gate').hidden || W.view !== 'landing') { setTimeout(run, 1500); return; } const dm = DEMOS[i % DEMOS.length]; i++; const text = '-- ' + t(dm.c) + '\n' + dm.sql; out.textContent = ''; tb.innerHTML = ''; fitDemo(); let pos = 0;
+    const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; fitDemo(); if (pos < text.length) setTimeout(step, 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>'; tb.appendChild(table(dm.cols, dm.rows.map(r => { const o = {}; dm.cols.forEach((c, j) => o[c] = r[j]); return o; }))); fitDemo(); setTimeout(run, 4500); }, 450); };
     step(); };
   run();
 }
