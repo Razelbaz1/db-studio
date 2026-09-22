@@ -246,7 +246,8 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .gate{position:fixed;inset:0;z-index:80;background:#0B1416;color:#E6EEEC;display:grid;place-items:center;padding:1rem;overflow:auto}
 .gate canvas{position:absolute;inset:0;width:100%;height:100%}
 .gate .gcard{position:relative;width:min(1040px,100%);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);background:rgba(23,33,32,.92);border:1px solid #2B3A37;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden;backdrop-filter:blur(6px)}
-.gate .form{padding:1.6rem 1.8rem;display:flex;flex-direction:column;gap:.9rem}
+.gate .form{padding:1.6rem 1.8rem;display:flex;flex-direction:column;gap:.9rem;text-align:start}
+.gate[dir="rtl"] .f input[dir="ltr"]{text-align:left}
 .gate .side{background:#0F1B1D;border-inline-start:1px solid #2B3A37;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:1rem;min-width:0}
 .gate h1{font-size:1.7rem;color:#fff}
 .gate .sub{color:#93A5A1;font-size:.95rem;max-width:48ch}
@@ -821,7 +822,7 @@ r3_e:"A ∪ B מכיל את כל A. כשמחסרים מ-A קבוצה שמכיל�
 t_title:"קוד מרצה", t_body:"הקוד פותח את הערות המרצה ואת כל הפתרונות בעמוד. לא נשמר בדפדפן אחרי סגירה.", t_ph:"הקלידו קוד", t_ok:"פתח", t_cancel:"ביטול", t_bad:"קוד שגוי.", t_good:"מצב מרצה פתוח: הערות ופתרונות גלויים.",
 teacher_on:"מרצה ✓", present_off:"סיום הצגה",
 
-g_h1:"ברוכים הבאים ל-RowdyQL", g_sub:"סביבת הלימוד של התרגול. ההרשמה לוקחת דקה, ומאותו רגע ההתקדמות, התרגילים והבחינות העצמיות נשמרים לחשבון שלכם, מכל מכשיר.",
+g_h1:"ברוכים הבאים ל‑<bdi>RowdyQL</bdi>", g_sub:"סביבת הלימוד של התרגול. ההרשמה לוקחת דקה, ומאותו רגע ההתקדמות, התרגילים והבחינות העצמיות נשמרים לחשבון שלכם, מכל מכשיר.",
 g_signup:"הרשמה", g_signin:"כניסה", g_email:"אימייל", g_pass:"סיסמה (8 תווים לפחות)", g_name:"שם מלא", g_id:"תעודת זהות (9 ספרות)", g_year:"שנת לימוד", g_y1:"א'", g_y2:"ב'", g_y3:"ג'", g_y4:"ד' ומעלה", g_sem:"סמסטר", g_semA:"סמסטר א'", g_semB:"סמסטר ב'",
 g_consent:"קראתי ואני מסכים/ה ל<a href=\"#\" id=\"termsLink\">תנאי הפרטיות</a> של סביבת הקורס. זהו תנאי חובה להרשמה.",
 g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב הדגמה: החיבור לשרת עדיין לא הוגדר, הפרטים נשמרים בדפדפן הזה בלבד.",
@@ -996,7 +997,7 @@ r3_e:"A ∪ B contains all of A. Subtracting a superset of A from A leaves nothi
 t_title:"Teacher code", t_body:"The code reveals teacher notes and every solution on the page. It is not stored after you close the page.", t_ph:"Enter code", t_ok:"Unlock", t_cancel:"Cancel", t_bad:"Wrong code.", t_good:"Teacher mode on: notes and solutions visible.",
 teacher_on:"Teacher ✓", present_off:"Exit presenter",
 
-g_h1:"Welcome to RowdyQL", g_sub:"The tutorial's study environment. Signing up takes a minute, and from then on your progress, exercises and self-checks are saved to your account, on any device.",
+g_h1:"Welcome to <bdi>RowdyQL</bdi>", g_sub:"The tutorial's study environment. Signing up takes a minute, and from then on your progress, exercises and self-checks are saved to your account, on any device.",
 g_signup:"Sign up", g_signin:"Sign in", g_email:"Email", g_pass:"Password (8+ characters)", g_name:"Full name", g_id:"National ID (9 digits)", g_year:"Year of study", g_y1:"1st", g_y2:"2nd", g_y3:"3rd", g_y4:"4th+", g_sem:"Semester", g_semA:"Semester A", g_semB:"Semester B",
 g_consent:"I have read and agree to the course environment's <a href=\"#\" id=\"termsLink\">privacy terms</a>. This is required to sign up.",
 g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: the server connection is not configured yet, details are kept in this browser only.",
@@ -1346,7 +1347,7 @@ $('#btnToc').addEventListener('click', () => { railOn = !railOn; applyRail(); up
 
 /* =========================== LANG, PRESENTER, TEACHER =========================== */
 function applyLang(){
-  document.documentElement.lang = lang; document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+  document.documentElement.lang = lang; document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr'; $('#gate').setAttribute('dir', document.documentElement.dir); $('#gate').setAttribute('lang', lang);
   $('#btnLang').textContent = lang === 'he' ? 'EN' : 'עב';
   $$('[data-i18n]').forEach(e => e.innerHTML = t(e.dataset.i18n));
   $$('[data-tnote]').forEach(e => { e.innerHTML = '<b>'+t('an_note_t')+':</b> ' + t(e.dataset.tnote+'_tnote'); e.hidden = !teacher; });
