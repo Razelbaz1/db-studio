@@ -1,4 +1,4 @@
--- DB Studio: database schema and security policies for Supabase (Postgres).
+# RowdyQL
 -- Run once in the Supabase SQL editor. Safe to re-run (idempotent where possible).
 -- Principles: every table has Row Level Security; students see only their own rows;
 -- the ID number lives in a separate table that only course staff can read;
