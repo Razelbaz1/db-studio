@@ -1651,7 +1651,7 @@ function onSession(){
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on;
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
   if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } if (sb && session.user) pullProgress().then(() => { applyLang(); toast(t('sync_on')); }); }
-  else { W.busy = false; gateView('landing'); startDemo(); }
+  else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); }
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 
