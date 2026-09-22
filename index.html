@@ -10,7 +10,7 @@
 <body>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Heebo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
   --ground:#F4F7F6; --surface:#FFFFFF; --surface2:#EAF0EE; --ink:#15201E; --muted:#5D6D69; --line:#D5DEDB;
@@ -19,7 +19,7 @@
   --pk:#8A5A00; --pk-bg:#FFF1D6; --fk:#0E5566; --fk-bg:#DDF0F4;
   --good:#2F7D4F; --good-bg:#E3F3E9; --bad:#B23A2E; --bad-bg:#FBE6E3;
   --shadow:0 10px 30px rgba(21,32,30,.12);
-  --display:"Frank Ruhl Libre", "Times New Roman", serif;
+  --display:"Rubik", "Heebo", Arial, sans-serif;
   --body:"Heebo", "Segoe UI", Arial, sans-serif;
   --mono:"IBM Plex Mono", Consolas, "Courier New", monospace;
 }
@@ -45,7 +45,7 @@
 html{font-size:clamp(15px,1.05vw + 10px,18px)}
 html.present{font-size:clamp(18px,1.4vw + 12px,24px)}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.2;text-wrap:balance;margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.15;letter-spacing:-.01em;text-wrap:balance;margin:0}
 h1{font-size:2.2rem}
 h2{font-size:1.6rem}
 h3{font-size:1.15rem;font-family:var(--body);font-weight:700}
@@ -60,7 +60,7 @@ html[lang="he"] .eyebrow{letter-spacing:.04em;text-transform:none}
 /* ---------- top bar ---------- */
 .top{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:1rem;padding:.55rem 1.25rem;flex-wrap:wrap}
 .brand{display:flex;flex-direction:column;line-height:1.15}
-.brand b{font-family:var(--display);font-size:1.15rem;letter-spacing:.02em}
+.brand b{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:0}
 .brand span{font-size:.72rem;color:var(--muted)}
 .tabs{display:flex;gap:.25rem;background:var(--surface2);padding:.25rem;border-radius:999px}
 .tab{border:0;background:transparent;padding:.4rem .95rem;border-radius:999px;font-weight:500;min-height:44px}
@@ -270,7 +270,7 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 /* landing */
 .hero-l{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:2.5rem;align-items:center;padding:1.2rem 0 2.6rem}
 .hero-l .kicker{color:#5CC3D9;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;direction:ltr;text-align:start;display:block;margin-bottom:.9rem}
-.hero-l h1{font-size:clamp(2rem,3.6vw,3.2rem);color:#fff;line-height:1.12}
+.hero-l h1{font-size:clamp(2.1rem,3.8vw,3.4rem);color:#fff;line-height:1.1;font-weight:900}
 .hero-l p{color:#93A5A1;font-size:1.08rem;max-width:52ch;margin-top:.9rem}
 .demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;min-height:19rem}
 .demo .dh{display:flex;gap:.4rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:#93A5A1;direction:ltr}
