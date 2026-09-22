@@ -96,8 +96,9 @@ drop policy if exists progress_select_staff on public.progress;
 create policy progress_own          on public.progress for all using (user_id = auth.uid()) with check (user_id = auth.uid());
 create policy progress_select_staff on public.progress for select using (public.is_teacher());
 
--- ---------- staff view: roster with progress summary (only staff can read the underlying tables) ----------
-create or replace view public.staff_roster as
+-- ---------- staff view: roster with progress summary ----------
+-- security_invoker makes the view obey the caller's RLS: a student sees only their own row, staff see everyone.
+create or replace view public.staff_roster with (security_invoker = true) as
   select p.id, p.email, p.full_name, p.study_year, p.semester, p.created_at,
          (select count(*) from public.progress pr where pr.user_id = p.id) as progress_keys,
          (select max(updated_at) from public.progress pr where pr.user_id = p.id) as last_active

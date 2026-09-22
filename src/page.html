@@ -379,6 +379,7 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
     <button class="btn small ghost" id="btnToc" aria-pressed="false">☰ <span id="btnTocT"></span></button>
     <button class="btn small ghost" id="btnPresent" data-i18n="present"></button>
     <button class="btn small ghost" id="btnTeacher" title="Teacher">🔑 <span data-i18n="teacher"></span></button>
+    <button class="btn small ghost" id="btnDash" hidden>📋 <span data-i18n="d_btn"></span></button>
     <button class="btn small primary" id="btnLang">EN</button>
     <span class="userchip" id="userChip" hidden><i id="userInit"></i><span id="userName"></span><button class="btn small ghost" id="btnOut" style="min-height:30px;padding:.1rem .5rem" data-i18n="g_signout"></button></span>
   </div>
@@ -828,6 +829,9 @@ g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכנ
 e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"שם מלא, לפחות שתי מילים", e_id:"תעודת זהות לא תקינה (ספרת הביקורת לא מתאימה)",
 g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.",
 pt_h:"תנאי פרטיות של סביבת הקורס", pt_close:"סגור",
+d_btn:"לוח מרצה", d_h:"לוח מרצה: נרשמים והתקדמות", d_none:"אין נרשמים עדיין.", d_demo:"לוח המרצה זמין רק עם חיבור לשרת.", d_count:"{n} נרשמים", d_csv:"הורדת CSV",
+d_c_name:"שם", d_c_email:"אימייל", d_c_year:"שנה", d_c_sem:"סמסטר", d_c_joined:"נרשם", d_c_last:"פעיל לאחרונה", d_c_sec:"סעיפים", d_c_qi:"בחינה מבוא", d_c_qr:"בחינה אלגברה", d_c_ex:"תרגיל",
+sync_on:"ההתקדמות נשמרת לחשבון",
 pt_body:"<ol><li><b>מי מפעיל:</b> צוות התרגול של הקורס \"תכנון בסיסי נתונים\" באוניברסיטת אריאל. הסביבה היא כלי עזר לימודי ואינה מערכת רשמית של האוניברסיטה.</li><li><b>מה נאסף:</b> אימייל, שם מלא, שנת לימוד, סמסטר, מספר תעודת זהות, וההתקדמות שלכם בסביבה (סעיפים שנצפו, תוצאות בחינה עצמית ותרגילים).</li><li><b>למה:</b> זיהוי חד-משמעי מול רשימת הקורס, מעקב התקדמות אישי, וחישוב בונוס או נוכחות אם יוחלט על כך.</li><li><b>מי רואה:</b> צוות הקורס בלבד. מספר תעודת הזהות נשמר בטבלה נפרדת שרק צוות הקורס יכול לקרוא. הנתונים לא נמסרים לצד שלישי ולא משמשים לשום מטרה אחרת.</li><li><b>איפה:</b> הנתונים מאוחסנים בשירות Supabase על שרתים באיחוד האירופי, מוצפנים בתעבורה ובאחסון. הסיסמה נשמרת כגיבוב בלבד ואינה ניתנת לקריאה.</li><li><b>כמה זמן:</b> עד תום שנת הלימודים שבה נרשמתם ועוד 12 חודשים לצורך ערעורים, ואז הנתונים נמחקים.</li><li><b>הזכויות שלכם:</b> אפשר לבקש עיון, תיקון או מחיקה של הפרטים בכל עת בפנייה למתרגל. מחיקת החשבון מוחקת גם את ההתקדמות.</li><li>ההרשמה מהווה הסכמה לתנאים אלה.</li></ol>",
 },
 en: {
@@ -1000,6 +1004,9 @@ g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SE
 e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Full name, at least two words", e_id:"Invalid ID number (check digit does not match)",
 g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.",
 pt_h:"Course environment privacy terms", pt_close:"Close",
+d_btn:"Teacher board", d_h:"Teacher board: sign-ups and progress", d_none:"No sign-ups yet.", d_demo:"The teacher board needs the server connection.", d_count:"{n} registered", d_csv:"Download CSV",
+d_c_name:"Name", d_c_email:"Email", d_c_year:"Year", d_c_sem:"Semester", d_c_joined:"Joined", d_c_last:"Last active", d_c_sec:"Sections", d_c_qi:"Intro quiz", d_c_qr:"Algebra quiz", d_c_ex:"Exercise",
+sync_on:"Progress is saved to your account",
 pt_body:"<ol><li><b>Who operates it:</b> the tutorial staff of the course \"Database Design\" at Ariel University. The environment is a study aid, not an official university system.</li><li><b>What is collected:</b> email, full name, year of study, semester, national ID number, and your progress in the environment (sections viewed, self-check and exercise results).</li><li><b>Why:</b> unambiguous matching against the course roster, personal progress tracking, and bonus or attendance calculation if decided.</li><li><b>Who sees it:</b> course staff only. The ID number is stored in a separate table readable only by course staff. Data is never passed to third parties or used for any other purpose.</li><li><b>Where:</b> data is stored on Supabase servers in the EU, encrypted in transit and at rest. Passwords are stored as hashes only and cannot be read.</li><li><b>How long:</b> until the end of the academic year you registered in plus 12 months for appeals, then deleted.</li><li><b>Your rights:</b> you can ask to view, correct or delete your details at any time by contacting the TA. Deleting the account also deletes progress.</li><li>Signing up constitutes agreement to these terms.</li></ol>",
 }};
 
@@ -1011,7 +1018,7 @@ const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.he[k] != null ? I18N.he[k] : k); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
-const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} if (SYNC_KEYS.includes(k)) syncKey(k, v); };
 const load = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } };
 
 /* sha256: WebCrypto when available, small JS fallback otherwise */
@@ -1419,8 +1426,45 @@ $('#gateForm').addEventListener('submit', async e => {
 async function loadProfile(){ if (!sb || !session || !session.user) return; try { const { data } = await sb.from('profiles').select('full_name, study_year, semester, role').eq('id', session.user.id).maybeSingle(); profile = data || { full_name: (session.user.user_metadata || {}).full_name || session.user.email }; } catch(e) { profile = { full_name: session.user.email }; } }
 function onSession(){
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on;
-  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (profile && profile.role === 'teacher' && !teacher) { teacher = true; applyLang(); } }
+  const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
+  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } if (sb && session.user) pullProgress().then(() => { applyLang(); toast(t('sync_on')); }); }
   else { setGateMode('up'); }
+}
+
+/* ---- progress sync: local storage stays the cache, the account is the record ---- */
+const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ex_tries','dbs_ex_solved'];
+const syncTimers = {};
+function syncKey(k, v){ if (!sb || !session || !session.user) return; clearTimeout(syncTimers[k]); syncTimers[k] = setTimeout(async () => { try { await sb.from('progress').upsert({ user_id: session.user.id, key: k, value: v, updated_at: new Date().toISOString() }); } catch(e){} }, 800); }
+async function pullProgress(){
+  if (!sb || !session || !session.user) return;
+  try {
+    const { data } = await sb.from('progress').select('key,value').eq('user_id', session.user.id); const have = new Set();
+    (data || []).forEach(r => { have.add(r.key); try { localStorage.setItem(r.key, JSON.stringify(r.value)); } catch(e){} if (r.key === 'dbs_visited') Object.assign(visited, r.value || {}); if (r.key === 'dbs_ex_tries') exTries = r.value || 0; if (r.key === 'dbs_ex_solved') exSolved = !!r.value; });
+    SYNC_KEYS.forEach(k => { if (!have.has(k)) { const v = load(k, null); if (v !== null) syncKey(k, v); } });
+  } catch(e){}
+}
+
+/* ---- teacher board: roster + progress, readable only by the teacher role (enforced by RLS on the server) ---- */
+$('#btnDash').addEventListener('click', showDashboard);
+async function showDashboard(){
+  if (!sb) { toast(t('d_demo')); return; }
+  const dlg = el('div','terms'); dlg.innerHTML = '<div style="max-width:1200px"><h3>'+t('d_h')+'</h3><div id="dashBody" class="count">'+t('g_working')+'</div><div class="controls"><button class="btn small" id="dashCsv">'+t('d_csv')+'</button><button class="btn primary" id="dashClose">'+t('pt_close')+'</button></div></div>';
+  document.body.appendChild(dlg); $('#dashClose').addEventListener('click', () => dlg.remove()); dlg.addEventListener('click', ev => { if (ev.target === dlg) dlg.remove(); });
+  let rows = [];
+  try {
+    const { data: roster, error } = await sb.from('staff_roster').select('*').order('created_at'); if (error) throw error;
+    const { data: prog } = await sb.from('progress').select('user_id,key,value');
+    const byUser = {}; (prog || []).forEach(r => { (byUser[r.user_id] = byUser[r.user_id] || {})[r.key] = r.value; });
+    rows = (roster || []).map(u => { const p = byUser[u.id] || {}; const qi = p.dbs_quiz_intro || {}, qr = p.dbs_quiz_ra || {};
+      return { name: u.full_name, email: u.email, year: u.study_year, sem: u.semester, joined: (u.created_at || '').slice(0,10), last: u.last_active ? u.last_active.slice(0,16).replace('T',' ') : '', sec: Object.keys(p.dbs_visited || {}).length, qi: Object.values(qi).filter(x => x && x.ok).length + '/4', qr: Object.values(qr).filter(x => x && x.ok).length + '/3', ex: p.dbs_ex_solved ? '✓' : String(p.dbs_ex_tries || 0) }; });
+  } catch(e) { $('#dashBody').textContent = t('g_err_gen') + ' (' + ((e && e.message) || e) + ')'; return; }
+  const body = $('#dashBody'); body.className = ''; body.innerHTML = '';
+  if (!rows.length) { body.textContent = t('d_none'); return; }
+  const cols = ['name','email','year','sem','joined','last','sec','qi','qr','ex']; const heads = cols.map(c => t('d_c_'+({name:'name',email:'email',year:'year',sem:'sem',joined:'joined',last:'last',sec:'sec',qi:'qi',qr:'qr',ex:'ex'})[c]));
+  const wrap = el('div','tblwrap'); const tb = el('table','data'); const tr = el('tr'); heads.forEach(h => tr.appendChild(el('th', null, h))); tb.appendChild(tr);
+  rows.forEach(r => { const row = el('tr'); cols.forEach(c => row.appendChild(el('td', null, esc(r[c] == null ? '' : r[c])))); tb.appendChild(row); });
+  wrap.appendChild(tb); body.appendChild(el('p','count', t('d_count',{n: rows.length}))); body.appendChild(wrap);
+  $('#dashCsv').addEventListener('click', () => { const csv = [heads.join(',')].concat(rows.map(r => cols.map(c => '"' + String(r[c] == null ? '' : r[c]).replace(/"/g,'""') + '"').join(','))).join('\n'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], {type:'text/csv;charset=utf-8'})); a.download = 'rowdyql-roster.csv'; a.click(); });
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 async function initAuth(){
