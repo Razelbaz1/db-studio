@@ -273,11 +273,11 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .hero-l .kicker{color:#5CC3D9;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;direction:ltr;text-align:start;display:block;margin-bottom:.9rem}
 .hero-l h1{font-size:clamp(2.1rem,3.8vw,3.4rem);color:#fff;line-height:1.1;font-weight:900}
 .hero-l p{color:#93A5A1;font-size:1.08rem;max-width:52ch;margin-top:.9rem}
-.demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;height:25rem;overflow:hidden}
+.demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;height:21.5rem;overflow:hidden}
 .demo pre.live{min-height:10.5rem;flex:none}
 .demo .out{flex:none}
 .demo table.data tr{animation:rowin .6s ease-out}
-.demo .viz{width:100%;height:auto;max-height:19rem;display:block;direction:ltr}
+.demo .viz{width:100%;height:auto;max-height:15.5rem;display:block;direction:ltr}
 .viz rect{fill:#0F1B1D;stroke:#3A4C48;stroke-width:1.2}
 .viz text{fill:#E6EEEC;font:600 12px var(--mono);direction:ltr;unicode-bidi:isolate;text-anchor:start}
 .viz .col{fill:#93A5A1;font-weight:400;font-size:10.5px}
@@ -1606,13 +1606,13 @@ const DEMOS = [
   { viz: true },
   { c: 'lq_d3', ra: "π StudentName ( σ EventName = 'Spring Festival' ( Students ⋈ Ticket_Purchases ⋈ Events ) )", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
 ];
-const VIZ = '<svg class="viz" viewBox="0 0 520 250" aria-hidden="true"><defs><filter id="vgl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
+const VIZ = '<svg class="viz" viewBox="0 0 520 274" aria-hidden="true"><defs><filter id="vgl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
  + '<g class="tbl a t1"><rect x="20" y="26" width="150" height="88" rx="10"/><text x="30" y="48">Students</text><line class="sep" x1="20" y1="56" x2="170" y2="56"/><text class="col pk" x="30" y="74">StudentID</text><text class="col" x="30" y="90">StudentName</text><text class="col" x="30" y="106">Faculty</text></g>'
  + '<g class="tbl a t2"><rect x="350" y="26" width="150" height="88" rx="10"/><text x="360" y="48">Events</text><line class="sep" x1="350" y1="56" x2="500" y2="56"/><text class="col pk" x="360" y="74">EventID</text><text class="col" x="360" y="90">EventName</text><text class="col" x="360" y="106">EventDate</text></g>'
  + '<g class="tbl a t3"><rect x="175" y="150" width="170" height="88" rx="10"/><text x="185" y="172">Ticket_Purchases</text><line class="sep" x1="175" y1="180" x2="345" y2="180"/><text class="col pk" x="185" y="198">OrderNo</text><text class="col fk" x="185" y="214">StudentID</text><text class="col fk" x="270" y="214">EventID</text><text class="col" x="185" y="230">Quantity</text></g>'
  + '<path id="vl1" class="link" d="M180,212 C110,212 170,130 170,74"/><path id="vl2" class="link" d="M340,212 C410,212 350,130 350,74"/>'
  + '<circle class="dot a" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="2.5s"><mpath href="#vl1"/></animateMotion></circle><circle class="dot a" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="3.1s"><mpath href="#vl2"/></animateMotion></circle>'
- + '<text class="lbl a" x="235" y="120" text-anchor="middle">⋈  JOIN ON StudentID  ·  ⋈  JOIN ON EventID</text></svg>';
+ + '<text class="lbl a" x="260" y="264" text-anchor="middle">⋈  JOIN ON StudentID   ·   ⋈  JOIN ON EventID</text></svg>';
 function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c' dir='auto' style='display:inline-block'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>").replace(/(π|σ|⋈|÷|−|∪|∩)/g, "<span class='k'>$1</span>"); }
 let demoStarted = false;
 function startDemo(){
@@ -1623,7 +1623,7 @@ function startDemo(){
     const dm = DEMOS[i % DEMOS.length]; i++; out.textContent = ''; tb.innerHTML = '';
     if (dm.viz) { pre.hidden = true; viz.hidden = false; viz.innerHTML = VIZ; const show = (sel, ms) => setTimeout(() => viz.querySelectorAll(sel).forEach(x => x.classList.add('in')), reduce ? 0 : ms); show('.t1', 60); show('.t2', 420); show('.t3', 780); show('.link', 1150); show('.dot,.lbl', 2600); out.innerHTML = "<span class='c' dir='auto' style='display:inline-block'>-- " + t('lq_d4') + "</span>"; setTimeout(run, reduce ? 4000 : 7500); return; }
     viz.hidden = true; pre.hidden = false; const text = '-- ' + t(dm.c) + '\n' + (dm.sql || dm.ra); let pos = 0;
-    const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; if (pos < text.length) setTimeout(step, dm.ra ? 34 : 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>'; tb.appendChild(table(dm.cols, dm.rows.map(r => { const o = {}; dm.cols.forEach((c, j) => o[c] = r[j]); return o; }))); setTimeout(run, 4200); }, 450); };
+    const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; if (pos < text.length) setTimeout(step, dm.ra ? 34 : 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>  <span class="c">' + dm.rows.map(r => r.join(' · ')).join(', ') + '</span>'; setTimeout(run, 3600); }, 450); };
     step();
   };
   run();
