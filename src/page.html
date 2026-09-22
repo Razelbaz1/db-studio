@@ -1573,7 +1573,7 @@ const DEMOS = [
   { c: 'lq_d2', sql: "SELECT s.StudentName,\n       RANK() OVER (ORDER BY SUM(tp.Quantity) DESC) AS Rnk\nFROM Ticket_Purchases AS tp\nJOIN Students AS s ON s.StudentID = tp.StudentID\nGROUP BY s.StudentName;", cols: ['StudentName','Rnk'], rows: [['Dana','1'], ['Tom','2'], ['Noa','3']] },
   { c: 'lq_d3', sql: "π StudentName ( σ EventName = 'Spring Festival' ( Students ⋈ Ticket_Purchases ⋈ Events ) )", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
 ];
-function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>"); }
+function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c' dir='auto' style='display:inline-block'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>"); }
 let demoStarted = false;
 function startDemo(){
   if (demoStarted) return; demoStarted = true;
