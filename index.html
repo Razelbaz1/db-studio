@@ -284,15 +284,12 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .viz .pk{fill:#F2B75A}
 .viz .fk{fill:#5CC3D9}
 .viz .sep{stroke:#2B3A37}
-.viz .tbl{animation:vpop .6s ease both}
-.viz .t2{animation-delay:.35s}
-.viz .t3{animation-delay:.7s}
-.viz .link{fill:none;stroke:#5CC3D9;stroke-width:1.6;stroke-dasharray:420;animation:vdraw 1.4s ease 1.1s both;opacity:.9}
-.viz .dot{fill:#5CC3D9;filter:url(#vgl);animation:vfade .3s ease 2.5s both}
-.viz .lbl{fill:#5CC3D9;font-size:11px;animation:vfade .5s ease 2.6s both}
-@keyframes vfade{from{opacity:0}}
-@keyframes vpop{from{opacity:0;transform:translateY(6px)}}
-@keyframes vdraw{from{stroke-dashoffset:420}}
+.viz .a{opacity:0;transform:translateY(6px);transition:opacity .6s ease,transform .6s ease}
+.viz .a.in{opacity:1;transform:none}
+.viz .link{fill:none;stroke:#5CC3D9;stroke-width:1.6;stroke-dasharray:420;stroke-dashoffset:420;opacity:.9;transition:stroke-dashoffset 1.4s ease}
+.viz .link.in{stroke-dashoffset:0}
+.viz .dot{fill:#5CC3D9;filter:url(#vgl)}
+.viz .lbl{fill:#5CC3D9;font-size:11px}
 @media (max-width:900px){.demo{height:auto;min-height:0}}
 .demo .dh{display:flex;gap:.4rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:#93A5A1;direction:ltr}
 .demo .dh i{width:.6rem;height:.6rem;border-radius:50%;background:#2B3A37}
@@ -1610,12 +1607,12 @@ const DEMOS = [
   { c: 'lq_d3', ra: "π StudentName ( σ EventName = 'Spring Festival' ( Students ⋈ Ticket_Purchases ⋈ Events ) )", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
 ];
 const VIZ = '<svg class="viz" viewBox="0 0 520 250" aria-hidden="true"><defs><filter id="vgl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
- + '<g class="tbl t1"><rect x="20" y="26" width="150" height="88" rx="10"/><text x="30" y="48">Students</text><line class="sep" x1="20" y1="56" x2="170" y2="56"/><text class="col pk" x="30" y="74">StudentID</text><text class="col" x="30" y="90">StudentName</text><text class="col" x="30" y="106">Faculty</text></g>'
- + '<g class="tbl t2"><rect x="350" y="26" width="150" height="88" rx="10"/><text x="360" y="48">Events</text><line class="sep" x1="350" y1="56" x2="500" y2="56"/><text class="col pk" x="360" y="74">EventID</text><text class="col" x="360" y="90">EventName</text><text class="col" x="360" y="106">EventDate</text></g>'
- + '<g class="tbl t3"><rect x="175" y="150" width="170" height="88" rx="10"/><text x="185" y="172">Ticket_Purchases</text><line class="sep" x1="175" y1="180" x2="345" y2="180"/><text class="col pk" x="185" y="198">OrderNo</text><text class="col fk" x="185" y="214">StudentID</text><text class="col fk" x="270" y="214">EventID</text><text class="col" x="185" y="230">Quantity</text></g>'
+ + '<g class="tbl a t1"><rect x="20" y="26" width="150" height="88" rx="10"/><text x="30" y="48">Students</text><line class="sep" x1="20" y1="56" x2="170" y2="56"/><text class="col pk" x="30" y="74">StudentID</text><text class="col" x="30" y="90">StudentName</text><text class="col" x="30" y="106">Faculty</text></g>'
+ + '<g class="tbl a t2"><rect x="350" y="26" width="150" height="88" rx="10"/><text x="360" y="48">Events</text><line class="sep" x1="350" y1="56" x2="500" y2="56"/><text class="col pk" x="360" y="74">EventID</text><text class="col" x="360" y="90">EventName</text><text class="col" x="360" y="106">EventDate</text></g>'
+ + '<g class="tbl a t3"><rect x="175" y="150" width="170" height="88" rx="10"/><text x="185" y="172">Ticket_Purchases</text><line class="sep" x1="175" y1="180" x2="345" y2="180"/><text class="col pk" x="185" y="198">OrderNo</text><text class="col fk" x="185" y="214">StudentID</text><text class="col fk" x="270" y="214">EventID</text><text class="col" x="185" y="230">Quantity</text></g>'
  + '<path id="vl1" class="link" d="M180,212 C110,212 170,130 170,74"/><path id="vl2" class="link" d="M340,212 C410,212 350,130 350,74"/>'
- + '<circle class="dot" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="2.5s"><mpath href="#vl1"/></animateMotion></circle><circle class="dot" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="3.1s"><mpath href="#vl2"/></animateMotion></circle>'
- + '<text class="lbl" x="235" y="120" text-anchor="middle">⋈  JOIN ON StudentID  ·  ⋈  JOIN ON EventID</text></svg>';
+ + '<circle class="dot a" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="2.5s"><mpath href="#vl1"/></animateMotion></circle><circle class="dot a" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="3.1s"><mpath href="#vl2"/></animateMotion></circle>'
+ + '<text class="lbl a" x="235" y="120" text-anchor="middle">⋈  JOIN ON StudentID  ·  ⋈  JOIN ON EventID</text></svg>';
 function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c' dir='auto' style='display:inline-block'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>").replace(/(π|σ|⋈|÷|−|∪|∩)/g, "<span class='k'>$1</span>"); }
 let demoStarted = false;
 function startDemo(){
@@ -1624,7 +1621,7 @@ function startDemo(){
   const run = () => {
     if ($('#gate').hidden || W.view !== 'landing') { setTimeout(run, 1500); return; }
     const dm = DEMOS[i % DEMOS.length]; i++; out.textContent = ''; tb.innerHTML = '';
-    if (dm.viz) { pre.hidden = true; viz.hidden = false; viz.innerHTML = VIZ; out.innerHTML = "<span class='c' dir='auto' style='display:inline-block'>-- " + t('lq_d4') + "</span>"; setTimeout(run, reduce ? 4000 : 7500); return; }
+    if (dm.viz) { pre.hidden = true; viz.hidden = false; viz.innerHTML = VIZ; const show = (sel, ms) => setTimeout(() => viz.querySelectorAll(sel).forEach(x => x.classList.add('in')), reduce ? 0 : ms); show('.t1', 60); show('.t2', 420); show('.t3', 780); show('.link', 1150); show('.dot,.lbl', 2600); out.innerHTML = "<span class='c' dir='auto' style='display:inline-block'>-- " + t('lq_d4') + "</span>"; setTimeout(run, reduce ? 4000 : 7500); return; }
     viz.hidden = true; pre.hidden = false; const text = '-- ' + t(dm.c) + '\n' + (dm.sql || dm.ra); let pos = 0;
     const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; if (pos < text.length) setTimeout(step, dm.ra ? 34 : 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>'; tb.appendChild(table(dm.cols, dm.rows.map(r => { const o = {}; dm.cols.forEach((c, j) => o[c] = r[j]); return o; }))); setTimeout(run, 4200); }, 450); };
     step();
