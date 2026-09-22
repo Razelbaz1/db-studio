@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RowdyQL</title>
 <meta name="description" content="RowdyQL: סביבת לימוד אינטראקטיבית לקורס תכנון בסיסי נתונים">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website"><meta property="og:title" content="RowdyQL"><meta property="og:description" content="לומדים SQL כמו שכותבים אותו: חי, על טבלאות, עם תשובה מיד."><meta property="og:url" content="https://rowdyql.com/"><meta property="og:image" content="https://rowdyql.com/og.png"><meta name="twitter:card" content="summary_large_image">
 <style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -252,6 +254,42 @@ pre.sql .k{color:var(--accent);font-weight:500}
 .toast{position:fixed;bottom:1.2rem;inset-inline-start:50%;transform:translateX(-50%);background:var(--ink);color:var(--ground);padding:.6rem 1rem;border-radius:999px;font-size:.9rem;z-index:70;box-shadow:var(--shadow)}
 html[dir="rtl"] .toast{transform:translateX(50%)}
 
+/* ---------- logo: brackets + rows, the rowdy row is the cursor ---------- */
+.logo{display:inline-flex;align-items:center;gap:.55rem;direction:ltr;color:inherit;text-decoration:none;white-space:nowrap}
+.logo .mark{height:1.7em;width:auto;overflow:visible;display:block}
+.logo .wm{font-family:var(--display);font-weight:900;font-size:1.25em;letter-spacing:-.02em;line-height:1}
+.logo .wm i{font-style:normal;color:#5CC3D9}
+.mark .br{fill:none;stroke:currentColor;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+.mark .cell{fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.mark .rowdy{fill:#5CC3D9;filter:drop-shadow(0 0 5px rgba(92,195,217,.8));transform-box:fill-box;transform-origin:center;transform:translate(8px,-7px) rotate(-8deg);animation:blink 1.3s steps(1) infinite}
+@keyframes blink{50%{opacity:.2}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes kick{0%{transform:translate(0,0) rotate(0)}45%{transform:translate(11px,-10px) rotate(-9deg)}100%{transform:translate(8px,-7px) rotate(-8deg)}}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* intro overlay */
+#intro{position:fixed;inset:0;z-index:120;background:#0B1416;display:none;place-items:center;transition:opacity .7s ease;color:#E6EEEC;cursor:pointer}
+html.js #intro{display:grid}
+#intro.fade{opacity:0;pointer-events:none}
+#intro .logo{font-size:clamp(2.2rem,6vw,4.2rem);gap:.5em;will-change:transform}
+#intro .logo .wm{opacity:0}
+#intro.play .logo .wm{animation:fadeup .5s ease 1.25s forwards}
+#intro.play .mark .br{stroke-dasharray:220;stroke-dashoffset:220;animation:draw .7s ease forwards}
+#intro.play .mark .b2{animation-delay:.12s}
+#intro.play .mark .cell{stroke-dasharray:300;stroke-dashoffset:300;animation:draw .7s ease .4s forwards}
+#intro.play .mark .r3{animation-delay:.55s}
+#intro.play .mark .rowdy{animation:pop .3s ease .95s both,kick .5s ease 1.3s forwards,blink 1.3s steps(1) 1.9s infinite}
+/* the page builds out of the logo */
+html.js .gate .b{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+html.js .gate.built .b{opacity:1;transform:none}
+html.js .gate .demo.b{transform:translateY(16px) scale(.96)}
+html.js .gate.built .demo.b{transform:none}
+html.js .gate canvas{opacity:0;transition:opacity 1.4s ease .2s}
+html.js .gate.built canvas{opacity:1}
+#gateLogo{opacity:0;transition:opacity .3s}
+#gateLogo.show{opacity:1}
+@media (prefers-reduced-motion: reduce){#intro{display:none!important}html.js .gate .b{opacity:1;transform:none}html.js .gate canvas{opacity:1}#gateLogo{opacity:1}}
+
 /* ---------- gate: landing + sign-up wizard ---------- */
 .gate{position:fixed;inset:0;z-index:80;background:#0B1416;color:#E6EEEC;overflow:auto}
 html.gated,html.gated body{overflow:hidden;height:100%}
@@ -415,31 +453,32 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 if (location.search.indexOf('debug') !== -1) window.addEventListener('error', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:#B23A2E;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='JS error: '+(e.message||e)+' @ line '+e.lineno+':'+e.colno+'  ['+(navigator.userAgent.match(/(Chrome|Edg|Firefox|Safari)\/[\d.]+/g)||[]).join(' ')+']'; document.body.appendChild(d); });
 if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledrejection', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:40px;left:0;right:0;z-index:9999;background:#8A5A00;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='Promise error: '+((e.reason&&e.reason.message)||e.reason); document.body.appendChild(d); });
 </script>
-<script>document.documentElement.classList.add("gated");</script>
+<script>document.documentElement.classList.add("gated"); document.documentElement.classList.add("js");</script>
+<div id="intro" aria-hidden="true"><span class="logo"><svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><b class="wm">Rowdy<i>QL</i></b></span></div>
 <div class="gate" id="gate">
   <canvas id="gateBg" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="gtop">
-      <div class="brandline"><i></i><span>ROWDYQL · <span id="gateHost">localhost</span></span></div>
+      <a class="logo" id="gateLogo" href="#" style="font-size:1.1rem"><svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><b class="wm">Rowdy<i>QL</i></b></a><span id="gateHost" hidden></span>
       <div class="links"><button type="button" class="gbtn ghost" id="lnkLang">EN</button><button type="button" class="gbtn" id="lnkIn" data-i18n="g_signin"></button><button type="button" class="gbtn primary" id="lnkUp" data-i18n="g_signup"></button></div>
     </div>
     <section id="landing">
       <div class="hero-l">
         <div>
-          <span class="kicker">SELECT * FROM Course WHERE Understood = TRUE;</span>
-          <h1 data-i18n="l_h1"></h1>
-          <p data-i18n="l_sub"></p>
-          <div class="controls" style="margin-top:1.3rem"><button type="button" class="gbtn primary" id="ctaUp" data-i18n="l_cta"></button><button type="button" class="gbtn" id="ctaIn" data-i18n="l_have"></button></div>
+          <span class="kicker b" style="--d:.05s">SELECT * FROM Course WHERE Understood = TRUE;</span>
+          <h1 class="b" style="--d:.15s" data-i18n="l_h1"></h1>
+          <p class="b" style="--d:.28s" data-i18n="l_sub"></p>
+          <div class="controls b" style="--d:.4s;margin-top:1.3rem"><button type="button" class="gbtn primary" id="ctaUp" data-i18n="l_cta"></button><button type="button" class="gbtn" id="ctaIn" data-i18n="l_have"></button></div>
         </div>
-        <div class="demo"><div class="dh"><i></i><i></i><i></i><span>rowdyql · live</span></div><pre class="live" id="demoLive"></pre><div id="demoViz" hidden></div><div class="out" id="demoOut"></div><div id="demoTable"></div></div>
+        <div class="demo b" style="--d:.3s"><div class="dh"><i></i><i></i><i></i><span>rowdyql · live</span></div><pre class="live" id="demoLive"></pre><div id="demoViz" hidden></div><div class="out" id="demoOut"></div><div id="demoTable"></div></div>
       </div>
-      <h2 class="lh" data-i18n="l_feat_h"></h2>
+      <h2 class="lh b" style="--d:.5s" data-i18n="l_feat_h"></h2>
       <div class="feat" id="feat"></div>
-      <h2 class="lh" data-i18n="l_how_h"></h2>
+      <h2 class="lh b" style="--d:.85s" data-i18n="l_how_h"></h2>
       <div class="how" id="how"></div>
-      <div class="cta"><button type="button" class="gbtn primary" id="ctaUp2" data-i18n="l_cta"></button></div>
+      <div class="cta b" style="--d:1.1s"><button type="button" class="gbtn primary" id="ctaUp2" data-i18n="l_cta"></button></div>
     </section>
-    <div class="gcard" id="wizard" hidden>
+    <div class="gcard b" id="wizard" hidden style="--d:.05s">
       <form class="form" id="gateForm" novalidate>
         <div class="chapters" id="chapters"></div><div class="wprog"><i id="wprogI"></i></div>
         <div id="stepHost"></div>
@@ -459,7 +498,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
 </div>
 
 <header class="top">
-  <div class="brand"><b>RowdyQL</b><span data-i18n="brand_sub"></span></div>
+  <div class="brand"><span class="logo" id="appLogo" style="font-size:1rem"><svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><b class="wm">Rowdy<i>QL</i></b></span><span data-i18n="brand_sub"></span></div>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-unit="intro" data-i18n="tab_intro"></button>
     <button class="tab" role="tab" aria-selected="false" data-unit="ra" data-i18n="tab_ra"></button>
@@ -1641,9 +1680,9 @@ function startDemo(){
   };
   run();
 }
-function renderLanding(){
-  const f = $('#feat'); f.innerHTML = ''; ((I18N[lang] || I18N.he).l_feat || I18N.he.l_feat).forEach(x => { const d = el('div'); d.innerHTML = '<span class="ic">' + esc(x[0]) + '</span><b>' + esc(x[1]) + '</b><span>' + esc(x[2]) + '</span>'; f.appendChild(d); });
-  const hw = $('#how'); hw.innerHTML = ''; ((I18N[lang] || I18N.he).l_how || I18N.he.l_how).forEach(x => { const d = el('div'); d.innerHTML = '<b>' + esc(x[0]) + '</b>' + (x[1] ? '<span>' + esc(x[1]) + '</span>' : ''); hw.appendChild(d); });
+function renderLanding(){ if (built) $('#gate').classList.add('built');
+  const f = $('#feat'); f.innerHTML = ''; ((I18N[lang] || I18N.he).l_feat || I18N.he.l_feat).forEach((x, i) => { const d = el('div','b'); d.style.setProperty('--d', (0.55 + i * 0.08) + 's'); d.innerHTML = '<span class="ic">' + esc(x[0]) + '</span><b>' + esc(x[1]) + '</b><span>' + esc(x[2]) + '</span>'; f.appendChild(d); });
+  const hw = $('#how'); hw.innerHTML = ''; ((I18N[lang] || I18N.he).l_how || I18N.he.l_how).forEach((x, i) => { const d = el('div','b'); d.style.setProperty('--d', (0.9 + i * 0.1) + 's'); d.innerHTML = '<b>' + esc(x[0]) + '</b>' + (x[1] ? '<span>' + esc(x[1]) + '</span>' : ''); hw.appendChild(d); });
   $('#lnkLang').textContent = lang === 'he' ? 'EN' : 'עב';
 }
 function gateRefresh(){ renderLanding(); if (W.view === 'wizard') { wizRender(); if (footTyped) { footTyped = ''; typeFoot(); } } }
@@ -1654,7 +1693,7 @@ function onSession(){
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) window.scrollTo({top:0});
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
   if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } if (sb && session.user) pullProgress().then(() => { applyLang(); toast(t('sync_on')); }); }
-  else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); }
+  else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); if (built) { $('#gate').classList.add('built'); $('#gateLogo').classList.add('show'); } }
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 
@@ -1699,14 +1738,31 @@ function ensureCaptcha(){ if (!window.turnstile || captchaWidget !== null || !$(
 function resetCaptcha(){ captchaToken = ''; if (captchaWidget !== null && window.turnstile) { try { window.turnstile.reset(captchaWidget); } catch(e){} } validateStep(false); }
 
 async function initAuth(){
-  $('#gateHost').textContent = location.hostname || 'localhost'; startGateBg(); startDemo();
+  startGateBg(); startDemo();
   const LIVE_HOSTS = ['rowdyql.com','www.rowdyql.com','razelbaz1.github.io','localhost','127.0.0.1'];
   if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey && LIVE_HOSTS.includes(location.hostname)) {
     try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await withTimeout(sb.auth.getSession(), 8000); session = data.session; await withTimeout(loadProfile(), 8000); sb.auth.onAuthStateChange(async (_ev, s2) => { if (!!s2 !== !!session) { session = s2; await loadProfile(); onSession(); } }); }
     catch (e) { sb = null; $('#gDemo').hidden = false; }
     if (sb && DBS_CONFIG.turnstileSiteKey) { try { await loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'); if (!$('#gCaptcha').hidden) ensureCaptcha(); } catch(e) {} }
   } else { $('#gDemo').hidden = false; const p = load('dbs_profile', null); if (p) { profile = p; session = { demo: true }; } }
-  onSession();
+  onSession(); playIntro();
+}
+/* ---- intro: the logo draws itself, then travels to its place in the header while the page builds around it ---- */
+let built = false;
+function buildPage(){ built = true; $('#gate').classList.add('built'); }
+function playIntro(){
+  const intro = $('#intro'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!intro || reduce || !document.documentElement.classList.contains('js')) { if (intro) intro.remove(); buildPage(); $('#gateLogo').classList.add('show'); return; }
+  intro.classList.add('play');
+  const go = () => {
+    if (intro.dataset.done) return; intro.dataset.done = '1';
+    const lg = intro.querySelector('.logo'); const gateOpen = !$('#gate').hidden; const tgtEl = gateOpen ? $('#gateLogo') : $('#appLogo');
+    const src = lg.getBoundingClientRect(); const tgt = tgtEl.getBoundingClientRect();
+    if (tgt.width > 0) { const sx = tgt.width / src.width; lg.style.transformOrigin = '0 0'; lg.style.transition = 'transform .75s cubic-bezier(.2,.8,.2,1)'; lg.style.transform = 'translate(' + (tgt.left - src.left) + 'px,' + (tgt.top - src.top) + 'px) scale(' + sx + ')'; }
+    intro.classList.add('fade'); setTimeout(buildPage, 120);
+    setTimeout(() => { intro.remove(); $('#gateLogo').classList.add('show'); }, 800);
+  };
+  setTimeout(go, 1950); intro.addEventListener('click', go);
 }
 /* animated background: a schema slowly wiring itself */
 function startGateBg(){
