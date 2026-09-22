@@ -307,11 +307,16 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .chapters span{padding:.25rem .65rem;border:1px solid #2B3A37;border-radius:999px;transition:border-color .3s,color .3s}
 .chapters span.cur{border-color:#5CC3D9;color:#5CC3D9;box-shadow:0 0 14px rgba(92,195,217,.35)}
 .chapters span.done{border-color:#6BD09A;color:#6BD09A}
-.step{display:flex;flex-direction:column;gap:.9rem;animation:stepin .35s ease-out}
+.wprog{height:3px;background:#1E2B29;border-radius:2px;overflow:hidden;margin-top:-.2rem}
+.wprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#5CC3D9,#6BD09A);box-shadow:0 0 10px rgba(92,195,217,.7);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.wstep{display:flex;flex-direction:column;gap:.9rem;animation:stepin .35s ease-out}
 @keyframes stepin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.step h2{color:#fff;font-size:1.45rem}
-.step .why{color:#93A5A1;font-size:.95rem;max-width:48ch}
-.gate .f{display:flex;flex-direction:column;gap:.3rem;font-size:.85rem;color:#93A5A1}
+.wstep h2{color:#fff;font-size:1.45rem}
+.wstep .why{color:#93A5A1;font-size:.95rem;max-width:48ch}
+.wstep .eyebrow{font-family:var(--mono);font-size:.72rem;color:#5CC3D9;letter-spacing:.06em}
+.gate .f{display:flex;flex-direction:column;gap:.3rem;font-size:.85rem;color:#93A5A1;position:relative}
+.gate .f .tick{position:absolute;inset-inline-end:.85rem;top:2.05rem;color:#6BD09A;font-weight:700;opacity:0;transform:scale(.6);transition:opacity .25s,transform .25s;pointer-events:none}
+.gate .f input.ok~.tick{opacity:1;transform:scale(1)}
 .gate .f input,.gate .f select,textarea.gt{background:#0B1416;color:#E6EEEC;border:1px solid #2B3A37;border-radius:10px;padding:.65rem .75rem;min-height:48px;font:inherit;font-size:1rem;transition:border-color .2s,box-shadow .2s}
 .gate .f input:focus,.gate .f select:focus,textarea.gt:focus{outline:0;border-color:#5CC3D9;box-shadow:0 0 0 3px rgba(92,195,217,.25)}
 .gate .f input.bad{border-color:#F28B7E}
@@ -333,7 +338,7 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 .record .rr span{color:#E6EEEC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .record .rr span.cur{color:#5CC3D9;text-shadow:0 0 12px rgba(92,195,217,.7)}
 .record .rr span.empty{color:#3A4C48}
-.record .rr2{display:grid;grid-template-columns:8.5rem 1fr;gap:.6rem;padding:.42rem .8rem;border-bottom:1px solid #1E2B29}
+.record .rr2{display:grid;grid-template-columns:8.5rem 1fr;gap:.6rem;padding:.42rem .8rem;border-bottom:1px solid #1E2B29;animation:stepin .4s ease-out both;animation-delay:calc(var(--i,0)*70ms)}
 .record .rr2 span:first-child{color:#93A5A1}
 .record .rr2 span.empty{color:#3A4C48}
 .skiprow{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.3rem}
@@ -341,6 +346,7 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 .skip.on{opacity:1;pointer-events:auto}
 .gate .go{background:#5CC3D9;color:#0B1A1E;border:0;border-radius:10px;padding:.8rem 1.3rem;font-weight:700;font-size:1.02rem;min-height:50px;transition:transform .15s,opacity .2s}
 .gate .go:hover{transform:translateY(-1px)}
+.gate .go:not([disabled]){box-shadow:0 0 22px rgba(92,195,217,.35)}
 .gate .go[disabled]{opacity:.4;transform:none;cursor:not-allowed}
 .gate .demo-tag{font-size:.75rem;color:#F2B75A;font-family:var(--mono)}
 .gate .msg{background:#0F1B1D;border-color:#5CC3D9;color:#E6EEEC}
@@ -351,6 +357,7 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 .gate pre.live .n{color:#6BD09A}
 .gate pre.live .c{color:#93A5A1}
 .gate pre.live .cur{display:inline-block;width:.55em;height:1.1em;background:#5CC3D9;vertical-align:-2px;animation:pulse 1s infinite}
+.gate pre.live .now{text-shadow:0 0 12px rgba(92,195,217,.9);outline:1px solid rgba(92,195,217,.45);outline-offset:2px;border-radius:3px}
 .gate .out{font-family:var(--mono);font-size:.82rem;color:#93A5A1;min-height:1.6rem;direction:ltr;text-align:left}
 .gate .out b{color:#6BD09A;font-weight:500}
 .gate table.data{background:#0B1416;color:#E6EEEC}
@@ -421,7 +428,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
     </section>
     <div class="gcard" id="wizard" hidden>
       <form class="form" id="gateForm" novalidate>
-        <div class="chapters" id="chapters"></div>
+        <div class="chapters" id="chapters"></div><div class="wprog"><i id="wprogI"></i></div>
         <div id="stepHost"></div>
         <div id="gCaptcha" hidden></div>
         <div class="msg" id="gMsg" hidden></div>
@@ -432,7 +439,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
         <pre class="live" id="gLive"></pre>
         <div class="out" id="gOut"></div>
         <div id="gTable"></div>
-        <div class="sidefoot" data-i18n="g_foot"></div>
+        <div class="sidefoot" id="sidefoot"></div>
       </div>
     </div>
   </div>
@@ -904,7 +911,7 @@ l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה
 l_how:[["פותחים חשבון",""],["לומדים לפי המפגשים","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","ממחישים, תרגילים ובחינות עצמיות."]],
 lq_d1:"מי קנה כרטיס לפסטיבל האביב?", lq_d2:"מי הזמין הכי הרבה כרטיסים?", lq_d3:"אותה שאלה, באלגברה רלציונית", lq_d4:"איך טבלאות מוצאות זו את זו: מפתח זר פוגש מפתח ראשי", lq_d5:"אלגברה רלציונית: סטודנטים מהנדסת תעשייה", lq_d6:"חילוק: ספקים שעבדו בכל הפסטיבלים", lq_d7:"הפרש: סטודנטים שלא קנו אף כרטיס", lq_pw:"הסיסמה לעולם לא נשמרת כטקסט, רק כגיבוב",
 ch_details:"פרטים", ch_terms:"תנאים", ch_meet:"היכרות", ch_done:"סיום",
-d_h:"בואו נכיר", d_email_why:"האימייל הוא המזהה שלכם. אליו יגיע קישור האימות.", d_pass_why:"8 תווים לפחות. היא נשמרת כגיבוב, אף אחד לא יכול לקרוא אותה, גם לא אנחנו.", d_name_why:"כמו שתרצו שיופיע אצל המרצה.",
+dt_h:"בואו נכיר", d_email_why:"האימייל הוא המזהה שלכם. אליו יגיע קישור האימות.", d_pass_why:"8 תווים לפחות. היא נשמרת כגיבוב, אף אחד לא יכול לקרוא אותה, גם לא אנחנו.", d_name_why:"כמו שתרצו שיופיע אצל המרצה.",
 in_why:"ברוכים השבים. אימייל וסיסמה, וממשיכים מאיפה שעצרתם.", in_to_up:"עדיין אין לכם חשבון? הרשמה", up_to_in:"כבר יש חשבון? כניסה",
 tm_h:"לפני שממשיכים", tm_why:"ארבע שורות על מה שנשמר ולמה. הנוסח המלא בקישור למטה.",
 t_s1:"נשמרים: אימייל, שם, ותשובות ההיכרות אם תבחרו לענות.", t_s2:"לא נשמרים: תעודת זהות, טלפון, או כל דבר שלא הקלדתם כאן.", t_s3:"רואה את זה רק צוות הקורס, ורק לצורך הקורס.", t_s4:"אפשר לבקש מחיקה בכל רגע, והכל נעלם, כולל ההתקדמות.",
@@ -1096,7 +1103,7 @@ l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on r
 l_how:[["Create an account",""],["Learn by session","at your own pace, as much as you like."],["Practice until it sticks","visualizers, exercises and self-checks."]],
 lq_d1:"Who bought a ticket to the Spring Festival?", lq_d2:"Who ordered the most tickets?", lq_d3:"The same question, in relational algebra", lq_d4:"How tables find each other: a foreign key meets a primary key", lq_d5:"Relational algebra: Industrial Engineering students", lq_d6:"Division: suppliers who worked every festival", lq_d7:"Difference: students who never bought a ticket", lq_pw:"The password is never stored as text, only as a hash",
 ch_details:"Details", ch_terms:"Terms", ch_meet:"Meet", ch_done:"Done",
-d_h:"Let us meet", d_email_why:"Your email is your identifier. The confirmation link goes there.", d_pass_why:"At least 8 characters. Stored as a hash: nobody can read it, not even us.", d_name_why:"As you want it to appear to the teacher.",
+dt_h:"Let us meet", d_email_why:"Your email is your identifier. The confirmation link goes there.", d_pass_why:"At least 8 characters. Stored as a hash: nobody can read it, not even us.", d_name_why:"As you want it to appear to the teacher.",
 in_why:"Welcome back. Email and password, and continue where you stopped.", in_to_up:"No account yet? Sign up", up_to_in:"Already have an account? Sign in",
 tm_h:"Before we continue", tm_why:"Four lines on what is stored and why. The full text is in the link below.",
 t_s1:"Stored: email, name, and your onboarding answers if you choose to answer.", t_s2:"Not stored: national ID, phone, or anything you did not type here.", t_s3:"Seen only by course staff, only for the course.", t_s4:"You can ask for deletion at any time, and everything goes, progress included.",
@@ -1494,31 +1501,32 @@ function startIn(){ W.mode = 'in'; gateView('wizard'); }
 $('#lnkLang').addEventListener('click', () => $('#btnLang').click());
 
 function chaptersHtml(){ if (W.mode === 'in') return ''; return CH.map((k, i) => '<span class="' + (i < W.ch ? 'done' : i === W.ch ? 'cur' : '') + '">' + (i+1) + ' · ' + t(k) + '</span>').join(''); }
-function field(id, key, type, extra){ return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '" ' + (extra || '') + '><span class="err" id="e_' + id + '"></span></label>'; }
+function field(id, key, type, extra){ return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '" ' + (extra || '') + '><span class="tick">✓</span><span class="err" id="e_' + id + '"></span></label>'; }
 function seg(name, opts){ return '<div class="seg">' + opts.map(o => '<label><input type="radio" name="' + name + '" value="' + o[0] + '"' + (W.d[name] === o[0] ? ' checked' : '') + '><span>' + t(o[1]) + '</span></label>').join('') + '</div>'; }
 function recordStrip(cur){ const cols = [['year','StudyYear'],['sem','Semester'],['goals','Goals'],['interests','Interests']]; return '<div class="record"><div class="rh">' + cols.map(c => '<span>' + c[1] + '</span>').join('') + '</div><div class="rr">' + cols.map(c => { const v = W.d[c[0]]; const cls = c[0] === cur ? 'cur' : (v ? '' : 'empty'); const txt = v ? esc(String(v).slice(0,16)) + (String(v).length > 16 ? '…' : '') : (W.skipped[c[0]] ? 'NULL' : '…'); return '<span class="' + cls + '">' + txt + '</span>'; }).join('') + '</div></div>'; }
 function navBtns(nextKey, showBack, skippable){ return '<div class="skiprow">' + (showBack ? '<button type="button" class="gbtn ghost" id="wBack">' + t('w_back') + '</button>' : '<span></span>') + '<div class="controls">' + (skippable ? '<button type="button" class="gbtn ghost skip" id="wSkip">' + t('w_skip') + '</button>' : '') + '<button type="submit" class="go" id="gGo">' + t(nextKey) + '</button></div></div>'; }
-function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FullName', d.name], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL'], ['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL'], ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map(r => '<div class="rr2"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
+function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FullName', d.name], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL'], ['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL'], ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map((r, i) => '<div class="rr2" style="--i:' + i + '"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
 
+function wizProgress(){ const total = 9; let done = 0; if (W.mode === 'in') done = 0; else if (W.ch === 0) done = W.sub; else if (W.ch === 1) done = 3; else if (W.ch === 2) done = 4 + W.sub; else done = 8; const bar = $('#wprogI'); if (bar) bar.style.width = (W.mode === 'in' ? 0 : Math.round(100 * (done + 1) / total)) + '%'; $('.wprog').hidden = W.mode === 'in'; }
 function wizRender(){
-  const host = $('#stepHost'); clearTimeout(skipTimer); $('#chapters').innerHTML = chaptersHtml(); $('#gMsg').hidden = true; $('#gOut').textContent = ''; $('#gTable').innerHTML = '';
+  const host = $('#stepHost'); clearTimeout(skipTimer); $('#chapters').innerHTML = chaptersHtml(); wizProgress(); $('#gMsg').hidden = true; $('#gOut').textContent = ''; $('#gTable').innerHTML = '';
   let h = '', focus = null, captcha = false;
   if (W.mode === 'in') {
-    h = '<div class="step"><h2>' + t('g_signin') + '</h2><p class="why">' + t('in_why') + '</p>' + field('gEmail','g_email','email','autocomplete="email" dir="ltr" value="' + esc(W.d.email) + '"') + field('gPass','g_pass_in','password','autocomplete="current-password" dir="ltr"') + navBtns('g_go_in', false, false) + '<button type="button" class="gbtn ghost" id="wToUp">' + t('in_to_up') + '</button></div>'; focus = 'gEmail'; captcha = true;
+    h = '<div class="wstep"><h2>' + t('g_signin') + '</h2><p class="why">' + t('in_why') + '</p>' + field('gEmail','g_email','email','autocomplete="email" dir="ltr" value="' + esc(W.d.email) + '"') + field('gPass','g_pass_in','password','autocomplete="current-password" dir="ltr"') + navBtns('g_go_in', false, false) + '<button type="button" class="gbtn ghost" id="wToUp">' + t('in_to_up') + '</button></div>'; focus = 'gEmail'; captcha = true;
   } else if (W.ch === 0) {
     const subs = [['gEmail','g_email','email','autocomplete="email" dir="ltr"','d_email_why','email'], ['gPass','g_pass','password','autocomplete="new-password" dir="ltr"','d_pass_why','pass'], ['gName','g_name','text','autocomplete="name"','d_name_why','name']];
     const sd = subs[W.sub];
-    h = '<div class="step"><h2>' + t('d_h') + '</h2><p class="why">' + t(sd[4]) + '</p>' + field(sd[0], sd[1], sd[2], sd[3] + ' value="' + esc(W.d[sd[5]]) + '"') + navBtns('w_next', W.sub > 0, false) + '<button type="button" class="gbtn ghost" id="wToIn">' + t('up_to_in') + '</button></div>'; focus = sd[0];
+    h = '<div class="wstep"><h2>' + t('dt_h') + '</h2><p class="why">' + t(sd[4]) + '</p>' + field(sd[0], sd[1], sd[2], sd[3] + ' value="' + esc(W.d[sd[5]]) + '"') + navBtns('w_next', W.sub > 0, false) + '<button type="button" class="gbtn ghost" id="wToIn">' + t('up_to_in') + '</button></div>'; focus = sd[0];
   } else if (W.ch === 1) {
-    h = '<div class="step"><h2>' + t('tm_h') + '</h2><p class="why">' + t('tm_why') + '</p><ul class="tsum">' + ['t_s1','t_s2','t_s3','t_s4'].map(k => '<li>' + t(k) + '</li>').join('') + '</ul><label class="consent"><input type="checkbox" id="gConsent"' + (W.d.consent ? ' checked' : '') + '><span>' + t('g_consent') + '</span></label>' + navBtns('w_next', true, false) + '</div>';
+    h = '<div class="wstep"><h2>' + t('tm_h') + '</h2><p class="why">' + t('tm_why') + '</p><ul class="tsum">' + ['t_s1','t_s2','t_s3','t_s4'].map(k => '<li>' + t(k) + '</li>').join('') + '</ul><label class="consent"><input type="checkbox" id="gConsent"' + (W.d.consent ? ' checked' : '') + '><span>' + t('g_consent') + '</span></label>' + navBtns('w_next', true, false) + '</div>';
   } else if (W.ch === 2) {
     const k = ONB[W.sub]; let body = '';
     if (k === 'year') body = seg('year', [['1','g_y1'],['2','g_y2'],['3','g_y3'],['4','g_y4']]);
     else if (k === 'sem') body = seg('sem', [['A','g_semA'],['B','g_semB']]);
     else body = '<textarea class="gt" id="gText" maxlength="400" placeholder="' + esc(t(k === 'goals' ? 'o_goals_ph' : 'o_int_ph')) + '">' + esc(W.d[k]) + '</textarea>';
-    h = '<div class="step"><h2>' + t('o_h') + '</h2><p class="why">' + t('o_' + k + '_q') + '</p>' + recordStrip(k) + body + navBtns('w_next', true, true) + '</div>'; if (k === 'goals' || k === 'interests') focus = 'gText';
+    h = '<div class="wstep"><h2>' + t('o_h') + '</h2><p class="why">' + t('o_' + k + '_q') + '</p>' + recordStrip(k) + body + navBtns('w_next', true, true) + '</div>'; if (k === 'goals' || k === 'interests') focus = 'gText';
   } else {
-    h = '<div class="step"><h2>' + t('r_h') + '</h2><p class="why">' + t('r_why') + '</p>' + reviewTable() + navBtns('g_go', true, false) + '</div>'; captcha = true;
+    h = '<div class="wstep"><h2>' + t('r_h') + '</h2><p class="why">' + t('r_why') + '</p>' + reviewTable() + navBtns('g_go', true, false) + '</div>'; captcha = true;
   }
   host.innerHTML = h;
   $('#gCaptcha').hidden = !captcha; if (captcha) ensureCaptcha();
@@ -1526,7 +1534,7 @@ function wizRender(){
   const skip = $('#wSkip'); if (skip) { skipTimer = setTimeout(() => skip.classList.add('on'), 7000); skip.addEventListener('click', persuade); }
   const toIn = $('#wToIn'); if (toIn) toIn.addEventListener('click', startIn);
   const toUp = $('#wToUp'); if (toUp) toUp.addEventListener('click', startUp);
-  host.querySelectorAll('input,textarea').forEach(inp => { inp.addEventListener('input', () => { inp.dataset.touched = '1'; readInputs(); validateStep(false); renderLive(); }); inp.addEventListener('change', () => { readInputs(); validateStep(false); renderLive(); }); });
+  host.querySelectorAll('input,textarea').forEach(inp => { inp.addEventListener('input', () => { inp.dataset.touched = '1'; typeFoot(); readInputs(); validateStep(false); renderLive(); }); inp.addEventListener('change', () => { readInputs(); validateStep(false); renderLive(); }); });
   readInputs(); validateStep(false); renderLive();
   if (focus && $('#' + focus)) setTimeout(() => $('#' + focus).focus(), 60);
 }
@@ -1547,17 +1555,19 @@ function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) {
 function persuade(){ const d = el('div','persuade'); d.innerHTML = '<div><h3>' + t('p_h') + '</h3><p>' + t('p_body') + '</p><div class="controls"><button type="button" class="gbtn primary" id="pStay">' + t('p_stay') + '</button><button type="button" class="gbtn ghost" id="pSkip">' + t('p_skip') + '</button></div></div>'; document.body.appendChild(d); $('#pStay').addEventListener('click', () => { d.remove(); const f = $('#gText'); if (f) f.focus(); }); $('#pSkip').addEventListener('click', () => { d.remove(); const k = ONB[W.sub]; W.skipped[k] = true; W.d[k] = ''; wizAdvance(); }); }
 
 function renderLive(){
-  const pre = $('#gLive'); if (!pre) return; const d = W.d;
+  const pre = $('#gLive'); if (!pre) return; const d = W.d; const nowKey = W.mode === 'in' ? 'email' : W.ch === 0 ? ['email','pass','name'][W.sub] : W.ch === 1 ? 'consent' : W.ch === 2 ? ONB[W.sub] : ''; const NOW = (k, html) => k === nowKey ? "<span class='now'>" + html + "</span>" : html;
   const S = x => x ? "<span class='s'>'" + esc(x) + "'</span>" : "<span class='c'>NULL</span>"; const N = x => x ? "<span class='n'>" + esc(x) + "</span>" : "<span class='c'>NULL</span>"; const cur = "<span class='cur'></span>"; const clip = x => x.length > 28 ? x.slice(0,28) + '…' : x;
   if (W.mode === 'in') { pre.innerHTML = "<span class='c'>-- " + t('lq_pw') + "</span>\n<span class='k'>SELECT</span> *\n<span class='k'>FROM</span> Students\n<span class='k'>WHERE</span> Email = " + S(d.email) + "\n  <span class='k'>AND</span> PasswordHash = " + S(d.pass ? '•'.repeat(Math.min(d.pass.length, 12)) : '') + ";" + cur; return; }
-  const cols = ['Email'], vals = [S(d.email)];
-  if (W.ch > 0 || W.sub >= 1) { cols.push('PasswordHash'); vals.push(d.pass ? "<span class='s'>'bcrypt(" + '•'.repeat(Math.min(d.pass.length, 10)) + ")'</span>" : "<span class='c'>NULL</span>"); }
-  if (W.ch > 0 || W.sub >= 2) { cols.push('FullName'); vals.push(S(d.name)); }
-  if (W.ch >= 1) { cols.push('Consent'); vals.push(d.consent ? "<span class='n'>TRUE</span>" : "<span class='c'>FALSE</span>"); }
-  if (W.ch >= 2) { cols.push('StudyYear', 'Semester', 'Goals', 'Interests'); vals.push(N(d.year), S(d.sem), S(clip(d.goals)), S(clip(d.interests))); }
+  const cols = ['Email'], vals = [NOW('email', S(d.email))];
+  if (W.ch > 0 || W.sub >= 1) { cols.push('PasswordHash'); vals.push(NOW('pass', d.pass ? "<span class='s'>'bcrypt(" + '•'.repeat(Math.min(d.pass.length, 10)) + ")'</span>" : "<span class='c'>NULL</span>")); }
+  if (W.ch > 0 || W.sub >= 2) { cols.push('FullName'); vals.push(NOW('name', S(d.name))); }
+  if (W.ch >= 1) { cols.push('Consent'); vals.push(NOW('consent', d.consent ? "<span class='n'>TRUE</span>" : "<span class='c'>FALSE</span>")); }
+  if (W.ch >= 2) { cols.push('StudyYear', 'Semester', 'Goals', 'Interests'); vals.push(NOW('year', N(d.year)), NOW('sem', S(d.sem)), NOW('goals', S(clip(d.goals))), NOW('interests', S(clip(d.interests)))); }
   cols.push('RegisteredAt'); vals.push("<span class='n'>SYSDATETIME()</span>");
   pre.innerHTML = "<span class='k'>INSERT INTO</span> Students\n  (" + cols.join(', ') + ")\n<span class='k'>VALUES</span>\n  (" + vals.join(', ') + ");" + cur;
 }
+let footTyped = '';
+function typeFoot(){ const box = $('#sidefoot'); if (!box || footTyped === lang) return; footTyped = lang; const html = t('g_foot'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; if (reduce) { box.innerHTML = html; return; } const parts = html.split(/(<code>.*?<\/code>)/); let pi = 0, ci = 0; box.innerHTML = ''; const tick = () => { if (pi >= parts.length) return; const part = parts[pi]; if (part.startsWith('<code>')) { box.insertAdjacentHTML('beforeend', part); pi++; ci = 0; setTimeout(tick, 120); return; } if (ci < part.length) { box.appendChild(document.createTextNode(part[ci])); ci++; setTimeout(tick, 18); } else { pi++; ci = 0; tick(); } }; tick(); }
 function gateMsg(text, bad){ const m = $('#gMsg'); m.hidden = false; m.className = 'msg' + (bad ? ' bad' : ''); m.innerHTML = text; }
 function gateOut(html){ $('#gOut').innerHTML = html; }
 function showRow(){ const d = W.d; const tb = table(['Email','FullName','StudyYear','Semester','RegisteredAt'], [{Email: d.email, FullName: d.name, StudyYear: d.year || null, Semester: d.sem || null, RegisteredAt: new Date().toISOString().slice(0,16).replace('T',' ')}]); tb.querySelectorAll('tr:nth-child(2)').forEach(r => r.classList.add('row-in')); $('#gTable').innerHTML = ''; $('#gTable').appendChild(tb); }
@@ -1623,7 +1633,7 @@ function renderLanding(){
   const hw = $('#how'); hw.innerHTML = ''; ((I18N[lang] || I18N.he).l_how || I18N.he.l_how).forEach(x => { const d = el('div'); d.innerHTML = '<b>' + esc(x[0]) + '</b>' + (x[1] ? '<span>' + esc(x[1]) + '</span>' : ''); hw.appendChild(d); });
   $('#lnkLang').textContent = lang === 'he' ? 'EN' : 'עב';
 }
-function gateRefresh(){ renderLanding(); if (W.view === 'wizard') wizRender(); }
+function gateRefresh(){ renderLanding(); if (W.view === 'wizard') { wizRender(); if (footTyped) { footTyped = ''; typeFoot(); } } }
 
 /* ---- session ---- */
 async function loadProfile(){ if (!sb || !session || !session.user) return; try { const { data } = await sb.from('profiles').select('full_name, study_year, semester, role').eq('id', session.user.id).maybeSingle(); profile = data || { full_name: (session.user.user_metadata || {}).full_name || session.user.email }; } catch(e) { profile = { full_name: session.user.email }; } }
