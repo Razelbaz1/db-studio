@@ -370,6 +370,7 @@ window.addEventListener('unhandledrejection', function(e){ var d=document.create
         </div>
         <label class="consent"><input type="checkbox" id="gConsent" required><span data-i18n="g_consent"></span></label>
       </div>
+      <div id="gCaptcha" style="min-height:0"></div>
       <div class="msg" id="gMsg" hidden></div>
       <button class="go" id="gGo" type="submit" disabled data-i18n="g_go"></button>
       <span class="demo" id="gDemo" hidden data-i18n="g_demo"></span>
@@ -1387,7 +1388,8 @@ $('#btnTeacher').addEventListener('click', () => {
 
 /* =========================== ACCOUNTS: config, auth, gate =========================== */
 /* Fill these once the Supabase project exists. The anon key is a public key by design; RLS policies in supabase/schema.sql protect the data. */
-const DBS_CONFIG = { supabaseUrl: 'https://afzlmlbigruxijudqukp.supabase.co', supabaseAnonKey: 'sb_publishable_VqElbkoG6ZWGI4VtWEZ7Tw_Quqxv1fR', requireEmailDomain: '', termsVersion: '2026-09-22' };
+const DBS_CONFIG = { supabaseUrl: 'https://afzlmlbigruxijudqukp.supabase.co', supabaseAnonKey: 'sb_publishable_VqElbkoG6ZWGI4VtWEZ7Tw_Quqxv1fR', requireEmailDomain: '', termsVersion: '2026-09-22', turnstileSiteKey: '0x4AAAAAAFAbd5vxNlrjfSb8' };
+let captchaWidget = null, captchaToken = '';
 let sb = null, session = null, profile = null, gateMode = 'up';
 const loadScript = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
 const validId = v => { if (!/^\d{9}$/.test(v)) return false; let sum = 0; for (let i = 0; i < 9; i++) { let d = +v[i] * ((i % 2) + 1); if (d > 9) d -= 9; sum += d; } return sum % 10 === 0; };
@@ -1403,6 +1405,7 @@ function gateValidate(showAll){
   setErr($('#gEmail'),'eEmail', okEmail, 'e_email'); setErr($('#gPass'),'ePass', v.pass.length >= 8, 'e_pass');
   let ok = okEmail && v.pass.length >= 8;
   if (gateMode === 'up') { const okName = v.name.split(' ').length >= 2 && v.name.length >= 4; const okId = validId(v.id); setErr($('#gName'),'eName', okName, 'e_name'); setErr($('#gId'),'eId', okId, 'e_id'); ok = ok && okName && okId && !!v.year && !!v.sem && v.consent; }
+  if (captchaWidget !== null && !captchaToken) ok = false;
   $('#gGo').disabled = !ok; renderLive(v); return ok;
 }
 function renderLive(v){
@@ -1428,13 +1431,14 @@ $('#gateForm').addEventListener('submit', async e => {
   try {
     if (gateMode === 'up') {
       const meta = { full_name: v.name, study_year: +v.year, semester: v.sem, id_number: v.id, consent_at: new Date().toISOString(), consent_version: DBS_CONFIG.termsVersion };
-      if (sb) { const { data, error } = await sb.auth.signUp({ email: v.email, password: v.pass, options: { data: meta } }); if (error) throw error; showRow(v); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: v.name}), false); if (data.session) { session = data.session; setTimeout(onSession, 900); } }
+      if (sb) { const { data, error } = await sb.auth.signUp({ email: v.email, password: v.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; showRow(v); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: v.name}), false); if (data.session) { session = data.session; setTimeout(onSession, 900); } }
       else { profile = { email: v.email, full_name: v.name, study_year: +v.year, semester: v.sem, consent_at: meta.consent_at }; store('dbs_profile', profile); showRow(v); gateOut('<b>(1 row affected)</b>'); gateMsg(t('g_ok_up_demo'), false); session = { demo: true }; setTimeout(onSession, 1200); }
     } else {
-      if (sb) { const { data, error } = await sb.auth.signInWithPassword({ email: v.email, password: v.pass }); if (error) throw error; session = data.session; await loadProfile(); gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: (profile && profile.full_name) || ''}), false); setTimeout(onSession, 700); }
+      if (sb) { const { data, error } = await sb.auth.signInWithPassword({ email: v.email, password: v.pass, options: { captchaToken: captchaToken || undefined } }); if (error) throw error; session = data.session; await loadProfile(); gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: (profile && profile.full_name) || ''}), false); setTimeout(onSession, 700); }
       else { const p = load('dbs_profile', null); if (!p || p.email !== v.email) throw new Error('bad'); profile = p; session = { demo: true }; gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: p.full_name}), false); setTimeout(onSession, 700); }
     }
   } catch (err) {
+    resetCaptcha();
     const m = String((err && err.message) || err).toLowerCase(); gateOut('<span style="color:#F28B7E">ERROR</span>');
     gateMsg(t(m.includes('already') || m.includes('registered') ? 'g_err_exists' : m.includes('invalid') || m.includes('bad') || m.includes('credentials') ? 'g_err_in' : 'g_err_gen'), true); go.disabled = false;
   }
@@ -1490,9 +1494,12 @@ async function initAuth(){
   if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey && LIVE_HOSTS.includes(location.hostname)) {
     try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await withTimeout(sb.auth.getSession(), 8000); session = data.session; await withTimeout(loadProfile(), 8000); sb.auth.onAuthStateChange(async (_ev, s) => { if (!!s !== !!session) { session = s; await loadProfile(); onSession(); } }); }
     catch (e) { sb = null; $('#gDemo').hidden = false; }
+    if (sb && DBS_CONFIG.turnstileSiteKey) { try { await loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'); renderCaptcha(); } catch(e) {} }
   } else { $('#gDemo').hidden = false; const p = load('dbs_profile', null); if (p) { profile = p; session = { demo: true }; } }
   onSession();
 }
+function renderCaptcha(){ if (!window.turnstile) return; captchaWidget = window.turnstile.render('#gCaptcha', { sitekey: DBS_CONFIG.turnstileSiteKey, theme: 'dark', language: lang === 'he' ? 'he' : 'en', callback: tok => { captchaToken = tok; gateValidate(false); }, 'expired-callback': () => { captchaToken = ''; gateValidate(false); }, 'error-callback': () => { captchaToken = ''; gateValidate(false); } }); }
+function resetCaptcha(){ captchaToken = ''; if (captchaWidget !== null && window.turnstile) { try { window.turnstile.reset(captchaWidget); } catch(e){} } gateValidate(false); }
 /* animated background: a schema slowly wiring itself */
 function startGateBg(){
   const c = $('#gateBg'); const ctx = c.getContext('2d'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
