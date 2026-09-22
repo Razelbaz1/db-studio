@@ -244,6 +244,8 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 
 /* ---------- gate: landing + sign-up wizard ---------- */
 .gate{position:fixed;inset:0;z-index:80;background:#0B1416;color:#E6EEEC;overflow:auto}
+html.gated,html.gated body{overflow:hidden;height:100%}
+html.gated .spine,html.gated .top,html.gated .shell{visibility:hidden}
 .gate canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
 .gate .wrap{position:relative;max-width:1120px;margin:0 auto;padding:1rem 1.4rem 4rem}
 .gtop{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.4rem 0 1.4rem;flex-wrap:wrap}
@@ -403,6 +405,7 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 if (location.search.indexOf('debug') !== -1) window.addEventListener('error', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:#B23A2E;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='JS error: '+(e.message||e)+' @ line '+e.lineno+':'+e.colno+'  ['+(navigator.userAgent.match(/(Chrome|Edg|Firefox|Safari)\/[\d.]+/g)||[]).join(' ')+']'; document.body.appendChild(d); });
 if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledrejection', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:40px;left:0;right:0;z-index:9999;background:#8A5A00;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='Promise error: '+((e.reason&&e.reason.message)||e.reason); document.body.appendChild(d); });
 </script>
+<script>document.documentElement.classList.add("gated");</script>
 <div class="gate" id="gate">
   <canvas id="gateBg" aria-hidden="true"></canvas>
   <div class="wrap">
@@ -1638,7 +1641,7 @@ function gateRefresh(){ renderLanding(); if (W.view === 'wizard') { wizRender();
 /* ---- session ---- */
 async function loadProfile(){ if (!sb || !session || !session.user) return; try { const { data } = await sb.from('profiles').select('full_name, study_year, semester, role').eq('id', session.user.id).maybeSingle(); profile = data || { full_name: (session.user.user_metadata || {}).full_name || session.user.email }; } catch(e) { profile = { full_name: session.user.email }; } }
 function onSession(){
-  const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on;
+  const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) window.scrollTo({top:0});
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
   if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } if (sb && session.user) pullProgress().then(() => { applyLang(); toast(t('sync_on')); }); }
   else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); }
