@@ -1017,7 +1017,8 @@ pt_body:"<ol><li><b>Who operates it:</b> the tutorial staff of the course \"Data
 
 /* =========================== STATE & HELPERS =========================== */
 let lang = 'he';
-try { lang = localStorage.getItem('dbs_lang') || 'he'; } catch(e){}
+try { const raw = localStorage.getItem('dbs_lang'); lang = raw ? raw.replace(/"/g,'') : 'he'; } catch(e){}
+if (lang !== 'he' && lang !== 'en') lang = 'he';
 let teacher = false;
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
@@ -1170,7 +1171,7 @@ function renderLists(){
   const tl = $('#timeline'); tl.innerHTML = ''; const dates = ['19.10','26.10','02.11','09.11','16.11','23.11','30.11','07.12','14.12','21.12','28.12','04.01'];
   for (let i=1;i<=12;i++){ const d = el('div','pinnable'); d.appendChild(el('span','d',dates[i-1])); d.appendChild(el('span',null,t('tl'+i))); tl.appendChild(d); }
   const cov = $('#coverage'); cov.innerHTML = '';
-  [['cov_only_t','cov_only','only'],['cov_both_t','cov_both',''],['cov_only_l','cov_lect','']].forEach(c => { const card = el('div','card pinnable ' + c[2]); card.appendChild(el('h3',null,t(c[0]))); const ul = el('ul'); (I18N[lang][c[1]] || I18N.he[c[1]]).forEach(x => ul.appendChild(el('li',null,x))); card.appendChild(ul); cov.appendChild(card); });
+  [['cov_only_t','cov_only','only'],['cov_both_t','cov_both',''],['cov_only_l','cov_lect','']].forEach(c => { const card = el('div','card pinnable ' + c[2]); card.appendChild(el('h3',null,t(c[0]))); const ul = el('ul'); ((I18N[lang] || I18N.he)[c[1]] || I18N.he[c[1]]).forEach(x => ul.appendChild(el('li',null,x))); card.appendChild(ul); cov.appendChild(card); });
 }
 
 /* =========================== QUIZ =========================== */
