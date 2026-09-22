@@ -274,14 +274,15 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 .viz .pk{fill:#F2B75A}
 .viz .fk{fill:#5CC3D9}
 .viz .sep{stroke:#2B3A37}
-.viz .tbl{opacity:0;animation:vfade .6s ease forwards}
+.viz .tbl{animation:vpop .6s ease both}
 .viz .t2{animation-delay:.35s}
 .viz .t3{animation-delay:.7s}
-.viz .link{fill:none;stroke:#5CC3D9;stroke-width:1.6;stroke-dasharray:420;stroke-dashoffset:420;animation:vdraw 1.4s ease forwards 1.1s;opacity:.9}
-.viz .dot{fill:#5CC3D9;filter:url(#vgl);opacity:0;animation:vfade .3s ease forwards 2.5s}
-.viz .lbl{fill:#5CC3D9;font-size:11px;opacity:0;animation:vfade .5s ease forwards 2.6s}
-@keyframes vfade{to{opacity:1}}
-@keyframes vdraw{to{stroke-dashoffset:0}}
+.viz .link{fill:none;stroke:#5CC3D9;stroke-width:1.6;stroke-dasharray:420;animation:vdraw 1.4s ease 1.1s both;opacity:.9}
+.viz .dot{fill:#5CC3D9;filter:url(#vgl);animation:vfade .3s ease 2.5s both}
+.viz .lbl{fill:#5CC3D9;font-size:11px;animation:vfade .5s ease 2.6s both}
+@keyframes vfade{from{opacity:0}}
+@keyframes vpop{from{opacity:0;transform:translateY(6px)}}
+@keyframes vdraw{from{stroke-dashoffset:420}}
 @media (max-width:900px){.demo{height:auto;min-height:0}}
 .demo .dh{display:flex;gap:.4rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:#93A5A1;direction:ltr}
 .demo .dh i{width:.6rem;height:.6rem;border-radius:50%;background:#2B3A37}
@@ -391,8 +392,6 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 }
 @media (prefers-reduced-motion: reduce){
   *{transition:none!important;animation:none!important}
-  .viz .tbl,.viz .dot,.viz .lbl{opacity:1!important}
-  .viz .link{stroke-dashoffset:0!important}
 }
 </style>
 
