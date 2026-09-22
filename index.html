@@ -1381,7 +1381,7 @@ $('#btnTeacher').addEventListener('click', () => {
 
 /* =========================== ACCOUNTS: config, auth, gate =========================== */
 /* Fill these once the Supabase project exists. The anon key is a public key by design; RLS policies in supabase/schema.sql protect the data. */
-const DBS_CONFIG = { supabaseUrl: '', supabaseAnonKey: '', requireEmailDomain: '', termsVersion: '2026-09-22' };
+const DBS_CONFIG = { supabaseUrl: 'https://afzlmlbigruxijudqukp.supabase.co', supabaseAnonKey: 'sb_publishable_VqElbkoG6ZWGI4VtWEZ7Tw_Quqxv1fR', requireEmailDomain: '', termsVersion: '2026-09-22' };
 let sb = null, session = null, profile = null, gateMode = 'up';
 const loadScript = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
 const validId = v => { if (!/^\d{9}$/.test(v)) return false; let sum = 0; for (let i = 0; i < 9; i++) { let d = +v[i] * ((i % 2) + 1); if (d > 9) d -= 9; sum += d; } return sum % 10 === 0; };
@@ -1480,7 +1480,7 @@ $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signO
 async function initAuth(){
   $('#gateHost').textContent = location.hostname || 'localhost';
   if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey) {
-    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await sb.auth.getSession(); session = data.session; await loadProfile(); sb.auth.onAuthStateChange(async (_ev, s) => { if (!!s !== !!session) { session = s; await loadProfile(); onSession(); } }); }
+    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await sb.auth.getSession(); session = data.session; await loadProfile(); sb.auth.onAuthStateChange(async (_ev, s) => { if (!!s !== !!session) { session = s; await loadProfile(); onSession(); } }); }
     catch (e) { sb = null; $('#gDemo').hidden = false; }
   } else { $('#gDemo').hidden = false; const p = load('dbs_profile', null); if (p) { profile = p; session = { demo: true }; } }
   onSession(); startGateBg();
