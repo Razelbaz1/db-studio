@@ -282,6 +282,9 @@ html.js #intro{display:grid}
 /* the page builds out of the logo */
 html.js .gate .b{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
 html.js .gate.built .b{opacity:1;transform:none}
+/* safety net: whatever happens to the script, the page is visible after 4 s */
+html.js .gate .b{animation:safeShow 0s linear 4s forwards}
+@keyframes safeShow{to{opacity:1;transform:none}}
 html.js .gate .demo.b{transform:translateY(16px) scale(.96)}
 html.js .gate.built .demo.b{transform:none}
 html.js .gate canvas{opacity:0;transition:opacity 1.4s ease .2s}
