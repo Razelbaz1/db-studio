@@ -1,7 +1,7 @@
 -- RowdyQL: database schema and security policies for Supabase (Postgres).
 -- Run once in the Supabase SQL editor. Safe to re-run (idempotent where possible).
 -- Principles: every table has Row Level Security; students see only their own rows;
--- the ID number lives in a separate table that only course staff can read;
+-- no national ID is stored; onboarding answers (year, semester, goals, interests) are optional;
 -- the service_role key is never used by the page.
 
 create extension if not exists pgcrypto;
@@ -11,19 +11,14 @@ create table if not exists public.profiles (
   id            uuid primary key references auth.users(id) on delete cascade,
   email         text not null,
   full_name     text not null,
-  study_year    smallint not null check (study_year between 1 and 7),
-  semester      text not null check (semester in ('A','B')),
+  study_year    smallint check (study_year between 1 and 7),
+  semester      text check (semester in ('A','B')),
+  goals         text,
+  interests     text,
   role          text not null default 'student' check (role in ('student','teacher')),
   consent_at    timestamptz not null,
   consent_version text not null,
   created_at    timestamptz not null default now()
-);
-
--- ---------- identities_private: national ID, staff-only read ----------
-create table if not exists public.identities_private (
-  user_id    uuid primary key references auth.users(id) on delete cascade,
-  id_number  text not null check (id_number ~ '^[0-9]{9}$'),
-  created_at timestamptz not null default now()
 );
 
 -- ---------- progress: per-user key/value documents (visited sections, quiz scores, exercise state) ----------
@@ -46,24 +41,18 @@ create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$
 declare m jsonb := coalesce(new.raw_user_meta_data, '{}'::jsonb);
 begin
-  insert into public.profiles (id, email, full_name, study_year, semester, consent_at, consent_version)
+  insert into public.profiles (id, email, full_name, study_year, semester, goals, interests, consent_at, consent_version)
   values (
     new.id,
     new.email,
     coalesce(m->>'full_name', new.email),
-    coalesce((m->>'study_year')::smallint, 1),
-    coalesce(m->>'semester', 'A'),
+    nullif(m->>'study_year','')::smallint,
+    nullif(m->>'semester',''),
+    nullif(m->>'goals',''),
+    nullif(m->>'interests',''),
     coalesce((m->>'consent_at')::timestamptz, now()),
     coalesce(m->>'consent_version', 'unknown')
   ) on conflict (id) do nothing;
-
-  if (m->>'id_number') ~ '^[0-9]{9}$' then
-    insert into public.identities_private (user_id, id_number)
-    values (new.id, m->>'id_number') on conflict (user_id) do nothing;
-  end if;
-
-  -- keep the ID out of auth metadata (which the user can read back)
-  update auth.users set raw_user_meta_data = m - 'id_number' where id = new.id;
   return new;
 end $$;
 
@@ -74,7 +63,6 @@ create trigger on_auth_user_created
 
 -- ---------- Row Level Security ----------
 alter table public.profiles           enable row level security;
-alter table public.identities_private enable row level security;
 alter table public.progress           enable row level security;
 
 -- profiles: a user reads their own row; staff read all; a user may update their own name/year/semester but never their role
@@ -86,10 +74,6 @@ create policy profiles_select_staff on public.profiles for select using (public.
 create policy profiles_update_own   on public.profiles for update using (id = auth.uid())
   with check (id = auth.uid() and role = (select role from public.profiles p where p.id = auth.uid()));
 
--- identities_private: nobody writes through the API (the trigger does); only staff read
-drop policy if exists identities_select_staff on public.identities_private;
-create policy identities_select_staff on public.identities_private for select using (public.is_teacher());
-
 -- progress: full access to own rows; staff read all
 drop policy if exists progress_own         on public.progress;
 drop policy if exists progress_select_staff on public.progress;
@@ -98,8 +82,8 @@ create policy progress_select_staff on public.progress for select using (public.
 
 -- ---------- staff view: roster with progress summary ----------
 -- security_invoker makes the view obey the caller's RLS: a student sees only their own row, staff see everyone.
-create or replace view public.staff_roster with (security_invoker = true) as
-  select p.id, p.email, p.full_name, p.study_year, p.semester, p.created_at,
+create view public.staff_roster with (security_invoker = true) as
+  select p.id, p.email, p.full_name, p.study_year, p.semester, p.goals, p.interests, p.created_at,
          (select count(*) from public.progress pr where pr.user_id = p.id) as progress_keys,
          (select max(updated_at) from public.progress pr where pr.user_id = p.id) as last_active
   from public.profiles p;

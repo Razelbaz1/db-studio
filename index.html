@@ -252,48 +252,98 @@ pre.sql .k{color:var(--accent);font-weight:500}
 .toast{position:fixed;bottom:1.2rem;inset-inline-start:50%;transform:translateX(-50%);background:var(--ink);color:var(--ground);padding:.6rem 1rem;border-radius:999px;font-size:.9rem;z-index:70;box-shadow:var(--shadow)}
 html[dir="rtl"] .toast{transform:translateX(50%)}
 
-/* ---------- gate: sign-up / sign-in ---------- */
-.gate{position:fixed;inset:0;z-index:80;background:#0B1416;color:#E6EEEC;display:grid;place-items:center;padding:1rem;overflow:auto}
-.gate canvas{position:absolute;inset:0;width:100%;height:100%}
-.gate .gcard{position:relative;width:min(1040px,100%);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);background:rgba(23,33,32,.92);border:1px solid #2B3A37;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden;backdrop-filter:blur(6px)}
-.gate .form{padding:1.6rem 1.8rem;display:flex;flex-direction:column;gap:.9rem;text-align:start}
-.gate[dir="rtl"] .f input[dir="ltr"]{text-align:left}
-.gate .side{background:#0F1B1D;border-inline-start:1px solid #2B3A37;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:1rem;min-width:0}
-.gate h1{font-size:1.7rem;color:#fff}
-.gate .sub{color:#93A5A1;font-size:.95rem;max-width:48ch}
+/* ---------- gate: landing + sign-up wizard ---------- */
+.gate{position:fixed;inset:0;z-index:80;background:#0B1416;color:#E6EEEC;overflow:auto}
+.gate canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.gate .wrap{position:relative;max-width:1120px;margin:0 auto;padding:1rem 1.4rem 4rem}
+.gtop{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.4rem 0 1.4rem;flex-wrap:wrap}
+.gtop .links{display:flex;gap:.5rem;flex-wrap:wrap}
+.gbtn{border:1px solid #2B3A37;background:transparent;color:#E6EEEC;border-radius:10px;padding:.55rem 1rem;min-height:44px;font-weight:500;transition:border-color .2s,transform .15s}
+.gbtn:hover{border-color:#5CC3D9}
+.gbtn.primary{background:#5CC3D9;color:#0B1A1E;border-color:#5CC3D9;font-weight:700}
+.gbtn.primary:hover{transform:translateY(-1px)}
+.gbtn.ghost{border-color:transparent;color:#93A5A1}
+.gbtn.ghost:hover{color:#E6EEEC;border-color:#2B3A37}
 .gate .brandline{display:flex;align-items:center;gap:.6rem;color:#5CC3D9;font-family:var(--mono);font-size:.8rem;letter-spacing:.08em}
 .gate .brandline i{width:.55rem;height:.55rem;border-radius:50%;background:#5CC3D9;box-shadow:0 0 12px #5CC3D9;animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.gate .modes{display:flex;gap:.25rem;background:#0F1B1D;padding:.25rem;border-radius:999px;align-self:flex-start}
-.gate .modes button{border:0;background:transparent;color:#93A5A1;padding:.4rem .9rem;border-radius:999px;min-height:40px}
-.gate .modes button[aria-selected="true"]{background:#5CC3D9;color:#0B1A1E;font-weight:700}
-.gate .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+/* landing */
+.hero-l{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:2.5rem;align-items:center;padding:1.2rem 0 2.6rem}
+.hero-l .kicker{color:#5CC3D9;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;direction:ltr;text-align:start;display:block;margin-bottom:.9rem}
+.hero-l h1{font-size:clamp(2rem,3.6vw,3.2rem);color:#fff;line-height:1.12}
+.hero-l p{color:#93A5A1;font-size:1.08rem;max-width:52ch;margin-top:.9rem}
+.demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;min-height:19rem}
+.demo .dh{display:flex;gap:.4rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:#93A5A1;direction:ltr}
+.demo .dh i{width:.6rem;height:.6rem;border-radius:50%;background:#2B3A37}
+.demo .dh i:nth-child(1){background:#F28B7E}.demo .dh i:nth-child(2){background:#F2B75A}.demo .dh i:nth-child(3){background:#6BD09A}
+.demo .dh span{margin-inline-start:.5rem}
+.lh{color:#fff;font-size:1.4rem;margin:.4rem 0 .9rem}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;padding:0 0 2.4rem}
+.feat div{background:rgba(23,33,32,.72);border:1px solid #2B3A37;border-radius:14px;padding:1rem 1.1rem;transition:border-color .2s}
+.feat div:hover{border-color:#5CC3D9}
+.feat .ic{font-family:var(--mono);color:#5CC3D9;font-size:1.25rem;display:block;margin-bottom:.45rem;direction:ltr;text-align:start}
+.feat b{display:block;color:#fff;margin-bottom:.25rem}
+.feat span{color:#93A5A1;font-size:.92rem}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.2rem;padding-bottom:2.2rem;counter-reset:h}
+.how div{border-inline-start:2px solid #5CC3D9;padding:.2rem 1rem}
+.how div::before{counter-increment:h;content:counter(h,decimal-leading-zero);font-family:var(--mono);color:#5CC3D9;display:block;font-size:.78rem;margin-bottom:.3rem}
+.how b{display:block;color:#fff;margin-bottom:.2rem}
+.how span{color:#93A5A1;font-size:.92rem}
+.cta{text-align:center;padding:.5rem 0 1.5rem}
+/* wizard */
+.gcard{position:relative;width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);background:rgba(23,33,32,.92);border:1px solid #2B3A37;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden;backdrop-filter:blur(6px)}
+.gate .form{padding:1.5rem 1.8rem;display:flex;flex-direction:column;gap:1rem;text-align:start;min-height:34rem}
+.gate[dir="rtl"] .f input[dir="ltr"]{text-align:left}
+.gate .side{background:#0F1B1D;border-inline-start:1px solid #2B3A37;padding:1.5rem 1.4rem;display:flex;flex-direction:column;gap:1rem;min-width:0}
+.chapters{display:flex;gap:.4rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:#93A5A1;flex-wrap:wrap;min-height:1.6rem}
+.chapters span{padding:.25rem .65rem;border:1px solid #2B3A37;border-radius:999px;transition:border-color .3s,color .3s}
+.chapters span.cur{border-color:#5CC3D9;color:#5CC3D9;box-shadow:0 0 14px rgba(92,195,217,.35)}
+.chapters span.done{border-color:#6BD09A;color:#6BD09A}
+.step{display:flex;flex-direction:column;gap:.9rem;animation:stepin .35s ease-out}
+@keyframes stepin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step h2{color:#fff;font-size:1.45rem}
+.step .why{color:#93A5A1;font-size:.95rem;max-width:48ch}
 .gate .f{display:flex;flex-direction:column;gap:.3rem;font-size:.85rem;color:#93A5A1}
-.gate .f input,.gate .f select{background:#0B1416;color:#E6EEEC;border:1px solid #2B3A37;border-radius:10px;padding:.6rem .7rem;min-height:46px;font:inherit;transition:border-color .2s,box-shadow .2s}
-.gate .f input:focus,.gate .f select:focus{outline:0;border-color:#5CC3D9;box-shadow:0 0 0 3px rgba(92,195,217,.25)}
+.gate .f input,.gate .f select,textarea.gt{background:#0B1416;color:#E6EEEC;border:1px solid #2B3A37;border-radius:10px;padding:.65rem .75rem;min-height:48px;font:inherit;font-size:1rem;transition:border-color .2s,box-shadow .2s}
+.gate .f input:focus,.gate .f select:focus,textarea.gt:focus{outline:0;border-color:#5CC3D9;box-shadow:0 0 0 3px rgba(92,195,217,.25)}
 .gate .f input.bad{border-color:#F28B7E}
 .gate .f input.ok{border-color:#6BD09A}
 .gate .f .err{color:#F28B7E;font-size:.78rem;min-height:1em}
-.gate .seg{display:flex;gap:.4rem}
-.gate .seg label{flex:1;border:1px solid #2B3A37;border-radius:10px;padding:.55rem;text-align:center;cursor:pointer;color:#E6EEEC;min-height:46px;display:flex;align-items:center;justify-content:center}
+textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
+.gate .seg{display:flex;gap:.4rem;flex-wrap:wrap}
+.gate .seg label{flex:1;min-width:6rem;border:1px solid #2B3A37;border-radius:10px;padding:.7rem;text-align:center;cursor:pointer;color:#E6EEEC;min-height:52px;display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s}
+.gate .seg label:hover{border-color:#5CC3D9}
 .gate .seg input{position:absolute;opacity:0;pointer-events:none}
-.gate .seg label:has(input:checked){border-color:#5CC3D9;background:rgba(92,195,217,.15);font-weight:700}
-.gate .consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.9rem;color:#E6EEEC;border:1px dashed #2B3A37;border-radius:10px;padding:.7rem .8rem}
+.gate .seg label:has(input:checked){border-color:#5CC3D9;background:rgba(92,195,217,.15);font-weight:700;box-shadow:0 0 16px rgba(92,195,217,.25)}
+.tsum{margin:0;padding-inline-start:1.1rem;color:#E6EEEC;font-size:.93rem;display:flex;flex-direction:column;gap:.35rem}
+.gate .consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.92rem;color:#E6EEEC;border:1px dashed #2B3A37;border-radius:10px;padding:.75rem .85rem}
 .gate .consent input{width:1.2rem;height:1.2rem;margin-top:.15rem;accent-color:#5CC3D9}
 .gate .consent a{color:#5CC3D9}
-.gate .go{background:#5CC3D9;color:#0B1A1E;border:0;border-radius:10px;padding:.8rem 1rem;font-weight:700;font-size:1.02rem;min-height:50px;transition:transform .15s,opacity .2s}
+.record{border:1px solid #2B3A37;border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:.8rem;direction:ltr;text-align:left;background:#0B1416}
+.record .rh,.record .rr{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:.5rem .8rem}
+.record .rh{background:#0F1B1D;color:#93A5A1;border-bottom:1px solid #2B3A37}
+.record .rr span{color:#E6EEEC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.record .rr span.cur{color:#5CC3D9;text-shadow:0 0 12px rgba(92,195,217,.7)}
+.record .rr span.empty{color:#3A4C48}
+.record .rr2{display:grid;grid-template-columns:8.5rem 1fr;gap:.6rem;padding:.42rem .8rem;border-bottom:1px solid #1E2B29}
+.record .rr2 span:first-child{color:#93A5A1}
+.record .rr2 span.empty{color:#3A4C48}
+.skiprow{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.3rem}
+.skip{opacity:0;pointer-events:none;transition:opacity .5s}
+.skip.on{opacity:1;pointer-events:auto}
+.gate .go{background:#5CC3D9;color:#0B1A1E;border:0;border-radius:10px;padding:.8rem 1.3rem;font-weight:700;font-size:1.02rem;min-height:50px;transition:transform .15s,opacity .2s}
 .gate .go:hover{transform:translateY(-1px)}
 .gate .go[disabled]{opacity:.4;transform:none;cursor:not-allowed}
-.gate .demo{font-size:.75rem;color:#F2B75A;font-family:var(--mono)}
+.gate .demo-tag{font-size:.75rem;color:#F2B75A;font-family:var(--mono)}
 .gate .msg{background:#0F1B1D;border-color:#5CC3D9;color:#E6EEEC}
 .gate .msg.bad{border-color:#F28B7E;background:#3D1712}
-.gate pre.live{font-family:var(--mono);font-size:.86rem;direction:ltr;text-align:left;background:#0B1416;border:1px solid #2B3A37;border-radius:12px;padding:1rem;margin:0;min-height:11rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:#E6EEEC}
+.gate pre.live{font-family:var(--mono);font-size:.85rem;direction:ltr;text-align:left;background:#0B1416;border:1px solid #2B3A37;border-radius:12px;padding:1rem;margin:0;min-height:11rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:#E6EEEC}
 .gate pre.live .k{color:#5CC3D9;font-weight:500}
 .gate pre.live .s{color:#F2B75A}
 .gate pre.live .n{color:#6BD09A}
 .gate pre.live .c{color:#93A5A1}
 .gate pre.live .cur{display:inline-block;width:.55em;height:1.1em;background:#5CC3D9;vertical-align:-2px;animation:pulse 1s infinite}
-.gate .out{font-family:var(--mono);font-size:.82rem;color:#93A5A1;min-height:2.5rem;direction:ltr;text-align:left}
+.gate .out{font-family:var(--mono);font-size:.82rem;color:#93A5A1;min-height:1.6rem;direction:ltr;text-align:left}
 .gate .out b{color:#6BD09A;font-weight:500}
 .gate table.data{background:#0B1416;color:#E6EEEC}
 .gate table.data th{background:#172120;color:#93A5A1}
@@ -302,13 +352,17 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 @keyframes rowin{from{background:rgba(107,208,154,.35)}to{background:transparent}}
 .gate .sidefoot{margin-top:auto;font-size:.78rem;color:#93A5A1}
 .gate .sidefoot code{color:#5CC3D9;direction:ltr;unicode-bidi:isolate;background:rgba(92,195,217,.12);padding:.05rem .4rem;border-radius:4px}
+.persuade{position:fixed;inset:0;z-index:95;display:grid;place-items:center;background:rgba(0,0,0,.55);padding:1rem}
+.persuade>div{background:#172120;border:1px solid #5CC3D9;border-radius:16px;padding:1.4rem 1.6rem;max-width:470px;width:100%;box-shadow:0 0 40px rgba(92,195,217,.25);display:flex;flex-direction:column;gap:.8rem;color:#E6EEEC}
+.persuade h3{color:#fff;font-size:1.2rem}
+.persuade p{color:#93A5A1}
 .modal{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:1rem}
 .modal>div{background:var(--surface);color:var(--ink);border-radius:14px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:.7rem;box-shadow:var(--shadow);font-size:.95rem}
 .modal h3{font-size:1.2rem}
 .modal ol{padding-inline-start:1.2rem;display:flex;flex-direction:column;gap:.35rem;margin:0}
 .userchip{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--line);border-radius:999px;padding:.3rem .5rem .3rem .8rem;font-size:.85rem;background:var(--surface)}
 .userchip i{width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:.8rem}
-@media (max-width:860px){.gate .gcard{grid-template-columns:1fr}.gate .side{border-inline-start:0;border-top:1px solid #2B3A37}.gate .grid2{grid-template-columns:1fr}}
+@media (max-width:900px){.hero-l{grid-template-columns:1fr}.gcard{grid-template-columns:1fr}.gate .side{border-inline-start:0;border-top:1px solid #2B3A37}.gate .form{min-height:0}}
 
 /* ---------- responsive ---------- */
 @media (max-width:1024px){
@@ -336,51 +390,42 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
 </script>
 <div class="gate" id="gate">
   <canvas id="gateBg" aria-hidden="true"></canvas>
-  <div class="gcard">
-    <form class="form" id="gateForm" novalidate>
+  <div class="wrap">
+    <div class="gtop">
       <div class="brandline"><i></i><span>ROWDYQL · <span id="gateHost">localhost</span></span></div>
-      <h1 data-i18n="g_h1"></h1>
-      <p class="sub" data-i18n="g_sub"></p>
-      <div class="modes" role="tablist">
-        <button type="button" id="modeUp" aria-selected="true" data-i18n="g_signup"></button>
-        <button type="button" id="modeIn" aria-selected="false" data-i18n="g_signin"></button>
-      </div>
-      <div class="grid2">
-        <label class="f"><span data-i18n="g_email"></span><input id="gEmail" type="email" autocomplete="email" dir="ltr" required><span class="err" id="eEmail"></span></label>
-        <label class="f"><span data-i18n="g_pass"></span><input id="gPass" type="password" autocomplete="new-password" dir="ltr" minlength="8" required><span class="err" id="ePass"></span></label>
-      </div>
-      <div id="signupFields" style="display:flex;flex-direction:column;gap:.7rem">
-        <div class="grid2">
-          <label class="f"><span data-i18n="g_name"></span><input id="gName" type="text" autocomplete="name" required><span class="err" id="eName"></span></label>
-          <label class="f"><span data-i18n="g_id"></span><input id="gId" type="text" inputmode="numeric" maxlength="9" dir="ltr" autocomplete="off" required><span class="err" id="eId"></span></label>
+      <div class="links"><button type="button" class="gbtn ghost" id="lnkLang">EN</button><button type="button" class="gbtn" id="lnkIn" data-i18n="g_signin"></button><button type="button" class="gbtn primary" id="lnkUp" data-i18n="g_signup"></button></div>
+    </div>
+    <section id="landing">
+      <div class="hero-l">
+        <div>
+          <span class="kicker">SELECT * FROM Course WHERE Understood = TRUE;</span>
+          <h1 data-i18n="l_h1"></h1>
+          <p data-i18n="l_sub"></p>
+          <div class="controls" style="margin-top:1.3rem"><button type="button" class="gbtn primary" id="ctaUp" data-i18n="l_cta"></button><button type="button" class="gbtn" id="ctaIn" data-i18n="l_have"></button></div>
         </div>
-        <div class="grid2">
-          <div class="f"><span data-i18n="g_year"></span>
-            <div class="seg" id="gYear">
-              <label><input type="radio" name="year" value="1"><span data-i18n="g_y1"></span></label>
-              <label><input type="radio" name="year" value="2"><span data-i18n="g_y2"></span></label>
-              <label><input type="radio" name="year" value="3"><span data-i18n="g_y3"></span></label>
-              <label><input type="radio" name="year" value="4"><span data-i18n="g_y4"></span></label>
-            </div></div>
-          <div class="f"><span data-i18n="g_sem"></span>
-            <div class="seg" id="gSem">
-              <label><input type="radio" name="sem" value="A"><span data-i18n="g_semA"></span></label>
-              <label><input type="radio" name="sem" value="B"><span data-i18n="g_semB"></span></label>
-            </div></div>
-        </div>
-        <label class="consent"><input type="checkbox" id="gConsent" required><span data-i18n="g_consent"></span></label>
+        <div class="demo"><div class="dh"><i></i><i></i><i></i><span>rowdyql · live</span></div><pre class="live" id="demoLive"></pre><div class="out" id="demoOut"></div><div id="demoTable"></div></div>
       </div>
-      <div id="gCaptcha" style="min-height:0"></div>
-      <div class="msg" id="gMsg" hidden></div>
-      <button class="go" id="gGo" type="submit" disabled data-i18n="g_go"></button>
-      <span class="demo" id="gDemo" hidden data-i18n="g_demo"></span>
-    </form>
-    <div class="side">
-      <div class="brandline"><i></i><span>LIVE QUERY</span></div>
-      <pre class="live" id="gLive"></pre>
-      <div class="out" id="gOut"></div>
-      <div id="gTable"></div>
-      <div class="sidefoot" data-i18n="g_foot"></div>
+      <h2 class="lh" data-i18n="l_feat_h"></h2>
+      <div class="feat" id="feat"></div>
+      <h2 class="lh" data-i18n="l_how_h"></h2>
+      <div class="how" id="how"></div>
+      <div class="cta"><button type="button" class="gbtn primary" id="ctaUp2" data-i18n="l_cta"></button></div>
+    </section>
+    <div class="gcard" id="wizard" hidden>
+      <form class="form" id="gateForm" novalidate>
+        <div class="chapters" id="chapters"></div>
+        <div id="stepHost"></div>
+        <div id="gCaptcha" hidden></div>
+        <div class="msg" id="gMsg" hidden></div>
+        <span class="demo-tag" id="gDemo" hidden data-i18n="g_demo"></span>
+      </form>
+      <div class="side">
+        <div class="brandline"><i></i><span>LIVE QUERY</span></div>
+        <pre class="live" id="gLive"></pre>
+        <div class="out" id="gOut"></div>
+        <div id="gTable"></div>
+        <div class="sidefoot" data-i18n="g_foot"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -837,16 +882,33 @@ r3_e:"A ∪ B מכיל את כל A. כשמחסרים מ-A קבוצה שמכיל�
 t_title:"קוד מרצה", t_body:"הקוד פותח את הערות המרצה ואת כל הפתרונות בעמוד. לא נשמר בדפדפן אחרי סגירה.", t_ph:"הקלידו קוד", t_ok:"פתח", t_cancel:"ביטול", t_bad:"קוד שגוי.", t_good:"מצב מרצה פתוח: הערות ופתרונות גלויים.",
 teacher_on:"מרצה ✓", present_off:"סיום הצגה",
 
-g_h1:"ברוכים הבאים ל‑<bdi>RowdyQL</bdi>", g_sub:"סביבת הלימוד של התרגול. ההרשמה לוקחת דקה, ומאותו רגע ההתקדמות, התרגילים והבחינות העצמיות נשמרים לחשבון שלכם, מכל מכשיר.",
-g_signup:"הרשמה", g_signin:"כניסה", g_email:"אימייל", g_pass:"סיסמה (8 תווים לפחות)", g_name:"שם מלא", g_id:"תעודת זהות (9 ספרות)", g_year:"שנת לימוד", g_y1:"א'", g_y2:"ב'", g_y3:"ג'", g_y4:"ד' ומעלה", g_sem:"סמסטר", g_semA:"סמסטר א'", g_semB:"סמסטר ב'",
-g_consent:"קראתי ואני מסכים/ה ל<a href=\"#\" id=\"termsLink\">תנאי הפרטיות</a> של סביבת הקורס. זהו תנאי חובה להרשמה.",
-g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב הדגמה: החיבור לשרת עדיין לא הוגדר, הפרטים נשמרים בדפדפן הזה בלבד.",
-g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכניסה היא <code>SELECT</code>. זה מה שקורה מאחורי כל טופס באינטרנט, וזה בדיוק מה שנלמד.",
-e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"שם מלא, לפחות שתי מילים", e_id:"תעודת זהות לא תקינה (ספרת הביקורת לא מתאימה)",
-g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.",
+g_signup:"הרשמה", g_signin:"כניסה", g_email:"אימייל", g_pass:"סיסמה (8 תווים לפחות)", g_pass_in:"סיסמה", g_name:"שם מלא", g_year:"שנת לימוד", g_y1:"א'", g_y2:"ב'", g_y3:"ג'", g_y4:"ד' ומעלה", g_sem:"סמסטר", g_semA:"סמסטר א'", g_semB:"סמסטר ב'",
+g_consent:"קראתי ואני מסכים/ה ל<a href=\"#\" id=\"termsLink\">תנאי הפרטיות המלאים</a>.",
+g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב הדגמה: הפרטים נשמרים בדפדפן הזה בלבד.",
+g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכניסה היא <code>SELECT</code>. הסיסמה נשמרת כגיבוב, אף פעם לא כטקסט.",
+e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"שם מלא, לפחות שתי מילים",
+g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
+l_h1:"לומדים SQL כמו שכותבים אותו: חי, על טבלאות, עם תשובה מיד.",
+l_sub:"RowdyQL היא סביבת התרגול של הקורס תכנון בסיסי נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות בסגנון המבחן. ההתקדמות נשמרת לחשבון, מכל מכשיר.",
+l_cta:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
+l_feat_h:"מה יש בפנים", l_how_h:"איך זה עובד",
+l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."],["he/en","עברית ואנגלית","כפתור אחד מחליף שפה, כולל כיוון הדף."],["⌘","מצב מרצה","בכיתה: גופן גדול, סימון של מה שמדברים עליו, ופתרונות שנחשפים בזמן הנכון."]],
+l_how:[["פותחים חשבון","אימייל, סיסמה, שם. ובדרך רואים איך זה נראה כ-INSERT."],["לומדים לפי המפגשים","יחידה לכל מפגש תרגול, מאלגברה רלציונית ועד פונקציות חלון ונרמול."],["מתרגלים עד שזה יושב","ממחישים, תרגילים ובחינות עצמיות, עם רמזים מדורגים במקום פתרון מיידי."]],
+lq_d1:"מי קנה כרטיס לפסטיבל האביב?", lq_d2:"מי הזמין הכי הרבה כרטיסים?", lq_d3:"אותה שאלה, באלגברה רלציונית", lq_pw:"הסיסמה לעולם לא נשמרת כטקסט, רק כגיבוב",
+ch_details:"פרטים", ch_terms:"תנאים", ch_meet:"היכרות", ch_done:"סיום",
+d_h:"בואו נכיר", d_email_why:"האימייל הוא המזהה שלכם. אליו יגיע קישור האימות.", d_pass_why:"8 תווים לפחות. היא נשמרת כגיבוב, אף אחד לא יכול לקרוא אותה, גם לא אנחנו.", d_name_why:"כמו שתרצו שיופיע אצל המרצה.",
+in_why:"ברוכים השבים. אימייל וסיסמה, וממשיכים מאיפה שעצרתם.", in_to_up:"עדיין אין לכם חשבון? הרשמה", up_to_in:"כבר יש חשבון? כניסה",
+tm_h:"לפני שממשיכים", tm_why:"ארבע שורות על מה שנשמר ולמה. הנוסח המלא בקישור למטה.",
+t_s1:"נשמרים: אימייל, שם, ותשובות ההיכרות אם תבחרו לענות.", t_s2:"לא נשמרים: תעודת זהות, טלפון, או כל דבר שלא הקלדתם כאן.", t_s3:"רואה את זה רק צוות הקורס, ורק לצורך הקורס.", t_s4:"אפשר לבקש מחיקה בכל רגע, והכל נעלם, כולל ההתקדמות.",
+o_h:"היכרות קצרה", o_year_q:"באיזו שנה אתם בתואר?", o_sem_q:"ואיזה סמסטר זה עכשיו?", o_goals_q:"מה הייתם רוצים לקחת מהקורס הזה? משפט אחד מספיק.", o_interests_q:"יש משהו בעולם הנתונים שמדבר אליכם? אפליקציה, תחום, שאלה שתמיד סקרנה אתכם. גם 'כלום עדיין' זו תשובה.",
+o_goals_ph:"למשל: להרגיש בטוח בכתיבת שאילתות, לעבור את המבחן בכבוד, להבין מה קורה מאחורי אקסל", o_int_ph:"למשל: ספורט, מוזיקה, מסחר, גיימינג, או שום דבר עדיין",
+w_next:"המשך", w_back:"חזרה", w_skip:"דלג",
+p_h:"רגע לפני שמדלגים", p_body:"התשובות האלה עוזרות לנו להתאים את התרגול: דוגמאות מהתחום שמעניין אתכם, ולראות מה חשוב לכם להשיג. זה לוקח 20 שניות, ואפשר גם לכתוב 'לא יודע'.", p_stay:"אשאר ואענה", p_skip:"דלג בכל זאת",
+r_h:"זה מה שיישמר", r_why:"שורה אחת בטבלת הסטודנטים. לחיצה על הרשמה מריצה את ה-INSERT.",
 pt_h:"תנאי פרטיות של סביבת הקורס", pt_close:"סגור",
+pt_body:"<ol><li><b>מי מפעיל:</b> צוות התרגול של הקורס \"תכנון בסיסי נתונים\" באוניברסיטת אריאל. הסביבה היא כלי עזר לימודי ואינה מערכת רשמית של האוניברסיטה.</li><li><b>מה נאסף:</b> אימייל, שם מלא, מועד ההרשמה, תשובות ההיכרות אם בחרתם לענות (שנת לימוד, סמסטר, מה תרצו להשיג, מה מעניין אתכם), וההתקדמות שלכם בסביבה (סעיפים שנצפו, תוצאות בחינה עצמית ותרגילים).</li><li><b>מה לא נאסף:</b> תעודת זהות, טלפון, כתובת, או כל פרט שלא הקלדתם בעצמכם.</li><li><b>למה:</b> מעקב התקדמות אישי, התאמת התרגול לקבוצה, וחישוב בונוס או נוכחות אם יוחלט על כך.</li><li><b>מי רואה:</b> צוות הקורס בלבד. הנתונים לא נמסרים לצד שלישי ולא משמשים לשום מטרה אחרת.</li><li><b>איפה:</b> הנתונים מאוחסנים בשירות Supabase על שרתים באיחוד האירופי, מוצפנים בתעבורה ובאחסון. הסיסמה נשמרת כגיבוב בלבד ואינה ניתנת לקריאה.</li><li><b>כמה זמן:</b> עד תום שנת הלימודים שבה נרשמתם ועוד 12 חודשים לצורך ערעורים, ואז הנתונים נמחקים.</li><li><b>הזכויות שלכם:</b> אפשר לבקש עיון, תיקון או מחיקה של הפרטים בכל עת בפנייה למתרגל. מחיקת החשבון מוחקת גם את ההתקדמות.</li><li>ההרשמה מהווה הסכמה לתנאים אלה.</li></ol>",
 d_btn:"לוח מרצה", d_h:"לוח מרצה: נרשמים והתקדמות", d_none:"אין נרשמים עדיין.", d_demo:"לוח המרצה זמין רק עם חיבור לשרת.", d_count:"{n} נרשמים", d_csv:"הורדת CSV",
-d_c_name:"שם", d_c_email:"אימייל", d_c_year:"שנה", d_c_sem:"סמסטר", d_c_joined:"נרשם", d_c_last:"פעיל לאחרונה", d_c_sec:"סעיפים", d_c_qi:"בחינה מבוא", d_c_qr:"בחינה אלגברה", d_c_ex:"תרגיל",
+d_c_name:"שם", d_c_email:"אימייל", d_c_year:"שנה", d_c_sem:"סמסטר", d_c_joined:"נרשם", d_c_last:"פעיל לאחרונה", d_c_sec:"סעיפים", d_c_qi:"בחינה מבוא", d_c_qr:"בחינה אלגברה", d_c_ex:"תרגיל", d_c_goals:"מטרות", d_c_int:"תחומי עניין",
 sync_on:"ההתקדמות נשמרת לחשבון",
 pt_body:"<ol><li><b>מי מפעיל:</b> צוות התרגול של הקורס \"תכנון בסיסי נתונים\" באוניברסיטת אריאל. הסביבה היא כלי עזר לימודי ואינה מערכת רשמית של האוניברסיטה.</li><li><b>מה נאסף:</b> אימייל, שם מלא, שנת לימוד, סמסטר, מספר תעודת זהות, וההתקדמות שלכם בסביבה (סעיפים שנצפו, תוצאות בחינה עצמית ותרגילים).</li><li><b>למה:</b> זיהוי חד-משמעי מול רשימת הקורס, מעקב התקדמות אישי, וחישוב בונוס או נוכחות אם יוחלט על כך.</li><li><b>מי רואה:</b> צוות הקורס בלבד. מספר תעודת הזהות נשמר בטבלה נפרדת שרק צוות הקורס יכול לקרוא. הנתונים לא נמסרים לצד שלישי ולא משמשים לשום מטרה אחרת.</li><li><b>איפה:</b> הנתונים מאוחסנים בשירות Supabase על שרתים באיחוד האירופי, מוצפנים בתעבורה ובאחסון. הסיסמה נשמרת כגיבוב בלבד ואינה ניתנת לקריאה.</li><li><b>כמה זמן:</b> עד תום שנת הלימודים שבה נרשמתם ועוד 12 חודשים לצורך ערעורים, ואז הנתונים נמחקים.</li><li><b>הזכויות שלכם:</b> אפשר לבקש עיון, תיקון או מחיקה של הפרטים בכל עת בפנייה למתרגל. מחיקת החשבון מוחקת גם את ההתקדמות.</li><li>ההרשמה מהווה הסכמה לתנאים אלה.</li></ol>",
 },
@@ -1012,16 +1074,33 @@ r3_e:"A ∪ B contains all of A. Subtracting a superset of A from A leaves nothi
 t_title:"Teacher code", t_body:"The code reveals teacher notes and every solution on the page. It is not stored after you close the page.", t_ph:"Enter code", t_ok:"Unlock", t_cancel:"Cancel", t_bad:"Wrong code.", t_good:"Teacher mode on: notes and solutions visible.",
 teacher_on:"Teacher ✓", present_off:"Exit presenter",
 
-g_h1:"Welcome to <bdi>RowdyQL</bdi>", g_sub:"The tutorial's study environment. Signing up takes a minute, and from then on your progress, exercises and self-checks are saved to your account, on any device.",
-g_signup:"Sign up", g_signin:"Sign in", g_email:"Email", g_pass:"Password (8+ characters)", g_name:"Full name", g_id:"National ID (9 digits)", g_year:"Year of study", g_y1:"1st", g_y2:"2nd", g_y3:"3rd", g_y4:"4th+", g_sem:"Semester", g_semA:"Semester A", g_semB:"Semester B",
-g_consent:"I have read and agree to the course environment's <a href=\"#\" id=\"termsLink\">privacy terms</a>. This is required to sign up.",
-g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: the server connection is not configured yet, details are kept in this browser only.",
-g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SELECT</code>. That is what happens behind every form on the web, and exactly what we study.",
-e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Full name, at least two words", e_id:"Invalid ID number (check digit does not match)",
-g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.",
+g_signup:"Sign up", g_signin:"Sign in", g_email:"Email", g_pass:"Password (8+ characters)", g_pass_in:"Password", g_name:"Full name", g_year:"Year of study", g_y1:"1st", g_y2:"2nd", g_y3:"3rd", g_y4:"4th+", g_sem:"Semester", g_semA:"Semester A", g_semB:"Semester B",
+g_consent:"I have read and agree to the <a href=\"#\" id=\"termsLink\">full privacy terms</a>.",
+g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: details are kept in this browser only.",
+g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SELECT</code>. The password is stored as a hash, never as text.",
+e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Full name, at least two words",
+g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
+l_h1:"Learn SQL the way it is written: live, on tables, with instant answers.",
+l_sub:"RowdyQL is the practice environment of the Database Design course. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and exam-style questions. Progress is saved to your account, on any device.",
+l_cta:"Create an account, one minute", l_have:"I already have an account",
+l_feat_h:"What is inside", l_how_h:"How it works",
+l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."],["he/en","Hebrew and English","One button switches the language, page direction included."],["⌘","Presenter mode","In class: big type, highlighting of what is being discussed, and solutions revealed at the right time."]],
+l_how:[["Create an account","Email, password, name. And along the way you see what it looks like as an INSERT."],["Learn by session","One unit per tutorial session, from relational algebra to window functions and normalization."],["Practice until it sticks","Visualizers, exercises and self-checks, with staged hints instead of instant solutions."]],
+lq_d1:"Who bought a ticket to the Spring Festival?", lq_d2:"Who ordered the most tickets?", lq_d3:"The same question, in relational algebra", lq_pw:"The password is never stored as text, only as a hash",
+ch_details:"Details", ch_terms:"Terms", ch_meet:"Meet", ch_done:"Done",
+d_h:"Let us meet", d_email_why:"Your email is your identifier. The confirmation link goes there.", d_pass_why:"At least 8 characters. Stored as a hash: nobody can read it, not even us.", d_name_why:"As you want it to appear to the teacher.",
+in_why:"Welcome back. Email and password, and continue where you stopped.", in_to_up:"No account yet? Sign up", up_to_in:"Already have an account? Sign in",
+tm_h:"Before we continue", tm_why:"Four lines on what is stored and why. The full text is in the link below.",
+t_s1:"Stored: email, name, and your onboarding answers if you choose to answer.", t_s2:"Not stored: national ID, phone, or anything you did not type here.", t_s3:"Seen only by course staff, only for the course.", t_s4:"You can ask for deletion at any time, and everything goes, progress included.",
+o_h:"A short introduction", o_year_q:"Which year of your degree are you in?", o_sem_q:"And which semester is it now?", o_goals_q:"What would you like to take from this course? One sentence is enough.", o_interests_q:"Is there something in the data world that speaks to you? An app, a field, a question that always intrigued you. 'Nothing yet' is also an answer.",
+o_goals_ph:"e.g. feel confident writing queries, pass the exam well, understand what happens behind Excel", o_int_ph:"e.g. sports, music, trading, gaming, or nothing yet",
+w_next:"Continue", w_back:"Back", w_skip:"Skip",
+p_h:"One moment before skipping", p_body:"These answers help us tailor the practice: examples from the field you care about, and a sense of what matters to you. It takes 20 seconds, and 'I do not know' is a valid answer.", p_stay:"I will stay and answer", p_skip:"Skip anyway",
+r_h:"This is what will be stored", r_why:"One row in the Students table. Pressing Sign up runs the INSERT.",
 pt_h:"Course environment privacy terms", pt_close:"Close",
+pt_body:"<ol><li><b>Who operates it:</b> the tutorial staff of the course \"Database Design\" at Ariel University. The environment is a study aid, not an official university system.</li><li><b>What is collected:</b> email, full name, registration time, your onboarding answers if you chose to answer (year of study, semester, what you want to achieve, what interests you), and your progress in the environment (sections viewed, self-check and exercise results).</li><li><b>What is not collected:</b> national ID, phone, address, or any detail you did not type yourself.</li><li><b>Why:</b> personal progress tracking, adapting the practice to the group, and bonus or attendance calculation if decided.</li><li><b>Who sees it:</b> course staff only. Data is never passed to third parties or used for any other purpose.</li><li><b>Where:</b> data is stored on Supabase servers in the EU, encrypted in transit and at rest. Passwords are stored as hashes only and cannot be read.</li><li><b>How long:</b> until the end of the academic year you registered in plus 12 months for appeals, then deleted.</li><li><b>Your rights:</b> you can ask to view, correct or delete your details at any time by contacting the TA. Deleting the account also deletes progress.</li><li>Signing up constitutes agreement to these terms.</li></ol>",
 d_btn:"Teacher board", d_h:"Teacher board: sign-ups and progress", d_none:"No sign-ups yet.", d_demo:"The teacher board needs the server connection.", d_count:"{n} registered", d_csv:"Download CSV",
-d_c_name:"Name", d_c_email:"Email", d_c_year:"Year", d_c_sem:"Semester", d_c_joined:"Joined", d_c_last:"Last active", d_c_sec:"Sections", d_c_qi:"Intro quiz", d_c_qr:"Algebra quiz", d_c_ex:"Exercise",
+d_c_name:"Name", d_c_email:"Email", d_c_year:"Year", d_c_sem:"Semester", d_c_joined:"Joined", d_c_last:"Last active", d_c_sec:"Sections", d_c_qi:"Intro quiz", d_c_qr:"Algebra quiz", d_c_ex:"Exercise", d_c_goals:"Goals", d_c_int:"Interests",
 sync_on:"Progress is saved to your account",
 pt_body:"<ol><li><b>Who operates it:</b> the tutorial staff of the course \"Database Design\" at Ariel University. The environment is a study aid, not an official university system.</li><li><b>What is collected:</b> email, full name, year of study, semester, national ID number, and your progress in the environment (sections viewed, self-check and exercise results).</li><li><b>Why:</b> unambiguous matching against the course roster, personal progress tracking, and bonus or attendance calculation if decided.</li><li><b>Who sees it:</b> course staff only. The ID number is stored in a separate table readable only by course staff. Data is never passed to third parties or used for any other purpose.</li><li><b>Where:</b> data is stored on Supabase servers in the EU, encrypted in transit and at rest. Passwords are stored as hashes only and cannot be read.</li><li><b>How long:</b> until the end of the academic year you registered in plus 12 months for appeals, then deleted.</li><li><b>Your rights:</b> you can ask to view, correct or delete your details at any time by contacting the TA. Deleting the account also deletes progress.</li><li>Signing up constitutes agreement to these terms.</li></ol>",
 }};
@@ -1372,7 +1451,7 @@ function applyLang(){
   renderHero(); renderAnomaly(); renderSchema(); renderLists(); renderQuiz('quizIntro','intro');
   renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderExercise(); renderQuiz('quizRa','ra');
   renderRail(); renderSpine(); applyRail(); store('dbs_lang', lang); updateNav(false);
-  setGateMode(gateMode);
+  gateRefresh();
 }
 $('#btnLang').addEventListener('click', () => { lang = lang === 'he' ? 'en' : 'he'; applyLang(); });
 $('#btnPresent').addEventListener('click', () => { document.documentElement.classList.toggle('present'); $('#btnPresent').textContent = document.documentElement.classList.contains('present') ? t('present_off') : t('present'); });
@@ -1386,70 +1465,150 @@ $('#btnTeacher').addEventListener('click', () => {
   ok.addEventListener('click', tryIt); inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryIt(); }); cancel.addEventListener('click', () => dlg.remove()); dlg.addEventListener('click', e => { if (e.target === dlg) dlg.remove(); });
 });
 
-/* =========================== ACCOUNTS: config, auth, gate =========================== */
-/* Fill these once the Supabase project exists. The anon key is a public key by design; RLS policies in supabase/schema.sql protect the data. */
-const DBS_CONFIG = { supabaseUrl: 'https://afzlmlbigruxijudqukp.supabase.co', supabaseAnonKey: 'sb_publishable_VqElbkoG6ZWGI4VtWEZ7Tw_Quqxv1fR', requireEmailDomain: '', termsVersion: '2026-09-22', turnstileSiteKey: '0x4AAAAAAFAbd5vxNlrjfSb8' };
-let captchaWidget = null, captchaToken = '';
-let sb = null, session = null, profile = null, gateMode = 'up';
+/* =========================== ACCOUNTS: config, landing, sign-up wizard, auth =========================== */
+/* The publishable key is public by design; RLS policies in supabase/schema.sql protect the data. */
+const DBS_CONFIG = { supabaseUrl: 'https://afzlmlbigruxijudqukp.supabase.co', supabaseAnonKey: 'sb_publishable_VqElbkoG6ZWGI4VtWEZ7Tw_Quqxv1fR', requireEmailDomain: '', termsVersion: '2026-09-23', turnstileSiteKey: '0x4AAAAAAFAbd5vxNlrjfSb8' };
+let sb = null, session = null, profile = null, captchaWidget = null, captchaToken = '';
 const loadScript = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
-const validId = v => { if (!/^\d{9}$/.test(v)) return false; let sum = 0; for (let i = 0; i < 9; i++) { let d = +v[i] * ((i % 2) + 1); if (d > 9) d -= 9; sum += d; } return sum % 10 === 0; };
 const validEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-const maskId = v => v ? '*****' + v.slice(-4) : '';
-const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/'/g,'&#39;');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+const withTimeout = (pr, ms) => Promise.race([pr, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
 
-function gateVals(){ return { email: $('#gEmail').value.trim(), pass: $('#gPass').value, name: $('#gName').value.trim().replace(/\s+/g,' '), id: $('#gId').value.trim(), year: (document.querySelector('input[name=year]:checked')||{}).value || '', sem: (document.querySelector('input[name=sem]:checked')||{}).value || '', consent: $('#gConsent').checked }; }
-function gateValidate(showAll){
-  const v = gateVals(); const touched = f => showAll || f.dataset.touched;
-  const setErr = (inp, errId, ok, key) => { const e = $('#'+errId); inp.classList.toggle('bad', !ok && touched(inp) && inp.value !== ''); inp.classList.toggle('ok', ok && inp.value !== ''); e.textContent = (!ok && touched(inp) && inp.value !== '') ? t(key) : ''; };
-  const okEmail = validEmail(v.email) && (!DBS_CONFIG.requireEmailDomain || v.email.toLowerCase().endsWith('@'+DBS_CONFIG.requireEmailDomain.toLowerCase()));
-  setErr($('#gEmail'),'eEmail', okEmail, 'e_email'); setErr($('#gPass'),'ePass', v.pass.length >= 8, 'e_pass');
-  let ok = okEmail && v.pass.length >= 8;
-  if (gateMode === 'up') { const okName = v.name.split(' ').length >= 2 && v.name.length >= 4; const okId = validId(v.id); setErr($('#gName'),'eName', okName, 'e_name'); setErr($('#gId'),'eId', okId, 'e_id'); ok = ok && okName && okId && !!v.year && !!v.sem && v.consent; }
-  if (captchaWidget !== null && !captchaToken) ok = false;
-  $('#gGo').disabled = !ok; renderLive(v); return ok;
+/* ---- wizard state ---- */
+const W = { view: 'landing', mode: 'up', ch: 0, sub: 0, busy: false, d: { email:'', pass:'', name:'', consent:false, year:'', sem:'', goals:'', interests:'' }, skipped: {} };
+const CH = ['ch_details','ch_terms','ch_meet','ch_done'], ONB = ['year','sem','goals','interests'];
+let skipTimer = null;
+function gateView(v){ W.view = v; $('#landing').hidden = v !== 'landing'; $('#wizard').hidden = v === 'landing'; $('#gate').scrollTop = 0; if (v === 'wizard') wizRender(); }
+function startUp(){ W.mode = 'up'; W.ch = 0; W.sub = 0; gateView('wizard'); }
+function startIn(){ W.mode = 'in'; gateView('wizard'); }
+['#lnkUp','#ctaUp','#ctaUp2'].forEach(sel => $(sel).addEventListener('click', startUp));
+['#lnkIn','#ctaIn'].forEach(sel => $(sel).addEventListener('click', startIn));
+$('#lnkLang').addEventListener('click', () => $('#btnLang').click());
+
+function chaptersHtml(){ if (W.mode === 'in') return ''; return CH.map((k, i) => '<span class="' + (i < W.ch ? 'done' : i === W.ch ? 'cur' : '') + '">' + (i+1) + ' · ' + t(k) + '</span>').join(''); }
+function field(id, key, type, extra){ return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '" ' + (extra || '') + '><span class="err" id="e_' + id + '"></span></label>'; }
+function seg(name, opts){ return '<div class="seg">' + opts.map(o => '<label><input type="radio" name="' + name + '" value="' + o[0] + '"' + (W.d[name] === o[0] ? ' checked' : '') + '><span>' + t(o[1]) + '</span></label>').join('') + '</div>'; }
+function recordStrip(cur){ const cols = [['year','StudyYear'],['sem','Semester'],['goals','Goals'],['interests','Interests']]; return '<div class="record"><div class="rh">' + cols.map(c => '<span>' + c[1] + '</span>').join('') + '</div><div class="rr">' + cols.map(c => { const v = W.d[c[0]]; const cls = c[0] === cur ? 'cur' : (v ? '' : 'empty'); const txt = v ? esc(String(v).slice(0,16)) + (String(v).length > 16 ? '…' : '') : (W.skipped[c[0]] ? 'NULL' : '…'); return '<span class="' + cls + '">' + txt + '</span>'; }).join('') + '</div></div>'; }
+function navBtns(nextKey, showBack, skippable){ return '<div class="skiprow">' + (showBack ? '<button type="button" class="gbtn ghost" id="wBack">' + t('w_back') + '</button>' : '<span></span>') + '<div class="controls">' + (skippable ? '<button type="button" class="gbtn ghost skip" id="wSkip">' + t('w_skip') + '</button>' : '') + '<button type="submit" class="go" id="gGo">' + t(nextKey) + '</button></div></div>'; }
+function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FullName', d.name], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL'], ['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL'], ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map(r => '<div class="rr2"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
+
+function wizRender(){
+  const host = $('#stepHost'); clearTimeout(skipTimer); $('#chapters').innerHTML = chaptersHtml(); $('#gMsg').hidden = true; $('#gOut').textContent = ''; $('#gTable').innerHTML = '';
+  let h = '', focus = null, captcha = false;
+  if (W.mode === 'in') {
+    h = '<div class="step"><h2>' + t('g_signin') + '</h2><p class="why">' + t('in_why') + '</p>' + field('gEmail','g_email','email','autocomplete="email" dir="ltr" value="' + esc(W.d.email) + '"') + field('gPass','g_pass_in','password','autocomplete="current-password" dir="ltr"') + navBtns('g_go_in', false, false) + '<button type="button" class="gbtn ghost" id="wToUp">' + t('in_to_up') + '</button></div>'; focus = 'gEmail'; captcha = true;
+  } else if (W.ch === 0) {
+    const subs = [['gEmail','g_email','email','autocomplete="email" dir="ltr"','d_email_why','email'], ['gPass','g_pass','password','autocomplete="new-password" dir="ltr"','d_pass_why','pass'], ['gName','g_name','text','autocomplete="name"','d_name_why','name']];
+    const sd = subs[W.sub];
+    h = '<div class="step"><h2>' + t('d_h') + '</h2><p class="why">' + t(sd[4]) + '</p>' + field(sd[0], sd[1], sd[2], sd[3] + ' value="' + esc(W.d[sd[5]]) + '"') + navBtns('w_next', W.sub > 0, false) + '<button type="button" class="gbtn ghost" id="wToIn">' + t('up_to_in') + '</button></div>'; focus = sd[0];
+  } else if (W.ch === 1) {
+    h = '<div class="step"><h2>' + t('tm_h') + '</h2><p class="why">' + t('tm_why') + '</p><ul class="tsum">' + ['t_s1','t_s2','t_s3','t_s4'].map(k => '<li>' + t(k) + '</li>').join('') + '</ul><label class="consent"><input type="checkbox" id="gConsent"' + (W.d.consent ? ' checked' : '') + '><span>' + t('g_consent') + '</span></label>' + navBtns('w_next', true, false) + '</div>';
+  } else if (W.ch === 2) {
+    const k = ONB[W.sub]; let body = '';
+    if (k === 'year') body = seg('year', [['1','g_y1'],['2','g_y2'],['3','g_y3'],['4','g_y4']]);
+    else if (k === 'sem') body = seg('sem', [['A','g_semA'],['B','g_semB']]);
+    else body = '<textarea class="gt" id="gText" maxlength="400" placeholder="' + esc(t(k === 'goals' ? 'o_goals_ph' : 'o_int_ph')) + '">' + esc(W.d[k]) + '</textarea>';
+    h = '<div class="step"><h2>' + t('o_h') + '</h2><p class="why">' + t('o_' + k + '_q') + '</p>' + recordStrip(k) + body + navBtns('w_next', true, true) + '</div>'; if (k === 'goals' || k === 'interests') focus = 'gText';
+  } else {
+    h = '<div class="step"><h2>' + t('r_h') + '</h2><p class="why">' + t('r_why') + '</p>' + reviewTable() + navBtns('g_go', true, false) + '</div>'; captcha = true;
+  }
+  host.innerHTML = h;
+  $('#gCaptcha').hidden = !captcha; if (captcha) ensureCaptcha();
+  const back = $('#wBack'); if (back) back.addEventListener('click', wizBack);
+  const skip = $('#wSkip'); if (skip) { skipTimer = setTimeout(() => skip.classList.add('on'), 7000); skip.addEventListener('click', persuade); }
+  const toIn = $('#wToIn'); if (toIn) toIn.addEventListener('click', startIn);
+  const toUp = $('#wToUp'); if (toUp) toUp.addEventListener('click', startUp);
+  host.querySelectorAll('input,textarea').forEach(inp => { inp.addEventListener('input', () => { inp.dataset.touched = '1'; readInputs(); validateStep(false); renderLive(); }); inp.addEventListener('change', () => { readInputs(); validateStep(false); renderLive(); }); });
+  readInputs(); validateStep(false); renderLive();
+  if (focus && $('#' + focus)) setTimeout(() => $('#' + focus).focus(), 60);
 }
-function renderLive(v){
-  const S = x => x ? "<span class='s'>'"+esc(x)+"'</span>" : "<span class='c'>NULL</span>";
-  const N = x => x ? "<span class='n'>"+esc(x)+"</span>" : "<span class='c'>NULL</span>";
-  const cur = "<span class='cur'></span>";
-  $('#gLive').innerHTML = gateMode === 'up'
-    ? "<span class='k'>INSERT INTO</span> Students\n  (Email, FullName, StudyYear, Semester, IdNumber, Consent)\n<span class='k'>VALUES</span>\n  ("+S(v.email)+", "+S(v.name)+", "+N(v.year)+", "+S(v.sem)+", "+S(maskId(v.id))+", "+(v.consent?"<span class='n'>TRUE</span>":"<span class='c'>FALSE</span>")+");"+cur
-    : "<span class='c'>-- הסיסמה לעולם לא נשמרת כטקסט, רק כגיבוב</span>\n<span class='k'>SELECT</span> *\n<span class='k'>FROM</span> Students\n<span class='k'>WHERE</span> Email = "+S(v.email)+"\n  <span class='k'>AND</span> PasswordHash = "+S(v.pass ? '•'.repeat(Math.min(v.pass.length,12)) : '')+";"+cur;
+function readInputs(){ const g = id => $('#' + id); if (g('gEmail')) W.d.email = g('gEmail').value.trim(); if (g('gPass')) W.d.pass = g('gPass').value; if (g('gName')) W.d.name = g('gName').value.trim().replace(/\s+/g, ' '); if (g('gConsent')) W.d.consent = g('gConsent').checked; const y = document.querySelector('input[name=year]:checked'); if (y) W.d.year = y.value; const sm = document.querySelector('input[name=sem]:checked'); if (sm) W.d.sem = sm.value; if (g('gText') && W.ch === 2) W.d[ONB[W.sub]] = g('gText').value.trim(); }
+function setErr(id, ok, key, showAll){ const inp = $('#' + id); if (!inp) return; const e = $('#e_' + id); const touched = showAll || inp.dataset.touched; inp.classList.toggle('bad', !ok && !!touched && inp.value !== ''); inp.classList.toggle('ok', ok && inp.value !== ''); if (e) e.textContent = (!ok && touched && inp.value !== '') ? t(key) : ''; }
+function validateStep(showAll){
+  let ok = true; const d = W.d;
+  const okEmail = validEmail(d.email) && (!DBS_CONFIG.requireEmailDomain || d.email.toLowerCase().endsWith('@' + DBS_CONFIG.requireEmailDomain.toLowerCase()));
+  if (W.mode === 'in') { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail && d.pass.length >= 1; }
+  else if (W.ch === 0) { if (W.sub === 0) { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail; } else if (W.sub === 1) { const okP = d.pass.length >= 8; setErr('gPass', okP, 'e_pass', showAll); ok = okP; } else { const okN = d.name.split(' ').length >= 2 && d.name.length >= 4; setErr('gName', okN, 'e_name', showAll); ok = okN; } }
+  else if (W.ch === 1) ok = d.consent;
+  else if (W.ch === 2) { const k = ONB[W.sub]; ok = (k === 'year' || k === 'sem') ? !!d[k] : true; }
+  const cap = $('#gCaptcha'); if (cap && !cap.hidden && captchaWidget !== null && !captchaToken) ok = false;
+  const go = $('#gGo'); if (go) go.disabled = !ok || W.busy; return ok;
 }
-function setGateMode(m){ gateMode = m; $('#modeUp').setAttribute('aria-selected', String(m==='up')); $('#modeIn').setAttribute('aria-selected', String(m==='in')); $('#signupFields').hidden = m !== 'up'; $('#gGo').textContent = t(m==='up' ? 'g_go' : 'g_go_in'); $('#gPass').autocomplete = m==='up' ? 'new-password' : 'current-password'; $('#gMsg').hidden = true; $('#gOut').textContent = ''; $('#gTable').innerHTML = ''; gateValidate(false); }
-$('#modeUp').addEventListener('click', () => setGateMode('up')); $('#modeIn').addEventListener('click', () => setGateMode('in'));
-$('#gateForm').addEventListener('input', e => { if (e.target.matches('input')) e.target.dataset.touched = '1'; gateValidate(false); });
-$('#gateForm').addEventListener('focusout', e => { if (e.target.matches('input')) { e.target.dataset.touched = '1'; gateValidate(false); } });
-document.addEventListener('click', e => { if (e.target.id === 'termsLink') { e.preventDefault(); showTerms(); } });
-function showTerms(){ const d = el('div','modal'); d.innerHTML = '<div><h3>'+t('pt_h')+'</h3>'+t('pt_body')+'<div class="controls"><button class="btn primary" id="ptClose">'+t('pt_close')+'</button></div></div>'; document.body.appendChild(d); $('#ptClose').addEventListener('click', () => d.remove()); d.addEventListener('click', ev => { if (ev.target === d) d.remove(); }); }
+function wizAdvance(){ if (W.ch === 0 && W.sub < 2) W.sub++; else if (W.ch === 0) { W.ch = 1; W.sub = 0; } else if (W.ch === 1) { W.ch = 2; W.sub = 0; } else if (W.ch === 2 && W.sub < 3) W.sub++; else if (W.ch === 2) { W.ch = 3; W.sub = 0; } wizRender(); }
+function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) { W.ch = 0; W.sub = 2; } else if (W.ch === 2 && W.sub > 0) W.sub--; else if (W.ch === 2) { W.ch = 1; W.sub = 0; } else if (W.ch === 3) { W.ch = 2; W.sub = 3; } wizRender(); }
+function persuade(){ const d = el('div','persuade'); d.innerHTML = '<div><h3>' + t('p_h') + '</h3><p>' + t('p_body') + '</p><div class="controls"><button type="button" class="gbtn primary" id="pStay">' + t('p_stay') + '</button><button type="button" class="gbtn ghost" id="pSkip">' + t('p_skip') + '</button></div></div>'; document.body.appendChild(d); $('#pStay').addEventListener('click', () => { d.remove(); const f = $('#gText'); if (f) f.focus(); }); $('#pSkip').addEventListener('click', () => { d.remove(); const k = ONB[W.sub]; W.skipped[k] = true; W.d[k] = ''; wizAdvance(); }); }
+
+function renderLive(){
+  const pre = $('#gLive'); if (!pre) return; const d = W.d;
+  const S = x => x ? "<span class='s'>'" + esc(x) + "'</span>" : "<span class='c'>NULL</span>"; const N = x => x ? "<span class='n'>" + esc(x) + "</span>" : "<span class='c'>NULL</span>"; const cur = "<span class='cur'></span>"; const clip = x => x.length > 28 ? x.slice(0,28) + '…' : x;
+  if (W.mode === 'in') { pre.innerHTML = "<span class='c'>-- " + t('lq_pw') + "</span>\n<span class='k'>SELECT</span> *\n<span class='k'>FROM</span> Students\n<span class='k'>WHERE</span> Email = " + S(d.email) + "\n  <span class='k'>AND</span> PasswordHash = " + S(d.pass ? '•'.repeat(Math.min(d.pass.length, 12)) : '') + ";" + cur; return; }
+  const cols = ['Email'], vals = [S(d.email)];
+  if (W.ch > 0 || W.sub >= 1) { cols.push('PasswordHash'); vals.push(d.pass ? "<span class='s'>'bcrypt(" + '•'.repeat(Math.min(d.pass.length, 10)) + ")'</span>" : "<span class='c'>NULL</span>"); }
+  if (W.ch > 0 || W.sub >= 2) { cols.push('FullName'); vals.push(S(d.name)); }
+  if (W.ch >= 1) { cols.push('Consent'); vals.push(d.consent ? "<span class='n'>TRUE</span>" : "<span class='c'>FALSE</span>"); }
+  if (W.ch >= 2) { cols.push('StudyYear', 'Semester', 'Goals', 'Interests'); vals.push(N(d.year), S(d.sem), S(clip(d.goals)), S(clip(d.interests))); }
+  cols.push('RegisteredAt'); vals.push("<span class='n'>SYSDATETIME()</span>");
+  pre.innerHTML = "<span class='k'>INSERT INTO</span> Students\n  (" + cols.join(', ') + ")\n<span class='k'>VALUES</span>\n  (" + vals.join(', ') + ");" + cur;
+}
 function gateMsg(text, bad){ const m = $('#gMsg'); m.hidden = false; m.className = 'msg' + (bad ? ' bad' : ''); m.innerHTML = text; }
 function gateOut(html){ $('#gOut').innerHTML = html; }
-function showRow(v){ const tb = table(['Email','FullName','StudyYear','Semester','IdNumber','Consent'], [{Email:v.email, FullName:v.name, StudyYear:v.year, Semester:v.sem, IdNumber:maskId(v.id), Consent:'TRUE'}]); tb.querySelectorAll('tr:nth-child(2)').forEach(r => r.classList.add('row-in')); $('#gTable').innerHTML = ''; $('#gTable').appendChild(tb); }
+function showRow(){ const d = W.d; const tb = table(['Email','FullName','StudyYear','Semester','RegisteredAt'], [{Email: d.email, FullName: d.name, StudyYear: d.year || null, Semester: d.sem || null, RegisteredAt: new Date().toISOString().slice(0,16).replace('T',' ')}]); tb.querySelectorAll('tr:nth-child(2)').forEach(r => r.classList.add('row-in')); $('#gTable').innerHTML = ''; $('#gTable').appendChild(tb); }
+document.addEventListener('click', e => { if (e.target.id === 'termsLink') { e.preventDefault(); showTerms(); } });
+function showTerms(){ const d = el('div','modal'); d.innerHTML = '<div><h3>' + t('pt_h') + '</h3>' + t('pt_body') + '<div class="controls"><button type="button" class="btn primary" id="ptClose">' + t('pt_close') + '</button></div></div>'; document.body.appendChild(d); $('#ptClose').addEventListener('click', () => d.remove()); d.addEventListener('click', ev => { if (ev.target === d) d.remove(); }); }
 
 $('#gateForm').addEventListener('submit', async e => {
-  e.preventDefault(); if (!gateValidate(true)) return; const v = gateVals(); const go = $('#gGo'); go.disabled = true; gateMsg(t('g_working'), false); gateOut('<span class="c">…</span>');
+  e.preventDefault(); readInputs(); if (!validateStep(true)) return;
+  if (W.mode === 'up' && W.ch < 3) { wizAdvance(); return; }
+  W.busy = true; validateStep(false); gateMsg(t('g_working'), false); gateOut('<span class="c">…</span>');
+  const d = W.d;
   try {
-    if (gateMode === 'up') {
-      const meta = { full_name: v.name, study_year: +v.year, semester: v.sem, id_number: v.id, consent_at: new Date().toISOString(), consent_version: DBS_CONFIG.termsVersion };
-      if (sb) { const { data, error } = await sb.auth.signUp({ email: v.email, password: v.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; showRow(v); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: v.name}), false); if (data.session) { session = data.session; setTimeout(onSession, 900); } }
-      else { profile = { email: v.email, full_name: v.name, study_year: +v.year, semester: v.sem, consent_at: meta.consent_at }; store('dbs_profile', profile); showRow(v); gateOut('<b>(1 row affected)</b>'); gateMsg(t('g_ok_up_demo'), false); session = { demo: true }; setTimeout(onSession, 1200); }
+    if (W.mode === 'up') {
+      const meta = { full_name: d.name, study_year: d.year ? +d.year : null, semester: d.sem || null, goals: d.goals || null, interests: d.interests || null, consent_at: new Date().toISOString(), consent_version: DBS_CONFIG.termsVersion };
+      if (sb) { const { data, error } = await sb.auth.signUp({ email: d.email, password: d.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: d.name}), false); if (data.session) { session = data.session; await loadProfile(); setTimeout(onSession, 900); } }
+      else { profile = { email: d.email, full_name: d.name, study_year: meta.study_year, semester: meta.semester, goals: meta.goals, interests: meta.interests, consent_at: meta.consent_at }; store('dbs_profile', profile); showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t('g_ok_up_demo'), false); session = { demo: true }; setTimeout(onSession, 1200); }
     } else {
-      if (sb) { const { data, error } = await sb.auth.signInWithPassword({ email: v.email, password: v.pass, options: { captchaToken: captchaToken || undefined } }); if (error) throw error; session = data.session; await loadProfile(); gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: (profile && profile.full_name) || ''}), false); setTimeout(onSession, 700); }
-      else { const p = load('dbs_profile', null); if (!p || p.email !== v.email) throw new Error('bad'); profile = p; session = { demo: true }; gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: p.full_name}), false); setTimeout(onSession, 700); }
+      if (sb) { const { data, error } = await sb.auth.signInWithPassword({ email: d.email, password: d.pass, options: { captchaToken: captchaToken || undefined } }); if (error) throw error; session = data.session; await loadProfile(); gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: (profile && profile.full_name) || ''}), false); setTimeout(onSession, 700); }
+      else { const p = load('dbs_profile', null); if (!p || p.email !== d.email) throw new Error('bad'); profile = p; session = { demo: true }; gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: p.full_name}), false); setTimeout(onSession, 700); }
     }
   } catch (err) {
-    resetCaptcha();
+    resetCaptcha(); W.busy = false; validateStep(false);
     const m = String((err && err.message) || err).toLowerCase(); gateOut('<span style="color:#F28B7E">ERROR</span>');
-    gateMsg(t(m.includes('already') || m.includes('registered') ? 'g_err_exists' : m.includes('invalid') || m.includes('bad') || m.includes('credentials') ? 'g_err_in' : 'g_err_gen'), true); go.disabled = false;
+    gateMsg(t(m.includes('captcha') ? 'g_err_captcha' : m.includes('already') || m.includes('registered') ? 'g_err_exists' : m.includes('invalid') || m.includes('bad') || m.includes('credentials') ? 'g_err_in' : 'g_err_gen'), true);
   }
 });
+
+/* ---- landing demo: a query types itself, then its result appears ---- */
+const DEMOS = [
+  { c: 'lq_d1', sql: "SELECT s.StudentName\nFROM Students AS s\nJOIN Ticket_Purchases AS tp ON s.StudentID = tp.StudentID\nJOIN Events AS e ON tp.EventID = e.EventID\nWHERE e.EventName = 'Spring Festival';", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
+  { c: 'lq_d2', sql: "SELECT s.StudentName,\n       RANK() OVER (ORDER BY SUM(tp.Quantity) DESC) AS Rnk\nFROM Ticket_Purchases AS tp\nJOIN Students AS s ON s.StudentID = tp.StudentID\nGROUP BY s.StudentName;", cols: ['StudentName','Rnk'], rows: [['Dana','1'], ['Tom','2'], ['Noa','3']] },
+  { c: 'lq_d3', sql: "π StudentName ( σ EventName = 'Spring Festival' ( Students ⋈ Ticket_Purchases ⋈ Events ) )", cols: ['StudentName'], rows: [['Dana'], ['Noa'], ['Tom']] },
+];
+function hl(x){ return esc(x).replace(/^(--.*)$/gm, "<span class='c'>$1</span>").replace(/\b(SELECT|FROM|JOIN|ON|WHERE|GROUP BY|ORDER BY|AS|OVER|RANK|SUM|DESC|INSERT INTO|VALUES)\b/g, "<span class='k'>$1</span>"); }
+let demoStarted = false;
+function startDemo(){
+  if (demoStarted) return; demoStarted = true;
+  const pre = $('#demoLive'), out = $('#demoOut'), tb = $('#demoTable'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; let i = 0;
+  const run = () => { if ($('#gate').hidden || W.view !== 'landing') { setTimeout(run, 1500); return; } const dm = DEMOS[i % DEMOS.length]; i++; const text = '-- ' + t(dm.c) + '\n' + dm.sql; out.textContent = ''; tb.innerHTML = ''; let pos = 0;
+    const step = () => { pos += reduce ? text.length : 2; pre.innerHTML = hl(text.slice(0, pos)) + "<span class='cur'></span>"; if (pos < text.length) setTimeout(step, 26); else setTimeout(() => { out.innerHTML = '<b>(' + dm.rows.length + ' rows)</b>'; tb.appendChild(table(dm.cols, dm.rows.map(r => { const o = {}; dm.cols.forEach((c, j) => o[c] = r[j]); return o; }))); setTimeout(run, 4500); }, 450); };
+    step(); };
+  run();
+}
+function renderLanding(){
+  const f = $('#feat'); f.innerHTML = ''; ((I18N[lang] || I18N.he).l_feat || I18N.he.l_feat).forEach(x => { const d = el('div'); d.innerHTML = '<span class="ic">' + esc(x[0]) + '</span><b>' + esc(x[1]) + '</b><span>' + esc(x[2]) + '</span>'; f.appendChild(d); });
+  const hw = $('#how'); hw.innerHTML = ''; ((I18N[lang] || I18N.he).l_how || I18N.he.l_how).forEach(x => { const d = el('div'); d.innerHTML = '<b>' + esc(x[0]) + '</b><span>' + esc(x[1]) + '</span>'; hw.appendChild(d); });
+  $('#lnkLang').textContent = lang === 'he' ? 'EN' : 'עב';
+}
+function gateRefresh(){ renderLanding(); if (W.view === 'wizard') wizRender(); }
+
+/* ---- session ---- */
 async function loadProfile(){ if (!sb || !session || !session.user) return; try { const { data } = await sb.from('profiles').select('full_name, study_year, semester, role').eq('id', session.user.id).maybeSingle(); profile = data || { full_name: (session.user.user_metadata || {}).full_name || session.user.email }; } catch(e) { profile = { full_name: session.user.email }; } }
 function onSession(){
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on;
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
   if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } if (sb && session.user) pullProgress().then(() => { applyLang(); toast(t('sync_on')); }); }
-  else { setGateMode('up'); }
+  else { W.busy = false; gateView('landing'); startDemo(); }
 }
+$('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 
 /* ---- progress sync: local storage stays the cache, the account is the record ---- */
 const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ex_tries','dbs_ex_solved'];
@@ -1464,11 +1623,11 @@ async function pullProgress(){
   } catch(e){}
 }
 
-/* ---- teacher board: roster + progress, readable only by the teacher role (enforced by RLS on the server) ---- */
+/* ---- teacher board ---- */
 $('#btnDash').addEventListener('click', showDashboard);
 async function showDashboard(){
   if (!sb) { toast(t('d_demo')); return; }
-  const dlg = el('div','modal'); dlg.innerHTML = '<div style="max-width:1200px"><h3>'+t('d_h')+'</h3><div id="dashBody" class="count">'+t('g_working')+'</div><div class="controls"><button class="btn small" id="dashCsv">'+t('d_csv')+'</button><button class="btn primary" id="dashClose">'+t('pt_close')+'</button></div></div>';
+  const dlg = el('div','modal'); dlg.innerHTML = '<div style="max-width:1300px"><h3>' + t('d_h') + '</h3><div id="dashBody" class="count">' + t('g_working') + '</div><div class="controls"><button type="button" class="btn small" id="dashCsv">' + t('d_csv') + '</button><button type="button" class="btn primary" id="dashClose">' + t('pt_close') + '</button></div></div>';
   document.body.appendChild(dlg); $('#dashClose').addEventListener('click', () => dlg.remove()); dlg.addEventListener('click', ev => { if (ev.target === dlg) dlg.remove(); });
   let rows = [];
   try {
@@ -1476,30 +1635,31 @@ async function showDashboard(){
     const { data: prog } = await sb.from('progress').select('user_id,key,value');
     const byUser = {}; (prog || []).forEach(r => { (byUser[r.user_id] = byUser[r.user_id] || {})[r.key] = r.value; });
     rows = (roster || []).map(u => { const p = byUser[u.id] || {}; const qi = p.dbs_quiz_intro || {}, qr = p.dbs_quiz_ra || {};
-      return { name: u.full_name, email: u.email, year: u.study_year, sem: u.semester, joined: (u.created_at || '').slice(0,10), last: u.last_active ? u.last_active.slice(0,16).replace('T',' ') : '', sec: Object.keys(p.dbs_visited || {}).length, qi: Object.values(qi).filter(x => x && x.ok).length + '/4', qr: Object.values(qr).filter(x => x && x.ok).length + '/3', ex: p.dbs_ex_solved ? '✓' : String(p.dbs_ex_tries || 0) }; });
+      return { name: u.full_name, email: u.email, year: u.study_year, sem: u.semester, joined: (u.created_at || '').slice(0,16).replace('T',' '), last: u.last_active ? u.last_active.slice(0,16).replace('T',' ') : '', sec: Object.keys(p.dbs_visited || {}).length, qi: Object.values(qi).filter(x => x && x.ok).length + '/4', qr: Object.values(qr).filter(x => x && x.ok).length + '/3', ex: p.dbs_ex_solved ? '✓' : String(p.dbs_ex_tries || 0), goals: u.goals || '', int: u.interests || '' }; });
   } catch(e) { $('#dashBody').textContent = t('g_err_gen') + ' (' + ((e && e.message) || e) + ')'; return; }
   const body = $('#dashBody'); body.className = ''; body.innerHTML = '';
   if (!rows.length) { body.textContent = t('d_none'); return; }
-  const cols = ['name','email','year','sem','joined','last','sec','qi','qr','ex']; const heads = cols.map(c => t('d_c_'+({name:'name',email:'email',year:'year',sem:'sem',joined:'joined',last:'last',sec:'sec',qi:'qi',qr:'qr',ex:'ex'})[c]));
-  const wrap = el('div','tblwrap'); const tb = el('table','data'); const tr = el('tr'); heads.forEach(h => tr.appendChild(el('th', null, h))); tb.appendChild(tr);
-  rows.forEach(r => { const row = el('tr'); cols.forEach(c => row.appendChild(el('td', null, esc(r[c] == null ? '' : r[c])))); tb.appendChild(row); });
-  wrap.appendChild(tb); body.appendChild(el('p','count', t('d_count',{n: rows.length}))); body.appendChild(wrap);
+  const cols = ['name','email','year','sem','joined','last','sec','qi','qr','ex','goals','int']; const heads = cols.map(c => t('d_c_' + c));
+  const wrap = el('div','tblwrap'); const tb = el('table','data'); const tr = el('tr'); heads.forEach(hh => tr.appendChild(el('th', null, hh))); tb.appendChild(tr);
+  rows.forEach(r => { const row = el('tr'); cols.forEach(c => { const td = el('td', null, esc(r[c] == null ? '' : r[c])); if (c === 'goals' || c === 'int') td.style.whiteSpace = 'normal'; row.appendChild(td); }); tb.appendChild(row); });
+  wrap.appendChild(tb); body.appendChild(el('p','count', t('d_count', {n: rows.length}))); body.appendChild(wrap);
   $('#dashCsv').addEventListener('click', () => { const csv = [heads.join(',')].concat(rows.map(r => cols.map(c => '"' + String(r[c] == null ? '' : r[c]).replace(/"/g,'""') + '"').join(','))).join('\n'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], {type:'text/csv;charset=utf-8'})); a.download = 'rowdyql-roster.csv'; a.click(); });
 }
-$('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
-const withTimeout = (pr, ms) => Promise.race([pr, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
+
+/* ---- captcha (Cloudflare Turnstile), live site only ---- */
+function ensureCaptcha(){ if (!window.turnstile || captchaWidget !== null || !$('#gCaptcha')) return; try { captchaWidget = window.turnstile.render('#gCaptcha', { sitekey: DBS_CONFIG.turnstileSiteKey, theme: 'dark', language: lang === 'he' ? 'he' : 'en', callback: tok => { captchaToken = tok; validateStep(false); }, 'expired-callback': () => { captchaToken = ''; validateStep(false); }, 'error-callback': () => { captchaToken = ''; validateStep(false); } }); } catch(e) {} }
+function resetCaptcha(){ captchaToken = ''; if (captchaWidget !== null && window.turnstile) { try { window.turnstile.reset(captchaWidget); } catch(e){} } validateStep(false); }
+
 async function initAuth(){
-  $('#gateHost').textContent = location.hostname || 'localhost'; startGateBg();
+  $('#gateHost').textContent = location.hostname || 'localhost'; startGateBg(); startDemo();
   const LIVE_HOSTS = ['rowdyql.com','www.rowdyql.com','razelbaz1.github.io','localhost','127.0.0.1'];
   if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey && LIVE_HOSTS.includes(location.hostname)) {
-    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await withTimeout(sb.auth.getSession(), 8000); session = data.session; await withTimeout(loadProfile(), 8000); sb.auth.onAuthStateChange(async (_ev, s) => { if (!!s !== !!session) { session = s; await loadProfile(); onSession(); } }); }
+    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await withTimeout(sb.auth.getSession(), 8000); session = data.session; await withTimeout(loadProfile(), 8000); sb.auth.onAuthStateChange(async (_ev, s2) => { if (!!s2 !== !!session) { session = s2; await loadProfile(); onSession(); } }); }
     catch (e) { sb = null; $('#gDemo').hidden = false; }
-    if (sb && DBS_CONFIG.turnstileSiteKey) { try { await loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'); renderCaptcha(); } catch(e) {} }
+    if (sb && DBS_CONFIG.turnstileSiteKey) { try { await loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'); if (!$('#gCaptcha').hidden) ensureCaptcha(); } catch(e) {} }
   } else { $('#gDemo').hidden = false; const p = load('dbs_profile', null); if (p) { profile = p; session = { demo: true }; } }
   onSession();
 }
-function renderCaptcha(){ if (!window.turnstile) return; captchaWidget = window.turnstile.render('#gCaptcha', { sitekey: DBS_CONFIG.turnstileSiteKey, theme: 'dark', language: lang === 'he' ? 'he' : 'en', callback: tok => { captchaToken = tok; gateValidate(false); }, 'expired-callback': () => { captchaToken = ''; gateValidate(false); }, 'error-callback': () => { captchaToken = ''; gateValidate(false); } }); }
-function resetCaptcha(){ captchaToken = ''; if (captchaWidget !== null && window.turnstile) { try { window.turnstile.reset(captchaWidget); } catch(e){} } gateValidate(false); }
 /* animated background: a schema slowly wiring itself */
 function startGateBg(){
   const c = $('#gateBg'); const ctx = c.getContext('2d'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
