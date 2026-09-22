@@ -1469,7 +1469,8 @@ async function showDashboard(){
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 async function initAuth(){
   $('#gateHost').textContent = location.hostname || 'localhost';
-  if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey) {
+  const LIVE_HOSTS = ['rowdyql.com','www.rowdyql.com','razelbaz1.github.io','localhost','127.0.0.1'];
+  if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey && LIVE_HOSTS.includes(location.hostname)) {
     try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await sb.auth.getSession(); session = data.session; await loadProfile(); sb.auth.onAuthStateChange(async (_ev, s) => { if (!!s !== !!session) { session = s; await loadProfile(); onSession(); } }); }
     catch (e) { sb = null; $('#gDemo').hidden = false; }
   } else { $('#gDemo').hidden = false; const p = load('dbs_profile', null); if (p) { profile = p; session = { demo: true }; } }
