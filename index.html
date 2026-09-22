@@ -1,0 +1,1252 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DB Studio</title>
+<meta name="description" content="סביבת לימוד אינטראקטיבית לקורס תכנון בסיסי נתונים">
+<style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F4F7F6; --surface:#FFFFFF; --surface2:#EAF0EE; --ink:#15201E; --muted:#5D6D69; --line:#D5DEDB;
+  --accent:#0E5566; --on-accent:#FFFFFF; --accent-soft:#DDF0F4;
+  --amber:#E8A33A; --amber-soft:#FFF1D6;
+  --pk:#8A5A00; --pk-bg:#FFF1D6; --fk:#0E5566; --fk-bg:#DDF0F4;
+  --good:#2F7D4F; --good-bg:#E3F3E9; --bad:#B23A2E; --bad-bg:#FBE6E3;
+  --shadow:0 10px 30px rgba(21,32,30,.12);
+  --display:"Frank Ruhl Libre", "Times New Roman", serif;
+  --body:"Heebo", "Segoe UI", Arial, sans-serif;
+  --mono:"IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1514; --surface:#172120; --surface2:#1E2B29; --ink:#E6EEEC; --muted:#93A5A1; --line:#2B3A37;
+    --accent:#5CC3D9; --on-accent:#0B1A1E; --accent-soft:#0F3B44;
+    --amber:#F2B75A; --amber-soft:#3A2B0C;
+    --pk:#F2C97A; --pk-bg:#3A2B0C; --fk:#8FD8E8; --fk-bg:#0F3B44;
+    --good:#6BD09A; --good-bg:#12321F; --bad:#F28B7E; --bad-bg:#3D1712;
+    --shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1514; --surface:#172120; --surface2:#1E2B29; --ink:#E6EEEC; --muted:#93A5A1; --line:#2B3A37;
+  --accent:#5CC3D9; --on-accent:#0B1A1E; --accent-soft:#0F3B44;
+  --amber:#F2B75A; --amber-soft:#3A2B0C;
+  --pk:#F2C97A; --pk-bg:#3A2B0C; --fk:#8FD8E8; --fk-bg:#0F3B44;
+  --good:#6BD09A; --good-bg:#12321F; --bad:#F28B7E; --bad-bg:#3D1712;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html{font-size:clamp(15px,1.05vw + 10px,18px)}
+html.present{font-size:clamp(18px,1.4vw + 12px,24px)}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:2.2rem}
+h2{font-size:1.6rem}
+h3{font-size:1.15rem;font-family:var(--body);font-weight:700}
+p{margin:0}
+code,.mono,.ra,table.data{font-family:var(--mono)}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+html[lang="he"] .eyebrow{letter-spacing:.04em;text-transform:none}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:1rem;padding:.55rem 1.25rem;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.15}
+.brand b{font-family:var(--display);font-size:1.15rem;letter-spacing:.02em}
+.brand span{font-size:.72rem;color:var(--muted)}
+.tabs{display:flex;gap:.25rem;background:var(--surface2);padding:.25rem;border-radius:999px}
+.tab{border:0;background:transparent;padding:.4rem .95rem;border-radius:999px;font-weight:500;min-height:44px}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--on-accent)}
+.tools{margin-inline-start:auto;display:flex;gap:.5rem;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);padding:.45rem .9rem;border-radius:8px;font-weight:500;min-height:44px;display:inline-flex;align-items:center;gap:.4rem}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.small{min-height:36px;padding:.3rem .7rem;font-size:.9rem}
+.btn.ghost{background:transparent}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.progress{height:3px;background:var(--line);position:relative}
+.progress i{position:absolute;inset-inline-start:0;top:0;bottom:0;background:var(--accent);width:0;transition:width .4s}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);gap:2.5rem;max-width:1640px;margin:0 auto;padding:1.5rem 2rem 5rem}
+html.present .shell{grid-template-columns:minmax(0,1fr);max-width:1800px}
+html.present .rail{display:none}
+html.norail .shell{grid-template-columns:minmax(0,1fr)}
+html.norail .rail{display:none}
+/* side spine: one dot per section, pinned to the outer edge; labels slide in while scrolling or on hover */
+.spine{position:fixed;top:50%;transform:translateY(-50%);inset-inline-end:.85rem;z-index:40;display:none;flex-direction:column;gap:.7rem;align-items:flex-end;padding:.6rem .35rem;border-radius:999px}
+html.norail .spine,html.present .spine{display:flex}
+.sp{display:flex;flex-direction:row-reverse;align-items:center;gap:.6rem;text-decoration:none;color:var(--muted);position:relative}
+.sp i{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;transition:transform .3s,background .3s,box-shadow .3s;border:1px solid var(--surface)}
+.sp.done i{background:var(--good)}
+.sp.cur i{background:var(--accent);transform:scale(1.55);box-shadow:0 0 0 4px var(--accent-soft)}
+.sp .lbl{font-size:.82rem;line-height:1.2;white-space:nowrap;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.28rem .7rem;box-shadow:var(--shadow);opacity:0;transform:translateX(6px);transition:opacity .25s,transform .25s;pointer-events:none}
+html[dir="rtl"] .sp .lbl{transform:translateX(-6px)}
+.sp.cur .lbl{color:var(--ink);font-weight:700;border-color:var(--accent)}
+.spine.show .sp.cur .lbl,.spine:hover .sp .lbl,.sp:focus-visible .lbl{opacity:1;transform:none;pointer-events:auto}
+.spine:hover .sp i{transform:scale(1.2)}
+.spine:hover .sp.cur i{transform:scale(1.55)}
+@media (max-width:1024px){.spine{display:none!important}}
+.rail{position:sticky;top:5.2rem;align-self:start;display:flex;flex-direction:column;gap:.15rem}
+.rail a{display:flex;gap:.6rem;align-items:center;padding:.5rem .7rem;border-radius:8px;text-decoration:none;color:var(--muted);font-size:.92rem;min-height:44px}
+.rail a:hover{background:var(--surface2);color:var(--ink)}
+.rail a.active{background:var(--accent-soft);color:var(--ink);font-weight:500}
+.rail a .dot{width:.55rem;height:.55rem;border-radius:50%;border:2px solid var(--line);flex:none}
+.rail a.done .dot{background:var(--good);border-color:var(--good)}
+.content{max-width:none;min-width:0}
+section.sec{padding:2.5rem 0;border-bottom:1px solid var(--line)}
+section.sec:last-child{border-bottom:0}
+.sec-head{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.25rem;max-width:78ch}
+.lede{font-size:1.1rem;color:var(--muted);max-width:76ch}
+.prose{max-width:76ch;display:flex;flex-direction:column;gap:.8rem}
+.prose strong{font-weight:700}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3rem;align-items:center;padding:1.5rem 0 2.5rem}
+.hero h1{font-size:clamp(1.9rem,2.6vw,3rem)}
+.hero .sec-head{max-width:none}
+.hero-art{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;display:flex;flex-direction:column;gap:.15rem;min-height:5.2rem}
+.tile b{font-size:.8rem;color:var(--muted);font-weight:500}
+.tile span{font-family:var(--mono);font-size:.78rem;line-height:1.4;direction:ltr;text-align:left}
+.tile.on{border-color:var(--accent);background:var(--accent-soft)}
+
+/* ---------- bench (interactive panels) ---------- */
+.bench{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:1rem;box-shadow:var(--shadow)}
+.bench-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.bench-head h3{margin:0}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+select,input[type="text"]{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;min-height:44px}
+label.chk{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .6rem;border:1px solid var(--line);border-radius:8px;min-height:44px;cursor:pointer;background:var(--surface)}
+label.chk:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.tables{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start}
+.tbl{display:flex;flex-direction:column;gap:.35rem;min-width:0;max-width:100%}
+.tbl>b{font-size:.85rem;color:var(--muted);font-weight:500;font-family:var(--mono)}
+.tblwrap{overflow-x:auto;max-width:100%}
+table.data{border-collapse:collapse;font-size:.85rem;direction:ltr;text-align:left;font-variant-numeric:tabular-nums;background:var(--surface)}
+table.data th,table.data td{border:1px solid var(--line);padding:.35rem .6rem;white-space:nowrap;transition:background .3s,opacity .3s,color .3s}
+table.data th{background:var(--surface2);font-weight:500}
+table.data th.pk{background:var(--pk-bg);color:var(--pk)}
+table.data th.fk{background:var(--fk-bg);color:var(--fk)}
+table.data th.clickable{cursor:pointer;text-decoration:underline dotted}
+table.data tr.hit td{background:var(--amber-soft)}
+table.data tr.miss td{opacity:.32}
+table.data tr.dup td{text-decoration:line-through;color:var(--muted)}
+table.data tr.gone td{opacity:.25;text-decoration:line-through}
+table.data td.mark{background:var(--amber-soft);font-weight:500}
+table.data tr.good td{background:var(--good-bg)}
+table.data tr.badrow td{background:var(--bad-bg)}
+.spot{box-shadow:0 0 0 3px var(--amber) inset!important;background:var(--amber-soft)!important;opacity:1!important}
+/* pointer highlight: click any pinnable item to mark it for the room */
+.pinnable{cursor:pointer;transition:opacity .25s,box-shadow .25s,background .25s}
+.pinnable:hover{box-shadow:0 0 0 2px var(--amber)}
+.pinned{box-shadow:0 0 0 3px var(--amber),0 0 26px rgba(232,163,58,.45)!important;background:var(--amber-soft)!important;border-radius:8px;opacity:1!important}
+.has-pin>.pinnable:not(.pinned){opacity:.38}
+html.present .pinned{transform:scale(1.02)}
+.msg{border-inline-start:3px solid var(--accent);background:var(--surface2);padding:.7rem .9rem;border-radius:8px;font-size:.95rem}
+.msg.good{border-color:var(--good);background:var(--good-bg)}
+.msg.bad{border-color:var(--bad);background:var(--bad-bg)}
+.count{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.legend{display:flex;gap:.8rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
+.legend i{display:inline-block;width:.9rem;height:.9rem;border-radius:3px;vertical-align:-2px;margin-inline-end:.3rem;border:1px solid var(--line)}
+.ra{font-size:1.05rem;direction:ltr;display:inline-block;background:var(--surface2);padding:.35rem .7rem;border-radius:8px;white-space:nowrap}
+.ra sub{font-size:.7em}
+.ra.big{font-size:1.25rem}
+pre.sql{font-family:var(--mono);font-size:.85rem;direction:ltr;text-align:left;background:var(--surface2);padding:.9rem 1rem;border-radius:10px;overflow-x:auto;margin:0;line-height:1.55}
+pre.sql .k{color:var(--accent);font-weight:500}
+.steps{display:flex;gap:.5rem;flex-wrap:wrap}
+.step{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.4rem .9rem;min-height:44px;display:inline-flex;align-items:center;gap:.4rem}
+.step[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.matrix{border-collapse:collapse;direction:ltr;font-family:var(--mono);font-size:.9rem}
+.matrix th,.matrix td{border:1px solid var(--line);padding:.4rem .8rem;text-align:center}
+.matrix th{background:var(--surface2);font-weight:500}
+.matrix td.yes{color:var(--good);font-weight:700}
+.matrix td.no{color:var(--muted)}
+.matrix tr.win td{background:var(--good-bg)}
+.matrix th.off,.matrix td.off{opacity:.3}
+.tree{display:flex;flex-direction:column;gap:.5rem}
+.node{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;cursor:pointer;padding:.5rem .7rem;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+.node[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.node .depth{font-size:.72rem;color:var(--muted);font-family:var(--mono)}
+
+/* ---------- cards & lists ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:.45rem}
+.card h3{font-size:1rem}
+.card p{font-size:.92rem;color:var(--muted)}
+.card code{font-size:.78rem;direction:ltr;display:block;text-align:left;color:var(--ink);background:var(--surface2);padding:.35rem .5rem;border-radius:6px;overflow-x:auto}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.5rem 1.5rem;font-size:.95rem}
+.terms div{display:flex;gap:.6rem;padding:.3rem 0;border-bottom:1px dashed var(--line)}
+.terms b{font-family:var(--mono);font-weight:500;min-width:6.5rem;direction:ltr;text-align:left}
+.dbms{display:flex;gap:.5rem;flex-wrap:wrap}
+.dbms span{border:1px solid var(--line);border-radius:999px;padding:.3rem .8rem;font-size:.88rem;background:var(--surface)}
+.dbms span.us{border-color:var(--accent);background:var(--accent-soft);font-weight:500}
+.map{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.8rem}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.3rem}
+.stage .sym{font-family:var(--mono);font-size:1.4rem;color:var(--accent)}
+.stage b{font-size:1rem}
+.stage p{font-size:.9rem;color:var(--muted)}
+.stage small{color:var(--muted);font-size:.78rem}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.3rem 1.5rem;counter-reset:s}
+.timeline div{display:grid;grid-template-columns:2rem 4.2rem 1fr;gap:.5rem;align-items:baseline;padding:.4rem 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.timeline div::before{counter-increment:s;content:counter(s);font-family:var(--mono);color:var(--accent);font-weight:500}
+.timeline div .d{font-family:var(--mono);color:var(--muted);font-size:.85rem;direction:ltr;text-align:left}
+.timeline div.new::after{content:"";}
+.tag{font-size:.72rem;border-radius:999px;padding:.05rem .5rem;background:var(--amber-soft);color:var(--pk);margin-inline-start:.4rem;font-weight:500;white-space:nowrap}
+.tag.new{background:var(--accent-soft);color:var(--accent)}
+.cov{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.9rem;align-items:start}
+.cov .card ul{margin:0;padding-inline-start:1.1rem;font-size:.92rem;display:flex;flex-direction:column;gap:.3rem;color:var(--ink)}
+.cov .card.only{border-color:var(--accent);box-shadow:var(--shadow)}
+.cov .card.only h3{color:var(--accent)}
+.timeline-wrap{display:flex;flex-direction:column;gap:.6rem}
+.hist{display:flex;gap:.8rem;flex-wrap:wrap}
+.hist div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.5rem .8rem;font-size:.85rem;display:flex;flex-direction:column;min-width:8rem}
+.hist b{font-family:var(--mono);color:var(--accent);font-weight:500}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem;align-items:start}
+.three .lab{font-size:.78rem;color:var(--muted);font-weight:500;margin-bottom:.3rem}
+.qbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem;font-size:1rem}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem}
+
+/* ---------- quiz ---------- */
+.quiz{display:flex;flex-direction:column;gap:1.2rem}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.7rem}
+.q .qt{font-weight:500;font-size:1.02rem}
+.q .qn{font-size:.75rem;color:var(--muted);font-family:var(--mono)}
+.opts{display:flex;flex-direction:column;gap:.4rem}
+.opt{text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .8rem;display:flex;gap:.6rem;align-items:flex-start;min-height:44px;line-height:1.45}
+.opt:hover{border-color:var(--accent)}
+.opt .l{font-family:var(--mono);color:var(--muted);flex:none;width:1.4rem}
+.opt.correct{border-color:var(--good);background:var(--good-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt[disabled]{cursor:default}
+.exp{font-size:.92rem;border-inline-start:3px solid var(--good);padding:.5rem .8rem;background:var(--surface2);border-radius:8px}
+.score{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.score b{font-family:var(--mono);font-size:1.4rem;color:var(--accent)}
+
+/* ---------- exercise ---------- */
+.builder{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}
+.builder label{display:flex;flex-direction:column;gap:.3rem;font-size:.85rem;color:var(--muted)}
+.reveal{display:flex;flex-direction:column;gap:.5rem}
+.reveal .hint{background:var(--surface2);border-radius:8px;padding:.6rem .8rem;font-size:.95rem}
+.note{border:1px dashed var(--amber);background:var(--amber-soft);border-radius:10px;padding:.7rem .9rem;font-size:.92rem}
+.note b{color:var(--pk)}
+
+/* ---------- popover ---------- */
+#pop{position:fixed;z-index:50;max-width:min(340px,90vw);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:.8rem .95rem;box-shadow:var(--shadow);font-size:.92rem;line-height:1.5}
+#pop::before{content:"";position:absolute;width:12px;height:12px;background:var(--surface);border-inline-start:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg);top:-7px;left:var(--ax,20px)}
+#pop.up::before{top:auto;bottom:-7px;transform:rotate(225deg)}
+#pop b{display:block;margin-bottom:.2rem;color:var(--accent)}
+[data-pop]{cursor:help;text-decoration:underline dotted var(--accent);text-underline-offset:3px}
+.dialog{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:1rem}
+.dialog>div{background:var(--surface);border-radius:14px;padding:1.4rem;max-width:420px;width:100%;display:flex;flex-direction:column;gap:.8rem;box-shadow:var(--shadow)}
+.tnote{border-inline-start:3px solid var(--amber);background:var(--amber-soft);padding:.6rem .9rem;border-radius:8px;font-size:.92rem}
+.tnote b{color:var(--pk)}
+.toast{position:fixed;bottom:1.2rem;inset-inline-start:50%;transform:translateX(-50%);background:var(--ink);color:var(--ground);padding:.6rem 1rem;border-radius:999px;font-size:.9rem;z-index:70;box-shadow:var(--shadow)}
+html[dir="rtl"] .toast{transform:translateX(50%)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1024px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:1rem;padding:1rem 1rem 4rem}
+  .rail{position:sticky;top:4.4rem;z-index:20;flex-direction:row;overflow-x:auto;background:var(--ground);padding:.4rem 0;gap:.3rem;border-bottom:1px solid var(--line)}
+  .rail a{white-space:nowrap;flex:none;font-size:.85rem}
+  .hero{grid-template-columns:1fr;gap:1.2rem}
+}
+@media (max-width:640px){
+  .top{padding:.5rem .8rem;gap:.6rem}
+  .brand span{display:none}
+  .tools{width:100%;justify-content:flex-end}
+  h1{font-size:1.7rem}
+  h2{font-size:1.35rem}
+  .bench{padding:.9rem}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+
+<header class="top">
+  <div class="brand"><b>DB Studio</b><span data-i18n="brand_sub"></span></div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-unit="intro" data-i18n="tab_intro"></button>
+    <button class="tab" role="tab" aria-selected="false" data-unit="ra" data-i18n="tab_ra"></button>
+  </div>
+  <div class="tools">
+    <button class="btn small ghost" id="btnToc" aria-pressed="false">☰ <span id="btnTocT"></span></button>
+    <button class="btn small ghost" id="btnPresent" data-i18n="present"></button>
+    <button class="btn small ghost" id="btnTeacher" title="Teacher">🔑 <span data-i18n="teacher"></span></button>
+    <button class="btn small primary" id="btnLang">EN</button>
+  </div>
+</header>
+<div class="progress"><i id="prog"></i></div>
+
+<div class="shell">
+  <nav class="rail" id="rail" aria-label="Sections"></nav>
+  <main class="content">
+
+  <!-- =========================== UNIT: INTRO =========================== -->
+  <div class="unit" id="u-intro">
+
+    <section class="sec hero" id="s-why" data-title="nav_why">
+      <div class="sec-head">
+        <span class="eyebrow" data-i18n="hero_eyebrow"></span>
+        <h1 data-i18n="hero_h1"></h1>
+        <p class="lede" data-i18n="hero_lede"></p>
+      </div>
+      <div class="hero-art" id="heroArt"></div>
+    </section>
+
+    <section class="sec" id="s-anomaly" data-title="nav_anomaly">
+      <div class="sec-head">
+        <h2 data-i18n="an_h2"></h2>
+        <p class="lede" data-i18n="an_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head">
+          <h3 data-i18n="an_flat"></h3>
+          <div class="controls">
+            <button class="btn small" data-an="update" data-i18n="an_b_update"></button>
+            <button class="btn small" data-an="delete" data-i18n="an_b_delete"></button>
+            <button class="btn small" data-an="insert" data-i18n="an_b_insert"></button>
+            <button class="btn small primary" data-an="split" data-i18n="an_b_split"></button>
+            <button class="btn small ghost" data-an="reset" data-i18n="reset"></button>
+          </div>
+        </div>
+        <div id="anTables" class="tables"></div>
+        <div id="anMsg" class="msg" data-i18n="an_msg0"></div>
+      </div>
+      <div class="tnote" data-tnote="an" hidden></div>
+    </section>
+
+    <section class="sec" id="s-schema" data-title="nav_schema">
+      <div class="sec-head">
+        <h2 data-i18n="sc_h2"></h2>
+        <p class="lede" data-i18n="sc_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head"><h3 data-i18n="sc_bench"></h3><span class="count" data-i18n="sc_hint"></span></div>
+        <div class="tables" id="scTables"></div>
+        <div class="legend"><span><i style="background:var(--pk-bg)"></i><span data-i18n="lg_pk"></span></span><span><i style="background:var(--fk-bg)"></i><span data-i18n="lg_fk"></span></span></div>
+      </div>
+      <div style="height:1.2rem"></div>
+      <div class="terms" id="terms"></div>
+      <div class="tnote" data-tnote="sc" hidden></div>
+    </section>
+
+    <section class="sec" id="s-declarative" data-title="nav_decl">
+      <div class="sec-head">
+        <h2 data-i18n="de_h2"></h2>
+        <p class="lede" data-i18n="de_lede"></p>
+      </div>
+      <div class="three">
+        <div><div class="lab" data-i18n="de_l1"></div><div class="qbox" data-i18n="de_q"></div></div>
+        <div><div class="lab" data-i18n="de_l2"></div>
+<pre class="sql"><span class="k">SELECT DISTINCT</span> s.StudentName
+<span class="k">FROM</span> Students <span class="k">AS</span> s
+<span class="k">JOIN</span> Ticket_Purchases <span class="k">AS</span> tp
+     <span class="k">ON</span> s.StudentID = tp.StudentID
+<span class="k">JOIN</span> Events <span class="k">AS</span> e
+     <span class="k">ON</span> tp.EventID = e.EventID
+<span class="k">WHERE</span> s.Faculty = 'IE'
+  <span class="k">AND</span> e.EventName = 'Spring Festival';</pre></div>
+        <div><div class="lab" data-i18n="de_l3"></div><div class="result"><table class="data"><tr><th>StudentName</th></tr><tr><td>Dana</td></tr></table></div></div>
+      </div>
+      <div style="height:1.2rem"></div>
+      <div class="prose">
+        <p data-i18n="de_p1"></p>
+        <p data-i18n="de_p2"></p>
+      </div>
+      <div style="height:1rem"></div>
+      <div class="hist" id="hist"></div>
+    </section>
+
+    <section class="sec" id="s-industry" data-title="nav_ind">
+      <div class="sec-head">
+        <h2 data-i18n="in_h2"></h2>
+        <p class="lede" data-i18n="in_lede"></p>
+      </div>
+      <div class="cards" id="indCards"></div>
+      <div style="height:1.2rem"></div>
+      <h3 data-i18n="in_dbms_h"></h3>
+      <div style="height:.5rem"></div>
+      <div class="dbms" id="dbms"></div>
+    </section>
+
+    <section class="sec" id="s-map" data-title="nav_map">
+      <div class="sec-head">
+        <h2 data-i18n="mp_h2"></h2>
+        <p class="lede" data-i18n="mp_lede"></p>
+      </div>
+      <div class="map" id="stages"></div>
+      <div style="height:1.5rem"></div>
+      <div class="timeline-wrap">
+        <h3 data-i18n="mp_tl_h"></h3>
+        <div class="timeline" id="timeline"></div>
+        <p class="note" data-i18n="mp_tl_note"></p>
+      </div>
+      <div style="height:1.8rem"></div>
+      <div class="sec-head"><h3 data-i18n="cov_h"></h3><p class="lede" style="font-size:1rem" data-i18n="cov_lede"></p></div>
+      <div class="cov" id="coverage"></div>
+      <div style="height:.9rem"></div>
+      <div class="note" data-i18n="cov_dialect"></div>
+    </section>
+
+    <section class="sec" id="s-quiz-intro" data-title="nav_quiz">
+      <div class="sec-head">
+        <h2 data-i18n="qz_h2"></h2>
+        <p class="lede" data-i18n="qz_lede_intro"></p>
+      </div>
+      <div class="quiz" id="quizIntro"></div>
+    </section>
+
+  </div>
+
+  <!-- =========================== UNIT: RELATIONAL ALGEBRA =========================== -->
+  <div class="unit" id="u-ra" hidden>
+
+    <section class="sec" id="r-data" data-title="nav_r_data">
+      <div class="sec-head">
+        <span class="eyebrow" data-i18n="ra_eyebrow"></span>
+        <h1 data-i18n="ra_h1"></h1>
+        <p class="lede" data-i18n="ra_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head"><h3 data-i18n="ra_data_h"></h3><span class="count" data-i18n="ra_data_c"></span></div>
+        <div class="tables" id="raTables"></div>
+      </div>
+      <div style="height:1rem"></div>
+      <div class="prose"><p data-i18n="ra_p_sets"></p></div>
+      <div class="tnote" data-tnote="ra" hidden></div>
+    </section>
+
+    <section class="sec" id="r-select" data-title="nav_r_sel">
+      <div class="sec-head">
+        <h2>σ <span data-i18n="sel_h2"></span></h2>
+        <p class="lede" data-i18n="sel_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head">
+          <div class="ra big" id="selExpr"></div>
+          <div class="controls">
+            <select id="selCond" aria-label="condition"></select>
+            <button class="btn small primary" id="selRun" data-i18n="run"></button>
+          </div>
+        </div>
+        <div class="tables" id="selTables"></div>
+        <div class="msg" id="selMsg" data-i18n="sel_msg0"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="r-project" data-title="nav_r_proj">
+      <div class="sec-head">
+        <h2>π <span data-i18n="prj_h2"></span></h2>
+        <p class="lede" data-i18n="prj_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head">
+          <div class="ra big" id="prjExpr"></div>
+          <div class="controls" id="prjCols"></div>
+        </div>
+        <div class="steps">
+          <button class="step" data-prj="0" aria-pressed="true" data-i18n="prj_s0"></button>
+          <button class="step" data-prj="1" aria-pressed="false" data-i18n="prj_s1"></button>
+          <button class="step" data-prj="2" aria-pressed="false" data-i18n="prj_s2"></button>
+        </div>
+        <div class="tables" id="prjTables"></div>
+        <div class="msg" id="prjMsg"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="r-join" data-title="nav_r_join">
+      <div class="sec-head">
+        <h2>⋈ <span data-i18n="jn_h2"></span></h2>
+        <p class="lede" data-i18n="jn_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head"><div class="ra big">Students ⋈<sub>Students.SID = Enroll.SID</sub> Enroll</div></div>
+        <div class="steps">
+          <button class="step" data-jn="0" aria-pressed="true" data-i18n="jn_s0"></button>
+          <button class="step" data-jn="1" aria-pressed="false" data-i18n="jn_s1"></button>
+          <button class="step" data-jn="2" aria-pressed="false" data-i18n="jn_s2"></button>
+        </div>
+        <div class="tables" id="jnTables"></div>
+        <div class="msg" id="jnMsg"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="r-divide" data-title="nav_r_div">
+      <div class="sec-head">
+        <h2>÷ <span data-i18n="dv_h2"></span></h2>
+        <p class="lede" data-i18n="dv_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head">
+          <div class="ra big" id="dvExpr"></div>
+          <div class="controls" id="dvCols"></div>
+        </div>
+        <div class="tables" id="dvTables"></div>
+        <div class="msg" id="dvMsg"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="r-tree" data-title="nav_r_tree">
+      <div class="sec-head">
+        <h2 data-i18n="tr_h2"></h2>
+        <p class="lede" data-i18n="tr_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="ra big">π<sub>Name</sub>(σ<sub>Grade ≥ 85</sub>(Students ⋈ Enroll))</div>
+        <div class="tree" id="tree"></div>
+        <div class="tables" id="treeOut"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="r-exercise" data-title="nav_r_ex">
+      <div class="sec-head">
+        <h2 data-i18n="ex_h2"></h2>
+        <p class="lede" data-i18n="ex_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="qbox" data-i18n="ex_q"></div>
+        <div class="builder">
+          <label><span data-i18n="ex_step1"></span><select id="exJoin"></select></label>
+          <label><span data-i18n="ex_step2"></span><select id="exSel"></select></label>
+          <label><span data-i18n="ex_step3"></span><select id="exProj"></select></label>
+        </div>
+        <div class="ra big" id="exExpr"></div>
+        <div class="controls">
+          <button class="btn primary" id="exCheck" data-i18n="ex_check"></button>
+          <span class="count" id="exTries"></span>
+        </div>
+        <div class="tables" id="exOut"></div>
+        <div class="msg" id="exMsg" data-i18n="ex_msg0"></div>
+        <div class="reveal" id="exReveal">
+          <div class="controls">
+            <button class="btn small" id="exHint1" disabled data-i18n="ex_hint1_b"></button>
+            <button class="btn small" id="exHint2" disabled data-i18n="ex_hint2_b"></button>
+            <button class="btn small" id="exSol" disabled data-i18n="ex_sol_b"></button>
+          </div>
+          <div class="hint" id="exHint1T" hidden data-i18n="ex_hint1"></div>
+          <div class="hint" id="exHint2T" hidden data-i18n="ex_hint2"></div>
+          <div class="hint" id="exSolT" hidden data-i18n="ex_sol"></div>
+        </div>
+      </div>
+      <div style="height:1rem"></div>
+      <div class="note" data-i18n="ex_note"></div>
+    </section>
+
+    <section class="sec" id="r-quiz" data-title="nav_quiz">
+      <div class="sec-head">
+        <h2 data-i18n="qz_h2"></h2>
+        <p class="lede" data-i18n="qz_lede_ra"></p>
+      </div>
+      <div class="quiz" id="quizRa"></div>
+    </section>
+
+  </div>
+  </main>
+</div>
+
+<div id="pop" hidden role="dialog"></div>
+<nav class="spine" id="spine" aria-label="Position"></nav>
+
+<script>
+/* =========================== I18N =========================== */
+const I18N = {
+he: {
+brand_sub:"קורס תכנון בסיסי נתונים", tab_intro:"מבוא", tab_ra:"אלגברה רלציונית",
+present:"מצב מרצה", teacher:"קוד מרצה", run:"הרץ", reset:"איפוס", lg_pk:"מפתח ראשי", lg_fk:"מפתח זר",
+toc_show:"תוכן עניינים", toc_hide:"הסתר תוכן", hud_l:"אתם כאן",
+nav_why:"למה בסיס נתונים", nav_anomaly:"הניסוי: טבלה אחת", nav_schema:"מה זו סכמה", nav_decl:"לשאול, לא לתכנת", nav_ind:"איפה זה חי", nav_map:"מפת הקורס", nav_quiz:"בדיקה עצמית",
+nav_r_data:"הטבלאות שלנו", nav_r_sel:"σ בחירה", nav_r_proj:"π הטלה", nav_r_join:"⋈ צירוף", nav_r_div:"÷ חילוק", nav_r_tree:"קריאת ביטוי", nav_r_ex:"תרגיל",
+
+hero_eyebrow:"מפגש 1 · מבוא",
+hero_h1:"כל מערכת שהשתמשתם בה היום יושבת על טבלאות.",
+hero_lede:"הבנק, הקופה במכולת, ווייז, מודל, הרישום לקורסים. מאחורי כל אחת מהן יש בסיס נתונים רלציוני, ובכולם מדברים בשפה אחת: SQL. בקורס נלמד לחשוב על נתונים כמו מי שמתכנן את הטבלאות האלה, לא רק מי שממלא אותן.",
+hero_t1:"ווייז", hero_t2:"הבנק", hero_t3:"מודל", hero_t4:"סופר", hero_t5:"רישום לקורסים", hero_t6:"וואטסאפ",
+
+an_h2:"הניסוי: נשים הכל בטבלה אחת",
+an_lede:"אגודת הסטודנטים מוכרת כרטיסים לאירועים. הדרך הכי טבעית להתחיל היא גיליון אחד: כל רכישה בשורה, עם כל הפרטים. לחצו על הכפתורים ותראו מה נשבר.",
+an_flat:"Ticket_Purchases_Flat",
+an_b_update:"עדכון: הפסטיבל נדחה", an_b_delete:"מחיקה: עמיר ביטל", an_b_insert:"הוספה: אירוע חדש", an_b_split:"פירוק לטבלאות",
+an_msg0:"זו הטבלה כפי שרוב האנשים היו בונים אותה באקסל. נראה תקין. עכשיו ננסה לחיות איתה.",
+an_msg_update:"הפסטיבל נדחה בשבוע. התאריך שלו כתוב ב-3 שורות שונות, וצריך לתקן את כולן. פספסתם אחת? עכשיו יש שני תאריכים לאותו אירוע, והמערכת לא יודעת מי צודק. זו <b>אנומליית עדכון</b>.",
+an_msg_delete:"עמיר ביטל את ההזמנה, ומחקנו את השורה. ביחד איתה נעלם גם האירוע Beach Party: השם, התאריך והמחיר. אף אחד לא יודע יותר שהוא קיים. זו <b>אנומליית מחיקה</b>.",
+an_msg_insert:"רוצים להוסיף אירוע חדש, Hackathon, שעדיין אין לו רכישות. אין איפה לשים אותו: כל שורה חייבת להיות רכישה של מישהו. זו <b>אנומליית הוספה</b>.",
+an_msg_split:"אותם נתונים, בשלוש טבלאות. כל עובדה נשמרת פעם אחת: תאריך הפסטיבל יושב בשורה אחת, אירוע יכול להתקיים בלי רכישות, ורכישה רק מצביעה על סטודנט ועל אירוע דרך מפתחות. זה בדיוק מה שנרמול עושה, ונגיע אליו במפגש 8.",
+an_note_t:"למרצה", an_tnote:"לתת להם לנחש מה יקרה לפני כל לחיצה. אחרי הפירוק, לשאול: מה קורה עכשיו כשהפסטיבל נדחה? (שורה אחת ב-Events).",
+
+sc_h2:"מה זו סכמה?",
+sc_lede:"סכמה היא החוזה: אילו טבלאות קיימות, אילו עמודות יש בכל אחת, מה מותר בכל עמודה, ואיך הטבלאות מצביעות זו על זו. הנתונים משתנים כל שנייה. הסכמה משתנה רק כשמישהו מתכנן אותה מחדש.",
+sc_bench:"סכמת האגודה", sc_hint:"לחצו על כותרת עמודה כדי להבין את התפקיד שלה",
+pop_pk:"מפתח ראשי (Primary Key). ערך שמזהה שורה אחת בדיוק. לא יכול להיות ריק (NULL) ולא יכול לחזור פעמיים. כל טבלה חייבת אחד.",
+pop_fk_student:"מפתח זר (Foreign Key). מצביע על המפתח הראשי של Students. הערך חייב להתקיים שם, אחרת ההפניה שבורה: רכישה של סטודנט שלא קיים.",
+pop_fk_event:"מפתח זר (Foreign Key). מצביע על EventID ב-Events. כך רכישה 'יודעת' לאיזה אירוע היא שייכת בלי לשכפל את שם האירוע.",
+pop_attr:"תכונה (Attribute). עמודה רגילה עם תחום ערכים (Domain): כאן טקסט.",
+pop_date:"תכונה מסוג תאריך. הסכמה קובעת את הטיפוס מראש, ולכן '31/02' פשוט לא ייכנס.",
+pop_price:"תחום הערכים (Domain): מספר עשרוני, לא שלילי. הסכמה מגדירה מה מותר עוד לפני שהנתון הראשון נכנס.",
+pop_year:"תכונה שמותר לה להיות ריקה (NULL): סטודנט שסיים את התואר. NULL הוא 'לא ידוע / לא רלוונטי', לא אפס.",
+pop_qty:"תחום: מספר שלם חיובי. אפשר גם להוסיף אילוץ (CHECK) שימנע 0.",
+term_relation:"טבלה. באלגברה רלציונית קוראים לה יחס.", term_tuple:"שורה. רשומה אחת, וקטור של ערכים.", term_attr:"עמודה. לכל אחת שם וטיפוס.",
+term_schema:"המבנה: שמות הטבלאות, העמודות והמפתחות.", term_instance:"התוכן של הטבלאות ברגע נתון.", term_domain:"קבוצת הערכים המותרים בעמודה.",
+term_pk:"מזהה ייחודי של שורה.", term_fk:"הפניה למפתח ראשי בטבלה אחרת.",
+sc_tnote:"לחזור על ההבחנה סכמה/מופע עם דוגמה: הסכמה של מודל לא השתנתה כשנרשמתם לקורס, המופע כן.",
+
+de_h2:"הרעיון: לשאול, לא לתכנת",
+de_lede:"עם הסכמה ביד, שאלה עסקית הופכת לשאילתה. שימו לב שהיא לא אומרת איך לחפש, רק מה רוצים.",
+de_l1:"השאלה", de_l2:"השאילתה (SQL Server)", de_l3:"התשובה",
+de_q:"אילו סטודנטים מהנדסת תעשייה וניהול קנו כרטיס לפסטיבל האביב?",
+de_p1:"SQL היא שפה <strong>הצהרתית</strong>: מתארים את התוצאה הרצויה, ומנוע בסיס הנתונים בוחר בעצמו באיזה סדר לגשת לטבלאות, איפה לסנן ואיך לצרף. אתם לא כותבים לולאות.",
+de_p2:"המתמטיקה שמאחורי הבחירות האלה היא <strong>אלגברה רלציונית</strong>: שפה של פעולות על טבלאות (בחירה, הטלה, צירוף). היא הנושא של שני המפגשים הבאים, ובלעדיה SQL נשאר אוסף של דפוסים לשינון.",
+h1_y:"1970", h1_t:"אדגר קוד ב-IBM מציע את המודל הרלציוני", h2_y:"1974", h2_t:"SEQUEL, השפה שתהפוך ל-SQL", h3_y:"1986", h3_t:"SQL נהיית תקן ANSI", h4_y:"היום", h4_t:"SQL Server 2022 במעבדה שלנו",
+
+in_h2:"איפה זה חי בשוק",
+in_lede:"בכל אחד מהתחומים האלה יש טבלאות שנראות בדיוק כמו מה שנלמד, רק עם מיליארדי שורות. לצד כל תחום: טבלה אחת שתמצאו שם.",
+ind1_h:"בנקאות ותשלומים", ind1_p:"כל העברה היא שורה. או שהיא נכנסת כולה, או שהיא לא נכנסת בכלל.",
+ind2_h:"מסחר מקוון", ind2_p:"המלאי יורד באותה שנייה בשני מכשירים, ובסיס הנתונים הוא זה שמונע מכירה כפולה.",
+ind3_h:"ERP ותפעול (SAP, Priority)", ind3_p:"המערכת שרוב בוגרי תעשייה וניהול פוגשים ביום הראשון בעבודה. בתוכה: אלפי טבלאות.",
+ind4_h:"בריאות", ind4_p:"תיק רפואי הוא סכמה שבה השאלה החשובה היא מי מורשה לראות אילו שורות.",
+ind5_h:"BI ואנליטיקה", ind5_p:"כל דשבורד ב-Power BI מתחיל בשאילתה עם GROUP BY. מי שכותב אותה בעצמו לא תלוי באף אחד.",
+ind6_h:"האפליקציות שבטלפון", ind6_p:"בטלפון שלכם רצים עכשיו עשרות בסיסי נתונים SQLite: הודעות, תמונות, אנשי קשר.",
+in_dbms_h:"השמות שתפגשו", dbms_us:"בקורס",
+
+mp_h2:"מפת הקורס",
+mp_lede:"ארבעה שלבים בקורס, וכל אחד עונה על שאלה אחת. שלושה מהם מתורגלים כאן, ו-SQL הוא לב התרגול: שישה מפגשים של העמקה וחומר שחלקו לא מופיע בהרצאה. ERD נלמד בהרצאה בלבד.",
+st1_b:"אלגברה רלציונית", st1_p:"איך חושבים על שאלה כרצף פעולות על טבלאות", st1_s:"תרגול · מפגשים 2 עד 3",
+st2_b:"SQL", st2_p:"איך שואלים את זה בפועל, ב-SQL Server: מ-SELECT ועד פונקציות חלון", st2_s:"תרגול · מפגשים 4 עד 9",
+st3_b:"נרמול", st3_p:"איך מפרקים טבלה גדולה לטבלאות בלי לאבד מידע", st3_s:"תרגול · מפגשים 10 עד 11",
+st4_b:"ERD", st4_p:"איך מתכננים מאפס: מתיאור מילולי לתרשים ולטבלאות", st4_s:"בהרצאה עם ד\"ר אלקובי בלבד",
+lecture_only:"הרצאה בלבד",
+mp_tl_h:"12 מפגשי התרגול",
+tl1:"סביבת עבודה: התקנה, טעינת סכמות, שאילתות ראשונות", tl2:"אלגברה רלציונית 1: קבוצות, σ, π, ∪, ∩, −, ×", tl3:"אלגברה רלציונית 2: צירופים, ÷, ρ, גשר ל-SQL",
+tl4:"SQL 1: הכרת הסביבה, SELECT, WHERE, מיון, TOP<span class=\"tag new\">T-SQL</span>", tl5:"SQL 2: JOIN על כל סוגיו", tl6:"SQL 3: SET, CASE, אגרגציה, פונקציות שורה<span class=\"tag new\">חלקו לא בהרצאה</span>", tl7:"SQL 4: תתי-שאילתות, NOT EXISTS וחילוק ב-SQL",
+tl8:"SQL 5: CTE ו-Views<span class=\"tag new\">CTE לא בהרצאה</span>", tl9:"SQL 6: פונקציות חלון<span class=\"tag new\">לא בהרצאה</span>", tl10:"נרמול 1: תלויות, מפתחות, L/M/R", tl11:"נרמול 2: פתרון מלא בפורמט מבחן", tl12:"השלמה וחזרה, או חומר חדש לפי הסמסטר",
+mp_tl_note:"<b>שימו לב:</b> המפה נועדה לתמונה כללית של מה שצפוי בקורס. התאריכים וסדר התרגולים עשויים להשתנות ואינם מהווים התחייבות. במקרה של שינוי, ההודעות והפרסומים של צוות הקורס הם הקובעים. ERD ו-XML נלמדים בהרצאה. הציון: 95% מבחן מסכם, 5% תרגילי בית.",
+cov_h:"מה נלמד איפה", cov_lede:"כדי שתדעו מתי התרגול הוא המקור היחיד שלכם. הרשימה אומתה מול מצגות ההרצאה של תשפ\"ו, ותתעדכן אם יתווסף נושא השנה.",
+cov_only_t:"רק בתרגול", cov_both_t:"בהרצאה ובתרגול", cov_only_l:"רק בהרצאה",
+cov_only:["פונקציות חלון: OVER, PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, מסגרות ROWS BETWEEN","CTE (WITH)","CASE WHEN","INTERSECT ו-EXCEPT ב-SQL","תבנית NOT EXISTS לשאלות \"כל\" ולאנטי-צירוף","TOP, OFFSET/FETCH","פונקציות שורה: מחרוזות, מספרים, תאריכים, NULL","הסינטקס המלא של SQL Server (T-SQL)","רענון קצר של תורת הקבוצות ודה-מורגן"],
+cov_both:["אלגברה רלציונית, כל האופרטורים כולל ÷","SELECT, WHERE, GROUP BY, HAVING, DISTINCT, ORDER BY","UNION","צירופים פנימיים וחיצוניים, צירוף עצמי","תתי-שאילתות: IN, NOT IN, EXISTS, SOME/ANY, ALL","Views","חילוק ב-SQL דרך COUNT DISTINCT","נרמול: תלויות, מפתחות, L/M/R, 1NF עד BCNF"],
+cov_lect:["DDL ו-DML: CREATE, INSERT, UPDATE, DELETE","Closure של תלויות, 4NF","ERD ומיפוי לטבלאות","XML"],
+cov_dialect:"<b>על הדיאלקט:</b> ההרצאה מלמדת את העקרונות, לפעמים בסינטקס MySQL, וזה נכון לכל דבר עקרוני. בכל מה שנוגע לסינטקס בפועל, במטלות ובמבחן, מיישרים לפי התרגול: SQL Server.",
+
+qz_h2:"בדיקה עצמית",
+qz_lede_intro:"ארבע שאלות בסגנון המבחן: שש אפשרויות, ואחת מהן היא 'כל האחרות שגויות'. משוב מיד אחרי הבחירה.",
+qz_lede_ra:"שלוש שאלות 'מה מחזיר הביטוי'. בדיוק הסגנון שיופיע במבחן, על הטבלאות שלמעלה.",
+all_wrong:"כל התשובות האחרות שגויות.", correct:"נכון.", wrong:"לא נכון.", score_l:"ניקוד", of:"מתוך", reset_quiz:"נסו שוב",
+i1_q:"בטבלה Ticket_Purchases, איזו עמודה היא מפתח זר?",
+i1_0:"OrderNo", i1_1:"StudentID", i1_2:"Quantity", i1_3:"EventName", i1_4:"StudentName",
+i1_e:"StudentID מצביע על המפתח הראשי של Students. OrderNo הוא המפתח הראשי של הרכישה עצמה, ו-EventName בכלל לא נמצא בטבלה אחרי הפירוק, רק EventID.",
+i2_q:"מה ההבדל בין סכמה למופע (Instance)?",
+i2_0:"סכמה היא הנתונים, מופע הוא המבנה", i2_1:"אין הבדל, אלה שני שמות לאותו דבר", i2_2:"סכמה היא המבנה הקבוע, מופע הוא הנתונים ברגע נתון", i2_3:"מופע קיים רק ב-SQL Server", i2_4:"סכמה נכתבת רק אחרי שהנתונים הוזנו",
+i2_e:"הסכמה מגדירה טבלאות, עמודות, טיפוסים ומפתחות. המופע הוא התוכן, והוא משתנה עם כל INSERT.",
+i3_q:"למה טבלה שטוחה אחת לכל הרכישות בעייתית?",
+i3_0:"היא איטית מדי", i3_1:"אותה עובדה נשמרת בכמה שורות, ועדכון חלקי יוצר סתירה", i3_2:"אי אפשר להוסיף לה עמודות", i3_3:"SQL לא עובד על טבלה אחת", i3_4:"אין לה מפתח ראשי אף פעם",
+i3_e:"זו אנומליית העדכון מהניסוי. יתירות היא הבעיה, לא המהירות.",
+i4_q:"SQL היא שפה הצהרתית. המשמעות:",
+i4_0:"צריך לכתוב לולאות על השורות", i4_1:"כל שאילתה מתבצעת באותו סדר קבוע", i4_2:"השאילתה מתארת את התוצאה, והמנוע קובע את סדר הביצוע", i4_3:"אי אפשר לצרף שתי טבלאות", i4_4:"השפה מתאימה רק לקריאה, לא לכתיבה",
+i4_e:"אתם אומרים מה, המנוע מחליט איך. בגלל זה שתי שאילתות שונות יכולות להחזיר בדיוק את אותה תוצאה.",
+
+ra_eyebrow:"מפגשים 2 עד 3 · אלגברה רלציונית",
+ra_h1:"שפה של פעולות על טבלאות.",
+ra_lede:"כל פעולה מקבלת טבלה (או שתיים) ומחזירה טבלה. בגלל זה אפשר לשרשר: התוצאה של פעולה אחת היא הקלט של הבאה. כל הממחישים בעמוד עובדים על שלוש הטבלאות האלה.",
+ra_data_h:"סכמת הקורסים", ra_data_c:"Students(5) · Courses(3) · Enroll(11)",
+ra_p_sets:"טבלה באלגברה רלציונית היא <strong>קבוצה</strong> של שורות: אין כפילויות ואין סדר. זה ההבדל הראשון מ-SQL, שבו טבלה יכולה להכיל את אותה שורה פעמיים. תזכרו את זה כשנגיע ל-π.",
+ra_tnote:"לפתוח עם השאלה: מה ההבדל בין קבוצה לרשימה? ואז להראות ש-Enroll היא קבוצה של שלשות.",
+
+sel_h2:"בחירה", sel_lede:"σ בוחרת שורות. התנאי נכתב כתחתית, הטבלה בסוגריים. מספר העמודות לא משתנה, רק מספר השורות.",
+sel_msg0:"בחרו תנאי ולחצו הרץ. השורות שמקיימות אותו יידלקו, השאר ידהו.",
+sel_c0:"Grade ≥ 85", sel_c1:"CID = 'DB'", sel_c2:"CID = 'DB' ∧ Grade ≥ 90", sel_c3:"Faculty = 'IE'  (על Students)",
+sel_msg:"<b>{n}</b> מתוך {m} שורות מקיימות את התנאי. שימו לב: התוצאה היא טבלה עם אותן עמודות בדיוק.",
+
+prj_h2:"הטלה", prj_lede:"π בוחרת עמודות. ובגלל שהתוצאה היא קבוצה, שורות שנהיו זהות מתמזגות לאחת. זה השלב שרוב הטעויות במבחן מתחילות בו.",
+prj_s0:"1. הטבלה המקורית", prj_s1:"2. מסתירים עמודות", prj_s2:"3. מסירים כפילויות",
+prj_msg0:"Enroll עם 11 שורות. סמנו אילו עמודות להשאיר ועברו בין השלבים.",
+prj_msg1:"נשארו רק {c}. {d} שורות נהיו זהות לשורה אחרת (מסומנות בקו). באלגברה רלציונית הן לא יכולות להתקיים.",
+prj_msg2:"התוצאה: <b>{n}</b> שורות ייחודיות. ב-SQL תקבלו {m} שורות, אלא אם תכתבו DISTINCT.",
+
+jn_h2:"צירוף", jn_lede:"⋈ מחבר שתי טבלאות לפי תנאי. הדרך להבין אותו: קודם כל הזוגות האפשריים, אחר כך רק אלה שהתנאי מתקיים בהם.",
+jn_s0:"1. מכפלה קרטזית ×", jn_s1:"2. σ על התנאי", jn_s2:"3. התוצאה",
+jn_msg0:"5 סטודנטים × 11 שיבוצים = <b>55</b> זוגות. מוצגים 8 מהם. ירוק: המפתחות שווים. אדום: זוג חסר משמעות שהמכפלה יוצרת בכל זאת.",
+jn_msg1:"אחרי σ<sub>Students.SID = Enroll.SID</sub> נשארים <b>11</b> זוגות, בדיוק כמספר השיבוצים. כל שיבוץ מצא את הסטודנט שלו.",
+jn_msg2:"ב-Natural Join עמודת SID הכפולה מתמזגת לאחת. זו הטבלה שעליה נמשיך לעבוד עם σ ו-π.",
+jn_lab_prod:"Students × Enroll (8 מתוך 55)",
+
+dv_h2:"חילוק", dv_lede:"÷ עונה על שאלות 'כל': מי משובץ לכל הקורסים? הממחיש מראה את הבדיקה שהמנוע עושה לכל סטודנט. הסירו קורס מהמחלק ותראו איך התוצאה משתנה.",
+dv_expr_l:"המחלק (divisor):",
+dv_msg:"סטודנט נכנס לתוצאה רק אם יש לו ✓ בכל העמודות הפעילות. עכשיו: <b>{n}</b> סטודנטים ({names}).",
+dv_msg_empty:"אף סטודנט לא משובץ לכל הקורסים שנבחרו. התוצאה היא <b>קבוצה ריקה</b>, וזו תשובה לגיטימית לגמרי במבחן.",
+dv_msg_none:"מחלק ריק הוא מקרה קצה: כל סטודנט 'עומד בכל התנאים' כי אין תנאים. בחרו לפחות קורס אחד.",
+dv_lab_sql:"אותה שאלה ב-SQL Server:",
+
+tr_h2:"קריאת ביטוי מבפנים החוצה", tr_lede:"ביטוי מורכב הוא עץ. תמיד מתחילים מהסוגריים הפנימיים ביותר. לחצו על כל שלב כדי לראות את טבלת הביניים שלו.",
+tr_n0:"Students ⋈ Enroll", tr_n1:"σ<sub>Grade ≥ 85</sub>( … )", tr_n2:"π<sub>Name</sub>( … )",
+tr_d0:"שלב 1 · הכי פנימי", tr_d1:"שלב 2", tr_d2:"שלב 3 · התוצאה",
+tr_rows:"{n} שורות",
+
+ex_h2:"תרגיל: בנו את הביטוי", ex_lede:"הבדיקה מריצה את הביטוי שלכם על הטבלאות ומשווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה.",
+ex_q:"מהם שמות הסטודנטים שקיבלו 90 ומעלה בקורס Databases (DB)?",
+ex_step1:"1. איזה צירוף?", ex_step2:"2. איזה תנאי ב-σ?", ex_step3:"3. אילו עמודות ב-π?",
+ex_j0:"Students ⋈ Enroll", ex_j1:"Enroll ⋈ Courses", ex_j2:"Students × Enroll", ex_j3:"Students ⋈ Enroll ⋈ Courses",
+ex_s0:"Grade ≥ 90", ex_s1:"CID = 'DB'", ex_s2:"CID = 'DB' ∧ Grade ≥ 90", ex_s3:"Faculty = 'IE' ∧ Grade ≥ 90", ex_s4:"Title = 'Databases' ∧ Grade ≥ 90",
+ex_p0:"Name", ex_p1:"SID", ex_p2:"Name, Grade", ex_p3:"Faculty",
+ex_check:"בדוק", ex_tries:"ניסיונות: {n}",
+ex_msg0:"בחרו בכל שלב ולחצו בדוק.",
+ex_ok:"נכון! התוצאה זהה לתוצאה הצפויה. שימו לב שגם ניסוח אחר יכול להיות נכון, כל עוד הטבלה שיוצאת זהה.",
+ex_bad_cols:"העמודות לא נכונות: השאלה מבקשת שמות בלבד, וקיבלתם {c}.",
+ex_bad_rows:"העמודות נכונות, אבל התוצאה מכילה {n} שורות במקום {m}. בדקו מה התנאי מסנן ומה הצירוף מחבר.",
+ex_bad_join:"הצירוף שבחרתם לא מייצר את העמודות שהתנאי או ההטלה צריכים. חשבו איזו טבלה מכילה Name ואיזו מכילה Grade.",
+ex_hint1_b:"רמז 1", ex_hint2_b:"רמז 2", ex_sol_b:"פתרון מלא",
+ex_hint1:"רמז 1: השם נמצא ב-Students, הציון והקורס ב-Enroll. חייבים לחבר את שתיהן.",
+ex_hint2:"רמז 2: התנאי צריך לדבר גם על הקורס וגם על הציון. תנאי על ציון בלבד יכניס סטודנטים שהצטיינו בקורס אחר.",
+ex_sol:"פתרון: π<sub>Name</sub>(σ<sub>CID='DB' ∧ Grade≥90</sub>(Students ⋈ Enroll)). ניסוח שקול: σ קודם על Enroll ואז ⋈ עם Students, ואז π. גם דרך Courses עם Title='Databases' נכונה.",
+ex_locked:"הפתרון המלא נפתח אחרי שני ניסיונות, או עם קוד מרצה.",
+ex_note:"<b>איך זה עובד בכיתה:</b> הרמזים נפתחים אחרי ניסיון ראשון, הפתרון המלא אחרי שני ניסיונות או עם קוד המרצה. מי שהחמיץ את המפגש יכול לחזור לכאן אחרי שהקוד שוחרר.",
+
+r1_q:"מה מחזיר הביטוי π<sub>SID</sub>(σ<sub>CID='DB'</sub>(Enroll)) − π<sub>SID</sub>(σ<sub>CID='OR'</sub>(Enroll))?",
+r1_0:"סטודנטים שמשובצים ל-DB ולא משובצים ל-OR", r1_1:"סטודנטים שמשובצים ל-OR ולא משובצים ל-DB", r1_2:"סטודנטים שמשובצים גם ל-DB וגם ל-OR", r1_3:"סטודנטים שמשובצים ל-DB או ל-OR", r1_4:"כל הסטודנטים שמשובצים ל-DB",
+r1_e:"הפרש: מה שיש בקבוצה השמאלית ולא בימנית. על הנתונים שלנו: DB = {1,2,4,5}, OR = {1,3,4}, והתוצאה {2,5}. שימו לב ששני הצדדים חייבים אותן עמודות (SID) כדי שההפרש יהיה חוקי.",
+r2_q:"מה מחזיר הביטוי π<sub>SID,CID</sub>(Enroll) ÷ π<sub>CID</sub>(Courses)?",
+r2_0:"סטודנטים שמשובצים לפחות לקורס אחד", r2_1:"סטודנטים שמשובצים לכל הקורסים", r2_2:"קורסים שכל הסטודנטים משובצים אליהם", r2_3:"סטודנטים שלא משובצים לאף קורס", r2_4:"זוגות (SID, CID) של שיבוצים",
+r2_e:"חילוק = 'לכל'. התוצאה מכילה רק את העמודות שלא נמצאות במחלק, כלומר SID. על הנתונים שלנו: {1, 4}.",
+r3_q:"נגדיר A = π<sub>Name</sub>(σ<sub>Faculty='IE'</sub>(Students)) ו-B = π<sub>Name</sub>(σ<sub>Faculty='CS'</sub>(Students)). מה מחזיר A − (A ∪ B)?",
+r3_0:"כל הסטודנטים מהנדסת תעשייה", r3_1:"סטודנטים מהנדסת תעשייה שאינם ממדעי המחשב", r3_2:"סטודנטים ממדעי המחשב שאינם מהנדסת תעשייה", r3_3:"סטודנטים מהנדסת תעשייה או ממדעי המחשב", r3_4:"סטודנטים שאינם מאף אחת מהפקולטות",
+r3_e:"A ∪ B מכיל את כל A. כשמחסרים מ-A קבוצה שמכילה אותו, לא נשאר כלום: התוצאה תמיד ריקה, בלי קשר לנתונים. אף סעיף לא אומר 'קבוצה ריקה', ולכן התשובה היא 'כל האחרות שגויות'. המלכודת הזו הופיעה במבחן.",
+
+t_title:"קוד מרצה", t_body:"הקוד פותח את הערות המרצה ואת כל הפתרונות בעמוד. לא נשמר בדפדפן אחרי סגירה.", t_ph:"הקלידו קוד", t_ok:"פתח", t_cancel:"ביטול", t_bad:"קוד שגוי.", t_good:"מצב מרצה פתוח: הערות ופתרונות גלויים.",
+teacher_on:"מרצה ✓", present_off:"סיום הצגה",
+},
+en: {
+brand_sub:"Database Design course", tab_intro:"Intro", tab_ra:"Relational Algebra",
+present:"Presenter mode", teacher:"Teacher code", run:"Run", reset:"Reset", lg_pk:"Primary key", lg_fk:"Foreign key",
+toc_show:"Contents", toc_hide:"Hide contents", hud_l:"You are here",
+nav_why:"Why a database", nav_anomaly:"The experiment", nav_schema:"What is a schema", nav_decl:"Ask, don't program", nav_ind:"Where it lives", nav_map:"Course map", nav_quiz:"Self-check",
+nav_r_data:"Our tables", nav_r_sel:"σ Select", nav_r_proj:"π Project", nav_r_join:"⋈ Join", nav_r_div:"÷ Divide", nav_r_tree:"Reading an expression", nav_r_ex:"Exercise",
+
+hero_eyebrow:"Session 1 · Introduction",
+hero_h1:"Every system you used today runs on tables.",
+hero_lede:"Your bank, the supermarket checkout, Waze, Moodle, course registration. Behind each one sits a relational database, and all of them speak one language: SQL. In this course you learn to think about data like the person who designs those tables, not only the one who fills them in.",
+hero_t1:"Waze", hero_t2:"Your bank", hero_t3:"Moodle", hero_t4:"Supermarket", hero_t5:"Course registration", hero_t6:"WhatsApp",
+
+an_h2:"The experiment: put everything in one table",
+an_lede:"The student union sells tickets to events. The natural first attempt is one sheet: a row per purchase with all the details. Press the buttons and watch what breaks.",
+an_flat:"Ticket_Purchases_Flat",
+an_b_update:"Update: festival postponed", an_b_delete:"Delete: Amir cancelled", an_b_insert:"Insert: new event", an_b_split:"Split into tables",
+an_msg0:"This is the table most people would build in Excel. Looks fine. Now let's try to live with it.",
+an_msg_update:"The festival moved by a week. Its date is written in 3 different rows, and all of them must change. Miss one, and the same event now has two dates. That is an <b>update anomaly</b>.",
+an_msg_delete:"Amir cancelled, so we deleted his row. With it, the Beach Party disappeared: name, date and price. Nobody knows it exists anymore. That is a <b>deletion anomaly</b>.",
+an_msg_insert:"We want to add a new event, Hackathon, that has no purchases yet. There is nowhere to put it: every row must be somebody's purchase. That is an <b>insertion anomaly</b>.",
+an_msg_split:"Same data, three tables. Every fact is stored once: the festival date sits in one row, an event can exist without purchases, and a purchase only points to a student and an event through keys. This is exactly what normalization does, and we reach it in session 8.",
+an_note_t:"Teacher", an_tnote:"Let them predict each outcome before pressing. After the split, ask: what happens now when the festival is postponed? (One row in Events.)",
+
+sc_h2:"What is a schema?",
+sc_lede:"A schema is the contract: which tables exist, which columns each has, what each column allows, and how tables point at each other. The data changes every second. The schema changes only when someone redesigns it.",
+sc_bench:"Student union schema", sc_hint:"Click a column header to see its role",
+pop_pk:"Primary Key. A value that identifies exactly one row. It can never be empty (NULL) and never repeat. Every table needs one.",
+pop_fk_student:"Foreign Key. Points at the primary key of Students. The value must exist there, otherwise the reference is broken: a purchase by a student who does not exist.",
+pop_fk_event:"Foreign Key. Points at EventID in Events. That is how a purchase knows which event it belongs to without copying the event name.",
+pop_attr:"Attribute. A regular column with a domain: here, text.",
+pop_date:"A date-typed attribute. The schema fixes the type up front, so '31/02' simply cannot get in.",
+pop_price:"Domain: a non-negative decimal. The schema defines what is allowed before the first row is inserted.",
+pop_year:"An attribute allowed to be empty (NULL): a student who already graduated. NULL means 'unknown / not applicable', not zero.",
+pop_qty:"Domain: a positive integer. A CHECK constraint can also forbid 0.",
+term_relation:"A table. In relational algebra it is called a relation.", term_tuple:"A row. One record, a vector of values.", term_attr:"A column. Each has a name and a type.",
+term_schema:"The structure: table names, columns and keys.", term_instance:"The content of the tables at a given moment.", term_domain:"The set of values a column allows.",
+term_pk:"Unique identifier of a row.", term_fk:"A reference to a primary key in another table.",
+sc_tnote:"Repeat the schema/instance distinction with an example: Moodle's schema did not change when you enrolled, its instance did.",
+
+de_h2:"The idea: ask, don't program",
+de_lede:"With the schema in hand, a business question becomes a query. Notice it never says how to search, only what we want.",
+de_l1:"The question", de_l2:"The query (SQL Server)", de_l3:"The answer",
+de_q:"Which Industrial Engineering students bought a ticket to the Spring Festival?",
+de_p1:"SQL is <strong>declarative</strong>: you describe the result, and the database engine decides in what order to visit tables, where to filter and how to join. You never write loops.",
+de_p2:"The mathematics behind those decisions is <strong>relational algebra</strong>: a language of operations on tables (select, project, join). It is the subject of the next two sessions, and without it SQL stays a pile of patterns to memorize.",
+h1_y:"1970", h1_t:"Edgar Codd at IBM proposes the relational model", h2_y:"1974", h2_t:"SEQUEL, the language that becomes SQL", h3_y:"1986", h3_t:"SQL becomes an ANSI standard", h4_y:"Today", h4_t:"SQL Server 2022 in our lab",
+
+in_h2:"Where it lives in industry",
+in_lede:"Each of these fields has tables that look exactly like what we study, only with billions of rows. Next to each field: one table you will find there.",
+ind1_h:"Banking and payments", ind1_p:"Every transfer is a row. Either all of it goes in, or none of it does.",
+ind2_h:"E-commerce", ind2_p:"Stock drops in the same second on two devices, and the database is what prevents selling the same unit twice.",
+ind3_h:"ERP and operations (SAP, Priority)", ind3_p:"The system most IE&M graduates meet on their first day at work. Inside: thousands of tables.",
+ind4_h:"Healthcare", ind4_p:"A medical record is a schema where the hard question is who may see which rows.",
+ind5_h:"BI and analytics", ind5_p:"Every Power BI dashboard starts with a GROUP BY query. Whoever writes it themselves depends on nobody.",
+ind6_h:"The apps on your phone", ind6_p:"Dozens of SQLite databases are running on your phone right now: messages, photos, contacts.",
+in_dbms_h:"Names you will meet", dbms_us:"this course",
+
+mp_h2:"Course map",
+mp_lede:"Four stages in the course, each answering one question. Three of them are practiced here, and SQL is the heart of the tutorial: six sessions of depth, part of it material the lecture does not cover. ERD is taught in the lecture only.",
+st1_b:"Relational algebra", st1_p:"How to think of a question as a sequence of operations on tables", st1_s:"Tutorial · sessions 2 to 3",
+st2_b:"SQL", st2_p:"How to actually ask it, in SQL Server: from SELECT to window functions", st2_s:"Tutorial · sessions 4 to 9",
+st3_b:"Normalization", st3_p:"How to split one big table into tables without losing information", st3_s:"Tutorial · sessions 10 to 11",
+st4_b:"ERD", st4_p:"How to design from scratch: from a verbal description to a diagram to tables", st4_s:"Lecture with Dr. Alkobi only",
+lecture_only:"lecture only",
+mp_tl_h:"The 12 tutorial sessions",
+tl1:"Working environment: install, load schemas, first queries", tl2:"Relational algebra 1: sets, σ, π, ∪, ∩, −, ×", tl3:"Relational algebra 2: joins, ÷, ρ, bridge to SQL",
+tl4:"SQL 1: the environment, SELECT, WHERE, sorting, TOP<span class=\"tag new\">T-SQL</span>", tl5:"SQL 2: JOIN in all its forms", tl6:"SQL 3: SET operators, CASE, aggregation, row functions<span class=\"tag new\">partly not in lecture</span>", tl7:"SQL 4: subqueries, NOT EXISTS and division in SQL",
+tl8:"SQL 5: CTEs and views<span class=\"tag new\">CTE not in lecture</span>", tl9:"SQL 6: window functions<span class=\"tag new\">not in lecture</span>", tl10:"Normalization 1: dependencies, keys, L/M/R", tl11:"Normalization 2: a full exam-format solution", tl12:"Completion and review, or new material depending on the semester",
+mp_tl_note:"<b>Please note:</b> this map gives a general picture of what to expect in the course. Dates and the order of sessions may change and are not a commitment. If anything changes, the course team's announcements are what counts. ERD and XML are taught in the lecture. Grade: 95% final exam, 5% homework.",
+cov_h:"What is taught where", cov_lede:"So you know when the tutorial is your only source. Verified against the 2025/26 lecture slides; updated if a topic is added this year.",
+cov_only_t:"Tutorial only", cov_both_t:"Lecture and tutorial", cov_only_l:"Lecture only",
+cov_only:["Window functions: OVER, PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, ROWS BETWEEN frames","CTE (WITH)","CASE WHEN","INTERSECT and EXCEPT in SQL","The NOT EXISTS pattern for \"all\" questions and anti-joins","TOP, OFFSET/FETCH","Row functions: strings, numbers, dates, NULL","Full SQL Server (T-SQL) syntax","A short refresher of set theory and De Morgan"],
+cov_both:["Relational algebra, all operators including ÷","SELECT, WHERE, GROUP BY, HAVING, DISTINCT, ORDER BY","UNION","Inner and outer joins, self join","Subqueries: IN, NOT IN, EXISTS, SOME/ANY, ALL","Views","Division in SQL via COUNT DISTINCT","Normalization: dependencies, keys, L/M/R, 1NF to BCNF"],
+cov_lect:["DDL and DML: CREATE, INSERT, UPDATE, DELETE","Dependency closure, 4NF","ERD and mapping to tables","XML"],
+cov_dialect:"<b>On dialect:</b> the lecture teaches the principles, sometimes in MySQL syntax, and that holds for everything conceptual. For actual syntax, in homework and in the exam, we align with the tutorial: SQL Server.",
+
+qz_h2:"Self-check",
+qz_lede_intro:"Four exam-style questions: six options, one of them 'all others are wrong'. Feedback right after you choose.",
+qz_lede_ra:"Three 'what does this expression return' questions. Exactly the exam style, on the tables above.",
+all_wrong:"All other answers are wrong.", correct:"Correct.", wrong:"Not quite.", score_l:"Score", of:"of", reset_quiz:"Try again",
+i1_q:"In Ticket_Purchases, which column is a foreign key?",
+i1_0:"OrderNo", i1_1:"StudentID", i1_2:"Quantity", i1_3:"EventName", i1_4:"StudentName",
+i1_e:"StudentID points at the primary key of Students. OrderNo is the purchase's own primary key, and EventName is not even in the table after the split, only EventID.",
+i2_q:"What is the difference between a schema and an instance?",
+i2_0:"The schema is the data, the instance is the structure", i2_1:"No difference, two names for the same thing", i2_2:"The schema is the fixed structure, the instance is the data at a given moment", i2_3:"Instances exist only in SQL Server", i2_4:"A schema is written only after the data is entered",
+i2_e:"The schema defines tables, columns, types and keys. The instance is the content, and it changes with every INSERT.",
+i3_q:"Why is one flat table for all purchases a problem?",
+i3_0:"It is too slow", i3_1:"The same fact is stored in several rows, and a partial update creates a contradiction", i3_2:"Columns cannot be added to it", i3_3:"SQL does not work on a single table", i3_4:"It never has a primary key",
+i3_e:"That is the update anomaly from the experiment. Redundancy is the problem, not speed.",
+i4_q:"SQL is declarative. That means:",
+i4_0:"You must write loops over the rows", i4_1:"Every query runs in the same fixed order", i4_2:"The query describes the result, and the engine decides the execution order", i4_3:"Two tables cannot be joined", i4_4:"The language is for reading only, not writing",
+i4_e:"You say what, the engine decides how. That is why two different queries can return exactly the same result.",
+
+ra_eyebrow:"Sessions 2 to 3 · Relational algebra",
+ra_h1:"A language of operations on tables.",
+ra_lede:"Every operation takes a table (or two) and returns a table. That is why they chain: the output of one is the input of the next. Every visualizer on this page works on these three tables.",
+ra_data_h:"Courses schema", ra_data_c:"Students(5) · Courses(3) · Enroll(11)",
+ra_p_sets:"In relational algebra a table is a <strong>set</strong> of rows: no duplicates, no order. That is the first difference from SQL, where a table may contain the same row twice. Remember it when we reach π.",
+ra_tnote:"Open with: what is the difference between a set and a list? Then show that Enroll is a set of triples.",
+
+sel_h2:"Select", sel_lede:"σ picks rows. The condition goes in the subscript, the table in parentheses. The number of columns never changes, only the number of rows.",
+sel_msg0:"Choose a condition and press Run. Matching rows light up, the rest fade.",
+sel_c0:"Grade ≥ 85", sel_c1:"CID = 'DB'", sel_c2:"CID = 'DB' ∧ Grade ≥ 90", sel_c3:"Faculty = 'IE'  (on Students)",
+sel_msg:"<b>{n}</b> of {m} rows satisfy the condition. Note: the result is a table with exactly the same columns.",
+
+prj_h2:"Project", prj_lede:"π picks columns. And because the result is a set, rows that became identical merge into one. This is where most exam mistakes begin.",
+prj_s0:"1. Original table", prj_s1:"2. Hide columns", prj_s2:"3. Remove duplicates",
+prj_msg0:"Enroll with 11 rows. Tick the columns to keep and move through the steps.",
+prj_msg1:"Only {c} remain. {d} rows became identical to another row (struck through). In relational algebra they cannot exist.",
+prj_msg2:"Result: <b>{n}</b> unique rows. In SQL you would get {m} rows unless you write DISTINCT.",
+
+jn_h2:"Join", jn_lede:"⋈ combines two tables by a condition. The way to understand it: first every possible pair, then only the pairs where the condition holds.",
+jn_s0:"1. Cartesian product ×", jn_s1:"2. σ on the condition", jn_s2:"3. The result",
+jn_msg0:"5 students × 11 enrollments = <b>55</b> pairs. 8 are shown. Green: the keys match. Red: a meaningless pair that the product creates anyway.",
+jn_msg1:"After σ<sub>Students.SID = Enroll.SID</sub>, <b>11</b> pairs remain, exactly the number of enrollments. Every enrollment found its student.",
+jn_msg2:"In a natural join the duplicated SID column merges into one. This is the table we keep working on with σ and π.",
+jn_lab_prod:"Students × Enroll (8 of 55)",
+
+dv_h2:"Divide", dv_lede:"÷ answers 'for all' questions: who is enrolled in every course? The visualizer shows the check the engine runs for each student. Remove a course from the divisor and watch the result change.",
+dv_expr_l:"Divisor:",
+dv_msg:"A student enters the result only with a ✓ in every active column. Now: <b>{n}</b> students ({names}).",
+dv_msg_empty:"No student is enrolled in all selected courses. The result is the <b>empty set</b>, a perfectly legitimate exam answer.",
+dv_msg_none:"An empty divisor is an edge case: every student 'meets all conditions' because there are none. Select at least one course.",
+dv_lab_sql:"The same question in SQL Server:",
+
+tr_h2:"Reading an expression inside-out", tr_lede:"A compound expression is a tree. Always start from the innermost parentheses. Click each step to see its intermediate table.",
+tr_n0:"Students ⋈ Enroll", tr_n1:"σ<sub>Grade ≥ 85</sub>( … )", tr_n2:"π<sub>Name</sub>( … )",
+tr_d0:"Step 1 · innermost", tr_d1:"Step 2", tr_d2:"Step 3 · result",
+tr_rows:"{n} rows",
+
+ex_h2:"Exercise: build the expression", ex_lede:"The checker runs your expression on the tables and compares results, not text. There is more than one correct way.",
+ex_q:"What are the names of the students who scored 90 or more in Databases (DB)?",
+ex_step1:"1. Which join?", ex_step2:"2. Which σ condition?", ex_step3:"3. Which π columns?",
+ex_j0:"Students ⋈ Enroll", ex_j1:"Enroll ⋈ Courses", ex_j2:"Students × Enroll", ex_j3:"Students ⋈ Enroll ⋈ Courses",
+ex_s0:"Grade ≥ 90", ex_s1:"CID = 'DB'", ex_s2:"CID = 'DB' ∧ Grade ≥ 90", ex_s3:"Faculty = 'IE' ∧ Grade ≥ 90", ex_s4:"Title = 'Databases' ∧ Grade ≥ 90",
+ex_p0:"Name", ex_p1:"SID", ex_p2:"Name, Grade", ex_p3:"Faculty",
+ex_check:"Check", ex_tries:"Attempts: {n}",
+ex_msg0:"Choose each step and press Check.",
+ex_ok:"Correct! The result matches the expected one. Note that a different formulation can be correct too, as long as the resulting table is the same.",
+ex_bad_cols:"Wrong columns: the question asks for names only, and you produced {c}.",
+ex_bad_rows:"The columns are right, but the result has {n} rows instead of {m}. Check what the condition filters and what the join connects.",
+ex_bad_join:"The join you chose does not produce the columns the condition or projection needs. Think which table holds Name and which holds Grade.",
+ex_hint1_b:"Hint 1", ex_hint2_b:"Hint 2", ex_sol_b:"Full solution",
+ex_hint1:"Hint 1: the name lives in Students, the grade and course in Enroll. You must connect both.",
+ex_hint2:"Hint 2: the condition must mention both the course and the grade. A grade-only condition admits students who excelled in another course.",
+ex_sol:"Solution: π<sub>Name</sub>(σ<sub>CID='DB' ∧ Grade≥90</sub>(Students ⋈ Enroll)). Equivalent: σ first on Enroll, then ⋈ Students, then π. Going through Courses with Title='Databases' is also correct.",
+ex_locked:"The full solution unlocks after two attempts, or with the teacher code.",
+ex_note:"<b>How this works in class:</b> hints unlock after the first attempt, the full solution after two attempts or with the teacher code. Whoever missed the session can come back here once the code is released.",
+
+r1_q:"What does π<sub>SID</sub>(σ<sub>CID='DB'</sub>(Enroll)) − π<sub>SID</sub>(σ<sub>CID='OR'</sub>(Enroll)) return?",
+r1_0:"Students enrolled in DB and not enrolled in OR", r1_1:"Students enrolled in OR and not enrolled in DB", r1_2:"Students enrolled in both DB and OR", r1_3:"Students enrolled in DB or OR", r1_4:"All students enrolled in DB",
+r1_e:"Difference: what is in the left set and not in the right. On our data: DB = {1,2,4,5}, OR = {1,3,4}, result {2,5}. Note both sides must have the same columns (SID) for the difference to be legal.",
+r2_q:"What does π<sub>SID,CID</sub>(Enroll) ÷ π<sub>CID</sub>(Courses) return?",
+r2_0:"Students enrolled in at least one course", r2_1:"Students enrolled in every course", r2_2:"Courses that every student is enrolled in", r2_3:"Students enrolled in no course", r2_4:"(SID, CID) enrollment pairs",
+r2_e:"Division = 'for all'. The result keeps only the columns that are not in the divisor, i.e. SID. On our data: {1, 4}.",
+r3_q:"Let A = π<sub>Name</sub>(σ<sub>Faculty='IE'</sub>(Students)) and B = π<sub>Name</sub>(σ<sub>Faculty='CS'</sub>(Students)). What does A − (A ∪ B) return?",
+r3_0:"All Industrial Engineering students", r3_1:"IE students who are not CS students", r3_2:"CS students who are not IE students", r3_3:"Students from IE or CS", r3_4:"Students from neither faculty",
+r3_e:"A ∪ B contains all of A. Subtracting a superset of A from A leaves nothing: the result is always empty, regardless of data. No option says 'empty set', so the answer is 'all others are wrong'. This trap appeared in a real exam.",
+
+t_title:"Teacher code", t_body:"The code reveals teacher notes and every solution on the page. It is not stored after you close the page.", t_ph:"Enter code", t_ok:"Unlock", t_cancel:"Cancel", t_bad:"Wrong code.", t_good:"Teacher mode on: notes and solutions visible.",
+teacher_on:"Teacher ✓", present_off:"Exit presenter",
+}};
+
+/* =========================== STATE & HELPERS =========================== */
+let lang = 'he';
+try { lang = localStorage.getItem('dbs_lang') || 'he'; } catch(e){}
+let teacher = false;
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.he[k] != null ? I18N.he[k] : k); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+const load = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } };
+
+/* sha256: WebCrypto when available, small JS fallback otherwise */
+async function sha256(str){
+  try { if (crypto && crypto.subtle) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)); return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join(''); } } catch(e){}
+  return sha256js(str);
+}
+function sha256js(ascii){
+  function rr(v,a){return (v>>>a)|(v<<(32-a));}
+  const mathPow=Math.pow, maxWord=mathPow(2,32); let result='';
+  const words=[], asciiBitLength=ascii.length*8; let hash=sha256js.h=sha256js.h||[], k=sha256js.k=sha256js.k||[]; let primeCounter=k.length; const isComposite={};
+  for(let candidate=2;primeCounter<64;candidate++){ if(!isComposite[candidate]){ for(let i=0;i<313;i+=candidate) isComposite[i]=candidate; hash[primeCounter]=(mathPow(candidate,.5)*maxWord)|0; k[primeCounter++]=(mathPow(candidate,1/3)*maxWord)|0; } }
+  ascii+='\x80'; while(ascii.length%64-56) ascii+='\x00';
+  for(let i=0;i<ascii.length;i++){ const j=ascii.charCodeAt(i); if(j>>8) return ''; words[i>>2]|=j<<((3-i)%4)*8; }
+  words[words.length]=((asciiBitLength/maxWord)|0); words[words.length]=(asciiBitLength);
+  for(let j=0;j<words.length;){ const w=words.slice(j,j+=16); const oldHash=hash; hash=hash.slice(0,8);
+    for(let i=0;i<64;i++){ const w15=w[i-15], w2=w[i-2]; const a=hash[0], e=hash[4];
+      const temp1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);
+      const temp2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+      hash=[(temp1+temp2)|0].concat(hash); hash[4]=(hash[4]+temp1)|0; }
+    for(let i=0;i<8;i++) hash[i]=(hash[i]+oldHash[i])|0; }
+  for(let i=0;i<8;i++) for(let j=3;j+1;j--){ const b=(hash[i]>>(j*8))&255; result+=((b<16)?0:'')+b.toString(16); }
+  return result;
+}
+const TEACHER_HASH = '02ae478b33d3a4817ed994d4f327b9215ffafae82235115c25cce24661311f44';
+
+/* =========================== DATA =========================== */
+const FLAT = [
+  {OrderNo:1001, StudentName:'Dana', Faculty:'IE', EventName:'Spring Festival', EventDate:'2026-03-12', TicketPrice:40, Quantity:2},
+  {OrderNo:1002, StudentName:'Noa',  Faculty:'CS', EventName:'Spring Festival', EventDate:'2026-03-12', TicketPrice:40, Quantity:1},
+  {OrderNo:1003, StudentName:'Dana', Faculty:'IE', EventName:'Karaoke Night',   EventDate:'2026-04-02', TicketPrice:25, Quantity:3},
+  {OrderNo:1004, StudentName:'Tom',  Faculty:'EE', EventName:'Spring Festival', EventDate:'2026-03-12', TicketPrice:40, Quantity:4},
+  {OrderNo:1005, StudentName:'Amir', Faculty:'IE', EventName:'Beach Party',     EventDate:'2026-05-20', TicketPrice:60, Quantity:2},
+  {OrderNo:1006, StudentName:'Noa',  Faculty:'CS', EventName:'Karaoke Night',   EventDate:'2026-04-02', TicketPrice:25, Quantity:1},
+];
+const SPLIT = {
+  Students: { cols:['StudentID','StudentName','Faculty','DegreeYear'], keys:{StudentID:'pk'}, rows:[[1,'Dana','IE',2],[2,'Noa','CS',3],[3,'Tom','EE',1],[4,'Amir','IE',null]] },
+  Events: { cols:['EventID','EventName','EventDate','TicketPrice'], keys:{EventID:'pk'}, rows:[[10,'Spring Festival','2026-03-12',40],[11,'Karaoke Night','2026-04-02',25],[12,'Beach Party','2026-05-20',60],[13,'Hackathon','2026-06-01',0]] },
+  Ticket_Purchases: { cols:['OrderNo','StudentID','EventID','Quantity'], keys:{OrderNo:'pk',StudentID:'fk',EventID:'fk'}, rows:[[1001,1,10,2],[1002,2,10,1],[1003,1,11,3],[1004,3,10,4],[1005,4,12,2],[1006,2,11,1]] },
+};
+const POPKEY = { StudentID:'pop_pk', EventID:'pop_pk', OrderNo:'pop_pk', 'Ticket_Purchases.StudentID':'pop_fk_student', 'Ticket_Purchases.EventID':'pop_fk_event', EventDate:'pop_date', TicketPrice:'pop_price', DegreeYear:'pop_year', Quantity:'pop_qty' };
+
+const RA = {
+  students:[{SID:1,Name:'Dana',Faculty:'IE'},{SID:2,Name:'Noa',Faculty:'CS'},{SID:3,Name:'Tom',Faculty:'EE'},{SID:4,Name:'Amir',Faculty:'IE'},{SID:5,Name:'Lihi',Faculty:'IE'}],
+  courses:[{CID:'DB',Title:'Databases'},{CID:'OR',Title:'Operations Research'},{CID:'ST',Title:'Statistics'}],
+  enroll:[{SID:1,CID:'DB',Grade:92},{SID:1,CID:'OR',Grade:85},{SID:1,CID:'ST',Grade:78},{SID:2,CID:'DB',Grade:91},{SID:2,CID:'ST',Grade:95},{SID:3,CID:'OR',Grade:70},{SID:3,CID:'ST',Grade:93},{SID:4,CID:'DB',Grade:95},{SID:4,CID:'OR',Grade:90},{SID:4,CID:'ST',Grade:88},{SID:5,CID:'DB',Grade:60}],
+};
+const joinSE = () => RA.enroll.map(e => Object.assign({}, RA.students.find(s => s.SID === e.SID), e));
+const joinEC = () => RA.enroll.map(e => Object.assign({}, e, RA.courses.find(c => c.CID === e.CID)));
+const joinSEC = () => joinSE().map(r => Object.assign({}, r, RA.courses.find(c => c.CID === r.CID)));
+const productSE = () => { const out=[]; RA.students.forEach(s => RA.enroll.forEach(e => out.push({SID:s.SID,Name:s.Name,Faculty:s.Faculty,'Enroll.SID':e.SID,CID:e.CID,Grade:e.Grade}))); return out; };
+const project = (rows, cols) => { const seen=new Set(), out=[]; rows.forEach(r => { const o={}; cols.forEach(c=>o[c]=r[c]); const k=JSON.stringify(o); if(!seen.has(k)){seen.add(k);out.push(o);} }); return out; };
+
+/* =========================== RENDER: GENERIC TABLE =========================== */
+function table(cols, rows, opts){
+  opts = opts || {};
+  const w = el('div','tbl'); if (opts.title) w.appendChild(el('b',null,opts.title));
+  const wrap = el('div','tblwrap'); const tb = el('table','data'); const tr = el('tr');
+  cols.forEach(c => { const th = el('th', null, c); th.dataset.col = c; if (opts.keys && opts.keys[c]) th.classList.add(opts.keys[c]); if (opts.onHead) { th.classList.add('clickable'); th.addEventListener('click', ev => opts.onHead(c, th, ev)); } tr.appendChild(th); });
+  tb.appendChild(tr);
+  rows.forEach((r, i) => { const row = el('tr'); if (opts.rowClass) { const rc = opts.rowClass(r, i); if (rc) row.className = rc; } cols.forEach(c => { const v = Array.isArray(r) ? r[cols.indexOf(c)] : r[c]; const td = el('td', null, v == null ? '<i style="color:var(--muted)">NULL</i>' : String(v)); if (opts.cellClass) { const cc = opts.cellClass(r, c); if (cc) td.classList.add(cc); } row.appendChild(td); }); tb.appendChild(row); });
+  wrap.appendChild(tb); w.appendChild(wrap); return w;
+}
+
+/* =========================== POPOVER =========================== */
+const pop = $('#pop');
+function showPop(anchor, html, spotSel){
+  pop.innerHTML = html; pop.hidden = false;
+  const r = anchor.getBoundingClientRect(); const pw = Math.min(340, window.innerWidth*0.9);
+  let left = Math.min(Math.max(8, r.left + r.width/2 - pw/2), window.innerWidth - pw - 8);
+  pop.style.left = left + 'px'; pop.style.width = pw + 'px';
+  const ph = pop.offsetHeight; let top = r.bottom + 10; pop.classList.remove('up');
+  if (top + ph > window.innerHeight - 8) { top = r.top - ph - 10; pop.classList.add('up'); }
+  pop.style.top = Math.max(8, top) + 'px';
+  pop.style.setProperty('--ax', (r.left + r.width/2 - left - 6) + 'px');
+  $$('.spot').forEach(e => e.classList.remove('spot')); if (spotSel) $$(spotSel).forEach(e => e.classList.add('spot'));
+}
+function hidePop(){ pop.hidden = true; $$('.spot').forEach(e => e.classList.remove('spot')); }
+/* pointer mode: click a pinnable item to mark it (and its linked table parts) for the whole room */
+const spotOn = sel => { $$('.spot').forEach(e => e.classList.remove('spot')); if (sel) $$(sel).forEach(e => e.classList.add('spot')); };
+const spotOff = () => $$('.spot').forEach(e => e.classList.remove('spot'));
+function unpinAll(){ $$('.pinned').forEach(e => e.classList.remove('pinned')); $$('.has-pin').forEach(e => e.classList.remove('has-pin')); spotOff(); }
+document.addEventListener('click', e => {
+  const p = e.target.closest('.pinnable'); if (!p) { if (!e.target.closest('#pop,#scTables')) unpinAll(); return; }
+  const was = p.classList.contains('pinned'); unpinAll(); if (was) return;
+  p.classList.add('pinned'); p.parentElement.classList.add('has-pin'); if (p.dataset.spot) spotOn(p.dataset.spot);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') unpinAll(); if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pinnable')) { e.preventDefault(); e.target.click(); } });
+document.addEventListener('click', e => { if (!pop.hidden && !pop.contains(e.target) && !e.target.closest('[data-pop],th.clickable')) hidePop(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hidePop(); });
+window.addEventListener('scroll', hidePop, {passive:true});
+
+/* =========================== INTRO: HERO =========================== */
+function renderHero(){
+  const h = $('#heroArt'); h.innerHTML = '';
+  const items = [['hero_t1','Roads(road_id, name, speed_limit)'],['hero_t2','Transactions(tx_id, account, amount)'],['hero_t3','Enrollments(student_id, course_id)'],['hero_t4','Receipts(receipt_no, item, qty, price)'],['hero_t5','Sections(course_id, day, hour, room)'],['hero_t6','Messages(msg_id, chat_id, sent_at)']];
+  items.forEach((it, i) => { const d = el('div','tile' + (i===2?' on':'')); d.appendChild(el('b',null,t(it[0]))); d.appendChild(el('span',null,it[1])); d.addEventListener('mouseenter',()=>{$$('.tile').forEach(x=>x.classList.remove('on'));d.classList.add('on');}); h.appendChild(d); });
+}
+
+/* =========================== INTRO: ANOMALY DEMO =========================== */
+let anState = 'flat';
+function renderAnomaly(mode){
+  anState = mode || anState; const box = $('#anTables'); box.innerHTML = ''; const msg = $('#anMsg');
+  if (anState === 'split') {
+    Object.keys(SPLIT).forEach(name => { const s = SPLIT[name]; box.appendChild(table(s.cols, s.rows, {title:name, keys:s.keys})); });
+    msg.innerHTML = t('an_msg_split'); return;
+  }
+  const cols = Object.keys(FLAT[0]);
+  const opts = {title:'Ticket_Purchases_Flat'};
+  if (anState === 'update') opts.cellClass = (r,c) => (c==='EventDate' && r.EventName==='Spring Festival') ? 'mark' : '';
+  if (anState === 'delete') opts.rowClass = r => r.OrderNo===1005 ? 'gone' : '';
+  if (anState === 'insert') opts.rowClass = r => r.OrderNo===9999 ? 'badrow' : '';
+  const rows = anState === 'insert' ? FLAT.concat([{OrderNo:'?', StudentName:'?', Faculty:'?', EventName:'Hackathon', EventDate:'2026-06-01', TicketPrice:0, Quantity:'?'}]) : FLAT;
+  if (anState === 'insert') opts.rowClass = r => r.OrderNo==='?' ? 'badrow' : '';
+  box.appendChild(table(cols, rows, opts));
+  msg.innerHTML = t(anState === 'flat' ? 'an_msg0' : 'an_msg_' + anState);
+}
+$$('[data-an]').forEach(b => b.addEventListener('click', () => renderAnomaly(b.dataset.an === 'reset' ? 'flat' : b.dataset.an)));
+
+/* =========================== INTRO: SCHEMA EXPLORER =========================== */
+function renderSchema(){
+  const box = $('#scTables'); box.innerHTML = '';
+  Object.keys(SPLIT).forEach(name => { const s = SPLIT[name];
+    box.appendChild(table(s.cols, s.rows.slice(0,3), {title:name, keys:s.keys, onHead:(c, th, ev) => { ev.stopPropagation(); const k = POPKEY[name+'.'+c] || POPKEY[c] || 'pop_attr'; const role = s.keys[c]==='pk' ? t('lg_pk') : s.keys[c]==='fk' ? t('lg_fk') : c; showPop(th, '<b>'+role+'</b>'+t(k), null); if (s.keys[c]==='fk') { $$('#scTables th.pk').forEach(h => { if (h.textContent===c) h.classList.add('spot'); }); } }}));
+  });
+  const terms = $('#terms'); terms.innerHTML = '';
+  const SPOTS = { Relation:'#scTables .tbl>b', Tuple:'#scTables table.data tr:nth-child(2) td', Attribute:'#scTables th:not(.pk):not(.fk)', Schema:'#scTables th', Instance:'#scTables table.data tr:not(:first-child) td', Domain:'#scTables th[data-col="TicketPrice"],#scTables th[data-col="EventDate"],#scTables th[data-col="Quantity"]', 'Primary key':'#scTables th.pk', 'Foreign key':'#scTables th.fk' };
+  [['Relation','term_relation'],['Tuple','term_tuple'],['Attribute','term_attr'],['Schema','term_schema'],['Instance','term_instance'],['Domain','term_domain'],['Primary key','term_pk'],['Foreign key','term_fk']].forEach(p => { const d = el('div','pinnable'); d.dataset.spot = SPOTS[p[0]]; d.tabIndex = 0; d.appendChild(el('b',null,p[0])); d.appendChild(el('span',null,t(p[1]))); terms.appendChild(d);
+    d.addEventListener('pointerenter', () => { if (!terms.querySelector('.pinned')) spotOn(d.dataset.spot); });
+    d.addEventListener('pointerleave', () => { if (!terms.querySelector('.pinned')) spotOff(); });
+  });
+}
+
+/* =========================== INTRO: HISTORY, INDUSTRY, MAP, TIMELINE =========================== */
+function renderLists(){
+  const h = $('#hist'); h.innerHTML = ''; [1,2,3,4].forEach(i => { const d = el('div','pinnable'); d.appendChild(el('b',null,t('h'+i+'_y'))); d.appendChild(el('span',null,t('h'+i+'_t'))); h.appendChild(d); });
+  const ind = $('#indCards'); ind.innerHTML = '';
+  const codes = ['Transactions(TxID, FromAcct, ToAcct, Amount, At)','OrderLines(OrderID, ProductID, Qty, Price)','WorkOrders(WO_ID, Material, Qty, DueDate)','Visits(VisitID, PatientID, DoctorID, Date)','Sales(Region, Month, Revenue)','Messages(MsgID, ChatID, SentAt, Body)'];
+  for (let i=1;i<=6;i++){ const c = el('div','card pinnable'); c.appendChild(el('h3',null,t('ind'+i+'_h'))); c.appendChild(el('p',null,t('ind'+i+'_p'))); c.appendChild(el('code',null,codes[i-1])); ind.appendChild(c); }
+  const db = $('#dbms'); db.innerHTML = '';
+  [['SQL Server',true],['PostgreSQL',false],['MySQL',false],['Oracle',false],['SQLite',false]].forEach(p => { const s = el('span', p[1]?'us':'', p[0] + (p[1] ? ' · ' + t('dbms_us') : '')); db.appendChild(s); });
+  const st = $('#stages'); st.innerHTML = ''; const syms = ['σ π ⋈','SELECT','1NF → 3NF','◇ ▭'];
+  for (let i=1;i<=4;i++){ const s = el('div','stage pinnable'); if (i===4) s.style.opacity = '.7'; s.appendChild(el('span','sym',syms[i-1])); const b = el('b',null,t('st'+i+'_b')); if (i===4) b.innerHTML += '<span class="tag">'+t('lecture_only')+'</span>'; s.appendChild(b); s.appendChild(el('p',null,t('st'+i+'_p'))); s.appendChild(el('small',null,t('st'+i+'_s'))); st.appendChild(s); }
+  const tl = $('#timeline'); tl.innerHTML = ''; const dates = ['19.10','26.10','02.11','09.11','16.11','23.11','30.11','07.12','14.12','21.12','28.12','04.01'];
+  for (let i=1;i<=12;i++){ const d = el('div','pinnable'); d.appendChild(el('span','d',dates[i-1])); d.appendChild(el('span',null,t('tl'+i))); tl.appendChild(d); }
+  const cov = $('#coverage'); cov.innerHTML = '';
+  [['cov_only_t','cov_only','only'],['cov_both_t','cov_both',''],['cov_only_l','cov_lect','']].forEach(c => { const card = el('div','card pinnable ' + c[2]); card.appendChild(el('h3',null,t(c[0]))); const ul = el('ul'); (I18N[lang][c[1]] || I18N.he[c[1]]).forEach(x => ul.appendChild(el('li',null,x))); card.appendChild(ul); cov.appendChild(card); });
+}
+
+/* =========================== QUIZ =========================== */
+const QUIZ = {
+  intro:[{id:'i1',h:'f7e4bdb03eefaca0319450705ce053a8f7f396dbd98d8270e843b3025be729d6'},{id:'i2',h:'44eb72c679dc240610ff0417359286e96071174bfbe70865f0470f25f25be3d6'},{id:'i3',h:'1f3b0e11c478e31b5807437e5c85d7a556ed428a4acb272f084f7fad7de355ea'},{id:'i4',h:'6d156f13dbcec26209a5db249e006b32651ee4543ee14e1d916e51a61bd85548'}],
+  ra:[{id:'r1',h:'544c617b43e09262d154e248e68fd39f0648df05360f04587bad2f8f59ab4f52'},{id:'r2',h:'35a9e367679c850d796345147c780e54d9ba59c8ad445950aae71c48d0675a44'},{id:'r3',h:'e6755997fd7f2c5f0a2fa0e2edf8fc0ba1eaa08a9612d7c21fd484966a8c06a9'}],
+};
+const LET = ['א','ב','ג','ד','ה','ו'], LETEN = ['A','B','C','D','E','F'];
+function renderQuiz(containerId, key){
+  const box = $('#'+containerId); box.innerHTML = ''; const qs = QUIZ[key]; const state = load('dbs_quiz_'+key, {});
+  const scoreBar = el('div','score'); const scoreB = el('b'); const scoreL = el('span'); const resetB = el('button','btn small ghost',t('reset_quiz'));
+  const updScore = () => { const n = qs.filter(q => state[q.id] && state[q.id].ok).length; const done = qs.filter(q => state[q.id]).length; scoreB.textContent = n + ' / ' + qs.length; scoreL.textContent = t('score_l') + ' · ' + done + ' ' + t('of') + ' ' + qs.length; };
+  resetB.addEventListener('click', () => { for (const k in state) delete state[k]; store('dbs_quiz_'+key, state); renderQuiz(containerId, key); });
+  scoreBar.appendChild(scoreB); scoreBar.appendChild(scoreL); scoreBar.appendChild(resetB);
+  qs.forEach((q, qi) => {
+    const card = el('div','q'); card.appendChild(el('span','qn', (qi+1) + ' / ' + qs.length)); card.appendChild(el('div','qt', t(q.id+'_q')));
+    const opts = el('div','opts'); const exp = el('div','exp', t(q.id+'_e')); exp.hidden = true;
+    const buttons = [];
+    for (let i=0;i<6;i++){ const b = el('button','opt'); b.innerHTML = '<span class="l">'+(lang==='he'?LET[i]:LETEN[i])+'</span><span>'+(i===5 ? t('all_wrong') : t(q.id+'_'+i))+'</span>'; buttons.push(b); opts.appendChild(b);
+      b.addEventListener('click', async () => { const h = await sha256(q.id+':'+i); const ok = h === q.h; state[q.id] = {i, ok}; store('dbs_quiz_'+key, state); paint(); });
+    }
+    const paint = () => { const s = state[q.id]; if (!s) return; buttons.forEach(b => b.disabled = true); buttons[s.i].classList.add(s.ok ? 'correct' : 'wrong'); if (!s.ok) { sha256Index(q).then(ci => { if (ci >= 0) buttons[ci].classList.add('correct'); }); } exp.hidden = false; exp.innerHTML = '<b>'+(s.ok ? t('correct') : t('wrong'))+'</b> ' + t(q.id+'_e'); updScore(); };
+    card.appendChild(opts); card.appendChild(exp); box.appendChild(card); paint();
+  });
+  box.appendChild(scoreBar); updScore();
+}
+async function sha256Index(q){ for (let i=0;i<6;i++){ if (await sha256(q.id+':'+i) === q.h) return i; } return -1; }
+
+/* =========================== RA: DATA =========================== */
+function renderRaData(){
+  const box = $('#raTables'); box.innerHTML = '';
+  box.appendChild(table(['SID','Name','Faculty'], RA.students, {title:'Students', keys:{SID:'pk'}}));
+  box.appendChild(table(['CID','Title'], RA.courses, {title:'Courses', keys:{CID:'pk'}}));
+  box.appendChild(table(['SID','CID','Grade'], RA.enroll, {title:'Enroll', keys:{SID:'fk',CID:'fk'}}));
+}
+
+/* =========================== RA: SELECT =========================== */
+const SELC = [
+  {k:'sel_c0', src:'enroll', expr:'σ<sub>Grade ≥ 85</sub>(Enroll)', f:r=>r.Grade>=85},
+  {k:'sel_c1', src:'enroll', expr:'σ<sub>CID = \'DB\'</sub>(Enroll)', f:r=>r.CID==='DB'},
+  {k:'sel_c2', src:'enroll', expr:'σ<sub>CID = \'DB\' ∧ Grade ≥ 90</sub>(Enroll)', f:r=>r.CID==='DB'&&r.Grade>=90},
+  {k:'sel_c3', src:'students', expr:'σ<sub>Faculty = \'IE\'</sub>(Students)', f:r=>r.Faculty==='IE'},
+];
+let selRan = false;
+function renderSelect(){
+  const s = $('#selCond'); const cur = s.value || '0'; s.innerHTML = ''; SELC.forEach((c,i) => { const o = el('option',null,t(c.k)); o.value = i; s.appendChild(o); }); s.value = cur;
+  const c = SELC[+s.value]; $('#selExpr').innerHTML = c.expr;
+  const rows = RA[c.src]; const cols = Object.keys(rows[0]);
+  const box = $('#selTables'); box.innerHTML = '';
+  box.appendChild(table(cols, rows, {title: c.src==='enroll'?'Enroll':'Students', rowClass: r => selRan ? (c.f(r) ? 'hit' : 'miss') : ''}));
+  if (selRan) { const n = rows.filter(c.f).length; box.appendChild(table(cols, rows.filter(c.f), {title:'Result'})); $('#selMsg').innerHTML = t('sel_msg',{n, m:rows.length}); } else $('#selMsg').innerHTML = t('sel_msg0');
+}
+$('#selCond').addEventListener('change', () => { selRan = false; renderSelect(); });
+$('#selRun').addEventListener('click', () => { selRan = true; renderSelect(); });
+
+/* =========================== RA: PROJECT =========================== */
+let prjStep = 0, prjSel = {SID:true, CID:false, Grade:false};
+function renderProject(){
+  const cc = $('#prjCols'); cc.innerHTML = '';
+  ['SID','CID','Grade'].forEach(c => { const l = el('label','chk'); const i = el('input'); i.type='checkbox'; i.checked = !!prjSel[c]; i.addEventListener('change', () => { prjSel[c] = i.checked; renderProject(); }); l.appendChild(i); l.appendChild(el('span',null,c)); cc.appendChild(l); });
+  const cols = ['SID','CID','Grade'].filter(c => prjSel[c]);
+  $('#prjExpr').innerHTML = 'π<sub>' + (cols.join(', ') || '?') + '</sub>(Enroll)';
+  $$('[data-prj]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.prj === prjStep)));
+  const box = $('#prjTables'); box.innerHTML = ''; const msg = $('#prjMsg');
+  if (!cols.length) { box.appendChild(table(['SID','CID','Grade'], RA.enroll, {title:'Enroll'})); msg.innerHTML = t('prj_msg0'); return; }
+  const seen = new Set(); const dupFlags = RA.enroll.map(r => { const k = JSON.stringify(cols.map(c=>r[c])); if (seen.has(k)) return true; seen.add(k); return false; });
+  const uniq = project(RA.enroll, cols);
+  if (prjStep === 0) { box.appendChild(table(['SID','CID','Grade'], RA.enroll, {title:'Enroll'})); msg.innerHTML = t('prj_msg0'); }
+  else if (prjStep === 1) { box.appendChild(table(cols, RA.enroll, {title:'Enroll → ' + cols.join(', '), rowClass:(r,i) => dupFlags[i] ? 'dup' : ''})); msg.innerHTML = t('prj_msg1',{c:cols.join(', '), d:dupFlags.filter(Boolean).length}); }
+  else { box.appendChild(table(cols, uniq, {title:'Result'})); msg.innerHTML = t('prj_msg2',{n:uniq.length, m:RA.enroll.length}); }
+}
+$$('[data-prj]').forEach(b => b.addEventListener('click', () => { prjStep = +b.dataset.prj; renderProject(); }));
+
+/* =========================== RA: JOIN =========================== */
+let jnStep = 0;
+function renderJoin(){
+  $$('[data-jn]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.jn === jnStep)));
+  const box = $('#jnTables'); box.innerHTML = ''; const msg = $('#jnMsg');
+  const pcols = ['SID','Name','Faculty','Enroll.SID','CID','Grade'];
+  if (jnStep === 0) { const all = productSE(); const sample = [all[0],all[1],all[5],all[11],all[14],all[23],all[36],all[54]]; box.appendChild(table(pcols, sample, {title:t('jn_lab_prod'), rowClass:r => r.SID===r['Enroll.SID'] ? 'good' : 'badrow'})); msg.innerHTML = t('jn_msg0'); }
+  else if (jnStep === 1) { const kept = productSE().filter(r => r.SID===r['Enroll.SID']); box.appendChild(table(pcols, kept, {title:'σ(Students × Enroll)', rowClass:()=>'good'})); msg.innerHTML = t('jn_msg1'); }
+  else { box.appendChild(table(['SID','Name','Faculty','CID','Grade'], joinSE(), {title:'Students ⋈ Enroll'})); msg.innerHTML = t('jn_msg2'); }
+}
+$$('[data-jn]').forEach(b => b.addEventListener('click', () => { jnStep = +b.dataset.jn; renderJoin(); }));
+
+/* =========================== RA: DIVIDE =========================== */
+let dvSel = {DB:true, OR:true, ST:true};
+function renderDivide(){
+  const cc = $('#dvCols'); cc.innerHTML = ''; cc.appendChild(el('span','count',t('dv_expr_l')));
+  RA.courses.forEach(c => { const l = el('label','chk'); const i = el('input'); i.type='checkbox'; i.checked = !!dvSel[c.CID]; i.addEventListener('change', () => { dvSel[c.CID] = i.checked; renderDivide(); }); l.appendChild(i); l.appendChild(el('span',null,c.CID)); cc.appendChild(l); });
+  const active = RA.courses.map(c=>c.CID).filter(c => dvSel[c]);
+  $('#dvExpr').innerHTML = 'π<sub>SID,CID</sub>(Enroll) ÷ ' + (active.length===3 ? 'π<sub>CID</sub>(Courses)' : '{' + (active.join(', ')||' ') + '}');
+  const box = $('#dvTables'); box.innerHTML = ''; const msg = $('#dvMsg');
+  const wrap = el('div','tbl'); wrap.appendChild(el('b',null,'Enroll[SID, CID]  ·  ✓ = enrolled'));
+  const m = el('table','matrix'); const hr = el('tr'); hr.appendChild(el('th',null,'SID')); RA.courses.forEach(c => { const th = el('th', dvSel[c.CID]?'':'off', c.CID); hr.appendChild(th); }); hr.appendChild(el('th',null,'÷')); m.appendChild(hr);
+  const winners = [];
+  RA.students.forEach(s => { const tr = el('tr'); tr.appendChild(el('td',null,String(s.SID)+' '+s.Name)); let win = active.length>0;
+    RA.courses.forEach(c => { const has = RA.enroll.some(e => e.SID===s.SID && e.CID===c.CID); const td = el('td', (has?'yes':'no') + (dvSel[c.CID]?'':' off'), has?'✓':'·'); tr.appendChild(td); if (dvSel[c.CID] && !has) win = false; });
+    tr.appendChild(el('td', null, win ? '✓' : '')); if (win) { tr.classList.add('win'); winners.push(s.Name); } m.appendChild(tr); });
+  const mw = el('div','tblwrap'); mw.appendChild(m); wrap.appendChild(mw); box.appendChild(wrap);
+  box.appendChild(table(['SID'], winners.map(n => ({SID: RA.students.find(s=>s.Name===n).SID})), {title:'Result'}));
+  const sql = el('div','tbl'); sql.appendChild(el('b',null,t('dv_lab_sql')));
+  sql.innerHTML += '<pre class="sql"><span class="k">SELECT</span> SID\n<span class="k">FROM</span> Enroll\n<span class="k">WHERE</span> CID <span class="k">IN</span> (' + (active.map(c=>"'"+c+"'").join(', ')||"''") + ')\n<span class="k">GROUP BY</span> SID\n<span class="k">HAVING COUNT</span>(<span class="k">DISTINCT</span> CID) = ' + active.length + ';</pre>';
+  box.appendChild(sql);
+  msg.innerHTML = !active.length ? t('dv_msg_none') : winners.length ? t('dv_msg',{n:winners.length, names:winners.join(', ')}) : t('dv_msg_empty');
+}
+
+/* =========================== RA: TREE =========================== */
+let treeStep = 0;
+function renderTree(){
+  const tr = $('#tree'); tr.innerHTML = '';
+  const steps = [ {rows: joinSE(), cols:['SID','Name','Faculty','CID','Grade']}, {rows: joinSE().filter(r=>r.Grade>=85), cols:['SID','Name','Faculty','CID','Grade']}, {rows: project(joinSE().filter(r=>r.Grade>=85), ['Name']), cols:['Name']} ];
+  steps.forEach((s, i) => { const n = el('button','node'); n.setAttribute('aria-pressed', String(i===treeStep)); n.innerHTML = '<span class="depth">'+t('tr_d'+i)+'</span><span class="ra">'+t('tr_n'+i)+'</span><span class="count">'+t('tr_rows',{n:s.rows.length})+'</span>'; n.addEventListener('click', () => { treeStep = i; renderTree(); }); tr.appendChild(n); });
+  const out = $('#treeOut'); out.innerHTML = ''; const s = steps[treeStep]; out.appendChild(table(s.cols, s.rows, {title: t('tr_d'+treeStep)}));
+}
+
+/* =========================== RA: EXERCISE =========================== */
+const EXJ = [ {k:'ex_j0', f:joinSE, cols:['SID','Name','Faculty','CID','Grade'], expr:'Students ⋈ Enroll'}, {k:'ex_j1', f:joinEC, cols:['SID','CID','Grade','Title'], expr:'Enroll ⋈ Courses'}, {k:'ex_j2', f:productSE, cols:['SID','Name','Faculty','Enroll.SID','CID','Grade'], expr:'Students × Enroll'}, {k:'ex_j3', f:joinSEC, cols:['SID','Name','Faculty','CID','Grade','Title'], expr:'Students ⋈ Enroll ⋈ Courses'} ];
+const EXS = [ {k:'ex_s0', need:['Grade'], f:r=>r.Grade>=90, expr:'Grade ≥ 90'}, {k:'ex_s1', need:['CID'], f:r=>r.CID==='DB', expr:"CID='DB'"}, {k:'ex_s2', need:['CID','Grade'], f:r=>r.CID==='DB'&&r.Grade>=90, expr:"CID='DB' ∧ Grade≥90"}, {k:'ex_s3', need:['Faculty','Grade'], f:r=>r.Faculty==='IE'&&r.Grade>=90, expr:"Faculty='IE' ∧ Grade≥90"}, {k:'ex_s4', need:['Title','Grade'], f:r=>r.Title==='Databases'&&r.Grade>=90, expr:"Title='Databases' ∧ Grade≥90"} ];
+const EXP = [ {k:'ex_p0', cols:['Name']}, {k:'ex_p1', cols:['SID']}, {k:'ex_p2', cols:['Name','Grade']}, {k:'ex_p3', cols:['Faculty']} ];
+const EXPECTED = JSON.stringify(project(joinSE().filter(r=>r.CID==='DB'&&r.Grade>=90), ['Name']).map(r=>r.Name).sort());
+let exTries = load('dbs_ex_tries', 0), exSolved = load('dbs_ex_solved', false);
+function fillSel(id, arr){ const s = $('#'+id); const cur = s.value; s.innerHTML=''; arr.forEach((o,i)=>{ const op = el('option',null,t(o.k)); op.value=i; s.appendChild(op); }); if (cur) s.value = cur; }
+function exExpr(){ const j = EXJ[+$('#exJoin').value], s = EXS[+$('#exSel').value], p = EXP[+$('#exProj').value]; $('#exExpr').innerHTML = 'π<sub>'+p.cols.join(', ')+'</sub>(σ<sub>'+s.expr+'</sub>('+j.expr+'))'; }
+function exGates(){
+  $('#exTries').textContent = t('ex_tries',{n:exTries});
+  $('#exHint1').disabled = !(exTries>=1 || teacher); $('#exHint2').disabled = !(exTries>=1 || teacher); $('#exSol').disabled = !(exTries>=2 || teacher || exSolved);
+  if (teacher) { $('#exHint1T').hidden = false; $('#exHint2T').hidden = false; $('#exSolT').hidden = false; }
+}
+function renderExercise(){ fillSel('exJoin', EXJ); fillSel('exSel', EXS); fillSel('exProj', EXP); exExpr(); exGates(); ['exHint1T','exHint2T','exSolT'].forEach(id => { $('#'+id).innerHTML = t(id.replace('T','').replace('exHint','ex_hint').replace('exSol','ex_sol')); }); }
+['exJoin','exSel','exProj'].forEach(id => $('#'+id).addEventListener('change', exExpr));
+$('#exCheck').addEventListener('click', () => {
+  const j = EXJ[+$('#exJoin').value], s = EXS[+$('#exSel').value], p = EXP[+$('#exProj').value];
+  const base = j.f(); const msg = $('#exMsg'); const out = $('#exOut'); out.innerHTML = ''; msg.className = 'msg';
+  exTries++; store('dbs_ex_tries', exTries);
+  const missing = s.need.concat(p.cols).filter(c => !j.cols.includes(c));
+  if (missing.length) { msg.classList.add('bad'); msg.innerHTML = t('ex_bad_join'); exGates(); return; }
+  const res = project(base.filter(s.f), p.cols); out.appendChild(table(p.cols, res, {title:'Your result'}));
+  if (p.cols.length !== 1 || p.cols[0] !== 'Name') { msg.classList.add('bad'); msg.innerHTML = t('ex_bad_cols',{c:p.cols.join(', ')}); exGates(); return; }
+  const got = JSON.stringify(res.map(r=>r.Name).sort());
+  if (got === EXPECTED) { msg.classList.add('good'); msg.innerHTML = t('ex_ok'); exSolved = true; store('dbs_ex_solved', true); }
+  else { msg.classList.add('bad'); msg.innerHTML = t('ex_bad_rows',{n:res.length, m:JSON.parse(EXPECTED).length}); }
+  exGates();
+});
+$('#exHint1').addEventListener('click', () => $('#exHint1T').hidden = false);
+$('#exHint2').addEventListener('click', () => $('#exHint2T').hidden = false);
+$('#exSol').addEventListener('click', () => $('#exSolT').hidden = false);
+
+/* =========================== RAIL, PROGRESS, UNITS =========================== */
+let unit = 'intro';
+const visited = load('dbs_visited', {});
+function renderRail(){
+  const rail = $('#rail'); rail.innerHTML = '';
+  $$('#u-'+unit+' section.sec').forEach(sec => { const a = el('a', visited[sec.id] ? 'done' : ''); a.href = '#'+sec.id; a.innerHTML = '<span class="dot"></span><span>'+t(sec.dataset.title)+'</span>'; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({behavior:'smooth', block:'start'}); }); rail.appendChild(a); });
+}
+function setUnit(u){ unit = u; $$('.unit').forEach(x => x.hidden = x.id !== 'u-'+u); $$('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.unit===u))); renderRail(); renderSpine(); window.scrollTo({top:0}); store('dbs_unit', u); updateNav(false); }
+$$('.tab').forEach(b => b.addEventListener('click', () => setUnit(b.dataset.unit)));
+
+/* position tracking: the rail and the side spine follow the scroll position (section whose top passed 35% of the viewport) */
+let activeSec = null, railOn = load('dbs_rail', false), spineTimer = null, navTick = false;
+function renderSpine(){ const sp = $('#spine'); sp.innerHTML = ''; $$('#u-'+unit+' section.sec').forEach(sec => { const a = el('a','sp'); a.href = '#'+sec.id; a.dataset.sec = sec.id; a.innerHTML = '<i></i><span class="lbl">'+t(sec.dataset.title)+'</span>'; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({behavior:'smooth', block:'start'}); }); sp.appendChild(a); }); }
+function updateNav(flash){
+  const secs = $$('#u-'+unit+' section.sec'); if (!secs.length) return;
+  const line = window.innerHeight * 0.35; let cur = secs[0];
+  secs.forEach(s => { if (s.getBoundingClientRect().top <= line) cur = s; });
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = secs[secs.length-1];
+  const changed = cur.id !== activeSec; activeSec = cur.id;
+  if (!visited[cur.id]) { visited[cur.id] = true; store('dbs_visited', visited); }
+  $$('#rail a').forEach(a => { const id = a.getAttribute('href').slice(1); a.classList.toggle('active', id === activeSec); a.classList.toggle('done', !!visited[id]); });
+  $$('#spine .sp').forEach(a => { const id = a.dataset.sec; a.classList.toggle('cur', id === activeSec); a.classList.toggle('done', !!visited[id] && id !== activeSec); });
+  const done = secs.filter(s => visited[s.id]).length; $('#prog').style.width = (100*done/secs.length) + '%';
+  if (flash || changed) { const sp = $('#spine'); sp.classList.add('show'); clearTimeout(spineTimer); spineTimer = setTimeout(() => sp.classList.remove('show'), 1800); }
+}
+window.addEventListener('scroll', () => { if (navTick) return; navTick = true; requestAnimationFrame(() => { navTick = false; updateNav(true); }); }, {passive:true});
+window.addEventListener('resize', () => updateNav(false));
+function applyRail(){ document.documentElement.classList.toggle('norail', !railOn); $('#btnToc').setAttribute('aria-pressed', String(railOn)); $('#btnTocT').textContent = railOn ? t('toc_hide') : t('toc_show'); store('dbs_rail', railOn); }
+$('#btnToc').addEventListener('click', () => { railOn = !railOn; applyRail(); updateNav(false); });
+
+/* =========================== LANG, PRESENTER, TEACHER =========================== */
+function applyLang(){
+  document.documentElement.lang = lang; document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+  $('#btnLang').textContent = lang === 'he' ? 'EN' : 'עב';
+  $$('[data-i18n]').forEach(e => e.innerHTML = t(e.dataset.i18n));
+  $$('[data-tnote]').forEach(e => { e.innerHTML = '<b>'+t('an_note_t')+':</b> ' + t(e.dataset.tnote+'_tnote'); e.hidden = !teacher; });
+  $('#btnPresent').textContent = document.documentElement.classList.contains('present') ? t('present_off') : t('present');
+  $('#btnTeacher').innerHTML = '🔑 ' + (teacher ? t('teacher_on') : t('teacher'));
+  renderHero(); renderAnomaly(); renderSchema(); renderLists(); renderQuiz('quizIntro','intro');
+  renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderExercise(); renderQuiz('quizRa','ra');
+  renderRail(); renderSpine(); applyRail(); store('dbs_lang', lang); updateNav(false);
+}
+$('#btnLang').addEventListener('click', () => { lang = lang === 'he' ? 'en' : 'he'; applyLang(); });
+$('#btnPresent').addEventListener('click', () => { document.documentElement.classList.toggle('present'); $('#btnPresent').textContent = document.documentElement.classList.contains('present') ? t('present_off') : t('present'); });
+document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'p' && !e.target.matches('input,select,textarea')) $('#btnPresent').click(); });
+function toast(msg){ const d = el('div','toast',msg); document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+$('#btnTeacher').addEventListener('click', () => {
+  if (teacher) return;
+  const dlg = el('div','dialog'); const box = el('div'); box.innerHTML = '<h3>'+t('t_title')+'</h3><p>'+t('t_body')+'</p>'; const inp = el('input'); inp.type='text'; inp.placeholder = t('t_ph'); inp.setAttribute('autocomplete','off'); const row = el('div','controls'); const ok = el('button','btn primary',t('t_ok')); const cancel = el('button','btn ghost',t('t_cancel')); const err = el('div','msg bad',t('t_bad')); err.hidden = true;
+  row.appendChild(ok); row.appendChild(cancel); box.appendChild(inp); box.appendChild(err); box.appendChild(row); dlg.appendChild(box); document.body.appendChild(dlg); inp.focus();
+  const tryIt = async () => { const h = await sha256('teacher:'+inp.value.trim()); if (h === TEACHER_HASH) { teacher = true; dlg.remove(); applyLang(); toast(t('t_good')); } else { err.hidden = false; } };
+  ok.addEventListener('click', tryIt); inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryIt(); }); cancel.addEventListener('click', () => dlg.remove()); dlg.addEventListener('click', e => { if (e.target === dlg) dlg.remove(); });
+});
+
+/* =========================== INIT =========================== */
+applyLang();
+setUnit(load('dbs_unit','intro'));
+</script>
+
+</body>
+</html>
