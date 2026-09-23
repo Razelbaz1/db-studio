@@ -464,6 +464,39 @@ html[dir="rtl"] .hero-l .kicker{text-align:end}
 .demo .dh i:nth-child(1){background:#F28B7E}.demo .dh i:nth-child(2){background:#F2B75A}.demo .dh i:nth-child(3){background:#6BD09A}
 .demo .dh span{margin-inline-start:.5rem}
 .lh{color:#fff;font-size:1.4rem;margin:.4rem 0 .9rem}
+/* ==STORY-CSS== scroll story section */
+.story{position:relative;background:#0B1416;color:#E6EEEC;direction:ltr}
+.story-track{height:520vh;position:relative}
+.story-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,#10201F 0%,#0B1416 70%)}
+.story-stage svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden}
+.story-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.story-cap{position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:max-content;max-width:min(54ch,88vw);text-align:center;font-family:"Heebo","Segoe UI",Arial,sans-serif;font-size:clamp(1.05rem,1.6vw,1.45rem);font-weight:500;line-height:1.45;color:#E6EEEC;text-wrap:balance;opacity:0;text-shadow:0 2px 16px rgba(0,0,0,.8);pointer-events:none;direction:rtl}
+html[lang="en"] .story-cap{direction:ltr}
+.story-end{position:absolute;left:50%;bottom:7vh;transform:translateX(-50%);opacity:0;pointer-events:none;display:flex;justify-content:center}
+.story-caps{display:none}
+.story.static .story-track{height:auto}
+.story.static .story-stage{position:relative;height:auto;aspect-ratio:16/9}
+.story.static .story-caps{display:flex;flex-direction:column;gap:.6rem;max-width:60ch;margin:1rem auto 2rem;padding:0 1rem;text-align:center;direction:rtl;font-family:"Heebo","Segoe UI",Arial,sans-serif}
+.story.static .story-caps p{margin:0;color:#93A5A1}
+html[lang="en"] .story.static .story-caps{direction:ltr}
+/* shared shape classes (all story svg classes start with s-) */
+.story svg .s-lf{fill:#0F1B1D;stroke:#2B3A37;stroke-width:1}
+.story svg .s-rt{fill:#152524;stroke:#2B3A37;stroke-width:1}
+.story svg .s-tp{fill:rgba(92,195,217,.12);stroke:#2B3A37;stroke-width:1}
+.story svg .s-lit .s-lf{fill:#1C6F7F}.story svg .s-lit .s-rt{fill:#2F97AD}.story svg .s-lit .s-tp{fill:url(#stCyan)}
+.story svg .s-cable{fill:none;stroke:#5CC3D9;stroke-width:2;stroke-linecap:round;opacity:.85}
+.story svg .s-cable.dim{stroke:#1C6F7F;opacity:.6}
+.story svg .s-mono{font-family:"IBM Plex Mono",Consolas,"Courier New",monospace}
+.story svg .s-text{font-family:"Heebo","Segoe UI",Arial,sans-serif}
+.story svg .s-rubik{font-family:"Rubik","Heebo",Arial,sans-serif;font-weight:800}
+.story svg .s-muted{fill:#93A5A1}
+.story svg .s-cyan{fill:#5CC3D9}
+.story svg .s-amber{fill:#E8A33A}
+.story svg .s-ink{fill:#E6EEEC}
+/* ==/STORY-CSS== */
+.gate{container-type:inline-size}
+@supports (width:1cqw){.story{width:100cqw;margin-inline:calc(50% - 50cqw)}}
+.story{margin-top:2.6rem;margin-bottom:2.6rem;border-top:1px solid #2B3A37;border-bottom:1px solid #2B3A37}
 .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;padding:0 0 2.4rem}
 .feat div{background:rgba(23,33,32,.72);border:1px solid #2B3A37;border-radius:14px;padding:1rem 1.1rem;transition:border-color .2s}
 .feat div:hover{border-color:#5CC3D9}
@@ -607,6 +640,9 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
         </div>
         <div class="demo b" style="--d:.6s"><div class="dh"><i></i><i></i><i></i><span>rowdyql · live</span></div><pre class="live" id="demoLive"></pre><div id="demoViz" hidden></div><div class="out" id="demoOut"></div><div id="demoTable"></div></div>
       </div>
+      <section class="story" id="story" aria-label="RowdyQL story">
+        <div class="story-track"><div class="story-stage"><div class="story-end"><button type="button" class="gbtn primary" id="ctaUp3" data-i18n="l_cta2"></button></div></div></div>
+      </section>
       <h2 class="lh b" style="--d:1.05s" data-i18n="l_feat_h"></h2>
       <div class="feat" id="feat"></div>
       <h2 class="lh b" style="--d:1.75s" data-i18n="l_how_h"></h2>
@@ -1217,7 +1253,7 @@ e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווי
 g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
 l_h1:"עוד לא מבינים מילה? הגעתם בול בזמן.",
 l_sub:"ברוכים הבאים ל-RowdyQL, סביבת התרגול של הקורס תכנון בסיסי נתונים. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת המבחן וברמת ראיונות עבודה.",
-l_cta:"מכאן מתחילים", l_have:"כבר יש לי חשבון",
+l_cta:"מכאן מתחילים", l_cta2:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
 l_feat_h:"מה יש בפנים", l_how_h:"איך זה עובד",
 l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."]],
 l_how:[["פותחים חשבון",""],["לומדים לפי המפגשים","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","ממחישים, תרגילים ובחינות עצמיות."]],
@@ -1456,7 +1492,7 @@ e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Letters
 g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
 l_h1:"Don't understand a word yet? Perfect timing.",
 l_sub:"Welcome to RowdyQL, the practice environment of the Database Design course. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
-l_cta:"Start here", l_have:"I already have an account",
+l_cta:"Start here", l_cta2:"Create an account, one minute", l_have:"I already have an account",
 l_feat_h:"What is inside", l_how_h:"How it works",
 l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."]],
 l_how:[["Create an account",""],["Learn by session","at your own pace, as much as you like."],["Practice until it sticks","visualizers, exercises and self-checks."]],
@@ -1539,6 +1575,1120 @@ const HOLO = (() => {
   return { mount, mountAll, play };
 })();
 /* ==/HOLO== */
+/* ==STORY-ENGINE== RowdyQL scroll story: a sticky 1600x900 stage driven by scroll progress p in [0,1].
+   Chapters register with STORY.register({id, layer, range:[a,b], captions:[{at:[a,b], he, en}], build(ctx, g), update(p, ctx, dt, time)}).
+   The engine owns: DOM, camera, particle flows (canvas), captions, the end box, reduced-motion/static mode. */
+const STORY = (() => {
+  const W = 1600, H = 900, NS = 'http://www.w3.org/2000/svg';
+  const LAYERS = ['bg', 'floor', 'farm', 'cables', 'pcs', 'queries', 'client', 'fx'];
+  const chapters = [], flows = [];
+  let root, stage, svg, defs, world, layers = {}, canvas, c2d, capBox, endBox, forced = null, isStatic = false, running = false, lastT = 0, dpr = 1, ctx;
+
+  /* ---- math ---- */
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const seg = (p, a, b) => clamp((p - a) / (b - a));
+  const ease = {
+    in: t => t * t, out: t => 1 - (1 - t) * (1 - t),
+    inOut: t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
+    outBack: t => 1 + 2.7 * Math.pow(t - 1, 3) + 1.7 * Math.pow(t - 1, 2),
+    expoIn: t => t <= 0 ? 0 : Math.pow(2, 10 * t - 10),
+    outCubic: t => 1 - Math.pow(1 - t, 3)
+  };
+  const CO = Math.cos(Math.PI / 6), SI = Math.sin(Math.PI / 6);
+  const f2 = n => Math.round(n * 100) / 100;
+  /* isometric projection: world (x right-back, y left-back, z up) -> stage px, with a screen origin o=[sx,sy] */
+  const iso = { P: (x, y, z, o) => [(o ? o[0] : 0) + (x - y) * CO, (o ? o[1] : 0) + (x + y) * SI - z] };
+
+  /* ---- svg helpers ---- */
+  function el(tag, attrs, parent){ const e = document.createElementNS(NS, tag); if (attrs) for (const k in attrs) { if (attrs[k] != null) e.setAttribute(k, attrs[k]); } if (parent) parent.appendChild(e); return e; }
+  const pts = arr => arr.map(q => f2(q[0]) + ',' + f2(q[1])).join(' ');
+  /* isometric box: origin o (stage px), footprint x,y,w,d in world units, height h. faces get classes s-lf s-rt s-tp; extra class on the group */
+  function box(parent, o, x, y, w, d, h, cls){
+    const P = (a, b, c) => iso.P(a, b, c, o); const g = el('g', { class: 's-box' + (cls ? ' ' + cls : '') }, parent);
+    el('polygon', { class: 's-lf', points: pts([P(x, y + d, h), P(x + w, y + d, h), P(x + w, y + d, 0), P(x, y + d, 0)]) }, g);
+    el('polygon', { class: 's-rt', points: pts([P(x + w, y, h), P(x + w, y + d, h), P(x + w, y + d, 0), P(x + w, y, 0)]) }, g);
+    el('polygon', { class: 's-tp', points: pts([P(x, y, h), P(x + w, y, h), P(x + w, y + d, h), P(x, y + d, h)]) }, g);
+    return g;
+  }
+  /* quadratic curve between stage points a and b; bend = perpendicular offset of the control point (px) */
+  function curve(a, b, bend){ const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2; const dx = b[0] - a[0], dy = b[1] - a[1]; const L = Math.hypot(dx, dy) || 1; const nx = -dy / L, ny = dx / L; return 'M' + f2(a[0]) + ',' + f2(a[1]) + ' Q' + f2(mx + nx * (bend || 0)) + ',' + f2(my + ny * (bend || 0)) + ' ' + f2(b[0]) + ',' + f2(b[1]); }
+  /* n+1 points along a path element (stage coords, before camera) */
+  function sample(pathEl, n){ const L = pathEl.getTotalLength(); const out = []; for (let i = 0; i <= n; i++) { const q = pathEl.getPointAtLength(L * i / n); out.push([q.x, q.y]); } return out; }
+  /* reveal a stroke from its start: t in [0,1] */
+  function drawIn(pathEl, t){ const L = pathEl._len || (pathEl._len = pathEl.getTotalLength() || 1); pathEl.style.strokeDasharray = L + ' ' + L; pathEl.style.strokeDashoffset = L * (1 - clamp(t)); }
+  function show(node, on){ node.style.opacity = typeof on === 'number' ? clamp(on) : (on ? 1 : 0); }
+
+  /* ---- particle flows on the canvas (stage coords; the engine applies the camera) ---- */
+  function flow(points, opts){
+    const fl = Object.assign({ color: '#5CC3D9', speed: 160, count: 12, size: 2.2, tail: 18, intensity: 0 }, opts || {}); fl.ps = [];
+    const setPoints = arr => { fl.points = arr; fl.seg = []; fl.len = 0; for (let i = 1; i < arr.length; i++) { const d = Math.hypot(arr[i][0] - arr[i - 1][0], arr[i][1] - arr[i - 1][1]); fl.seg.push(d); fl.len += d; } };
+    setPoints(points); for (let i = 0; i < fl.count; i++) fl.ps.push({ s: Math.random() * fl.len, v: fl.speed * (.7 + Math.random() * .6), a: .4 + Math.random() * .6 });
+    flows.push(fl); return { set: v => { fl.intensity = clamp(v); }, setPoints, fl };
+  }
+  function posAt(fl, s){ let i = 0; while (i < fl.seg.length - 1 && s > fl.seg[i]) { s -= fl.seg[i]; i++; } const a = fl.points[i], b = fl.points[i + 1] || a; const t = fl.seg[i] ? clamp(s / fl.seg[i]) : 0; return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]; }
+  function drawParticles(dt, cam){
+    const r = svg.getBoundingClientRect(); if (!r.width) return; const cw = Math.round(r.width * dpr), chh = Math.round(r.height * dpr);
+    if (canvas.width !== cw || canvas.height !== chh) { canvas.width = cw; canvas.height = chh; }
+    const s = Math.min(r.width / W, r.height / H), ox = (r.width - W * s) / 2, oy = (r.height - H * s) / 2;
+    c2d.setTransform(1, 0, 0, 1, 0, 0); c2d.clearRect(0, 0, cw, chh); c2d.scale(dpr, dpr); c2d.translate(ox + s * cam.tx, oy + s * cam.ty); c2d.scale(s * cam.k, s * cam.k); c2d.lineCap = 'round';
+    flows.forEach(fl => { if (fl.intensity <= 0 || fl.len <= 0) return;
+      fl.ps.forEach(q => { q.s += q.v * dt; if (q.s > fl.len) q.s -= fl.len; const h = posAt(fl, q.s), tl = posAt(fl, Math.max(0, q.s - fl.tail));
+        c2d.globalAlpha = fl.intensity * q.a; c2d.strokeStyle = fl.color; c2d.lineWidth = fl.size; c2d.beginPath(); c2d.moveTo(tl[0], tl[1]); c2d.lineTo(h[0], h[1]); c2d.stroke();
+        c2d.fillStyle = fl.color; c2d.shadowColor = fl.color; c2d.shadowBlur = 10; c2d.beginPath(); c2d.arc(h[0], h[1], fl.size * 1.1, 0, 6.2832); c2d.fill(); c2d.shadowBlur = 0; }); });
+    c2d.globalAlpha = 1;
+  }
+
+  /* ---- camera: keyframes [p, center, scale] ---- */
+  const anchors = { FARM: [380, 470], PCS: [[820, 330], [960, 560], [1120, 400]], HOLO: [960, 250], GLOBE: [1330, 230], PIPES: { x1: 150, x2: 1450, y1: 110, y2: 190 }, CLIENT: [1060, 610] };
+  const CAM = [[0, [520, 470], 1.3], [.3, [800, 450], 1], [.72, [800, 450], 1], [.92, [1060, 600], 1.35], [1, [1060, 600], 1.35]];
+  function camera(p){ let i = 0; while (i < CAM.length - 2 && p > CAM[i + 1][0]) i++; const a = CAM[i], b = CAM[i + 1]; const t = ease.inOut(seg(p, a[0], b[0])); const c = [lerp(a[1][0], b[1][0], t), lerp(a[1][1], b[1][1], t)], k = lerp(a[2], b[2], t); return { tx: W / 2 - k * c[0], ty: H / 2 - k * c[1], k, c }; }
+
+  /* ---- captions ---- */
+  const curLang = () => (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'he';
+  function updateCaptions(p){ let best = null; chapters.forEach(ch => (ch.captions || []).forEach(c => { if (p >= c.at[0] && p <= c.at[1]) best = c; })); if (!best) { capBox.style.opacity = 0; return; }
+    const txt = best[curLang()] || best.he; if (capBox.textContent !== txt) capBox.textContent = txt; capBox.style.opacity = Math.min(seg(p, best.at[0], best.at[0] + .035), 1 - seg(p, best.at[1] - .035, best.at[1])); }
+
+  /* ---- progress + loop ---- */
+  function progress(){ if (forced != null) return forced; const r = root.getBoundingClientRect(); const d = r.height - innerHeight; return d > 0 ? clamp(-r.top / d) : 1; }
+  function applyCam(cam){ world.setAttribute('transform', 'translate(' + cam.tx.toFixed(1) + ' ' + cam.ty.toFixed(1) + ') scale(' + cam.k.toFixed(3) + ')'); }
+  function tick(p, dt, time){ const cam = camera(p); applyCam(cam); chapters.forEach(ch => { try { ch.update(p, ctx, dt, time); } catch (e) { console.error('story chapter ' + ch.id, e); } }); updateCaptions(p); if (endBox) { const o = seg(p, .9, .97); endBox.style.opacity = o; endBox.style.pointerEvents = o > .5 ? 'auto' : 'none'; } drawParticles(dt, cam); }
+  function frame(t){ if (!running) return; const dt = Math.min(.05, lastT ? (t - lastT) / 1000 : .016); lastT = t; tick(progress(), dt, t / 1000); requestAnimationFrame(frame); }
+  function start(){ if (running || isStatic) return; running = true; lastT = 0; requestAnimationFrame(frame); }
+  function stop(){ running = false; }
+
+  /* ---- init ---- */
+  function init(section, opts){
+    opts = opts || {}; root = section.querySelector('.story-track'); stage = section.querySelector('.story-stage'); endBox = section.querySelector('.story-end');
+    isStatic = !!opts.static || matchMedia('(prefers-reduced-motion: reduce)').matches; forced = (opts.force != null) ? clamp(opts.force) : null; dpr = Math.min(2, devicePixelRatio || 1);
+    svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, preserveAspectRatio: 'xMidYMid meet', 'aria-hidden': 'true' }); stage.insertBefore(svg, stage.firstChild);
+    defs = el('defs', null, svg);
+    defs.innerHTML = '<filter id="stGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+      + '<filter id="stGlow2" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+      + '<filter id="stBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>'
+      + '<linearGradient id="stCyan" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FE0EF"/><stop offset="1" stop-color="#3FB1C9"/></linearGradient>'
+      + '<radialGradient id="stHalo"><stop offset="0" stop-color="#5CC3D9" stop-opacity=".45"/><stop offset="1" stop-color="#5CC3D9" stop-opacity="0"/></radialGradient>'
+      + '<radialGradient id="stAmberHalo"><stop offset="0" stop-color="#E8A33A" stop-opacity=".5"/><stop offset="1" stop-color="#E8A33A" stop-opacity="0"/></radialGradient>';
+    world = el('g', { id: 'stWorld' }, svg); LAYERS.forEach(n => { layers[n] = el('g', { class: 's-layer', 'data-layer': n }, world); });
+    canvas = document.createElement('canvas'); canvas.className = 'story-fx'; stage.insertBefore(canvas, endBox || null); c2d = canvas.getContext('2d');
+    capBox = document.createElement('div'); capBox.className = 'story-cap'; stage.insertBefore(capBox, endBox || null);
+    ctx = { W, H, el, box, curve, sample, drawIn, show, iso, seg, lerp, clamp, ease, flow, anchors, defs, glow: 'url(#stGlow)', glow2: 'url(#stGlow2)', layer: n => layers[n] || layers.fx, lang: curLang, local: (p, ch) => seg(p, ch.range[0], ch.range[1]) };
+    chapters.sort((a, b) => LAYERS.indexOf(a.layer) - LAYERS.indexOf(b.layer));
+    chapters.forEach(ch => { ch.g = el('g', { class: 's-ch', 'data-ch': ch.id }, layers[ch.layer] || layers.fx); try { ch.build(ctx, ch.g); } catch (e) { console.error('story build ' + ch.id, e); } });
+    if (isStatic) { section.classList.add('static'); const list = document.createElement('div'); list.className = 'story-caps'; chapters.forEach(ch => (ch.captions || []).forEach(c => { const p = document.createElement('p'); p.textContent = c[curLang()] || c.he; list.appendChild(p); })); section.appendChild(list); tick(1, 0, 0); if (endBox) { endBox.style.opacity = 1; endBox.style.pointerEvents = 'auto'; } return; }
+    if (forced != null) { for (let i = 0; i < 90; i++) tick(forced, .016, i * .016); start(); return; }
+    const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? start() : stop()), { rootMargin: '120px 0px' }); io.observe(root);
+    tick(progress(), .016, 0);
+  }
+  function register(ch){ if (!ch || !ch.id || typeof ch.build !== 'function' || typeof ch.update !== 'function') throw new Error('bad chapter'); ch.layer = ch.layer || 'fx'; ch.range = ch.range || [0, 1]; chapters.push(ch); return ch; }
+  return { init, register, force: p => { forced = p == null ? null : clamp(p); }, chapters, W, H };
+})();
+/* ==/STORY-ENGINE== */
+
+/* ch1_farm.js — RowdyQL scroll story, chapter "farm" (global p 0.00–0.25).
+   A server farm rises out of a glowing isometric floor. The floor plate, its grid, halo, sockets, socket light and
+   floor rings are added to the 'floor' layer; the seven racks (a back row of four, two front racks and a tall central
+   core) live in this chapter's group on the 'farm' layer. Each rack is clipped to the column above its socket and
+   translated down into the floor, so it pushes up like a button (slow start, fast rise, small overshoot, settle).
+   LEDs blink with time; the core lands with an amber pulse, two burst rings, slow continuous rings and a thin stream
+   of particles rising from its top. Uses only stage px around FARM [380,470]; region x 120…640, y 300…640. */
+(function () {
+  const CO = Math.cos(Math.PI / 6), SI = Math.sin(Math.PI / 6), TAN = SI / CO;
+  const O = [380, 390];      // stage px of the floor surface's back corner (world z = 0); world axes run 0..S
+  const S = 240;             // floor size in world units
+  const RACKS = [            // footprint x,y,w,d and height h in world px; s = global p where the rise starts
+    { x: 24,  y: 30,  w: 36, d: 36, h: 100, n: 5, s: .015, dur: .05 },
+    { x: 76,  y: 30,  w: 36, d: 36, h: 100, n: 5, s: .037, dur: .05 },
+    { x: 128, y: 30,  w: 36, d: 36, h: 100, n: 5, s: .059, dur: .05 },
+    { x: 180, y: 30,  w: 36, d: 36, h: 100, n: 5, s: .081, dur: .05 },
+    { x: 20,  y: 150, w: 36, d: 36, h: 100, n: 5, s: .103, dur: .05 },
+    { x: 184, y: 150, w: 36, d: 36, h: 100, n: 5, s: .125, dur: .05 },
+    { x: 98,  y: 146, w: 44, d: 44, h: 150, n: 8, s: .16,  dur: .06, core: true }
+  ];
+  const st = { racks: [], leds: [], rings: [], motes: [], lastP: -1, amp: 0, ringGate: 0, fgBase: .3, moteGate: .35 };
+  const f2 = n => Math.round(n * 100) / 100;
+  let P, f, pts;
+
+  /* button-like rise: nothing happens for a while, then a fast climb, ~9% overshoot, settle */
+  const rise = (E, t) => t <= 0 ? 0 : t >= 1 ? 1 : E.outBack(t * t * t);
+  const ledPattern = (mode, time, ph) => {
+    switch (mode) {
+      case 1: return Math.sin(time * 1.6 + ph) > .1 ? 1 : .18;                 // slow blink
+      case 2: return Math.sin(time * 9 + ph) > .3 ? 1 : .2;                    // activity flicker
+      case 3: return .55 + .45 * Math.sin(time * 2.4 + ph);                    // breathing
+      case 4: return (((time * 1.2 + ph) % 1) + 1) % 1 < .12 ? 1 : .25;       // heartbeat
+      default: return 1;                                                        // steady power LED
+    }
+  };
+
+  function buildFloor(ctx){
+    const fl = ctx.el('g', { class: 's-farm-floor' }, ctx.layer('floor'));
+    st.halo = ctx.el('ellipse', { cx: 380, cy: 512, rx: 270, ry: 150, fill: 'url(#stHalo)' }, fl);
+    const plate = ctx.box(fl, [O[0], O[1] + 8], 0, 0, S, S, 8, 's-plate');
+    plate.children[2].style.fill = '#0D1A1C';
+    const cp = ctx.el('clipPath', { id: 'farm-cpFloor' }, ctx.defs);
+    ctx.el('polygon', { points: pts([P(0, 0, 0), P(S, 0, 0), P(S, S, 0), P(0, S, 0)]) }, cp);
+    const fg = ctx.el('g', { 'clip-path': 'url(#farm-cpFloor)' }, fl);       // things that must stay on the plate
+    st.fglow = ctx.el('ellipse', { cx: 380, cy: 510, rx: 270, ry: 150, fill: 'url(#stHalo)' }, fg);
+    RACKS.forEach(r => {                                                       // light leaking out of every socket
+      const c = P(r.x + r.w / 2, r.y + r.d / 2, 0), rx = (r.w + r.d) * CO / 2 * 1.4;
+      r.glow = ctx.el('ellipse', { cx: f2(c[0]), cy: f2(c[1]), rx: f2(rx), ry: f2(rx * TAN), fill: r.core ? 'url(#stAmberHalo)' : 'url(#stHalo)', opacity: 0 }, fg);
+    });
+    const cc = P(120, 168, 0);                                                 // rings from the core: 3 continuous + 2 bursts
+    for (let k = 0; k < 5; k++) st.rings.push(ctx.el('ellipse', { cx: f2(cc[0]), cy: f2(cc[1]), rx: 20, ry: f2(20 * TAN), fill: 'none', stroke: '#5CC3D9', 'stroke-width': k < 3 ? 1.1 : 1.6, opacity: 0 }, fg));
+    let gd = ''; for (let k = 1; k < 10; k++) { const t = S * k / 10; gd += 'M' + f(P(t, 0, 0)) + 'L' + f(P(t, S, 0)) + 'M' + f(P(0, t, 0)) + 'L' + f(P(S, t, 0)); }
+    ctx.el('path', { d: gd, fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1, opacity: .18 }, fl);
+    let sd = ''; RACKS.forEach(r => { sd += 'M' + f(P(r.x, r.y, 0)) + 'L' + f(P(r.x + r.w, r.y, 0)) + 'L' + f(P(r.x + r.w, r.y + r.d, 0)) + 'L' + f(P(r.x, r.y + r.d, 0)) + 'Z'; });
+    ctx.el('path', { d: sd, fill: 'rgba(92,195,217,.06)', stroke: '#5CC3D9', 'stroke-width': 1, opacity: .35 }, fl);
+    ctx.el('path', { d: 'M' + f(P(0, 0, 0)) + 'L' + f(P(S, 0, 0)) + 'L' + f(P(S, S, 0)) + 'L' + f(P(0, S, 0)) + 'Z', fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1.5, opacity: .55, filter: ctx.glow }, fl);
+    const lp = P(14, S - 8, 0);                                                // label lying on the plate along the front-left edge
+    const label = ctx.el('text', { class: 's-mono s-muted', 'font-size': 9, opacity: .6, transform: 'matrix(' + [CO, SI, -CO, SI, lp[0], lp[1]].map(v => v.toFixed(3)).join(' ') + ')' }, fl);
+    label.textContent = 'DC-01 · RACK FARM';
+  }
+
+  function buildRack(ctx, g, r, i){
+    const { x, y, w, d, h } = r;
+    const cp = ctx.el('clipPath', { id: 'farm-cp' + i }, ctx.defs);           // the column above the socket
+    ctx.el('polygon', { points: pts([P(x, y + d, 0), P(x + w, y + d, 0), P(x + w, y, 0), P(x + w, y, 420), P(x, y + d, 420)]) }, cp);
+    const wrap = ctx.el('g', { 'clip-path': 'url(#farm-cp' + i + ')' }, g);
+    const mv = ctx.el('g', { class: 's-rack' + (r.core ? ' s-core' : '') }, wrap);
+    const bx = ctx.box(mv, O, x, y, w, d, h);
+    if (r.core) { const tp = bx.children[2]; tp.style.fill = 'url(#stCyan)'; tp.style.fillOpacity = .85; }
+    const u = (h - 14) / r.n;
+    let sd = '', hd = '';                                                      // unit rails + handles on the front-left face
+    for (let k = 0; k <= r.n; k++) { const z = 7 + k * u; sd += 'M' + f(P(x, y + d, z)) + 'L' + f(P(x + w, y + d, z)); }
+    for (let k = 0; k < r.n; k++) { if (r.core && k === r.n - 1) continue; const z = 7 + (k + .5) * u; hd += 'M' + f(P(x + w * .1, y + d, z)) + 'L' + f(P(x + w * .5, y + d, z)); }
+    ctx.el('path', { d: sd, fill: 'none', stroke: '#2B3A37', 'stroke-width': 1 }, mv);
+    ctx.el('path', { d: hd, fill: 'none', stroke: '#93A5A1', 'stroke-width': 1, opacity: .28 }, mv);
+    let vd = ''; for (let k = 1; k <= 3; k++) { const yy = y + d * k / 4; vd += 'M' + f(P(x + w, yy, 10)) + 'L' + f(P(x + w, yy, h - 10)); }
+    ctx.el('path', { d: vd, fill: 'none', stroke: '#1F2F2C', 'stroke-width': 1.2 }, mv);                 // vents on the right face
+    ctx.el('path', { d: 'M' + f(P(x + w, y + d, 0)) + 'L' + f(P(x + w, y + d, h)), fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1.2, opacity: .55, filter: ctx.glow }, mv);   // lit front edge
+    const m = r.core ? 11 : 5;
+    const inset = ctx.el('polygon', { points: pts([P(x + m, y + m, h), P(x + w - m, y + m, h), P(x + w - m, y + d - m, h), P(x + m, y + d - m, h)]),
+      fill: r.core ? '#E8A33A' : 'none', stroke: r.core ? '#F3C170' : '#5CC3D9', 'stroke-width': .8, opacity: r.core ? .9 : .35, filter: r.core ? ctx.glow : null }, mv);
+    if (r.core) {
+      st.tile = inset;
+      const z1 = 7 + (r.n - 1) * u + 3, z2 = 7 + r.n * u - 3;                 // status display in the top unit
+      ctx.el('polygon', { points: pts([P(x + 4, y + d, z1), P(x + w * .62, y + d, z1), P(x + w * .62, y + d, z2), P(x + 4, y + d, z2)]), fill: 'rgba(92,195,217,.3)', stroke: '#5CC3D9', 'stroke-width': .8, opacity: .85 }, mv);
+      let bd = ''; for (let k = 0; k < 3; k++) { const z = z2 - 3 - k * ((z2 - z1 - 6) / 2); bd += 'M' + f(P(x + 7, y + d, z)) + 'L' + f(P(x + 7 + (w * .62 - 11) * (.95 - k * .3), y + d, z)); }
+      ctx.el('path', { d: bd, fill: 'none', stroke: '#8FE0EF', 'stroke-width': 1.2, opacity: .9 }, mv);
+    }
+    const lg = ctx.el('g', { filter: ctx.glow }, mv);
+    const cols = r.core ? [.7, .86] : [.84];
+    cols.forEach((cx, ci) => { for (let k = 0; k < r.n; k++) {
+      if (r.core && k === r.n - 1) continue;
+      const z = 7 + (k + .5) * u, q = P(x + w * cx, y + d, z);
+      const amber = r.core ? k === 0 : (i * 3 + k) % 13 === 6;
+      const led = ctx.el('circle', { cx: f2(q[0]), cy: f2(q[1]), r: r.core ? 1.7 : 1.5, fill: amber ? '#E8A33A' : '#5CC3D9' }, lg);
+      st.leds.push({ el: led, rk: r, mode: amber ? 0 : (i * 2 + k * 3 + ci * 2) % 5, ph: (i * 1.7 + k * 2.3 + ci) % 6.28 });
+    } });
+    r.mv = mv; r.t = 0; r.on = 0; st.racks.push(r); if (r.core) st.core = r;
+  }
+
+  STORY.register({
+    id: 'farm', layer: 'farm', range: [0, .25],
+    captions: [{ at: [.03, .22],
+      he: 'ברוכים הבאים לעולם של מסדי הנתונים. הכול מתחיל בחוות שרתים.',
+      en: 'Welcome to the world of databases. It all starts in a server farm.' }],
+    build(ctx, g){
+      P = (x, y, z) => ctx.iso.P(x, y, z, O);
+      f = q => q[0].toFixed(1) + ',' + q[1].toFixed(1);
+      pts = arr => arr.map(f).join(' ');
+      buildFloor(ctx);
+      RACKS.map((r, i) => ({ r, i })).sort((a, b) => (a.r.x + a.r.w / 2 + a.r.y + a.r.d / 2) - (b.r.x + b.r.w / 2 + b.r.y + b.r.d / 2)).forEach(o => buildRack(ctx, g, o.r, o.i));
+      const ct = P(120, 168, 150);                                             // core top centre
+      st.amberHalo = ctx.el('ellipse', { cx: f2(ct[0]), cy: f2(ct[1]), rx: 36, ry: 21, fill: 'url(#stAmberHalo)', opacity: 0 }, g);
+      st.floorFlow = ctx.flow([P(0, S, 0), P(S, S, 0), P(S, 0, 0)], { color: '#5CC3D9', speed: 80, count: 10, size: 1.5, tail: 14 });   // front edges only (the canvas draws above the racks)
+      st.coreFlow = ctx.flow([[ct[0], ct[1] - 4], [ct[0], ct[1] - 72]], { color: '#8FE0EF', speed: 30, count: 5, size: 1.4, tail: 12 });
+      for (let k = 0; k < 10; k++) {                                           // motes drifting up from the plate
+        const b = P(30 + (k * 67) % 180, 30 + (k * 113) % 180, 0), m = { bx: b[0], by: b[1], h: 150 + (k * 37) % 80, sp: 9 + (k * 5) % 10, ph: (k * .37) % 1, k };
+        m.el = ctx.el('circle', { cx: f2(b[0]), cy: f2(b[1]), r: 1 + (k % 3) * .35, fill: '#8FE0EF', opacity: 0 }, g); st.motes.push(m);
+      }
+    },
+    update(p, ctx, dt, time){
+      const E = ctx.ease, seg = ctx.seg;
+      if (p !== st.lastP) {                                                    // scroll-driven bits, only when p changes
+        st.lastP = p;
+        st.halo.style.opacity = .55 + .45 * seg(p, 0, .1);
+        st.racks.forEach(rk => { rk.t = seg(p, rk.s, rk.s + rk.dur); rk.on = seg(rk.t, .7, .95); rk.mv.setAttribute('transform', 'translate(0 ' + (rk.h * (1 - rise(E, rk.t))).toFixed(2) + ')'); });
+        st.amp = seg(st.core.t, .75, .92) * (1 - .55 * seg(p, .215, .28));      // amber pulse: peaks as the core lands, then rests at ~45%
+        st.ringGate = seg(p, .215, .255);
+        st.fgBase = .35 + .6 * seg(p, .06, .22);
+        st.moteGate = .35 + .65 * seg(p, .1, .24);
+        st.floorFlow.set(.3 + .3 * seg(p, 0, .12));
+        st.coreFlow.set(.85 * seg(p, .212, .26));
+        [seg(p, .208, .275), seg(p, .222, .295)].forEach((b, k) => { const r = st.rings[3 + k], rx = 18 + 200 * E.out(b); r.setAttribute('rx', rx.toFixed(1)); r.setAttribute('ry', (rx * TAN).toFixed(1)); r.style.opacity = (b > 0 && b < 1) ? .9 * (1 - b) : 0; });
+      }
+      st.fglow.style.opacity = st.fgBase + .06 * Math.sin(time * 1.3);
+      st.racks.forEach((rk, i) => { const t = rk.t; rk.glow.style.opacity = (.15 + .45 * seg(t, .6, 1) + .55 * Math.sin(Math.PI * seg(t, .35, 1))) * (.85 + .15 * Math.sin(time * 1.7 + i)); });
+      st.motes.forEach(m => { const u = ((time * m.sp / m.h + m.ph) % 1 + 1) % 1; m.el.setAttribute('cy', (m.by - u * m.h).toFixed(1)); m.el.setAttribute('cx', (m.bx + 5 * Math.sin(time * .7 + m.k)).toFixed(1)); m.el.style.opacity = st.moteGate * .85 * Math.sin(Math.PI * u); });
+      st.leds.forEach(L => { L.el.style.opacity = L.rk.on ? L.rk.on * ledPattern(L.mode, time, L.ph) : 0; });
+      const amp = st.amp, br = .72 + .28 * Math.sin(time * 2.2);
+      st.amberHalo.style.opacity = amp * br;
+      const rx = 36 + 50 * amp * (.8 + .2 * br); st.amberHalo.setAttribute('rx', rx.toFixed(1)); st.amberHalo.setAttribute('ry', (rx * .58).toFixed(1));
+      st.tile.style.opacity = .5 + .5 * amp * br;
+      for (let k = 0; k < 3; k++) { const u = (time * .11 + k / 3) % 1, r = st.rings[k], rr = 24 + 186 * u; r.setAttribute('rx', rr.toFixed(1)); r.setAttribute('ry', (rr * TAN).toFixed(1)); r.style.opacity = st.ringGate * .4 * (1 - u) * Math.min(1, u * 8); }
+    }
+  });
+})();
+
+/* ==STORY-CH2== chapter "links": glowing cables grow from the farm to three workstations, neuron nodes pulse along them,
+   the middle desk projects a rotating 3x3x3 lattice hologram, particle streams run farm -> desks. (RowdyQL scroll story) */
+(function () {
+  'use strict';
+  const CY = '#5CC3D9', CY2 = '#8FE0EF', CYW = '#E9FBFF', TEAL = '#1C6F7F', TEAL2 = '#0E5566', EDGE = '#2B3A37', MUTED = '#93A5A1';
+  const FROM = [560, 470], BENDS = [-90, 40, -40];
+  const NEU = [[.27, .55, .8], [.3, .52, .77], [.24, .5, .78]];            /* neuron positions along each cable (0..1) */
+  const f2 = n => Math.round(n * 100) / 100;
+  const pts = arr => arr.map(q => f2(q[0]) + ',' + f2(q[1])).join(' ');
+  const ln = (a, b) => 'M' + f2(a[0]) + ',' + f2(a[1]) + 'L' + f2(b[0]) + ',' + f2(b[1]);
+  const hash = (a, b, c) => { const v = Math.sin(a * 12.9898 + b * 78.233 + c * 37.719) * 43758.5453; return v - Math.floor(v); };
+  const S = { cables: [], desks: [], holo: null, lastP: -1, lastZf: -1, jn: null };
+
+  /* ---- one workstation: floor plate + halo, two panel legs, slab, keyboard, mouse, monitor on a stand, port ---- */
+  function buildDesk(ctx, parent, i) {
+    const E = ctx.el, P = ctx.iso.P, o = ctx.anchors.PCS[i];
+    const oF = [o[0], o[1] + 35], oS = [o[0], o[1] + 5], oM = [o[0], o[1] - 8.5];
+    const g = E('g', { class: 's-ws', opacity: 0 }, parent);
+    const fc = P(40, -19, 0, oF);
+    E('ellipse', { cx: f2(fc[0]), cy: f2(fc[1]), rx: 88, ry: 42, fill: 'url(#stHalo)', opacity: .55 }, g);
+    E('polygon', { points: pts([P(-20, -58, 0, oF), P(100, -58, 0, oF), P(100, 20, 0, oF), P(-20, 20, 0, oF)]), fill: 'rgba(92,195,217,.03)', stroke: EDGE, 'stroke-width': 1 }, g);
+    const lp = P(12, 14, 0, oF);
+    const label = E('text', { class: 's-mono', 'font-size': 9, fill: MUTED, opacity: .7, transform: 'matrix(.866 .5 -.866 .5 ' + f2(lp[0]) + ' ' + f2(lp[1]) + ')' }, g);
+    label.textContent = 'WS-0' + (i + 1) + ' · 10.0.0.' + (11 + i);
+    ctx.box(g, oF, -4, -46, 6, 54, 30); ctx.box(g, oF, 82, -46, 6, 54, 30);          /* panel legs */
+    const slab = ctx.box(g, oS, -8, -46, 96, 54, 5); slab.querySelector('.s-tp').style.fill = '#142A2C';
+    ctx.box(g, o, 30, -22, 34, 12, 2.5);                                                /* keyboard */
+    let kd = ''; for (let r = 0; r < 3; r++) { const y = -19.5 + r * 3.5; kd += ln(P(33, y, 2.7, o), P(61, y, 2.7, o)); }
+    E('path', { d: kd, stroke: 'rgba(92,195,217,.45)', 'stroke-width': 1, fill: 'none' }, g);
+    const mp = P(72, -15, 1.2, o); E('ellipse', { cx: f2(mp[0]), cy: f2(mp[1]), rx: 3.6, ry: 2.4, fill: '#152524', stroke: EDGE, 'stroke-width': 1 }, g);
+    ctx.box(g, o, 48, -46, 20, 10, 1.5);                                                /* stand base */
+    ctx.box(g, [o[0], o[1] - 1.5], 54, -44, 8, 5, 7);                                   /* neck */
+    const sc = P(58, -40, 19.5, oM);
+    const mhalo = E('ellipse', { cx: f2(sc[0]), cy: f2(sc[1]), rx: 58, ry: 38, fill: 'url(#stHalo)', opacity: 0 }, g);
+    ctx.box(g, oM, 28, -44, 60, 4, 38);                                                 /* monitor slab */
+    const sq = pts([P(31, -40, 35, oM), P(85, -40, 35, oM), P(85, -40, 3.5, oM), P(31, -40, 3.5, oM)]);
+    E('polygon', { points: sq, fill: '#0B1416', stroke: TEAL, 'stroke-width': .7 }, g);
+    const scr = E('g', { opacity: 0 }, g);
+    E('polygon', { points: sq, fill: 'url(#stCyan)', opacity: .92, filter: ctx.glow }, scr);
+    let bd = ''; [[35, 29, 30], [35, 24.5, 44], [35, 20, 22], [39, 15.5, 34], [35, 11, 16]].forEach(b => { bd += ln(P(b[0], -40, b[1], oM), P(b[0] + b[2], -40, b[1], oM)); });
+    E('path', { d: bd, stroke: TEAL2, 'stroke-width': 1.7, 'stroke-linecap': 'round', fill: 'none', opacity: .85 }, scr);
+    const port = E('g', { opacity: .35 }, g);                                            /* cable port on the desk top, at the anchor */
+    E('circle', { cx: o[0], cy: o[1], r: 13, fill: 'url(#stHalo)' }, port);
+    E('circle', { cx: o[0], cy: o[1], r: 4.6, fill: '#0B1416', stroke: CY, 'stroke-width': 1.3 }, port);
+    E('circle', { cx: o[0], cy: o[1], r: 1.9, fill: CYW, filter: ctx.glow }, port);
+    const flash = E('circle', { cx: 0, cy: 0, r: 5, fill: 'none', stroke: CY2, 'stroke-width': 1.2, opacity: 0, transform: 'translate(' + o[0] + ' ' + o[1] + ')' }, g);
+    let puck = null;
+    if (i === 1) {                                                                       /* hologram projector puck */
+      ctx.box(g, o, 0, -30, 12, 12, 3, 's-lit');
+      const pt = P(6, -24, 3.3, o); E('ellipse', { cx: f2(pt[0]), cy: f2(pt[1]), rx: 5, ry: 2.5, fill: 'none', stroke: CYW, 'stroke-width': .9, opacity: .9 }, g);
+      puck = [pt[0], pt[1]];
+    }
+    return { g, scr, mhalo, flash, port, o, puck, lit: 0 };
+  }
+
+  /* ---- hologram: light cone from the puck, halo disc, base rings, two rising scan rings, 3x3x3 lattice ---- */
+  function buildHolo(ctx, parent, puck) {
+    const E = ctx.el, H = ctx.anchors.HOLO, baseY = H[1] + 52;
+    const lg = E('linearGradient', { id: 'links-beam', x1: 0, y1: 0, x2: 0, y2: 1 }, ctx.defs);
+    E('stop', { offset: 0, 'stop-color': CY, 'stop-opacity': .02 }, lg);
+    E('stop', { offset: 1, 'stop-color': CY, 'stop-opacity': .32 }, lg);
+    const g = E('g', { class: 's-holo', opacity: 0 }, parent);
+    const cone = E('polygon', { points: pts([[puck[0] - 5, puck[1]], [puck[0] + 5, puck[1]], [H[0] + 48, baseY], [H[0] - 48, baseY]]), fill: 'url(#links-beam)', opacity: 0 }, g);
+    E('circle', { cx: f2(puck[0]), cy: f2(puck[1]), r: 3, fill: CYW, filter: ctx.glow2 }, g);
+    E('circle', { cx: H[0], cy: H[1], r: 66, fill: 'url(#stHalo)', opacity: .9 }, g);
+    E('ellipse', { cx: H[0], cy: baseY, rx: 46, ry: 13, fill: 'none', stroke: CY, 'stroke-width': .8, opacity: .5 }, g);
+    E('ellipse', { cx: H[0], cy: baseY, rx: 30, ry: 8.5, fill: 'none', stroke: CY, 'stroke-width': .6, opacity: .3 }, g);
+    const rings = [0, 1].map(() => E('ellipse', { cx: H[0], cy: baseY, rx: 10, ry: 3, fill: 'none', stroke: CY2, 'stroke-width': .8, opacity: 0 }, g));
+    const lat = E('g', { filter: ctx.glow }, g);
+    const lines = [0, 1, 2].map(k => E('path', { d: '', fill: 'none', stroke: CY, 'stroke-width': 1, opacity: k === 2 ? .78 : .65 }, lat));
+    const dots = []; for (let n = 0; n < 27; n++) dots.push(E('circle', { r: 2, fill: n === 13 ? CYW : CY2 }, lat));
+    dots[13].setAttribute('filter', ctx.glow2);
+    return { g, cone, rings, lat, lines, dots, puck, baseY, H, h: 0, vis: 0 };
+  }
+  const idx = (i, j, k) => (i + 1) * 9 + (j + 1) * 3 + (k + 1);
+  function projectLattice(ctx, time, bob) {
+    const Hh = S.holo, o = [Hh.H[0], Hh.H[1] + bob], sp = 26, a = time * .42, ca = Math.cos(a), sa = Math.sin(a);
+    const pos = new Array(27); let n = 0;
+    for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (let k = -1; k <= 1; k++) {
+      const x = i * sp, y = j * sp, xr = x * ca - y * sa, yr = x * sa + y * ca;
+      const q = ctx.iso.P(xr, yr, k * sp, o); pos[n] = q;
+      const w = ctx.clamp(((xr + yr) / (2 * sp) + 1) / 2);                              /* depth: 1 = nearest */
+      const c = Hh.dots[n]; c.setAttribute('cx', f2(q[0])); c.setAttribute('cy', f2(q[1]));
+      c.setAttribute('r', n === 13 ? 3.8 : f2(1.8 + 1.3 * w)); c.style.opacity = n === 13 ? 1 : .35 + .65 * w;
+      n++;
+    }
+    const d = ['', '', ''];
+    for (let u = -1; u <= 1; u++) for (let v = -1; v <= 1; v++) {
+      d[0] += ln(pos[idx(-1, u, v)], pos[idx(1, u, v)]); d[1] += ln(pos[idx(u, -1, v)], pos[idx(u, 1, v)]); d[2] += ln(pos[idx(u, v, -1)], pos[idx(u, v, 1)]);
+    }
+    for (let k = 0; k < 3; k++) Hh.lines[k].setAttribute('d', d[k]);
+  }
+
+  STORY.register({
+    id: 'links', layer: 'cables', range: [0.18, 0.48],
+    captions: [{ at: [0.215, 0.445], he: 'השרתים לא עובדים לבד. כבלים, רשתות ומחשבים מדברים איתם כל הזמן.', en: 'Servers never work alone. Cables, networks and computers talk to them all the time.' }],
+
+    build(ctx, g) {
+      const E = ctx.el, A = ctx.anchors;
+      /* junction at the farm's right edge, where the three cables leave */
+      const jn = E('g', { opacity: 0 }, g);
+      E('circle', { cx: FROM[0], cy: FROM[1], r: 16, fill: 'url(#stHalo)' }, jn);
+      E('circle', { cx: FROM[0], cy: FROM[1], r: 5, fill: '#0B1416', stroke: CY, 'stroke-width': 1.5 }, jn);
+      S.jn = { g: jn, dot: E('circle', { cx: FROM[0], cy: FROM[1], r: 2.2, fill: CYW, filter: ctx.glow }, jn) };
+      /* cables + neurons */
+      for (let i = 0; i < 3; i++) {
+        const d = ctx.curve(FROM, A.PCS[i], BENDS[i]);
+        const under = E('path', { d, fill: 'none', stroke: CY, 'stroke-width': 6, 'stroke-linecap': 'round', opacity: .16, filter: ctx.glow2 }, g);
+        const main = E('path', { d, class: 's-cable', filter: ctx.glow }, g);
+        const C = { under, main, len: main.getTotalLength(), t: -1, neurons: [] };
+        C.tip = E('circle', { cx: FROM[0], cy: FROM[1], r: 4, fill: CYW, filter: ctx.glow2, opacity: 0 }, g);
+        C.flow = ctx.flow(ctx.sample(main, 48), { color: '#DFF6FA', count: 16, speed: 150, size: 2.4, tail: 18 });
+        NEU[i].forEach((f, k) => {
+          const q = main.getPointAtLength(C.len * f), q2 = main.getPointAtLength(C.len * (f + .01));
+          let tx = q2.x - q.x, ty = q2.y - q.y; const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl; const nx = -ty, ny = tx;
+          const N = { f, x: f2(q.x), y: f2(q.y), ph: hash(i, k, 1) * 6.283, sc: 0 };
+          N.g = E('g', { class: 's-neu', opacity: 0, transform: 'translate(' + N.x + ' ' + N.y + ') scale(0)' }, g);
+          N.halo = E('circle', { r: 13, fill: 'url(#stHalo)' }, N.g);
+          let dd = ''; const tips = [];
+          for (let b = 0; b < 3; b++) {                                                   /* dendrites: short curved branches */
+            const side = b === 1 ? -1 : 1, ang = (hash(i, k, b + 2) - .5) * 1.3 + (b === 2 ? .9 : 0), len = 13 + hash(i, k, b + 7) * 10;
+            const dx = side * (nx * Math.cos(ang) - ny * Math.sin(ang)), dy = side * (nx * Math.sin(ang) + ny * Math.cos(ang));
+            const bendv = (hash(i, k, b + 11) - .5) * .6 * len, ex = dx * len, ey = dy * len;
+            dd += 'M0,0Q' + f2(dx * len * .5 - dy * bendv) + ',' + f2(dy * len * .5 + dx * bendv) + ' ' + f2(ex) + ',' + f2(ey);
+            tips.push([ex, ey]);
+          }
+          N.dend = E('g', null, N.g);                                                     /* dendrites + tips: faded during the finale zoom, the core stays */
+          E('path', { d: dd, fill: 'none', stroke: CY, 'stroke-width': 1.1, 'stroke-linecap': 'round', opacity: .8 }, N.dend);
+          tips.forEach(t => E('circle', { cx: f2(t[0]), cy: f2(t[1]), r: 1.7, fill: CY, opacity: .9 }, N.dend));
+          N.core = E('circle', { r: 3.6, fill: CY2, filter: ctx.glow }, N.g);
+          C.neurons.push(N);
+        });
+        S.cables.push(C);
+      }
+      /* workstations + hologram live in the pcs layer (drawn over the cables) */
+      const pcs = E('g', { class: 's-links-pcs' }, ctx.layer('pcs'));
+      for (let i = 0; i < 3; i++) S.desks.push(buildDesk(ctx, pcs, i));
+      S.holo = buildHolo(ctx, pcs, S.desks[1].puck);
+      projectLattice(ctx, 0, 0);
+    },
+
+    update(p, ctx, dt, time) {
+      const seg = ctx.seg, ease = ctx.ease, clamp = ctx.clamp, lerp = ctx.lerp, H = S.holo;
+      const L = seg(p, .18, .48), zf = seg(p, .72, .88), zq = seg(p, .72, .80), holoFade = 1 - seg(p, .70, .82);   /* zf: finale zoom; zq: the quick cut for streams that run under the client screen */
+      if (p !== S.lastP) {                                                                 /* ---- scroll-driven ---- */
+        S.lastP = p;
+        S.jn.g.style.opacity = seg(L, 0, .06);
+        for (let i = 0; i < 3; i++) {
+          const C = S.cables[i], D = S.desks[i], st = .04 + .14 * i, en = st + .30;
+          const t = ease.inOut(seg(L, st, en));
+          if (t !== C.t) {
+            C.t = t; ctx.drawIn(C.under, t); ctx.drawIn(C.main, t);
+            if (t > 0 && t < 1) { const q = C.main.getPointAtLength(C.len * t); C.tip.setAttribute('cx', f2(q.x)); C.tip.setAttribute('cy', f2(q.y)); C.tip.style.opacity = 1; }
+            else C.tip.style.opacity = 0;
+            C.neurons.forEach(N => { const nt = seg(t, N.f - .03, N.f + .05); N.sc = nt > 0 ? ease.outBack(nt) : 0; N.g.style.opacity = clamp(nt * 1.6); });
+          }
+          const r = seg(L, en - .16, en - .02), dim = i === 1 ? 1 - .75 * zf : 1 - .4 * zf;
+          D.g.setAttribute('transform', 'translate(0 ' + f2(46 * (1 - ease.outBack(r))) + ')');
+          D.g.style.opacity = clamp(r * 1.8) * dim;
+          const lt = seg(L, en, en + .07); D.lit = lt;
+          D.scr.style.opacity = lt;
+          D.port.style.opacity = .35 + .65 * lt;
+          D.flash.setAttribute('transform', 'translate(' + D.o[0] + ' ' + D.o[1] + ') scale(' + f2(1 + 2.4 * lt) + ')');
+          D.flash.style.opacity = lt > 0 && lt < 1 ? 1 - lt : 0;
+          C.flow.set(seg(L, en, en + .2) * (i === 0 ? 1 - .7 * zf : 1 - zq));   /* cables 1+2 end under/along the client screen: cut their streams as soon as it appears; cable 0 passes above it and keeps a faint stream */
+        }
+        if (zf !== S.lastZf) {                                                             /* finale zoom: quiet the links so the client screen owns the frame */
+          S.lastZf = zf;
+          S.cables.forEach(C => C.neurons.forEach(N => { N.dend.style.opacity = 1 - .5 * zf; }));
+          S.cables[2].main.style.opacity = .85 * (1 - .7 * zf);                            /* cable 2 runs along the screen's top edge: nothing bright may poke out */
+        }
+        const h = seg(L, .62, .86), s = Math.max(.001, ease.outBack(h)); H.h = h;
+        H.vis = .55 * clamp(h * 1.6) * holoFade; H.g.style.opacity = H.vis;
+        H.lat.setAttribute('transform', 'translate(' + H.H[0] + ' ' + H.H[1] + ') scale(' + f2(s) + ') translate(' + (-H.H[0]) + ' ' + (-H.H[1]) + ')');
+        H.cone.style.opacity = h;
+      }
+      /* ---- time-driven ---- */
+      S.jn.dot.setAttribute('r', f2(2.2 + .5 * Math.sin(time * 4)));
+      for (let i = 0; i < 3; i++) {
+        const C = S.cables[i], D = S.desks[i];
+        C.under.style.opacity = (.14 + .05 * Math.sin(time * 1.7 + i * 2.1)) * (i === 2 ? 1 - zf : 1);
+        C.neurons.forEach(N => { if (N.sc <= 0) return; const w = Math.sin(time * 3 + N.ph); N.g.setAttribute('transform', 'translate(' + N.x + ' ' + N.y + ') scale(' + f2(N.sc * (1 + .12 * w) * (1 - .35 * zf)) + ')'); N.halo.style.opacity = (.55 + .4 * w) * (1 - .3 * zf); });
+        if (D.lit > 0) D.mhalo.style.opacity = D.lit * (.72 + .18 * Math.sin(time * 1.3 + i * 2));
+      }
+      if (H.vis > 0) {
+        projectLattice(ctx, time, 3 * Math.sin(time * .9));
+        H.rings.forEach((rg, k) => { const f = (time * .26 + k * .5) % 1; rg.setAttribute('cx', f2(lerp(H.puck[0], H.H[0], f))); rg.setAttribute('cy', f2(lerp(H.puck[1], H.baseY, f))); rg.setAttribute('rx', f2(lerp(6, 46, f))); rg.setAttribute('ry', f2(lerp(2, 13, f))); rg.style.opacity = .5 * Math.sin(Math.PI * f) * H.h; });
+      }
+    }
+  });
+})();
+/* ==/STORY-CH2== */
+
+/* ch3_queries.js — RowdyQL scroll story · chapter "queries" (layer: queries, p 0.42–0.70)
+   Query boxes float up from the three workstations and type themselves, then compress into glowing operator chips
+   (σ ⋈ γ) that ride the cables to the server farm. Above the farm a holographic TABLE OPS panel runs the three
+   operations on two mini tables: σ dims the rows that fail the filter, ⋈ draws lines between matching rows,
+   γ collapses the matched rows into three counted bars and ORDER BY re-sorts them. Result rows then flow back up
+   the cables into a small result card above each workstation. Everything is one STORY.register call; no globals. */
+(function () {
+  'use strict';
+  const RANGE = [0.42, 0.70];
+  const CY = '#5CC3D9', CYL = '#8FE0EF', WHT = '#CFF5FC', TEAL2 = '#2F97AD', INK = '#E6EEEC', MUT = '#93A5A1', AMB = '#E8A33A', DARK = '#0F1B1D', GND = '#0B1416';
+  const PORT = [560, 470];                                   // where the cables leave the farm (ch2's cable origin)
+  const PN = { x: 190, y: 170, w: 365, h: 128 };             // panel frame (above the farm, below the ETL band)
+  const TB = { rx: 200, sx: 336, ox: 442, w: 86, y0: 214, pitch: 9, rh: 6, labelY: 201, headY: 205, rp: 13 };
+  const RIDES_W = [72, 58, 80, 64, 50, 76, 62, 84], ST_W = [60, 78, 52, 70, 66];
+  const LIT = [0, 2, 3, 5, 7];                               // Rides rows that pass the σ filter
+  const MATCH = { 0: 1, 2: 3, 3: 1, 5: 0, 7: 3 };            // Rides row → Stations row (⋈)
+  const GROUPS = [{ st: 0, rows: [5], slot: 2 }, { st: 1, rows: [0, 3], slot: 0 }, { st: 3, rows: [2, 7], slot: 1 }]; // γ groups in station order; slot = place after ORDER BY 2 DESC
+  const CARD = { w: 118, h: 46, bars: [88, 62, 74] };
+  const CHW = 7.4;                                           // forced mono char width (textLength)
+  const QUERIES = [
+    { sym: 'σ', hover: [728, 272], join: .74, bend: -90, n: 44, toks: [['SELECT', 'k'], [' name ', 'i'], ['FROM', 'k'], [' Riders ', 'i'], ['WHERE', 'k'], [' city = ', 'i'], ["'Haifa'", 's']] },
+    { sym: '⋈', hover: [935, 490], join: .80, bend: 40, n: 54, toks: [['SELECT', 'k'], [' s.name, ', 'i'], ['COUNT', 'k'], ['(*) ', 'i'], ['FROM', 'k'], [' Rides r ', 'i'], ['JOIN', 'k'], [' Stations s …', 'i']] },
+    { sym: 'γ', hover: [1115, 326], join: .85, bend: -40, n: 33, toks: [['… ', 'i'], ['GROUP BY', 'k'], [' s.name ', 'i'], ['ORDER BY', 'k'], [' 2 ', 'i'], ['DESC', 'k']] }
+  ];
+  /* per-query timeline (local progress): rise R0..R1, type T0..T1, travel V0..V1 (arrival = V1) */
+  const TL = QUERIES.map((q, i) => { const R0 = .04 + i * .05, V0 = .23 + i * .07; return { R0, R1: R0 + .10, T0: R0 + .04, T1: R0 + .16, V0, V1: V0 + .17 }; });
+  const OPS = [[.40, .48], [.47, .56], [.54, .69]];         // σ, ⋈, γ windows on the panel
+
+  const S = {};
+  let seed = 17;
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const f1 = n => Math.round(n * 10) / 10;
+  const setA = (e, k, v) => { const c = e._qa || (e._qa = {}); if (c[k] !== v) { c[k] = v; e.setAttribute(k, v); } };
+  const setS = (e, k, v) => { const c = e._qs || (e._qs = {}); if (c[k] !== v) { c[k] = v; e.style[k] = v; } };
+  const setO = (e, v) => setS(e, 'opacity', Math.round(Math.max(0, Math.min(1, v)) * 200) / 200);
+  const smooth = t => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+  const pulse = (t, k) => (t <= 0 || t >= 1) ? 0 : (t < k ? t / k : 1 - (t - k) / (1 - k));
+  const tr = (x, y, s) => 'translate(' + f1(x) + ' ' + f1(y) + ')' + (s != null && s !== 1 ? ' scale(' + (Math.round(s * 1000) / 1000) + ')' : '');
+  const rr = (x, y, w, h, r) => 'M' + f1(x + r) + ',' + f1(y) + 'h' + f1(w - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r + 'v' + f1(h - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 -' + r + ',' + r + 'h-' + f1(w - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 -' + r + ',-' + r + 'v-' + f1(h - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',-' + r + 'z';
+
+  /* polyline track with arc-length lookup */
+  function track(pts) {
+    const seg = []; let len = 0;
+    for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); len += d; }
+    const at = t => { let s = Math.max(0, Math.min(1, t)) * len, i = 0; while (i < seg.length - 1 && s > seg[i]) { s -= seg[i]; i++; } const a = pts[i], b = pts[i + 1] || a, u = seg[i] ? Math.min(1, s / seg[i]) : 0; return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u]; };
+    const ang = t => { const a = at(t - .012), b = at(t + .012); return Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI; };
+    return { pts, len, at, ang };
+  }
+  /* jagged electric stroke from (ox,oy) at angle a, length L */
+  function bolt(ox, oy, a, L) { let d = 'M' + f1(ox) + ',' + f1(oy); const ca = Math.cos(a), sa = Math.sin(a); for (let i = 1; i <= 4; i++) { const s = L * i / 4, j = i < 4 ? (rnd() - .5) * 11 : 0; d += 'L' + f1(ox + ca * s - sa * j) + ',' + f1(oy + sa * s + ca * j); } return d; }
+  function mkBurst(ctx, parent, ox, oy, n, L0, L1) {
+    const g = ctx.el('g', { class: 's-qburst', filter: ctx.glow }, parent); g.style.opacity = 0; const paths = [];
+    for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2 + (rnd() - .5) * .7; paths.push(ctx.el('path', { d: bolt(ox, oy, a, L0 + rnd() * (L1 - L0)), fill: 'none', stroke: WHT, 'stroke-width': 1.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g)); }
+    return { g, paths, t: 0 };
+  }
+  const groupOf = j => { for (let gi = 0; gi < GROUPS.length; gi++) if (GROUPS[gi].rows.indexOf(j) >= 0) return gi; return 0; };
+
+  STORY.register({
+    id: 'queries', layer: 'queries', range: RANGE,
+    captions: [{ at: [0.455, 0.66], he: 'כל שאילתה היא בקשה: לסנן, לחבר, לקבץ. השרת מבצע את זה על הטבלאות ומחזיר תשובה.', en: 'Every query is a request: filter, join, group. The server runs it on the tables and answers.' }],
+
+    build(ctx, root) {
+      const A = ctx.anchors, el = ctx.el;
+
+      /* ---------- TABLE OPS panel: a hologram floating above the farm ---------- */
+      const P = S.pn = {};
+      P.g = el('g', { class: 's-qpanel' }, root); P.g.style.opacity = 0;
+      P.glow = el('ellipse', { cx: PN.x + PN.w / 2, cy: PN.y + PN.h / 2 + 6, rx: 220, ry: 74, fill: 'url(#stHalo)' }, P.g); P.glow.style.opacity = 0;
+      P.frame = el('path', { d: rr(PN.x, PN.y, PN.w, PN.h, 8), fill: DARK, stroke: CY, 'stroke-width': 1, 'stroke-opacity': .75 }, P.g); P.frame.style.fillOpacity = 0;
+      P.strip = el('path', { d: 'M' + (PN.x + 8) + ',' + (PN.y + .5) + 'h' + (PN.w - 16) + 'a8,8 0 0 1 8,8v10h-' + PN.w + 'v-10a8,8 0 0 1 8,-8z', fill: CY, 'fill-opacity': .09 }, P.g); P.strip.style.opacity = 0;
+      P.live = el('circle', { cx: PN.x + 13, cy: PN.y + 9.5, r: 2.4, fill: CY, filter: ctx.glow }, P.g); P.live.style.opacity = 0;
+      P.title = el('text', { class: 's-mono', x: PN.x + 22, y: PN.y + 13, 'font-size': 10, fill: MUT, 'letter-spacing': 1.4 }, P.g); P.title.textContent = 'TABLE OPS'; P.title.style.opacity = 0;
+      const cx0 = PN.x - 4, cy0 = PN.y - 4, cx1 = PN.x + PN.w + 4, cy1 = PN.y + PN.h + 4, L = 11;
+      P.corners = el('path', { d: 'M' + cx0 + ',' + (cy0 + L) + 'V' + cy0 + 'H' + (cx0 + L) + 'M' + (cx1 - L) + ',' + cy0 + 'H' + cx1 + 'V' + (cy0 + L) + 'M' + cx1 + ',' + (cy1 - L) + 'V' + cy1 + 'H' + (cx1 - L) + 'M' + (cx0 + L) + ',' + cy1 + 'H' + cx0 + 'V' + (cy1 - L), fill: 'none', stroke: CYL, 'stroke-width': 1.3, 'stroke-linecap': 'round' }, P.g); P.corners.style.opacity = 0;
+      P.symG = el('g', { class: 's-mono', 'font-size': 12, 'text-anchor': 'middle', filter: ctx.glow }, P.g);
+      P.syms = ['σ', '⋈', 'γ'].map((s, k) => { const t = el('text', { x: PN.x + PN.w - 56 + k * 21, y: PN.y + 14, fill: MUT }, P.symG); t.textContent = s; t.style.opacity = 0; return t; });
+      P.labels = el('g', { class: 's-mono', 'font-size': 9.5, fill: MUT }, P.g); P.labels.style.opacity = 0;
+      [['Rides', TB.rx], ['Stations', TB.sx], ['result', TB.ox]].forEach(q => { const t = el('text', { x: q[1], y: TB.labelY }, P.labels); t.textContent = q[0]; });
+      P.heads = [TB.rx, TB.sx, TB.ox].map(x => { const r = el('rect', { x, y: TB.headY, width: 0, height: 3, rx: 1, fill: TEAL2 }, P.g); return r; });
+      P.rides = RIDES_W.map((w, j) => { const y = TB.y0 + j * TB.pitch; const g = el('g', null, P.g); g.style.opacity = 0;
+        const key = el('rect', { x: TB.rx, y, width: 4, height: TB.rh, rx: 1, fill: CY }, g); const bar = el('rect', { x: TB.rx + 7, y, width: 0, height: TB.rh, rx: 1, fill: TEAL2 }, g); return { g, key, bar, y, w: w - 7 }; });
+      P.st = ST_W.map((w, j) => { const y = TB.y0 + j * TB.pitch; const g = el('g', null, P.g); g.style.opacity = 0;
+        const key = el('rect', { x: TB.sx, y, width: 4, height: TB.rh, rx: 1, fill: CY }, g); const bar = el('rect', { x: TB.sx + 7, y, width: 0, height: TB.rh, rx: 1, fill: TEAL2 }, g); return { g, key, bar, y, w: w - 7 }; });
+      P.ghosts = LIT.map(j => { const r = el('rect', { x: TB.rx, y: TB.y0 + j * TB.pitch, width: RIDES_W[j], height: TB.rh, rx: 1, fill: CY, filter: ctx.glow }, P.g); r.style.opacity = 0; return r; });
+      P.res = GROUPS.map((G, gi) => { const y = TB.y0 + gi * TB.rp; const g = el('g', null, P.g); g.style.opacity = 0;
+        el('rect', { x: TB.ox, y, width: 20, height: 7, rx: 1, fill: TEAL2 }, g); const bar = el('rect', { x: TB.ox + 24, y, width: 0, height: 7, rx: 1, fill: CY }, g);
+        const lab = el('text', { class: 's-mono', x: TB.ox + 24, y: y + 6.5, 'font-size': 9, fill: MUT }, g); lab.textContent = String(G.rows.length); lab.style.opacity = 0; return { g, bar, lab, y }; });
+      P.jg = el('g', { filter: ctx.glow }, P.g);
+      P.joins = LIT.map(j => { const y1 = TB.y0 + j * TB.pitch + 3, y2 = TB.y0 + MATCH[j] * TB.pitch + 3;
+        const ln = el('line', { x1: TB.rx + TB.w + 2, y1, x2: TB.sx - 2, y2, stroke: CYL, 'stroke-width': 1.4, 'stroke-linecap': 'round' }, P.jg); ln.style.opacity = 0;
+        const sp = el('circle', { cx: TB.sx - 2, cy: y2, r: 2.6, fill: WHT }, P.jg); sp.style.opacity = 0; return { ln, sp }; });
+      P.scan = el('line', { x1: TB.rx - 3, x2: TB.rx + TB.w + 3, y1: 0, y2: 0, stroke: WHT, 'stroke-width': 1.5, 'stroke-linecap': 'round', filter: ctx.glow }, P.g); P.scan.style.opacity = 0;
+      P.bursts = [mkBurst(ctx, P.g, TB.rx + TB.w + 3, TB.headY + 2, 6, 18, 34), mkBurst(ctx, P.g, (TB.rx + TB.w + TB.sx) / 2, TB.y0 + 32, 6, 16, 30), mkBurst(ctx, P.g, TB.ox + 2, TB.headY + 2, 6, 18, 34)];
+
+      /* ---------- farm port: ring + burst where the chips land ---------- */
+      S.ring = el('circle', { cx: PORT[0], cy: PORT[1], r: 4, fill: 'none', stroke: CYL, 'stroke-width': 1.5 }, root); S.ring.style.opacity = 0;
+      S.portBurst = mkBurst(ctx, root, PORT[0], PORT[1], 7, 22, 44);
+
+      /* ---------- query boxes, travel tracks, result cards ---------- */
+      S.q = QUERIES.map((q, i) => {
+        const pc = A.PCS[i], H = q.hover;
+        const scr = ctx.iso.P(58, -40, 19.5, [pc[0], pc[1] - 8.5]);        // centre of ch2's monitor screen for this desk
+        q.from = [scr[0], scr[1] - 6];
+        const tl = q.n * CHW, w = tl + 36, h = 26;
+        /* travel track: hover → drop onto the cable → along ch2's cable to the port (same curve as ch2) */
+        const path = el('path', { d: ctx.curve(PORT, pc, q.bend), fill: 'none', stroke: 'none' }, root);
+        const cp = ctx.sample(path, 60), jn = Math.round(60 * q.join), J = cp[jn], B = cp[jn - 6];
+        const dx = B[0] - J[0], dy = B[1] - J[1], dl = Math.hypot(dx, dy) || 1;
+        const C = [(H[0] + J[0]) / 2 + dx / dl * 46, (H[1] + J[1]) / 2 + dy / dl * 46];
+        let d = 'M' + f1(H[0]) + ',' + f1(H[1]) + ' Q' + f1(C[0]) + ',' + f1(C[1]) + ' ' + f1(J[0]) + ',' + f1(J[1]);
+        for (let k = jn - 1; k >= 0; k--) d += ' L' + f1(cp[k][0]) + ',' + f1(cp[k][1]);
+        path.setAttribute('d', d);
+        const tk = track(ctx.sample(path, 110));
+        const flow = ctx.flow(tk.pts.slice().reverse(), { color: CYL, speed: 230, count: 10, size: 1.8, tail: 14 });
+        /* projection beam from the monitor to the hover spot */
+        const beam = el('line', { x1: q.from[0], y1: q.from[1] - 8, x2: H[0], y2: H[1] + h / 2 - 1, stroke: CY, 'stroke-width': 1, 'stroke-dasharray': '2 6', 'stroke-linecap': 'round' }, root); beam.style.opacity = 0;
+        const tail = el('path', { d: 'M0,0', fill: 'none', stroke: CYL, 'stroke-width': 2.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', filter: ctx.glow }, root); tail.style.opacity = 0;
+        const g = el('g', { class: 's-qbox' }, root); g.style.opacity = 0;
+        const body = el('g', null, g);
+        el('path', { d: rr(-w / 2, -h / 2, w, h, 7), fill: DARK, 'fill-opacity': .94, stroke: CY, 'stroke-width': 1, filter: ctx.glow }, body);
+        const clip = el('clipPath', { id: 'queries-clip' + i }, ctx.defs);
+        const clipRect = el('rect', { x: -w / 2 + 22, y: -h / 2, width: 0, height: h }, clip);
+        const tx = -w / 2 + 22;
+        const text = el('text', { class: 's-mono', x: tx, y: 4.5, 'font-size': 12.5, fill: INK, textLength: f1(tl), lengthAdjust: 'spacingAndGlyphs', 'clip-path': 'url(#queries-clip' + i + ')' }, body);
+        q.toks.forEach(t => { const ts = el('tspan', { fill: t[1] === 'k' ? CY : t[1] === 's' ? AMB : INK }, text); ts.textContent = t[0]; });
+        const cursor = el('rect', { x: tx, y: -8, width: 1.6, height: 15, fill: CY }, body); cursor.style.opacity = 0;
+        const badge = el('g', null, g);
+        el('circle', { r: 9.5, fill: DARK, stroke: CY, 'stroke-width': 1.2 }, badge);
+        const fill = el('circle', { r: 9.5, fill: CY, filter: ctx.glow2 }, badge); fill.style.opacity = 0;
+        const sym = el('text', { class: 's-mono', 'text-anchor': 'middle', y: 4.3, 'font-size': 12.5, fill: CY }, badge); sym.textContent = q.sym;
+        /* result rows travelling back + the result card that collects them */
+        const rbars = [0, 1, 2].map(() => { const r = el('rect', { x: -9, y: -1.9, width: 18, height: 3.8, rx: 1.9, fill: CYL, filter: ctx.glow }, root); r.style.opacity = 0; return r; });
+        const card = el('g', { class: 's-qcard' }, root); card.style.opacity = 0;
+        el('path', { d: rr(-CARD.w / 2, -CARD.h / 2, CARD.w, CARD.h, 6), fill: DARK, 'fill-opacity': .92, stroke: CY, 'stroke-width': 1, 'stroke-opacity': .85 }, card);
+        const ct = el('text', { class: 's-mono', x: -CARD.w / 2 + 9, y: -CARD.h / 2 + 14, 'font-size': 9.5, fill: MUT }, card); ct.textContent = 'result · 3 rows';
+        const cbars = CARD.bars.map((bw, j) => el('rect', { x: -CARD.w / 2 + 9, y: -CARD.h / 2 + 20 + j * 8, width: 0, height: 5, rx: 1, fill: CY }, card));
+        return { q, w, h, tl, tx, tk, flow, beam, tail, g, body, clipRect, cursor, badge, fill, sym, rbars, card, cbars };
+      });
+    },
+
+    update(p, ctx, dt, time) {
+      const seg = ctx.seg, lerp = ctx.lerp, E = ctx.ease;
+      const l = seg(p, RANGE[0], RANGE[1]);
+      const fade = 1 - seg(p, .69, .74);                    // per-workstation bits leave as the client screen appears and the camera moves
+      const key = l * 1000 + fade; const changed = key !== S.key; S.key = key;
+      const P = S.pn;
+      const pfade = 1 - seg(p, .74, .90);                   // the panel fades out completely while the camera zooms to the client (its corner would otherwise peek into the finale)
+
+      /* ===== progress-driven writes ===== */
+      if (changed) {
+        /* --- query boxes --- */
+        S.q.forEach((Q, i) => {
+          const T = TL[i], vis = seg(l, T.R0, T.R0 + .05), typed = seg(l, T.T0, T.T1), tv = seg(l, T.V0, T.V1);
+          Q.tv = tv; Q.rise = E.outBack(seg(l, T.R0, T.R1)); Q.typed = typed;
+          Q.alive = vis > 0 && tv < 1 && fade > 0;
+          setO(Q.g, Q.alive ? vis * fade : 0);
+          const cv = E.outCubic(seg(l, .62 + i * .03, .68 + i * .03));
+          setO(Q.beam, Q.alive ? vis * (1 - seg(tv, 0, .12)) * (.9 - .55 * seg(l, T.R1, T.R1 + .06)) * fade : cv * .45 * fade);   // tethers the box, later the result card, to its monitor
+          setA(Q.clipRect, 'width', f1(Q.tl * typed + (typed > 0 ? 2 : 0)));
+          setA(Q.cursor, 'x', f1(Q.tx + Q.tl * typed));
+          const cmp = smooth(seg(tv, 0, .3));
+          Q.bodyS = lerp(1, .1, cmp); Q.chipS = lerp(1, 1.55, cmp) * (1 - smooth(seg(tv, .93, 1))); Q.chipX = lerp(-Q.w / 2 + 1, 0, cmp);
+          setO(Q.body, 1 - seg(tv, .03, .2));
+          setO(Q.fill, cmp);
+          setA(Q.sym, 'fill', cmp > .5 ? GND : CY);
+          if (tv > .04 && tv < .985) { let d = ''; for (let k = 0; k <= 9; k++) { const pt = Q.tk.at(smooth(tv) - k * .009); d += (k ? ' L' : 'M') + f1(pt[0]) + ',' + f1(pt[1]); } setA(Q.tail, 'd', d); setO(Q.tail, seg(tv, .04, .16) * (1 - seg(tv, .9, .985)) * fade); }
+          else setO(Q.tail, 0);
+          /* result card + rows travelling back up the same track */
+          setO(Q.card, cv * fade); setA(Q.card, 'transform', tr(Q.q.hover[0], Q.q.hover[1] + (1 - cv) * 10));
+          Q.rbars.forEach((b, j) => { const w0 = .66 + i * .03 + j * .055, w1 = w0 + .16, tb = seg(l, w0, w1);
+            if (tb > 0 && tb < 1 && fade > 0) { const u = 1 - smooth(tb), pt = Q.tk.at(u); setA(b, 'transform', 'translate(' + f1(pt[0]) + ' ' + f1(pt[1]) + ') rotate(' + f1(Q.tk.ang(u)) + ')'); setO(b, fade * seg(tb, 0, .08) * (1 - seg(tb, .9, 1))); }
+            else setO(b, 0);
+            setA(Q.cbars[j], 'width', f1(CARD.bars[j] * E.outBack(seg(l, w1 - .01, w1 + .035)))); });
+          Q.flow.set(seg(l, .64 + i * .02, .72 + i * .02) * (1 - seg(l, .93, 1)) * fade * .9);
+        });
+
+        /* --- panel: appearance --- */
+        S.ap = seg(l, .14, .32);
+        ctx.drawIn(P.frame, E.out(seg(l, .14, .24)));
+        setS(P.frame, 'fillOpacity', .8 * seg(l, .18, .26));
+        setO(P.glow, seg(l, .17, .32));
+        setO(P.strip, seg(l, .20, .26)); setO(P.title, seg(l, .21, .27)); setO(P.corners, seg(l, .22, .29)); setO(P.labels, seg(l, .20, .25));
+        P.heads.forEach((h, k) => setA(h, 'width', f1(TB.w * E.outCubic(seg(l, .20 + k * .015, .25 + k * .015)))));
+        P.symApp = P.syms.map((t, k) => seg(l, .23 + k * .015, .27 + k * .015));
+
+        /* --- σ: scan line sweeps the Rides table, rows that fail dim --- */
+        const sc = seg(l, OPS[0][0], OPS[0][0] + .07);
+        const scanY = lerp(TB.y0 - 4, TB.y0 + RIDES_W.length * TB.pitch, sc);
+        setA(P.scan, 'y1', f1(scanY)); setA(P.scan, 'y2', f1(scanY)); P.scanOn = sc > 0 && sc < 1;
+        /* --- γ: matched rows fly into the result rows; ORDER BY re-sorts --- */
+        const gp = seg(l, OPS[2][0], OPS[2][0] + .10), ob = E.inOut(seg(l, .645, .69));
+        const arrived = [0, 0, 0];
+        P.rides.forEach((r, j) => {
+          const e = E.outCubic(seg(l, .21 + j * .011, .26 + j * .011)); setA(r.bar, 'width', f1(r.w * e));
+          const cy = r.y + TB.rh / 2, passed = sc > 0 ? smooth(seg(scanY - cy, -4, 7)) : 0, k = LIT.indexOf(j);
+          let o = e > 0 ? 1 : 0;
+          if (k < 0) o *= 1 - .84 * passed;
+          else {
+            setA(r.bar, 'fill', passed > .5 ? CY : TEAL2); setA(r.key, 'fill', passed > .5 ? WHT : CY);
+            const fl = E.inOut(seg(gp, k * .07, k * .07 + .6)), gi = groupOf(j), gh = P.ghosts[k];
+            arrived[gi] += smooth(seg(fl, .7, 1));
+            o *= 1 - .55 * smooth(seg(fl, 0, .3));
+            if (fl > 0 && fl < 1) { const ty = P.res[gi].y - r.y, tx = TB.ox - TB.rx; setA(gh, 'transform', tr(tx * fl, ty * fl)); setA(gh, 'width', f1(lerp(RIDES_W[j], 20, fl))); setO(gh, 1 - smooth(seg(fl, .75, 1))); }
+            else setO(gh, 0);
+          }
+          setO(r.g, o);
+        });
+        /* --- ⋈: lines between matching rows, sparks at the Stations end --- */
+        const jn = seg(l, OPS[1][0], OPS[1][1]);
+        const stLit = [0, 0, 0, 0, 0];
+        P.joins.forEach((J, k) => { const dr = E.out(seg(jn, k * .1, k * .1 + .5)); ctx.drawIn(J.ln, dr); setO(J.ln, dr > 0 ? (.95 - .35 * smooth(seg(gp, .2, 1))) : 0); J.sp.t = seg(jn, k * .1 + .35, k * .1 + .8); if (dr >= .999) stLit[MATCH[LIT[k]]] = 1; });
+        P.st.forEach((r, j) => { const e = E.outCubic(seg(l, .225 + j * .013, .275 + j * .013)); setA(r.bar, 'width', f1(r.w * e)); setO(r.g, e > 0 ? 1 : 0); setA(r.bar, 'fill', stLit[j] ? CY : TEAL2); setA(r.key, 'fill', stLit[j] ? WHT : CY); });
+        P.res.forEach((R, gi) => { const G = GROUPS[gi]; setO(R.g, seg(gp, gi * .07 + .05, gi * .07 + .35)); setA(R.bar, 'width', f1(30 * arrived[gi])); setO(R.lab, seg(arrived[gi], G.rows.length - .3, G.rows.length)); setA(R.lab, 'x', f1(TB.ox + 24 + 30 * arrived[gi] + 5)); setA(R.g, 'transform', tr(0, (G.slot - gi) * TB.rp * ob)); });
+        /* --- bursts + step symbols + port ring --- */
+        P.bursts.forEach((b, k) => { b.t = seg(l, OPS[k][0], OPS[k][0] + .06); b.paths.forEach((pt, i) => ctx.drawIn(pt, Math.min(1, b.t * 2.4 * (1.12 - i * .04)))); });
+        let pb = 0, ring = 0; TL.forEach(T => { const a = seg(l, T.V1, T.V1 + .05); if (a > 0 && a < 1) pb = a; const r = seg(l, T.V1, T.V1 + .07); if (r > 0 && r < 1) ring = r; });
+        S.portBurst.t = pb; S.portBurst.paths.forEach((pt, i) => ctx.drawIn(pt, Math.min(1, pb * 2.4 * (1.12 - i * .05))));
+        setA(S.ring, 'r', f1(4 + 36 * E.out(ring))); setO(S.ring, ring > 0 ? (1 - ring) * .9 : 0);
+        P.symState = OPS.map(o => l >= o[1] ? 2 : (l >= o[0] ? 1 : 0));
+        P.syms.forEach((t, k) => setA(t, 'fill', P.symState[k] === 2 ? CY : P.symState[k] === 1 ? WHT : MUT));
+      }
+
+      /* ===== time-driven writes (also run when p is frozen) ===== */
+      const t = time;
+      S.q.forEach((Q, i) => {
+        if (!Q.alive) return;
+        const tv = Q.tv, bob = Math.sin(t * 1.7 + i * 2.1) * 2.2 * (1 - seg(tv, 0, .2));
+        let x, y, s = 1;
+        if (tv <= 0) { x = lerp(Q.q.from[0], Q.q.hover[0], Q.rise); y = lerp(Q.q.from[1], Q.q.hover[1], Q.rise) + bob; s = lerp(.45, 1, Q.rise); }
+        else { const pt = Q.tk.at(smooth(tv)); x = pt[0]; y = pt[1] + bob; }
+        setA(Q.g, 'transform', tr(x, y, s));
+        setA(Q.body, 'transform', Q.bodyS === 1 ? 'scale(1)' : 'scale(' + (Math.round(Q.bodyS * 1000) / 1000) + ')');
+        setA(Q.badge, 'transform', tr(Q.chipX, 0, Q.chipS * (tv > 0 ? 1 + .09 * Math.sin(t * 9 + i) : 1)));
+        setO(Q.cursor, tv <= 0 ? ((Q.typed > 0 && Q.typed < 1) ? 1 : (Math.sin(t * 7) > 0 ? 1 : 0)) : 0);
+      });
+      if (S.ap > 0 && pfade > 0) {                       // once the panel has fully faded it stays at 0 (the flicker term must not resurrect it)
+        setO(P.g, pfade * (1 - .045 * Math.abs(Math.sin(t * 23) * Math.sin(t * 7.3))));
+        setO(P.live, S.ap * (.55 + .45 * Math.max(0, Math.sin(t * 2.6))));
+        setO(P.scan, P.scanOn ? .8 + .2 * Math.sin(t * 37) : 0);
+        P.syms.forEach((s, k) => { const st = P.symState[k], ap = P.symApp[k]; setO(s, st === 1 ? ap * (.75 + .25 * Math.sin(t * 12)) : st === 2 ? ap * .95 : ap * .55); });
+        P.joins.forEach(J => setO(J.sp, pulse(J.sp.t, .3) * (.7 + .3 * Math.sin(t * 29))));
+        P.bursts.forEach((b, k) => setO(b.g, pulse(b.t, .3) * (.75 + .25 * Math.sin(t * 41 + k))));
+      } else setO(P.g, 0);
+      setO(S.portBurst.g, pulse(S.portBurst.t, .3) * (.75 + .25 * Math.sin(t * 43)));
+    }
+  });
+})();
+
+/* ambient.js — RowdyQL scroll story, chapter "ambient" (layer bg, global p 0.25–0.90).
+   Background richness: an ETL pipeline across the back band (sources → EXTRACT → TRANSFORM → LOAD),
+   a translucent VIEW panel mirroring pipeline rows, a tilted wireframe globe with client pins,
+   satellites and great-circle arcs, a data arc from the farm up to the globe, and faint far nodes.
+   Everything sits behind the other chapters at <= 60% opacity. */
+(function () {
+  const D2R = Math.PI / 180;
+  const CY = '#5CC3D9', CYH = '#8FE0EF', T0 = '#0E5566', T1 = '#1C6F7F', T2 = '#2F97AD', AM = '#E8A33A', INK = '#E6EEEC', MU = '#93A5A1', F0 = '#0F1B1D', F1 = '#152524';
+  const r1 = n => Math.round(n * 10) / 10;
+  const PIPE_Y = 140, PIPE_X0 = 263, PIPE_X1 = 1058, VX = 560, VY = 158, VW = 168, VH = 90, VTX = VX + 84; // VIEW panel hangs under the pipe between EXTRACT and TRANSFORM: right of ch3's TABLE OPS brackets (x <= 559), above its query cards (y >= 259)
+  const GC = [1330, 230], R = 95, TILT = 22 * D2R, cA = Math.cos(TILT), sA = Math.sin(TILT), SPIN = 4.5 * D2R; // globe centre, radius, view tilt, rad/s
+  const PINS = [[32, 35], [49, 2], [-34, 18], [19, 73], [41, -74]];   // lat, lon (deg) — Israel first
+  const LON0 = 35 * D2R, PIN_ARCS = [[0, 1], [0, 3], [0, 4], [0, 2]];
+  const ARC_A = [575, 440], ARC_C = [820, 0], ARC_B = [1247.7, 277.5];  // farm edge → control → globe lower-left limb
+  const S = {};                                                           // node handles
+  let lastL = -1, seed = 11;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+
+  /* ---- globe math: unit-sphere vector → [sx, sy, depth] relative to the globe centre (inside the spin group) ---- */
+  function p3(X, Y, Z, k) { const s = R * (k || 1); return [X * s, -(Y * cA - Z * sA) * s, Z * cA + Y * sA]; }
+  function v3(lat, lon) { const cl = Math.cos(lat); return [cl * Math.sin(lon), Math.sin(lat), cl * Math.cos(lon)]; }
+  function arcD(a, b, n) {
+    let dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; dot = Math.max(-1, Math.min(1, dot));
+    const om = Math.acos(dot), so = Math.sin(om) || 1e-6; let d = '', pen = false;
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, wa = Math.sin((1 - t) * om) / so, wb = Math.sin(t * om) / so;
+      const q = p3(wa * a[0] + wb * b[0], wa * a[1] + wb * b[1], wa * a[2] + wb * b[2], 1 + .16 * Math.sin(Math.PI * t));
+      if (q[2] > .05) { d += (pen ? 'L' : 'M') + r1(q[0]) + ',' + r1(q[1]); pen = true; } else pen = false;
+    }
+    return d || 'M0,0';
+  }
+  function orbitD(inc, k, n) { let d = ''; for (let i = 0; i <= n; i++) { const u = i / n * 2 * Math.PI, q = p3(Math.cos(u), Math.sin(u) * Math.sin(inc), Math.sin(u) * Math.cos(inc), k); d += (i ? 'L' : 'M') + r1(q[0]) + ',' + r1(q[1]); } return d + 'Z'; }
+  function quad(a, c, b, n) { const out = []; for (let i = 0; i <= n; i++) { const t = i / n, u = 1 - t; out.push([u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]]); } return out; }
+  const txt = (ctx, parent, x, y, str, attrs) => { const t = ctx.el('text', Object.assign({ x, y, class: 's-mono', 'font-size': 10, style: 'white-space:pre' }, attrs || {}), parent); t.textContent = str; return t; };
+  const tr = (n, s) => n.setAttribute('transform', s);
+  const op = (n, v) => { n.style.opacity = v; };
+  const pop = (ctx, node, t, dy) => { const e = ctx.ease.outBack(t); tr(node, 'translate(0 ' + r1((1 - e) * (dy || 14)) + ')'); op(node, ctx.clamp(t * 1.6)); };
+
+  STORY.register({
+    id: 'ambient', layer: 'bg', range: [0.25, 0.90],
+    captions: [{ at: [0.665, 0.80],
+      he: 'מסביב, צינורות ETL מביאים נתונים ממערכות אחרות, Views מציגים אותם בזווית הנכונה, והמידע נשלח ללקוחות בכל העולם.',
+      en: 'All around, ETL pipelines bring data from other systems, views show it from the right angle, and it travels to clients around the world.' }],
+
+    build(ctx, g) {
+      const el = (t, a, p) => ctx.el(t, a, p);
+      S.root = g; op(g, 0);
+
+      /* ===== far nodes: two small constellations + three twinkle dot fields ===== */
+      const far = el('g', { class: 's-am-far' }, g); S.far = far;
+      const consts = [[[38, 42], [92, 26], [134, 66], [78, 88], [22, 98], [150, 30]], [[1482, 62], [1532, 30], [1578, 86], [1504, 122], [1562, 150], [1588, 46]]];
+      const links = [[0, 1], [1, 2], [2, 3], [3, 0], [3, 4], [1, 5]];
+      let ld = '', dd = '';
+      consts.forEach(c => { links.forEach(l => { ld += 'M' + c[l[0]][0] + ',' + c[l[0]][1] + 'L' + c[l[1]][0] + ',' + c[l[1]][1]; }); c.forEach((q, i) => { if (i % 2) dd += 'M' + q[0] + ',' + q[1] + 'h.01'; }); });
+      el('path', { d: ld, fill: 'none', stroke: T1, 'stroke-width': .8, opacity: .55 }, far);
+      el('path', { d: dd, fill: 'none', stroke: CY, 'stroke-width': 3, 'stroke-linecap': 'round', opacity: .6 }, far);
+      const dia = (q, parent) => el('polygon', { points: (q[0]) + ',' + (q[1] - 4) + ' ' + (q[0] + 4) + ',' + q[1] + ' ' + q[0] + ',' + (q[1] + 4) + ' ' + (q[0] - 4) + ',' + q[1], fill: F1, stroke: CYH, 'stroke-width': .9, filter: ctx.glow }, parent);
+      S.dia = []; consts.forEach(c => c.forEach((q, i) => { if (!(i % 2)) S.dia.push(dia(q, far)); }));
+      S.stars = [];
+      for (let k = 0; k < 3; k++) { let d = ''; for (let i = 0; i < 9; i++) { const right = rnd() < .3; const x = right ? 1500 + rnd() * 88 : 280 + rnd() * 1000, y = right ? 380 + rnd() * 400 : 14 + rnd() * 84; d += 'M' + r1(x) + ',' + r1(y) + 'h.01'; } S.stars.push(el('path', { d, fill: 'none', stroke: CYH, 'stroke-width': 1.6 + k * .4, 'stroke-linecap': 'round', opacity: .35 }, far)); }
+      // low-left: a twinkle field (kept <= .3) and a small three-node cluster, so the bottom-left third is not dead during the full-stage phase
+      { let d = ''; for (let i = 0; i < 9; i++) d += 'M' + r1(60 + rnd() * 420) + ',' + r1(650 + rnd() * 210) + 'h.01'; S.stars.push(el('path', { d, fill: 'none', stroke: CYH, 'stroke-width': 1.8, 'stroke-linecap': 'round', opacity: .28 }, far)); }
+      el('path', { d: 'M74,706L142,764L98,826', fill: 'none', stroke: T1, 'stroke-width': .8, opacity: .55 }, far);
+      el('path', { d: 'M142,764h.01M98,826h.01', fill: 'none', stroke: CY, 'stroke-width': 3, 'stroke-linecap': 'round', opacity: .6 }, far);
+      S.dia.push(dia([74, 706], far));
+      // right column under the globe: a faint cluster that fades out (p .64-.70) before the client chapter starts drawing there
+      S.farR = el('g', { class: 's-am-farr', opacity: 0 }, far);
+      el('path', { d: 'M1290,560L1430,700L1250,800', fill: 'none', stroke: T1, 'stroke-width': .8, 'stroke-dasharray': '3 6', opacity: .55 }, S.farR);
+      el('path', { d: 'M1430,700h.01', fill: 'none', stroke: CY, 'stroke-width': 3, 'stroke-linecap': 'round', opacity: .6 }, S.farR);
+      S.dia.push(dia([1290, 560], S.farR), dia([1250, 800], S.farR));
+
+      /* ===== globe ===== */
+      const gl = el('g', { class: 's-am-globe' }, g); S.globe = gl;
+      S.halo = el('circle', { cx: GC[0], cy: GC[1], r: R * 1.3, fill: 'url(#stHalo)', opacity: .6 }, gl);
+      const spin = el('g', { transform: 'translate(' + GC[0] + ' ' + GC[1] + ') rotate(-14)' }, gl); S.spin = spin;
+      S.orbits = [el('path', { d: orbitD(55 * D2R, 1.42, 64), fill: 'none', stroke: T1, 'stroke-width': .8, 'stroke-dasharray': '3 5', opacity: .6 }, spin),
+                  el('path', { d: orbitD(-38 * D2R, 1.62, 64), fill: 'none', stroke: T1, 'stroke-width': .8, 'stroke-dasharray': '3 5', opacity: .5 }, spin)];
+      S.par = []; [-60, -30, 0, 30, 60].forEach(la => { const f = la * D2R, cl = Math.cos(f); S.par.push(el('ellipse', { cx: 0, cy: r1(-Math.sin(f) * cA * R), rx: r1(cl * R), ry: r1(cl * sA * R), fill: 'none', stroke: la ? T2 : CY, 'stroke-width': la ? .9 : 1.2, opacity: la ? .55 : .8 }, spin)); });
+      S.mer = []; for (let i = 0; i < 6; i++) S.mer.push(el('ellipse', { cx: 0, cy: 0, rx: 1, ry: R, fill: 'none', stroke: T2, 'stroke-width': .9, opacity: .5 }, spin));
+      S.outline = el('circle', { cx: 0, cy: 0, r: R, fill: 'none', stroke: CY, 'stroke-width': 1.3, opacity: .85, filter: ctx.glow }, spin);
+      S.parcs = PIN_ARCS.map(() => el('path', { d: 'M0,0', fill: 'none', stroke: CYH, 'stroke-width': 1, opacity: .7, filter: ctx.glow }, spin));
+      S.pins = PINS.map(() => { const pg = el('g', {}, spin); const ring = el('circle', { cx: 0, cy: 0, r: 6, fill: 'none', stroke: CY, 'stroke-width': 1 }, pg); el('circle', { cx: 0, cy: 0, r: 2.4, fill: CYH, filter: ctx.glow }, pg); return { g: pg, ring }; });
+      S.sats = [0, 1].map(i => { const sg = el('g', {}, spin); el('rect', { x: -14, y: -2.5, width: 9, height: 5, fill: T1, stroke: T2, 'stroke-width': .7 }, sg); el('rect', { x: 5, y: -2.5, width: 9, height: 5, fill: T1, stroke: T2, 'stroke-width': .7 }, sg); el('rect', { x: -3.5, y: -3.5, width: 7, height: 7, fill: F1, stroke: CY, 'stroke-width': .8 }, sg); const led = el('circle', { cx: 0, cy: -5, r: 1.3, fill: i ? CYH : AM }, sg); return { g: sg, led }; });
+      // landing pad on the lower-left limb (stage coords)
+      S.landG = el('g', { class: 's-am-land' }, gl);
+      S.landPulse = el('circle', { cx: ARC_B[0], cy: ARC_B[1], r: 6, fill: 'none', stroke: CY, 'stroke-width': 1 }, S.landG);
+      el('circle', { cx: ARC_B[0], cy: ARC_B[1], r: 3, fill: CYH, filter: ctx.glow }, S.landG);
+
+      /* ===== farm → globe arc ===== */
+      const arcG = el('g', { class: 's-am-arc' }, g); S.arcG = arcG;
+      const arcPts = quad(ARC_A, ARC_C, ARC_B, 48); const arcd = 'M' + ARC_A[0] + ',' + ARC_A[1] + ' Q' + ARC_C[0] + ',' + ARC_C[1] + ' ' + ARC_B[0] + ',' + ARC_B[1];
+      S.arcBeam = el('path', { d: arcd, fill: 'none', stroke: CY, 'stroke-width': 7, 'stroke-linecap': 'round', opacity: .08 }, arcG);
+      S.arc = el('path', { d: arcd, fill: 'none', stroke: CY, 'stroke-width': 1.5, 'stroke-linecap': 'round', opacity: .55, filter: ctx.glow }, arcG);
+      S.arcFlow = ctx.flow(arcPts, { color: CYH, speed: 210, count: 14, size: 2, tail: 24 });
+
+      /* ===== ETL band ===== */
+      const etl = el('g', { class: 's-am-etl' }, g); S.etl = etl;
+      // pipe (three strokes = tube)
+      S.pipe = [el('path', { d: 'M' + PIPE_X0 + ',' + PIPE_Y + 'H' + PIPE_X1, fill: 'none', stroke: T0, 'stroke-width': 9, 'stroke-linecap': 'round' }, etl),
+                el('path', { d: 'M' + PIPE_X0 + ',' + PIPE_Y + 'H' + PIPE_X1, fill: 'none', stroke: T1, 'stroke-width': 5, 'stroke-linecap': 'round' }, etl),
+                el('path', { d: 'M' + PIPE_X0 + ',' + (PIPE_Y - 3) + 'H' + PIPE_X1, fill: 'none', stroke: CYH, 'stroke-width': 1, 'stroke-linecap': 'round', opacity: .45 }, etl)];
+      // crates riding the pipe (drawn before joints/stations so they pass behind them)
+      S.crates = [0, 1, 2].map(() => { const b = ctx.box(etl, [0, 0], 0, 0, 10, 10, 8, 's-am-crate'); b.children[0].setAttribute('style', 'fill:' + T0 + ';stroke:' + T2); b.children[1].setAttribute('style', 'fill:' + T1 + ';stroke:' + T2); b.children[2].setAttribute('style', 'fill:rgba(143,224,239,.55);stroke:' + CYH); return b; });
+      // flanges + valves
+      S.joints = [300, 396, 466, 600, 726, 796, 930, 1020].map(x => el('rect', { x: x - 2.5, y: PIPE_Y - 7.5, width: 5, height: 15, rx: 1.5, fill: T1, stroke: T2, 'stroke-width': .8, 'data-x': x }, etl));
+      S.valves = [485, 870].map(x => { const vg = el('g', { 'data-x': x }, etl); el('path', { d: 'M' + x + ',' + (PIPE_Y - 4) + 'V' + (PIPE_Y - 16), stroke: T2, 'stroke-width': 2 }, vg); el('circle', { cx: x, cy: PIPE_Y - 22, r: 6, fill: F0, stroke: CY, 'stroke-width': 1.2 }, vg); const cross = el('path', { d: 'M' + (x - 4) + ',' + (PIPE_Y - 22) + 'H' + (x + 4) + 'M' + x + ',' + (PIPE_Y - 26) + 'V' + (PIPE_Y - 18), stroke: CY, 'stroke-width': 1 }, vg); return { g: vg, cross, x }; });
+      // source systems (left end) feeding a merge joint
+      S.src = [['CRM', 62], ['ERP', 102], ['LOGS', 142]].map(s => { const sg = el('g', {}, etl); const b = ctx.box(sg, [206, s[1]], 0, 0, 22, 22, 12, 's-am-src'); b.children[2].setAttribute('style', 'fill:rgba(92,195,217,.28);stroke:' + T2); txt(ctx, sg, 181, s[1] + 12, s[0], { 'text-anchor': 'end', fill: INK, opacity: .7, 'font-size': 9.5, 'letter-spacing': 1 }); return sg; });
+      S.feed = [73, 113, 153].map((y, i) => el('path', { d: ctx.curve([225, y], [PIPE_X0, PIPE_Y], [-16, -6, 12][i]), fill: 'none', stroke: T2, 'stroke-width': 1.4, 'stroke-linecap': 'round', opacity: .8 }, etl));
+      S.merge = el('circle', { cx: PIPE_X0, cy: PIPE_Y, r: 4.5, fill: T1, stroke: CY, 'stroke-width': 1.2 }, etl);
+      // stations
+      const station = (o, label, w) => { const sg = el('g', {}, etl); el('ellipse', { cx: o[0], cy: o[1] + 30, rx: 48, ry: 14, fill: 'url(#stHalo)', opacity: .8 }, sg); const b = ctx.box(sg, o, 0, 0, w, w, 24, 's-am-st'); b.children[0].setAttribute('style', 'stroke:' + T1); b.children[1].setAttribute('style', 'stroke:' + T1); b.children[2].setAttribute('style', 'fill:rgba(92,195,217,.26);stroke:' + T2);
+        const P = (a, c, d) => ctx.iso.P(a, c, d, o); const seam = [P(0, 0, 24), P(w, 0, 24), P(w, w, 24), P(0, w, 24)]; el('path', { d: 'M' + seam.map(q => r1(q[0]) + ',' + r1(q[1])).join('L') + 'Z', fill: 'none', stroke: CYH, 'stroke-width': .9, opacity: .8, filter: ctx.glow }, sg);
+        txt(ctx, sg, o[0], o[1] - 31, label, { 'text-anchor': 'middle', fill: INK, opacity: .75, 'font-size': 10.5, 'letter-spacing': 2 }); return sg; };
+      S.stE = station([430, 134], 'EXTRACT', 36);
+      const sweepG = el('g', { transform: 'translate(430 128) scale(1 .5)' }, S.stE); el('circle', { cx: 0, cy: 0, r: 13, fill: 'none', stroke: CY, 'stroke-width': .8, opacity: .5 }, sweepG); S.sweep = el('path', { d: 'M0,0L13,0', stroke: CYH, 'stroke-width': 1.4, 'stroke-linecap': 'round', filter: ctx.glow }, sweepG);
+      S.stT = station([760, 134], 'TRANSFORM', 36);
+      const gearG = el('g', { transform: 'translate(760 128) scale(1 .5)' }, S.stT); let gp = ''; for (let i = 0; i < 20; i++) { const a = i * Math.PI / 10, rr = i % 2 ? 8 : 11.5; gp += r1(Math.cos(a) * rr) + ',' + r1(Math.sin(a) * rr) + ' '; } S.gear = el('polygon', { points: gp.trim(), fill: 'rgba(92,195,217,.35)', stroke: CYH, 'stroke-width': 1, filter: ctx.glow }, gearG); el('circle', { cx: 0, cy: 0, r: 3, fill: F0, stroke: CYH, 'stroke-width': 1 }, gearG);
+      // LOAD = a warehouse cylinder
+      S.stL = el('g', {}, etl); const cx = 1085, ty = 118, by = 152;
+      el('ellipse', { cx, cy: 156, rx: 48, ry: 14, fill: 'url(#stHalo)', opacity: .8 }, S.stL);
+      el('path', { d: 'M' + (cx - 30) + ',' + ty + 'V' + by + 'A30,13 0 0 0 ' + (cx + 30) + ',' + by + 'V' + ty + 'Z', fill: F0, stroke: T2, 'stroke-width': 1 }, S.stL);
+      el('path', { d: 'M' + (cx - 30) + ',' + (ty + 12) + 'A30,13 0 0 0 ' + (cx + 30) + ',' + (ty + 12) + 'M' + (cx - 30) + ',' + (ty + 23) + 'A30,13 0 0 0 ' + (cx + 30) + ',' + (ty + 23), fill: 'none', stroke: T1, 'stroke-width': 1 }, S.stL);
+      el('ellipse', { cx, cy: ty, rx: 30, ry: 13, fill: 'rgba(92,195,217,.28)', stroke: CYH, 'stroke-width': 1, filter: ctx.glow }, S.stL);
+      S.loadBar = el('rect', { x: cx - 24, y: by - 7, width: 0, height: 3, rx: 1, fill: CY, opacity: .85 }, S.stL);
+      S.led = el('circle', { cx: cx + 18, cy: ty - 3, r: 2, fill: AM, filter: ctx.glow }, S.stL);
+      txt(ctx, S.stL, cx, 97, 'LOAD', { 'text-anchor': 'middle', fill: INK, opacity: .75, 'font-size': 10.5, 'letter-spacing': 2 });
+      S.pipeFlow = ctx.flow([[PIPE_X0, PIPE_Y], [PIPE_X1 - 4, PIPE_Y]], { color: CYH, speed: 125, count: 16, size: 1.8, tail: 14 });
+
+      /* ===== VIEW panel ===== */
+      const vw = el('g', { class: 's-am-view' }, g); S.view = vw; const vx = VX, vy = VY, vwd = VW, tx = VTX;
+      S.tap = el('path', { d: 'M' + tx + ',' + (PIPE_Y + 4) + 'V' + vy, fill: 'none', stroke: T2, 'stroke-width': 1.2, 'stroke-dasharray': '2 3' }, vw);
+      S.tee = el('circle', { cx: tx, cy: PIPE_Y, r: 3, fill: T1, stroke: CY, 'stroke-width': 1 }, vw);
+      S.viewBody = el('g', {}, vw);
+      el('rect', { x: vx, y: vy, width: vwd, height: VH, rx: 4, fill: 'rgba(15,27,29,.7)', stroke: T2, 'stroke-width': 1 }, S.viewBody);
+      el('path', { d: 'M' + vx + ',' + (vy + 4) + 'a4,4 0 0 1 4,-4H' + (vx + vwd - 4) + 'a4,4 0 0 1 4,4V' + (vy + 17) + 'H' + vx + 'Z', fill: 'rgba(28,111,127,.55)' }, S.viewBody);
+      txt(ctx, S.viewBody, vx + 7, vy + 12, 'VIEW v_daily_rides', { fill: CYH, 'font-size': 10 });
+      el('circle', { cx: vx + vwd - 9, cy: vy + 8.5, r: 2, fill: AM }, S.viewBody);
+      S.viewHi = el('rect', { x: vx + 2, y: vy + 36, width: vwd - 4, height: 12, fill: 'rgba(92,195,217,.13)' }, S.viewBody);
+      txt(ctx, S.viewBody, vx + 8, vy + 28, 'day     city        rides', { fill: MU, 'font-size': 9.5 });
+      el('path', { d: 'M' + (vx + 6) + ',' + (vy + 32) + 'H' + (vx + vwd - 6), stroke: T1, 'stroke-width': 1 }, S.viewBody);
+      S.rows = ['09-21   Haifa       1,204', '09-21   Tel Aviv    2,310', '09-22   Haifa       1,187', '09-22   Beersheba     642'].map((s, i) => txt(ctx, S.viewBody, vx + 8, vy + 45 + i * 12, s, { fill: INK, 'font-size': 9.5, opacity: .85 }));
+    },
+
+    update(p, ctx, dt, time) {
+      const l = ctx.seg(p, .25, .90), seg = ctx.seg, E = ctx.ease;
+      if (l !== lastL) {
+        lastL = l;
+        op(S.root, .6 * E.out(seg(l, 0, .08))); op(S.far, seg(l, .04, .22)); op(S.farR, .75 * (1 - seg(l, .60, .69)));
+        /* ETL */
+        S.src.forEach((n, i) => pop(ctx, n, seg(l, .02 + i * .035, .09 + i * .035), 12));
+        S.feed.forEach((n, i) => ctx.drawIn(n, seg(l, .09 + i * .02, .14 + i * .02)));
+        op(S.merge, seg(l, .12, .15));
+        S.pipe.forEach(n => ctx.drawIn(n, E.out(seg(l, .13, .34))));
+        const px = PIPE_X0 + (PIPE_X1 - PIPE_X0) * E.out(seg(l, .13, .34));
+        S.joints.forEach(n => op(n, seg(px, +n.getAttribute('data-x') - 2, +n.getAttribute('data-x') + 14)));
+        S.valves.forEach(v => pop(ctx, v.g, seg(px, v.x, v.x + 30), 8));
+        pop(ctx, S.stE, seg(l, .17, .24), 16); pop(ctx, S.stT, seg(l, .24, .31), 16); pop(ctx, S.stL, seg(l, .31, .38), 16);
+        S.pipeFlow.set(seg(l, .32, .42) * .9); S.crates.forEach(n => op(n, seg(l, .34, .42)));
+        /* VIEW */
+        ctx.drawIn(S.tap, seg(l, .34, .38)); op(S.tee, seg(l, .33, .35)); pop(ctx, S.viewBody, seg(l, .36, .43), -10);
+        S.rows.forEach((n, i) => { const t = seg(l, .41 + i * .03, .44 + i * .03); op(n, t * .85); tr(n, 'translate(' + r1((1 - t) * -6) + ' 0)'); });
+        /* globe */
+        op(S.halo, .6 * seg(l, .44, .56)); op(S.outline, .85 * seg(l, .44, .5));
+        S.par.forEach((n, i) => ctx.drawIn(n, seg(l, .45 + i * .012, .53 + i * .012)));
+        S.mer.forEach((n, i) => op(n, .5 * seg(l, .48 + i * .012, .54 + i * .012)));
+        S.pins.forEach((q, i) => { q.t = E.outBack(seg(l, .56 + i * .025, .61 + i * .025)); });
+        S.orbits.forEach((n, i) => op(n, (i ? .5 : .6) * seg(l, .62, .7)));
+        S.sats.forEach(s => { s.t = seg(l, .64, .72); });
+        S.parcs.forEach((n, i) => op(n, .7 * seg(l, .7 + i * .03, .76 + i * .03)));
+        /* arc */
+        ctx.drawIn(S.arc, E.inOut(seg(l, .5, .62))); ctx.drawIn(S.arcBeam, E.inOut(seg(l, .5, .62)));
+        S.arcFlow.set(seg(l, .6, .7) * .9); op(S.landG, seg(l, .6, .65));
+      }
+      /* ---- time-driven ---- */
+      const T = time || 0;
+      S.stars.forEach((n, k) => { const a = k === 3 ? .14 : .2; op(n, a + .02 + a * Math.sin(T * (1.1 + k * .5) + k * 2.1)); });
+      S.dia.forEach((n, i) => op(n, .5 + .35 * Math.sin(T * 1.4 + i * 1.3)));
+      S.sweep.setAttribute('transform', 'rotate(' + r1((T * 110) % 360) + ')');
+      S.gear.setAttribute('transform', 'rotate(' + r1((T * 40) % 360) + ')');
+      S.valves.forEach((v, i) => v.cross.setAttribute('transform', 'rotate(' + r1(((T * 30 * (i ? -1 : 1)) % 360)) + ' ' + v.x + ' ' + (PIPE_Y - 22) + ')'));
+      S.loadBar.setAttribute('width', r1(48 * ((T * .45) % 1)));
+      op(S.led, .5 + .5 * Math.round(.5 + .5 * Math.sin(T * 5)));
+      S.crates.forEach((n, i) => { const x = PIPE_X0 + 20 + ((T * 92 + i * 265) % (PIPE_X1 - PIPE_X0 - 40)); tr(n, 'translate(' + r1(x) + ' ' + (PIPE_Y - 15) + ')'); });
+      const row = Math.floor(T * .8) % 4; S.viewHi.setAttribute('y', VY + 36 + row * 12);
+      /* globe spin */
+      const spin = SPIN * T;
+      S.mer.forEach((n, i) => { const la = i * 30 * D2R + spin, s = Math.sin(la), c = Math.cos(la); n.setAttribute('rx', r1(Math.max(.4, Math.abs(s) * cA * R))); n.setAttribute('transform', 'rotate(' + r1(Math.atan2(-s * sA, c) / D2R) + ')'); });
+      const pv = PINS.map(q => v3(q[0] * D2R, (q[1] * D2R - LON0) + spin));
+      S.pins.forEach((q, i) => { const w = p3(pv[i][0], pv[i][1], pv[i][2], 1.01); const vis = ctx.clamp(w[2] * 3.5) * (q.t || 0); tr(q.g, 'translate(' + r1(w[0]) + ' ' + r1(w[1]) + ') scale(' + r1(Math.max(.01, q.t || 0)) + ')'); op(q.g, vis); const ph = (T * 1.2 + i * .9) % 1; q.ring.setAttribute('r', r1(4 + ph * 12)); op(q.ring, 1 - ph); });
+      S.parcs.forEach((n, i) => n.setAttribute('d', arcD(pv[PIN_ARCS[i][0]], pv[PIN_ARCS[i][1]], 22)));
+      S.sats.forEach((s, i) => { const u = (i ? .16 : .24) * T + (i ? 3.4 : .6), inc = (i ? -38 : 55) * D2R, k = i ? 1.62 : 1.42; const w = p3(Math.cos(u), Math.sin(u) * Math.sin(inc), Math.sin(u) * Math.cos(inc), k); const front = w[2] > 0; tr(s.g, 'translate(' + r1(w[0]) + ' ' + r1(w[1]) + ') rotate(' + r1(u / D2R * .5 + (i ? 20 : -35)) + ') scale(' + (front ? 1 : .8) + ')'); op(s.g, (front ? .95 : .35) * (s.t || 0)); op(s.led, .4 + .6 * Math.round(.5 + .5 * Math.sin(T * 3 + i))); });
+      const lp = (T * .9) % 1; S.landPulse.setAttribute('r', r1(4 + lp * 16)); op(S.landPulse, 1 - lp);
+    }
+  });
+})();
+
+/* ch5_client.js — RowdyQL scroll story · chapter "client" (p 0.68 – 1.00)
+   The last cable leaves the farm, sweeps under the desks and lands on a small client dock. A screen unfolds above the
+   dock (flat, camera-facing for legibility), the query types itself, a result table prints the welcome sentence
+   row by row, and particles keep streaming along the cable into the screen. All coordinates are stage px. */
+(function () {
+  'use strict';
+  const S = {};
+  const QUERY = [['SELECT', 's-cyan'], [' * ', 's-ink'], ['FROM', 's-cyan'], [' Students ', 's-ink'], ['WHERE', 's-cyan'], [' ready = ', 's-ink'], ['1', 's-amber'], [';', 's-muted']];
+  const QLEN = QUERY.reduce((n, t) => n + t[0].length, 0);
+  const PROMPT = 'rowdyql> ';
+  const TXT = {
+    he: ['ברוכים הבאים לעולם של מסדי הנתונים.', 'מכאן זה רק נהיה מעניין.'],
+    en: ['Welcome to the world of databases.', 'From here it only gets interesting.']
+  };
+  /* screen panel */
+  const PX = 800, PY = 400, PW = 520, PH = 300, PR = PX + PW, PB = PY + PH, CX = 1060, CY = PY + PH / 2;
+  const TX = PX + 22, TW = PW - 44, TY = PY + 92;          /* result table */
+  const O = [1060, 741], O2 = [1060, 737];                  /* floor pad origin; dock/keyboard origin (on the pad top) */
+  const START = [560, 500];
+  const f1 = n => Math.round(n * 10) / 10;
+  const hash = (a, b, c) => { const v = Math.sin(a * 12.9898 + b * 78.233 + c * 37.719) * 43758.5453; return v - Math.floor(v); };
+
+  STORY.register({
+    id: 'client', layer: 'client', range: [0.68, 1],
+    captions: [{ at: [0.87, 0.93], he: '…והתשובה חוזרת אליכם, למסך שלכם.', en: '…and the answer comes back to you, on your screen.' }],
+
+    build(ctx, g) {
+      const el = ctx.el, P = (x, y, z, o) => ctx.iso.P(x, y, z, o || O2);
+      S.g = g;
+      const LAND = S.LAND = P(-32, 32, 5);                 /* left corner of the dock, mid height */
+
+      /* defs: faint scanlines for the screen */
+      const pat = el('pattern', { id: 'client-scan', width: 4, height: 4, patternUnits: 'userSpaceOnUse' }, ctx.defs);
+      el('rect', { width: 4, height: 1, fill: '#5CC3D9', opacity: .07 }, pat);
+      /* vertical gradient for the execute scan band (a filtered <line> has a zero-height bbox, so no filter there) */
+      const sg = el('linearGradient', { id: 'client-sweep', x1: 0, y1: 0, x2: 0, y2: 1 }, ctx.defs);
+      [[0, 0], [.5, .85], [1, 0]].forEach(s => el('stop', { offset: s[0], 'stop-color': '#8FE0EF', 'stop-opacity': s[1] }, sg));
+
+      /* ---------- the cable (cables layer, under the desks) ---------- */
+      const cg = el('g', { class: 's-client-cable' }, ctx.layer('cables'));
+      const d = ctx.curve(START, LAND, 120);
+      S.cabGlow = el('path', { d, class: 's-cable', style: 'stroke-width:7;opacity:.22', filter: ctx.glow2 }, cg);
+      S.cab = el('path', { d, class: 's-cable', filter: ctx.glow }, cg);
+      const L = S.cab.getTotalLength();
+      /* neurons: the same species as ch2's — a soft halo, three curved dendrites off the cable's normal with tip dots,
+         a glowing core; each sits in a <g> that pops (outBack) when the cable tip passes and breathes with time */
+      S.neu = [.3, .56, .8].map((f, k) => {
+        const q = S.cab.getPointAtLength(L * f), q2 = S.cab.getPointAtLength(L * (f + .01));
+        let tx = q2.x - q.x, ty = q2.y - q.y; const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl; const nx = -ty, ny = tx;
+        const N = { f, x: f1(q.x), y: f1(q.y), ph: hash(5, k, 1) * 6.283, sc: 0 };
+        N.g = el('g', { class: 's-neu', style: 'opacity:0', transform: 'translate(' + N.x + ' ' + N.y + ') scale(0)' }, cg);
+        N.halo = el('circle', { r: 13, fill: 'url(#stHalo)' }, N.g);
+        let dd = ''; const tips = [];
+        for (let b = 0; b < 3; b++) {
+          const side = b === 1 ? -1 : 1, ang = (hash(5, k, b + 2) - .5) * 1.3 + (b === 2 ? .9 : 0), len = 13 + hash(5, k, b + 7) * 10;
+          const dx = side * (nx * Math.cos(ang) - ny * Math.sin(ang)), dy = side * (nx * Math.sin(ang) + ny * Math.cos(ang));
+          const bendv = (hash(5, k, b + 11) - .5) * .6 * len, ex = dx * len, ey = dy * len;
+          dd += 'M0,0Q' + f1(dx * len * .5 - dy * bendv) + ',' + f1(dy * len * .5 + dx * bendv) + ' ' + f1(ex) + ',' + f1(ey);
+          tips.push([ex, ey]);
+        }
+        el('path', { d: dd, fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1.1, 'stroke-linecap': 'round', opacity: .8 }, N.g);
+        tips.forEach(t => el('circle', { cx: f1(t[0]), cy: f1(t[1]), r: 1.7, fill: '#5CC3D9', opacity: .9 }, N.g));
+        N.core = el('circle', { r: 3.6, fill: '#8FE0EF', filter: ctx.glow }, N.g);
+        return N;
+      });
+      const pts = ctx.sample(S.cab, 60);
+      /* particle stream: along the cable, across the dock, up the neck into the screen */
+      S.flow = ctx.flow(pts.concat([[CX, O2[1] - 10], [CX, PB], [CX, PB - 16]]), { color: '#5CC3D9', speed: 175, count: 18, size: 2.2, tail: 22 });
+
+      /* ---------- client layer ---------- */
+      S.halo = el('ellipse', { cx: CX, cy: CY + 10, rx: 400, ry: 250, fill: 'url(#stHalo)', style: 'opacity:0' }, g);
+      S.floor = el('ellipse', { cx: O[0], cy: O[1] + 4, rx: 150, ry: 54, fill: 'url(#stHalo)', style: 'opacity:0' }, g);
+      ctx.box(g, O, -100, -52, 200, 104, 4);                                        /* floor pad */
+      const pp = [[-100, -52], [100, -52], [100, 52], [-100, 52]].map(q => ctx.iso.P(q[0], q[1], 4, O));
+      S.padEdge = el('polygon', { points: pp.map(q => f1(q[0]) + ',' + f1(q[1])).join(' '), fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1, filter: ctx.glow, style: 'opacity:0' }, g);
+      /* tail of the cable, drawn on top of the pad */
+      S.tailFrom = 48 / 60;
+      S.tail = el('path', { d: 'M' + pts.slice(48).map(q => f1(q[0]) + ',' + f1(q[1])).join(' L'), class: 's-cable', filter: ctx.glow }, g);
+      S.port = el('circle', { cx: f1(LAND[0]), cy: f1(LAND[1]), r: 4, fill: '#8FE0EF', filter: ctx.glow, style: 'opacity:0' }, g);
+      S.burst = el('circle', { cx: f1(LAND[0]), cy: f1(LAND[1]), r: 4, fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1.5, style: 'opacity:0' }, g);
+      ctx.box(g, O2, -32, -32, 64, 64, 10);                                         /* dock, dark */
+      S.dockLit = ctx.box(g, O2, -32, -32, 64, 64, 10, 's-lit'); S.dockLit.style.opacity = 0;
+      /* two LEDs on the dock's front-right face (like the farm racks): cyan + amber */
+      S.led = [['#5CC3D9', 8], ['#E8A33A', 16]].map(c => { const q = P(32, -32 + c[1], 5); return el('circle', { cx: f1(q[0]), cy: f1(q[1]), r: 1.6, fill: c[0], filter: ctx.glow, style: 'opacity:0' }, g); });
+      const top = P(0, 0, 10);
+      S.ring = el('ellipse', { cx: top[0], cy: top[1], rx: 17, ry: 8.5, fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1.2, filter: ctx.glow, style: 'opacity:0' }, g);
+      S.core = el('ellipse', { cx: top[0], cy: top[1], rx: 7, ry: 3.5, fill: '#8FE0EF', filter: ctx.glow, style: 'opacity:0' }, g);
+      /* keyboard slab in front of the dock */
+      const kb = ctx.box(g, O2, 8, 38, 64, 28, 4);
+      for (let k = 0; k < 3; k++) { const a = P(12, 43 + k * 8, 4), b = P(68, 43 + k * 8, 4); el('line', { x1: f1(a[0]), y1: f1(a[1]), x2: f1(b[0]), y2: f1(b[1]), stroke: '#2B3A37', 'stroke-width': 1.2 }, kb); }
+      /* neck + mount under the panel */
+      S.neck = el('rect', { x: CX - 8, y: PB + 4, width: 16, height: top[1] - PB - 4, fill: '#152524', stroke: '#2B3A37', style: 'opacity:0' }, g);
+      S.neckLit = el('rect', { x: CX - 1.5, y: PB + 4, width: 3, height: top[1] - PB - 6, fill: '#5CC3D9', filter: ctx.glow, style: 'opacity:0' }, g);
+      S.mount = el('rect', { x: CX - 22, y: PB + 2, width: 44, height: 10, rx: 3, fill: '#152524', stroke: '#2B3A37', style: 'opacity:0' }, g);
+
+      /* ---------- the screen (unfolds from its bottom edge) ---------- */
+      const SG = S.SG = el('g', { style: 'opacity:0' }, g);
+      el('rect', { x: PX + 10, y: PY + 16, width: PW, height: PH, rx: 10, fill: '#050809', opacity: .6, filter: 'url(#stBlur)' }, SG);
+      el('rect', { x: PX - 6, y: PY - 6, width: PW + 12, height: PH + 12, rx: 10, fill: '#0B1416', stroke: '#2B3A37' }, SG);
+      S.flash = el('rect', { x: PX, y: PY, width: PW, height: PH, rx: 6, fill: 'none', stroke: '#8FE0EF', 'stroke-width': 2.5, filter: ctx.glow2, style: 'opacity:0' }, SG);
+      el('rect', { x: PX, y: PY, width: PW, height: PH, rx: 6, fill: '#0F1B1D', stroke: '#5CC3D9', 'stroke-width': 1 }, SG);
+      el('rect', { x: PX + 1, y: PY + 1, width: PW - 2, height: PH - 2, rx: 5, fill: 'url(#client-scan)' }, SG);
+      /* title bar */
+      el('path', { d: 'M' + PX + ',' + (PY + 6) + ' a6,6 0 0 1 6,-6 H' + (PR - 6) + ' a6,6 0 0 1 6,6 V' + (PY + 26) + ' H' + PX + ' Z', fill: '#132325' }, SG);
+      el('line', { x1: PX, y1: PY + 26.5, x2: PR, y2: PY + 26.5, stroke: '#2B3A37' }, SG);
+      S.live = el('circle', { cx: PX + 14, cy: PY + 13, r: 3.5, fill: '#E8A33A', filter: ctx.glow }, SG);
+      el('text', { x: PX + 25, y: PY + 17.5, class: 's-mono s-muted', 'font-size': 12.5 }, SG).textContent = 'rowdyql · live';
+      [0, 1, 2].forEach(i => el('circle', { cx: PR - 14 - i * 13, cy: PY + 13, r: 3, fill: '#93A5A1', opacity: .4 }, SG));
+      /* prompt 1: the query types itself */
+      S.q = el('text', { x: TX, y: PY + 64, class: 's-mono', 'font-size': 15, style: 'white-space:pre;opacity:0' }, SG);
+      el('tspan', { class: 's-muted' }, S.q).textContent = PROMPT;
+      S.tok = QUERY.map(t => el('tspan', { class: t[1] }, S.q));
+      S.cur = el('rect', { x: TX, y: PY + 50, width: 8, height: 18, fill: '#5CC3D9', style: 'opacity:0' }, SG);
+      S.sweep = el('rect', { x: PX + 2, y: PY + 66, width: PW - 4, height: 24, fill: 'url(#client-sweep)', style: 'opacity:0' }, SG);
+      /* result table */
+      S.hdr = el('g', { style: 'opacity:0' }, SG);
+      el('rect', { x: TX, y: TY, width: TW, height: 26, fill: 'rgba(92,195,217,.10)', stroke: '#2B3A37' }, S.hdr);
+      el('text', { x: CX, y: TY + 18, class: 's-mono s-cyan', 'font-size': 13, 'text-anchor': 'middle' }, S.hdr).textContent = 'result';
+      S.body = el('rect', { x: TX, y: TY + 26, width: TW, height: 62, fill: 'rgba(255,255,255,.02)', stroke: '#2B3A37', style: 'opacity:0' }, SG);
+      S.line = [0, 1].map(i => el('text', { y: TY + 26 + 25 + i * 25, class: 's-text s-ink', 'font-size': 17, style: 'opacity:0' }, SG));
+      S.cnt = el('text', { x: TX, y: TY + 110, class: 's-mono s-muted', 'font-size': 13, style: 'opacity:0' }, SG); S.cnt.textContent = '(1 row)';
+      S.q2 = el('text', { x: TX, y: TY + 146, class: 's-mono s-muted', 'font-size': 15, style: 'white-space:pre;opacity:0' }, SG); S.q2.textContent = PROMPT;
+      /* footer strip */
+      S.foot = el('g', { style: 'opacity:0' }, SG);
+      el('line', { x1: PX, y1: PB - 24, x2: PR, y2: PB - 24, stroke: '#2B3A37' }, S.foot);
+      el('text', { x: TX, y: PB - 8, class: 's-mono s-muted', 'font-size': 11 }, S.foot).textContent = 'connected · rowdyql.com';
+      S.footR = el('text', { x: PR - 22, y: PB - 8, class: 's-mono s-muted', 'font-size': 11, 'text-anchor': 'end', style: 'opacity:0' }, SG); S.footR.textContent = 'Students · 1 row · 12 ms';
+
+      /* ignition line: the bright seam the screen unfolds from (outside SG so the non-uniform scale does not squash it) */
+      S.igniteGlow = el('rect', { x: CX, y: PB - 14, width: 0, height: 28, fill: 'url(#client-sweep)', style: 'opacity:0' }, g);
+      S.ignite = el('rect', { x: CX, y: PB - 1, width: 0, height: 2, rx: 1, fill: '#BFF0F8', style: 'opacity:0' }, g);
+
+      /* ---------- settle effects: ring pulse + drifting sparks ---------- */
+      S.pulse = el('rect', { x: PX, y: PY, width: PW, height: PH, rx: 8, fill: 'none', stroke: '#5CC3D9', 'stroke-width': 1.5, style: 'opacity:0' }, g);
+      S.sparkG = el('g', { style: 'opacity:0' }, g);
+      S.spark = [[782, 22, 40], [771, 27, 130], [790, 19, 200], [1338, 24, 70], [1350, 20, 160], [1330, 28, 10], [1180, 17, 100]].map(s =>
+        ({ el: el('circle', { cx: s[0], cy: 700, r: 1.4 + (s[1] % 3) * .5, fill: '#8FE0EF', filter: ctx.glow }, S.sparkG), v: s[1], off: s[2] }));
+      S.last = -1; S.n = -1; S.curLine = -1; S.lang = null; S.measureAt = -1;
+    },
+
+    update(p, ctx, dt, time) {
+      const seg = ctx.seg, E = ctx.ease, l = seg(p, .68, 1);
+
+      /* ---- scroll-driven (skipped when p did not change) ---- */
+      if (l !== S.last) {
+        S.last = l;
+        /* the client is absent until its chapter starts; the pad materialises while the cable is on its way */
+        S.g.style.opacity = l <= 0 ? 0 : E.out(seg(l, .02, .18));
+        const cab = E.inOut(seg(l, 0, .30));
+        ctx.drawIn(S.cab, cab); ctx.drawIn(S.cabGlow, cab); ctx.drawIn(S.tail, seg(cab, S.tailFrom, 1));
+        S.neu.forEach(N => { const nt = seg(cab, N.f - .03, N.f + .05); N.sc = nt > 0 ? E.outBack(nt) : 0; N.g.style.opacity = ctx.clamp(nt * 1.6); });
+        const land = seg(l, .29, .38);
+        ctx.show(S.port, seg(l, .28, .31));
+        S.burst.setAttribute('r', f1(4 + 46 * E.out(land))); ctx.show(S.burst, land > 0 && land < 1 ? .8 * (1 - land) : 0);
+        const lit = seg(l, .30, .40);
+        ctx.show(S.dockLit, lit * .8); ctx.show(S.ring, lit); ctx.show(S.core, lit); ctx.show(S.floor, lit * .9); ctx.show(S.padEdge, lit * .45); S.lit = lit;
+        ctx.show(S.neckLit, seg(l, .33, .45));
+        S.flow.set(seg(l, .30, .50) * (1 - .3 * seg(l, .9, 1)));
+        /* panel: a bright line first, then it opens upward */
+        const a = E.out(seg(l, .31, .36)), b = E.outBack(seg(l, .35, .44));
+        const sx = Math.max(.002, a), sy = Math.max(.004, .02 + .98 * b);
+        S.SG.setAttribute('transform', 'translate(' + CX + ' ' + PB + ') scale(' + sx.toFixed(3) + ' ' + sy.toFixed(3) + ') translate(' + (-CX) + ' ' + (-PB) + ')');
+        ctx.show(S.SG, seg(l, .31, .33));
+        const iw = f1(PW * a), io = a * (1 - E.out(b));
+        [S.ignite, S.igniteGlow].forEach(r => { r.setAttribute('x', f1(CX - iw / 2)); r.setAttribute('width', iw); });
+        S.ignite.style.opacity = io; S.igniteGlow.style.opacity = io * .9;
+        ctx.show(S.neck, seg(l, .31, .35)); ctx.show(S.mount, seg(l, .31, .35));
+        ctx.show(S.halo, .95 * E.out(seg(l, .34, .58)));
+        /* border glow: bright while the panel is still a line, dims as it opens, one last flash when fully open */
+        const fl = seg(l, .40, .48); S.flash.style.opacity = Math.max(a * (1 - b), (fl > 0 && fl < 1) ? Math.sin(fl * Math.PI) * .9 : 0);
+        /* typing */
+        ctx.show(S.q, seg(l, .43, .46)); ctx.show(S.foot, seg(l, .44, .48));
+        const n = Math.round(QLEN * seg(l, .46, .62));
+        if (n !== S.n) { S.n = n; let off = 0; S.tok.forEach((ts, i) => { const t = QUERY[i][0], k = Math.max(0, Math.min(t.length, n - off)); ts.textContent = t.slice(0, k); off += t.length; }); S.measureAt = -1; }
+        /* cursor: 0 hidden, 1 blinking, 2 solid (while typing) */
+        S.curMode = l < .43 ? 0 : l < .63 ? (n < QLEN && l >= .46 ? 2 : 1) : l < .89 ? 0 : 1;
+        const line = l < .63 ? 0 : 1; if (line !== S.curLine) { S.curLine = line; S.cur.setAttribute('y', line ? TY + 132 : PY + 50); S.measureAt = -1; }
+        /* execute: a sweep down the screen */
+        const sw = seg(l, .63, .69);
+        S.sweep.setAttribute('transform', 'translate(0 ' + f1((PB - 50 - (PY + 78)) * E.inOut(sw)) + ')');
+        S.sweep.style.opacity = (sw > 0 && sw < 1) ? Math.sin(sw * Math.PI) * .6 : 0;
+        /* rows print one by one */
+        const rev = (node, t) => { const e = E.out(t); node.style.opacity = e; node.setAttribute('transform', 'translate(0 ' + f1((1 - e) * 8) + ')'); };
+        rev(S.hdr, seg(l, .68, .72)); rev(S.body, seg(l, .72, .76)); rev(S.line[0], seg(l, .73, .78)); rev(S.line[1], seg(l, .78, .83));
+        rev(S.cnt, seg(l, .84, .88)); rev(S.q2, seg(l, .89, .92)); ctx.show(S.footR, seg(l, .85, .89));
+        /* settle: ring pulse + sparks */
+        const pu = seg(l, .87, .97), k = 1 + .14 * E.out(pu);
+        S.pulse.setAttribute('transform', 'translate(' + CX + ' ' + CY + ') scale(' + k.toFixed(3) + ') translate(' + (-CX) + ' ' + (-CY) + ')');
+        S.pulse.style.opacity = (pu > 0 && pu < 1) ? .7 * (1 - pu) : 0;
+        S.sparkOn = seg(l, .88, 1); S.sparkG.style.opacity = S.sparkOn;
+      }
+
+      /* ---- language (the sentence row) ---- */
+      const lang = ctx.lang();
+      if (lang !== S.lang) {
+        S.lang = lang; const rtl = lang === 'he';
+        /* SVG: with direction=rtl, text-anchor=start puts the RIGHT side of the text at x, so the row hugs the cell's right edge */
+        S.line.forEach((t, i) => { t.textContent = TXT[lang][i]; t.setAttribute('x', rtl ? TX + TW - 12 : TX + 12); t.setAttribute('text-anchor', 'start'); t.setAttribute('direction', rtl ? 'rtl' : 'ltr'); });
+      }
+
+      /* ---- time-driven bits ---- */
+      if (S.curMode) {
+        const tick = Math.floor(time * 2);
+        if (S.measureAt !== tick) { S.measureAt = tick; const src = S.curLine ? S.q2 : S.q; S.cur.setAttribute('x', f1(TX + src.getComputedTextLength() + 2)); }
+        S.cur.style.opacity = S.curMode === 2 || (time % 1.1) < .62 ? 1 : 0;
+      } else S.cur.style.opacity = 0;
+      if (S.last > 0) {
+        S.live.style.opacity = .55 + .45 * Math.sin(time * 4);
+        S.led[0].style.opacity = S.lit * (Math.sin(time * 6) > -.2 ? 1 : .3); S.led[1].style.opacity = S.lit * (Math.sin(time * 1.7 + 1) > .6 ? 1 : .25);
+        S.neu.forEach(N => { if (N.sc <= 0) return; const w = Math.sin(time * 3 + N.ph); N.g.setAttribute('transform', 'translate(' + N.x + ' ' + N.y + ') scale(' + f1(N.sc * (1 + .12 * w)) + ')'); N.halo.style.opacity = .55 + .4 * w; });
+        S.core.setAttribute('rx', f1(7 + 1.5 * Math.sin(time * 5))); S.core.setAttribute('ry', f1(3.5 + .75 * Math.sin(time * 5)));
+        if (S.sparkOn > 0) S.spark.forEach(s => { const u = ((time * s.v + s.off) % 230) / 230; s.el.setAttribute('cy', f1(720 - u * 230)); s.el.style.opacity = Math.sin(u * Math.PI) * .9; });
+      }
+    }
+  });
+})();
+
+/* the story starts observing as soon as the page exists; it only animates while on screen */
+try { STORY.init($('#story')); } catch (e) { console.error('story init', e); }
 const $$ = s => Array.from(document.querySelectorAll(s));
 const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.he[k] != null ? I18N.he[k] : k); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -2094,7 +3244,7 @@ let skipTimer = null;
 function gateView(v){ W.view = v; $('#landing').hidden = v !== 'landing'; $('#wizard').hidden = v === 'landing'; $('#gate').scrollTop = 0; if (v === 'wizard') wizRender(); }
 function startUp(){ W.mode = 'up'; W.ch = 0; W.sub = 0; gateView('wizard'); }
 function startIn(){ W.mode = 'in'; gateView('wizard'); }
-['#lnkUp','#ctaUp','#ctaUp2'].forEach(sel => $(sel).addEventListener('click', startUp));
+['#lnkUp','#ctaUp','#ctaUp2','#ctaUp3'].forEach(sel => $(sel).addEventListener('click', startUp));
 ['#lnkIn','#ctaIn'].forEach(sel => $(sel).addEventListener('click', startIn));
 $('#lnkLang').addEventListener('click', () => $('#btnLang').click());
 
