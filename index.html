@@ -1019,8 +1019,7 @@ nav_h_hello:"שלום", nav_h_stats:"ההתקדמות שלי", nav_h_sessions:"�
 gr_morning:"בוקר טוב", gr_noon:"צהריים טובים", gr_evening:"ערב טוב", gr_night:"לילה טוב",
 hello_sub_new:"כאן מתחילים. המפגש הראשון פתוח, ואפשר לצעוד קדימה בקצב שלכם.", hello_sub_back:"עצרתם ב<b>{s}</b>. ממשיכים משם?", hello_next:"המפגש הקרוב: {d} · {t}",
 hello_continue:"המשך מאיפה שעצרתי", hello_start:"התחלה מהמבוא", hello_ra:"לאלגברה רלציונית",
-notice_sub:"טוב לראות אתכם כאן.",
-sv_h:"ההתקדמות שלכם נשמרה", sv_body:"כל מה שעשיתם בפעם הקודמת מחכה כאן, ואפשר להמשיך מכל מכשיר עם אותו חשבון.", sv_stats:"{v} סעיפים שנצפו · {e} תרגילי אלגברה · {q} תשובות בשאלונים · {d} ימים פעילים", sv_hide:"לא להציג את ההודעה הזו שוב", sv_ok:"מעולה, ממשיכים",
+sv_h:"הכול נשמר.", sv_stats:"{v} סעיפים · {e} תרגילים · {q} תשובות", sv_hide:"לא להציג שוב", sv_ok:"ממשיכים",
 hs_h2:"ההתקדמות שלי", hs_lede:"מה שכבר עברתם, מה שנפתר, ומה שנשאר. הכל נשמר לחשבון.",
 st_sections:"סעיפים שנצפו", st_ex:"תרגילי אלגברה שנפתרו", st_qi:"שאלון מבוא", st_qr:"שאלון אלגברה", st_days:"ימים פעילים", st_days_s:"ימים",
 hsx_h2:"המפגשים", hsx_lede:"יחידה לכל מפגש תרגול. הכרטיסים נפתחים לפי התקדמות הסמסטר, והטבעת מראה כמה מכל יחידה כבר עברתם.",
@@ -1259,8 +1258,7 @@ nav_h_hello:"Hello", nav_h_stats:"My progress", nav_h_sessions:"Sessions", nav_h
 gr_morning:"Good morning", gr_noon:"Good afternoon", gr_evening:"Good evening", gr_night:"Good night",
 hello_sub_new:"This is where it starts. The first session is open; move forward at your own pace.", hello_sub_back:"You stopped at <b>{s}</b>. Continue from there?", hello_next:"Next session: {d} · {t}",
 hello_continue:"Continue where I stopped", hello_start:"Start with the intro", hello_ra:"To relational algebra",
-notice_sub:"Good to see you here.",
-sv_h:"Your progress is saved", sv_body:"Everything you did last time is waiting here, and you can continue from any device with the same account.", sv_stats:"{v} sections viewed · {e} algebra exercises · {q} quiz answers · {d} active days", sv_hide:"Don't show this message again", sv_ok:"Great, let's go",
+sv_h:"All saved.", sv_stats:"{v} sections · {e} exercises · {q} answers", sv_hide:"Don't show again", sv_ok:"Continue",
 hs_h2:"My progress", hs_lede:"What you have covered, what you solved, and what is left. All saved to your account.",
 st_sections:"Sections viewed", st_ex:"Algebra exercises solved", st_qi:"Intro quiz", st_qr:"Algebra quiz", st_days:"Active days", st_days_s:"days",
 hsx_h2:"Sessions", hsx_lede:"One unit per tutorial session. Cards open as the semester progresses; the ring shows how much of each unit you have covered.",
@@ -2014,14 +2012,14 @@ function savedPopup(){
   const prefs = load('dbs_prefs', {}) || {}; prefs.logins = (prefs.logins || 0) + 1; store('dbs_prefs', prefs);
   if (prefs.logins < 2 || prefs.hideSaved) return;
   const today = new Date().toISOString().slice(0, 10); if (load('dbs_saved_shown', '') === today) return; store('dbs_saved_shown', today);
-  const v = Object.keys(load('dbs_visited', {}) || {}).length, e = Object.values(exState || {}).filter(x => x && x.solved).length, q = Object.values(load('dbs_quiz_intro', {}) || {}).filter(x => x && x.ok).length + Object.values(load('dbs_quiz_ra', {}) || {}).filter(x => x && x.ok).length, d = (load('dbs_days', []) || []).length;
-  const m = el('div', 'modal saved'); m.innerHTML = '<div style="max-width:460px"><div class="sv-ic" aria-hidden="true">✓</div><h3>' + t('sv_h') + '</h3><p>' + t('sv_body') + '</p><p class="count sv-stats">' + t('sv_stats', { v, e, q, d }) + '</p><label class="sv-hide"><input type="checkbox" id="svHide">' + t('sv_hide') + '</label><div class="controls"><button type="button" class="btn primary" id="svOk">' + t('sv_ok') + '</button></div></div>';
+  const v = Object.keys(load('dbs_visited', {}) || {}).length, e = Object.values(exState || {}).filter(x => x && x.solved).length, q = Object.values(load('dbs_quiz_intro', {}) || {}).filter(x => x && x.ok).length + Object.values(load('dbs_quiz_ra', {}) || {}).filter(x => x && x.ok).length;
+  const m = el('div', 'modal saved'); m.innerHTML = '<div style="max-width:460px"><div class="sv-ic" aria-hidden="true">✓</div><h3>' + t('sv_h') + '</h3><p class="count sv-stats">' + t('sv_stats', { v, e, q }) + '</p><label class="sv-hide"><input type="checkbox" id="svHide">' + t('sv_hide') + '</label><div class="controls"><button type="button" class="btn primary" id="svOk">' + t('sv_ok') + '</button></div></div>';
   const close = () => { if (m.querySelector('#svHide').checked) { const p = load('dbs_prefs', {}) || {}; p.hideSaved = true; store('dbs_prefs', p); } m.classList.add('out'); setTimeout(() => m.remove(), 320); };
   m.querySelector('#svOk').addEventListener('click', close); m.addEventListener('click', ev => { if (ev.target === m) close(); });
   setTimeout(() => { document.body.appendChild(m); requestAnimationFrame(() => m.classList.add('in')); m.querySelector('#svOk').focus(); }, 1100);
 }
 function sideNotice(){
-  const n = el('div', 'notice'); n.innerHTML = '<svg class="mark" data-holo aria-hidden="true"></svg><div><b>' + t(greetingKey()) + (firstName() ? ', ' + firstName() : '') + '</b><span>' + t('notice_sub') + '</span></div>';
+  const n = el('div', 'notice'); n.innerHTML = '<svg class="mark" data-holo aria-hidden="true"></svg><div><b>' + t(greetingKey()) + (firstName() ? ', ' + firstName() : '') + '</b></div>';
   document.body.appendChild(n); HOLO.mountAll(n); requestAnimationFrame(() => n.classList.add('in')); setTimeout(() => { n.classList.add('out'); setTimeout(() => n.remove(), 500); }, 4500);
 }
 
