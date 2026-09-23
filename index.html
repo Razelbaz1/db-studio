@@ -85,7 +85,9 @@ html.norail .shell{grid-template-columns:minmax(0,1fr)}
 html.norail .rail{display:none}
 /* side spine: one dot per section, pinned to the outer edge; labels slide in while scrolling or on hover */
 .spine{position:fixed;top:50%;transform:translateY(-50%);inset-inline-end:.85rem;z-index:40;display:none;flex-direction:column;gap:.7rem;align-items:flex-end;padding:.6rem .35rem;border-radius:999px}
-html.norail .spine,html.present .spine{display:flex}
+html.norail .spine{display:flex}
+html.present .spine{display:none!important}
+html.norail:not(.present) .shell{padding-inline-end:3.6rem}
 .sp{display:flex;flex-direction:row-reverse;align-items:center;gap:.6rem;text-decoration:none;color:var(--muted);position:relative}
 .sp i{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;transition:transform .3s,background .3s,box-shadow .3s;border:1px solid var(--surface)}
 .sp.done i{background:var(--good)}
