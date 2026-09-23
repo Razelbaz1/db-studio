@@ -6,7 +6,7 @@
 <title>RowdyQL</title>
 <meta name="description" content="RowdyQL: סביבת לימוד אינטראקטיבית לקורס תכנון בסיסי נתונים">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta property="og:type" content="website"><meta property="og:title" content="RowdyQL"><meta property="og:description" content="לומדים SQL כמו שכותבים אותו: חי, על טבלאות, עם תשובה מיד."><meta property="og:url" content="https://rowdyql.com/"><meta property="og:image" content="https://rowdyql.com/og.png"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:title" content="RowdyQL"><meta property="og:description" content="כותבים שאילתה, רואים מה קרה, מבינים למה."><meta property="og:url" content="https://rowdyql.com/"><meta property="og:image" content="https://rowdyql.com/og.png"><meta name="twitter:card" content="summary_large_image">
 <style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -564,6 +564,13 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 .modal>div{background:var(--surface);color:var(--ink);border-radius:14px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:.7rem;box-shadow:var(--shadow);font-size:.95rem}
 .modal h3{font-size:1.2rem}
 .modal ol{padding-inline-start:1.2rem;display:flex;flex-direction:column;gap:.35rem;margin:0}
+.modal.saved{opacity:0;transition:opacity .3s ease;z-index:95}.modal.saved.in{opacity:1}.modal.saved.out{opacity:0}
+.modal.saved>div{text-align:center;align-items:center;padding:1.8rem 1.6rem 1.4rem}
+.modal.saved p{margin:0}
+.sv-ic{width:3.2rem;height:3.2rem;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:1.5rem;font-weight:700}
+.sv-stats{font-size:.82rem;color:var(--muted)}
+.sv-hide{display:flex;align-items:center;gap:.45rem;font-size:.88rem;color:var(--muted);cursor:pointer;margin-top:.3rem}
+.sv-hide input{accent-color:var(--accent);width:1rem;height:1rem;margin:0}
 .userchip{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--line);border-radius:999px;padding:.3rem .5rem .3rem .8rem;font-size:.85rem;background:var(--surface)}
 .userchip i{width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:.8rem}
 @media (max-width:900px){.hero-l{grid-template-columns:1fr}.gcard{grid-template-columns:1fr}.gate .side{border-inline-start:0;border-top:1px solid #2B3A37}.gate .form{min-height:0}}
@@ -1012,7 +1019,8 @@ nav_h_hello:"שלום", nav_h_stats:"ההתקדמות שלי", nav_h_sessions:"�
 gr_morning:"בוקר טוב", gr_noon:"צהריים טובים", gr_evening:"ערב טוב", gr_night:"לילה טוב",
 hello_sub_new:"כאן מתחילים. המפגש הראשון פתוח, ואפשר לצעוד קדימה בקצב שלכם.", hello_sub_back:"עצרתם ב<b>{s}</b>. ממשיכים משם?", hello_next:"המפגש הקרוב: {d} · {t}",
 hello_continue:"המשך מאיפה שעצרתי", hello_start:"התחלה מהמבוא", hello_ra:"לאלגברה רלציונית",
-notice_sub:"ההתקדמות נשמרת לחשבון, מכל מכשיר.",
+notice_sub:"טוב לראות אתכם כאן.",
+sv_h:"ההתקדמות שלכם נשמרה", sv_body:"כל מה שעשיתם בפעם הקודמת מחכה כאן, ואפשר להמשיך מכל מכשיר עם אותו חשבון.", sv_stats:"{v} סעיפים שנצפו · {e} תרגילי אלגברה · {q} תשובות בשאלונים · {d} ימים פעילים", sv_hide:"לא להציג את ההודעה הזו שוב", sv_ok:"מעולה, ממשיכים",
 hs_h2:"ההתקדמות שלי", hs_lede:"מה שכבר עברתם, מה שנפתר, ומה שנשאר. הכל נשמר לחשבון.",
 st_sections:"סעיפים שנצפו", st_ex:"תרגילי אלגברה שנפתרו", st_qi:"שאלון מבוא", st_qr:"שאלון אלגברה", st_days:"ימים פעילים", st_days_s:"ימים",
 hsx_h2:"המפגשים", hsx_lede:"יחידה לכל מפגש תרגול. הכרטיסים נפתחים לפי התקדמות הסמסטר, והטבעת מראה כמה מכל יחידה כבר עברתם.",
@@ -1219,8 +1227,8 @@ g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב 
 g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכניסה היא <code>SELECT</code>. הסיסמה נשמרת כגיבוב, אף פעם לא כטקסט.",
 e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"אותיות בלבד, בעברית או באנגלית, 2 עד 30 תווים", e_birth:"תאריך לידה לא סביר",
 g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
-l_h1:"לומדים SQL כמו שכותבים אותו: חי, על טבלאות, עם תשובה מיד.",
-l_sub:"RowdyQL היא סביבת התרגול של הקורס תכנון בסיסי נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות בסגנון המבחן. ההתקדמות נשמרת לחשבון, מכל מכשיר.",
+l_h1:"כותבים שאילתה, רואים מה קרה, מבינים למה.",
+l_sub:"ברוכים הבאים ל-RowdyQL, סביבת התרגול של הקורס תכנון בסיסי נתונים. מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת המבחן וברמת ראיונות עבודה.",
 l_cta:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
 l_feat_h:"מה יש בפנים", l_how_h:"איך זה עובד",
 l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."]],
@@ -1251,7 +1259,8 @@ nav_h_hello:"Hello", nav_h_stats:"My progress", nav_h_sessions:"Sessions", nav_h
 gr_morning:"Good morning", gr_noon:"Good afternoon", gr_evening:"Good evening", gr_night:"Good night",
 hello_sub_new:"This is where it starts. The first session is open; move forward at your own pace.", hello_sub_back:"You stopped at <b>{s}</b>. Continue from there?", hello_next:"Next session: {d} · {t}",
 hello_continue:"Continue where I stopped", hello_start:"Start with the intro", hello_ra:"To relational algebra",
-notice_sub:"Progress is saved to your account, on any device.",
+notice_sub:"Good to see you here.",
+sv_h:"Your progress is saved", sv_body:"Everything you did last time is waiting here, and you can continue from any device with the same account.", sv_stats:"{v} sections viewed · {e} algebra exercises · {q} quiz answers · {d} active days", sv_hide:"Don't show this message again", sv_ok:"Great, let's go",
 hs_h2:"My progress", hs_lede:"What you have covered, what you solved, and what is left. All saved to your account.",
 st_sections:"Sections viewed", st_ex:"Algebra exercises solved", st_qi:"Intro quiz", st_qr:"Algebra quiz", st_days:"Active days", st_days_s:"days",
 hsx_h2:"Sessions", hsx_lede:"One unit per tutorial session. Cards open as the semester progresses; the ring shows how much of each unit you have covered.",
@@ -1458,8 +1467,8 @@ g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: deta
 g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SELECT</code>. The password is stored as a hash, never as text.",
 e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Letters only, Hebrew or English, 2 to 30 characters", e_birth:"Implausible date of birth",
 g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
-l_h1:"Learn SQL the way it is written: live, on tables, with instant answers.",
-l_sub:"RowdyQL is the practice environment of the Database Design course. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and exam-style questions. Progress is saved to your account, on any device.",
+l_h1:"Write a query, see what happened, understand why.",
+l_sub:"Welcome to RowdyQL, the practice environment of the Database Design course. You start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
 l_cta:"Create an account, one minute", l_have:"I already have an account",
 l_feat_h:"What is inside", l_how_h:"How it works",
 l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."]],
@@ -2000,6 +2009,17 @@ function observeReveal(){
   if (!revealIO) revealIO = new IntersectionObserver(entries => { entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); en.target.querySelectorAll('.bar i[data-w]').forEach(b => b.style.width = b.dataset.w + '%'); revealIO.unobserve(en.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
   $$('.reveal:not(.in)').forEach(x => revealIO.observe(x));
 }
+/* ---- returning users: a note that their progress travels with the account (second visit onward, once a day, until they opt out) ---- */
+function savedPopup(){
+  const prefs = load('dbs_prefs', {}) || {}; prefs.logins = (prefs.logins || 0) + 1; store('dbs_prefs', prefs);
+  if (prefs.logins < 2 || prefs.hideSaved) return;
+  const today = new Date().toISOString().slice(0, 10); if (load('dbs_saved_shown', '') === today) return; store('dbs_saved_shown', today);
+  const v = Object.keys(load('dbs_visited', {}) || {}).length, e = Object.values(exState || {}).filter(x => x && x.solved).length, q = Object.values(load('dbs_quiz_intro', {}) || {}).filter(x => x && x.ok).length + Object.values(load('dbs_quiz_ra', {}) || {}).filter(x => x && x.ok).length, d = (load('dbs_days', []) || []).length;
+  const m = el('div', 'modal saved'); m.innerHTML = '<div style="max-width:460px"><div class="sv-ic" aria-hidden="true">✓</div><h3>' + t('sv_h') + '</h3><p>' + t('sv_body') + '</p><p class="count sv-stats">' + t('sv_stats', { v, e, q, d }) + '</p><label class="sv-hide"><input type="checkbox" id="svHide">' + t('sv_hide') + '</label><div class="controls"><button type="button" class="btn primary" id="svOk">' + t('sv_ok') + '</button></div></div>';
+  const close = () => { if (m.querySelector('#svHide').checked) { const p = load('dbs_prefs', {}) || {}; p.hideSaved = true; store('dbs_prefs', p); } m.classList.add('out'); setTimeout(() => m.remove(), 320); };
+  m.querySelector('#svOk').addEventListener('click', close); m.addEventListener('click', ev => { if (ev.target === m) close(); });
+  setTimeout(() => { document.body.appendChild(m); requestAnimationFrame(() => m.classList.add('in')); m.querySelector('#svOk').focus(); }, 1100);
+}
 function sideNotice(){
   const n = el('div', 'notice'); n.innerHTML = '<svg class="mark" data-holo aria-hidden="true"></svg><div><b>' + t(greetingKey()) + (firstName() ? ', ' + firstName() : '') + '</b><span>' + t('notice_sub') + '</span></div>';
   document.body.appendChild(n); HOLO.mountAll(n); requestAnimationFrame(() => n.classList.add('in')); setTimeout(() => { n.classList.add('out'); setTimeout(() => n.remove(), 500); }, 4500);
@@ -2233,14 +2253,14 @@ async function loadProfile(){ if (!sb || !session || !session.user) return; try 
 function onSession(){
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) { window.scrollTo({top:0}); setTimeout(() => updateNav(false), 50); }
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
-  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); }); logVisit(); } else { setUnit('home'); sideNotice(); } }
+  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); savedPopup(); }); logVisit(); } else { setUnit('home'); sideNotice(); savedPopup(); } }
   else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); if (built) { $('#gate').classList.add('built'); $('#gateLogo').classList.add('show'); } }
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 
 async function logVisit(){ try { const last = +load('dbs_visit_at', 0); if (Date.now() - last < 30 * 60 * 1000) return; store('dbs_visit_at', Date.now()); await sb.from('events').insert({ user_id: session.user.id, kind: 'visit', meta: { lang, w: innerWidth } }); } catch(e){} }
 /* ---- progress sync: local storage stays the cache, the account is the record ---- */
-const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ra_ex','dbs_days','dbs_last_sec'];
+const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ra_ex','dbs_days','dbs_last_sec','dbs_prefs'];
 const syncTimers = {};
 function syncKey(k, v){ if (!sb || !session || !session.user) return; clearTimeout(syncTimers[k]); syncTimers[k] = setTimeout(async () => { try { await sb.from('progress').upsert({ user_id: session.user.id, key: k, value: v, updated_at: new Date().toISOString() }); } catch(e){} }, 800); }
 async function pullProgress(){
