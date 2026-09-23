@@ -2,8 +2,85 @@
 body{margin:0;width:1200px;height:630px;background:#0B1416;color:#E6EEEC;font-family:Heebo,sans-serif;display:grid;place-items:center;overflow:hidden;position:relative}
 .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(92,195,217,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(92,195,217,.07) 1px,transparent 1px);background-size:48px 48px}
 .logo{display:flex;align-items:center;gap:28px;direction:ltr;position:relative}
-.logo svg{height:150px;width:auto;overflow:visible}
+:root{--iso-stroke:#2B3A37;--iso-top:rgba(92,195,217,.10);--iso-left:#0F1B1D;--iso-right:#152524;--iso-socket:rgba(92,195,217,.28);--iso-lift-l:#1C6F7F;--iso-lift-r:#2F97AD;--iso-line:#5CC3D9;--iso-dot:#8FE0EF;--iso-glow:url(#isoGlow)}
+.logo svg{height:170px;width:auto;overflow:visible}
+/* ==ISO-CSS== the mark: isometric table grid, one cell risen from its socket, a hologram lattice around it */
+.iso .fc{stroke:var(--iso-stroke);stroke-width:1}
+.iso .tp{fill:var(--iso-top)}.iso .lf{fill:var(--iso-left)}.iso .rt{fill:var(--iso-right)}
+.iso .sk .tp{fill:var(--iso-socket)}
+.iso .lft .tp{fill:url(#isoGrad)}.iso .lft .lf{fill:var(--iso-lift-l)}.iso .lft .rt{fill:var(--iso-lift-r)}
+.iso .eg{fill:none;stroke:var(--iso-line);stroke-width:1.6;stroke-linecap:round;opacity:.85;filter:var(--iso-glow)}
+.iso .nd{fill:var(--iso-line);filter:var(--iso-glow);transform-box:fill-box;transform-origin:center}
+.iso .nd.am{fill:#E8A33A}
+.iso .hl{opacity:.5}
+.iso .hl line{stroke:var(--iso-line);stroke-width:.8;fill:none;opacity:.7}
+.iso .hl circle{fill:var(--iso-dot)}
+.iso .hl .hrow{stroke:var(--iso-line);stroke-width:2;fill:none}
+.iso .a{opacity:0;transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.iso .a.in{opacity:1;transform:none}
+.iso .gc.a{transform:translateY(10px);transition:opacity .3s ease,transform .42s cubic-bezier(.2,.8,.2,1)}
+.iso .hl.a{opacity:0}.iso .hl.a.in{opacity:.5}
+.iso .dr{stroke-dasharray:300;stroke-dashoffset:300;transition:stroke-dashoffset .75s ease}
+.iso .dr.in{stroke-dashoffset:0}
+.iso .pu:not(.a),.iso .pu.in{animation:npulse 1.8s ease-in-out infinite}
+@keyframes npulse{50%{opacity:.45;transform:scale(.8)}}
+/* ==/ISO-CSS== */
+
 .wm{font-family:Rubik,sans-serif;font-weight:900;font-size:150px;letter-spacing:-.02em;color:#fff}.wm i{font-style:normal;color:#5CC3D9}
 .tag{position:relative;margin-top:26px;font-size:34px;color:#93A5A1;text-align:center}
 .url{position:absolute;bottom:40px;left:0;right:0;text-align:center;font:500 26px "IBM Plex Mono",Consolas,monospace;color:#5CC3D9;letter-spacing:.08em}
-</style></head><body><div class="grid"></div><div><div class="logo"><svg viewBox="0 0 130 100"><g fill="none" stroke="#E6EEEC" stroke-linecap="round" stroke-linejoin="round"><path d="M30 2h-22v96h22" stroke-width="8"/><path d="M100 2h22v96h-22" stroke-width="8"/><path d="M40 14h50v18h-50z" stroke-width="6"/><path d="M40 68h50v18h-50z" stroke-width="6"/></g><rect x="40" y="41" width="50" height="18" rx="3" fill="#5CC3D9" transform="translate(8,-7) rotate(-8 65 50)" style="filter:drop-shadow(0 0 8px rgba(92,195,217,.8))"/></svg><span class="wm">Rowdy<i>QL</i></span></div><div class="tag">לומדים SQL כמו שכותבים אותו: חי, על טבלאות, עם תשובה מיד.</div></div><div class="url">ROWDYQL.COM</div></body></html>
+</style></head><body><div class="grid"></div><div><div class="logo"><svg class="mark" data-holo aria-hidden="true"></svg><span class="wm">Rowdy<i>QL</i></span></div><div class="tag">לומדים SQL כמו שכותבים אותו: חי, על טבלאות, עם תשובה מיד.</div></div><div class="url">ROWDYQL.COM</div><script>
+/* ==HOLO== the mark, generated: isometric grid, the cell that rises out of its socket, and the rotating hologram lattice */
+const HOLO = (() => {
+  const CO = Math.cos(Math.PI / 6), SI = Math.sin(Math.PI / 6);
+  const P = (x, y, z) => [(x - y) * CO, (x + y) * SI - z];
+  const f = n => n.toFixed(2);
+  const poly = (pts, cls) => '<polygon class="' + cls + '" points="' + pts.map(q => f(q[0]) + ',' + f(q[1])).join(' ') + '"/>';
+  const box = (x, y, w, h, z, cls) => { const t = [P(x, y, z), P(x + w, y, z), P(x + w, y + w, z), P(x, y + w, z)]; const l = [P(x, y + w, z), P(x + w, y + w, z), P(x + w, y + w, z - h), P(x, y + w, z - h)]; const r = [P(x + w, y, z), P(x + w, y + w, z), P(x + w, y + w, z - h), P(x + w, y, z - h)]; return '<g class="' + cls + '">' + poly(l, 'fc lf') + poly(r, 'fc rt') + poly(t, 'fc tp') + '</g>'; };
+  const cell = 22, gap = 5, cols = 4, rows = 3, LIFT = 26, OVER = 9, LI = 2, LJ = 1;
+  const cx = LI * (cell + gap) + cell / 2, cy = LJ * (cell + gap) + cell / 2;
+  const VIEW = '-68 0 160 100';
+  function defs(){ const x = LI * (cell + gap), y = LJ * (cell + gap); const L = P(x, y + cell, 0), M = P(x + cell, y + cell, 0), R = P(x + cell, y, 0);
+    return '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="isoGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="isoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FE0EF"/><stop offset="1" stop-color="#3FB1C9"/></linearGradient><clipPath id="isoSocket"><polygon points="' + f(L[0]) + ',' + f(L[1]) + ' ' + f(M[0]) + ',' + f(M[1]) + ' ' + f(R[0]) + ',' + f(R[1]) + ' ' + f(R[0]) + ',-300 ' + f(L[0]) + ',-300"/></clipPath></defs></svg>'; }
+  function build(anim){ let out = ''; const centers = {};
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) { const x = i * (cell + gap), y = j * (cell + gap); const lift = (i === LI && j === LJ); centers[i + ',' + j] = P(x + cell / 2, y + cell / 2, 1);
+      out += '<g class="gc' + (anim ? ' a' : '') + '" style="--d:' + (i * 150 + j * 25) + 'ms">' + box(x, y, cell, 8, 0, lift ? 'sk' : '') + '</g>';
+      if (lift) out += '<g clip-path="url(#isoSocket)"><g class="lft lc" style="' + (anim ? 'opacity:0;transform:translateY(' + LIFT + 'px)' : '') + '">' + box(x, y, cell, 30, LIFT, 'lft') + '</g></g>'; }
+    const top = P(cx, cy, LIFT + 1); const from = ['0,0', '3,0', '1,2', '3,2'];
+    from.forEach((k, i) => { const a = centers[k]; out += '<path class="eg' + (anim ? ' dr' : '') + '" style="--d:' + (2360 + i * 90) + 'ms" d="M' + f(a[0]) + ',' + f(a[1]) + ' Q' + f((a[0] + top[0]) / 2) + ',' + f(Math.min(a[1], top[1]) - 16) + ' ' + f(top[0]) + ',' + f(top[1]) + '"/>'; });
+    from.forEach((k, i) => { const c = centers[k]; out += '<circle class="nd pu' + (anim ? ' a' : '') + '" style="--d:' + (2610 + i * 60) + 'ms;animation-delay:' + (i * .3) + 's" cx="' + f(c[0]) + '" cy="' + f(c[1]) + '" r="2.6"/>'; });
+    out += '<circle class="nd am' + (anim ? ' a' : '') + '" style="--d:2860ms" cx="' + f(top[0]) + '" cy="' + f(top[1]) + '" r="3.2"/>';
+    out += '<g class="hl hgrp' + (anim ? ' a' : '') + '" style="--d:2960ms"></g>';
+    return out; }
+  function lattice(theta){ const n = 3, d = 17, zBase = LIFT - 31, half = (n - 1) * d / 2; const pts = [];
+    for (let z = 0; z < n; z++) for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { const lx = x * d - half, ly = y * d - half; const rx = lx * Math.cos(theta) - ly * Math.sin(theta), ry = lx * Math.sin(theta) + ly * Math.cos(theta); pts.push({ x, y, z, p: P(cx + rx, cy + ry, zBase + z * d) }); }
+    const at = (x, y, z) => pts[z * n * n + y * n + x]; let out = '';
+    pts.forEach(q => { [[1,0,0],[0,1,0],[0,0,1]].forEach(dv => { if (q.x + dv[0] < n && q.y + dv[1] < n && q.z + dv[2] < n) { const b = at(q.x + dv[0], q.y + dv[1], q.z + dv[2]); out += '<line x1="' + f(q.p[0]) + '" y1="' + f(q.p[1]) + '" x2="' + f(b.p[0]) + '" y2="' + f(b.p[1]) + '"/>'; } }); });
+    const row = [at(0, 1, 1), at(1, 1, 1), at(2, 1, 1)]; out += '<polyline class="hrow" points="' + row.map(r => f(r.p[0]) + ',' + f(r.p[1])).join(' ') + '"/>';
+    pts.forEach(q => { const on = q.y === 1 && q.z === 1; out += '<circle cx="' + f(q.p[0]) + '" cy="' + f(q.p[1]) + '" r="' + (on ? 2.2 : 1.3) + '"' + (on ? ' style="fill:var(--iso-line)"' : '') + '/>'; });
+    return out; }
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; const spinning = []; let raf = 0, last = 0;
+  function spin(now){ raf = requestAnimationFrame(spin); if (now - last < 33 || document.hidden) return; last = now;
+    for (let i = spinning.length - 1; i >= 0; i--) { const g = spinning[i]; if (!g.isConnected) { spinning.splice(i, 1); continue; } if (g.checkVisibility && !g.checkVisibility()) continue; g.innerHTML = lattice((now - g._t0) * 0.00032); }
+    if (!spinning.length) { cancelAnimationFrame(raf); raf = 0; } }
+  function mount(svg, anim){ if (!svg || svg.dataset.mounted) return svg; svg.dataset.mounted = '1'; svg.setAttribute('viewBox', VIEW); svg.classList.add('iso'); svg.innerHTML = build(anim);
+    const g = svg.querySelector('.hgrp'); g._t0 = performance.now(); if (reduce) g.innerHTML = lattice(.4); else { g.innerHTML = lattice(0); spinning.push(g); if (!raf) raf = requestAnimationFrame(spin); } return svg; }
+  function mountAll(root){ (root || document).querySelectorAll('svg[data-holo]').forEach(sv => mount(sv, sv.dataset.holo === 'anim')); }
+  /* the intro: grid lands in column triplets, the cell pushes out of its socket (exponential thrust, coast, settle), then the wiring and the hologram */
+  function play(svg){ if (!svg) return;
+    svg.querySelectorAll('.a, .dr').forEach(e => { const d = parseInt(e.style.getPropertyValue('--d') || '0') || 0; setTimeout(() => e.classList.add('in'), 80 + d); });
+    const cellG = svg.querySelector('.lc'); if (!cellG) return; const t0 = performance.now() + 960; const TA = 700, TB = 230, TC = 460, H = LIFT + OVER;
+    const step = () => { const t = performance.now() - t0;
+      if (t < 0) { cellG.style.opacity = Math.max(0, Math.min(1, (t + 420) / 320)).toFixed(2); requestAnimationFrame(step); return; } cellG.style.opacity = 1;
+      let h; if (t < TA) { const u = t / TA; h = .8 * H * (Math.exp(3.2 * u) - 1) / (Math.exp(3.2) - 1); }
+      else if (t < TA + TB) { const u = (t - TA) / TB; h = .8 * H + .2 * H * (1 - (1 - u) * (1 - u)); }
+      else if (t < TA + TB + TC) { const u = (t - TA - TB) / TC; const e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; h = H - OVER * e; }
+      else h = LIFT;
+      cellG.style.transform = 'translateY(' + (LIFT - h).toFixed(2) + 'px)'; if (t < TA + TB + TC + 50) requestAnimationFrame(step); };
+    requestAnimationFrame(step); }
+  if (!document.getElementById('isoGlow')) document.body.insertAdjacentHTML('afterbegin', defs());
+  mountAll();
+  return { mount, mountAll, play };
+})();
+/* ==/HOLO== */
+</script></body></html>

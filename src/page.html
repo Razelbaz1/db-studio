@@ -12,6 +12,7 @@
   --display:"Rubik", "Heebo", Arial, sans-serif;
   --body:"Heebo", "Segoe UI", Arial, sans-serif;
   --mono:"IBM Plex Mono", Consolas, "Courier New", monospace;
+  --iso-stroke:#C9D3D0;--iso-top:rgba(14,85,102,.08);--iso-left:#E4ECEA;--iso-right:#F1F5F4;--iso-socket:rgba(14,85,102,.2);--iso-lift-l:#0B4553;--iso-lift-r:#0E5566;--iso-line:#0E5566;--iso-dot:#0E5566;--iso-glow:none;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -21,6 +22,7 @@
     --pk:#F2C97A; --pk-bg:#3A2B0C; --fk:#8FD8E8; --fk-bg:#0F3B44;
     --good:#6BD09A; --good-bg:#12321F; --bad:#F28B7E; --bad-bg:#3D1712;
     --shadow:0 10px 30px rgba(0,0,0,.45);
+    --iso-stroke:#2B3A37;--iso-top:rgba(92,195,217,.10);--iso-left:#0F1B1D;--iso-right:#152524;--iso-socket:rgba(92,195,217,.28);--iso-lift-l:#1C6F7F;--iso-lift-r:#2F97AD;--iso-line:#5CC3D9;--iso-dot:#8FE0EF;--iso-glow:url(#isoGlow);
   }
 }
 :root[data-theme="dark"]{
@@ -30,6 +32,7 @@
   --pk:#F2C97A; --pk-bg:#3A2B0C; --fk:#8FD8E8; --fk-bg:#0F3B44;
   --good:#6BD09A; --good-bg:#12321F; --bad:#F28B7E; --bad-bg:#3D1712;
   --shadow:0 10px 30px rgba(0,0,0,.45);
+  --iso-stroke:#2B3A37;--iso-top:rgba(92,195,217,.10);--iso-left:#0F1B1D;--iso-right:#152524;--iso-socket:rgba(92,195,217,.28);--iso-lift-l:#1C6F7F;--iso-lift-r:#2F97AD;--iso-line:#5CC3D9;--iso-dot:#8FE0EF;--iso-glow:url(#isoGlow);
 }
 *{box-sizing:border-box}
 html{font-size:clamp(15px,1.05vw + 10px,18px)}
@@ -122,7 +125,6 @@ section.sec:last-child{border-bottom:0}
 .hello .lede{margin-top:.6rem}
 .hello .controls{margin-top:1.2rem}
 .hello-art .mark{height:7.5rem;width:auto;color:var(--ink);opacity:.9}
-.hello-art .mark .rowdy{animation:blink 1.4s steps(1) infinite}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem;transition:transform .25s,border-color .25s,box-shadow .25s}
 .stat:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow)}
@@ -365,29 +367,42 @@ html[dir="rtl"] .toast{transform:translateX(50%)}
 
 /* ---------- logo: brackets + rows, the rowdy row is the cursor ---------- */
 .logo{display:inline-flex;align-items:center;gap:.55rem;direction:ltr;color:inherit;text-decoration:none;white-space:nowrap}
-.logo .mark{height:1.7em;width:auto;overflow:visible;display:block}
+.logo .mark{height:2em;width:auto;overflow:visible;display:block}
 .logo .wm{font-family:var(--display);font-weight:900;font-size:1.25em;letter-spacing:-.02em;line-height:1}
 .logo .wm i{font-style:normal;color:#5CC3D9}
-.mark .br{fill:none;stroke:currentColor;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
-.mark .cell{fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
-.mark .rowdy{fill:#5CC3D9;filter:drop-shadow(0 0 5px rgba(92,195,217,.8));transform-box:fill-box;transform-origin:center;transform:translate(8px,-7px) rotate(-8deg);animation:blink 1.3s steps(1) infinite}
+/* ==ISO-CSS== the mark: isometric table grid, one cell risen from its socket, a hologram lattice around it */
+.iso .fc{stroke:var(--iso-stroke);stroke-width:1}
+.iso .tp{fill:var(--iso-top)}.iso .lf{fill:var(--iso-left)}.iso .rt{fill:var(--iso-right)}
+.iso .sk .tp{fill:var(--iso-socket)}
+.iso .lft .tp{fill:url(#isoGrad)}.iso .lft .lf{fill:var(--iso-lift-l)}.iso .lft .rt{fill:var(--iso-lift-r)}
+.iso .eg{fill:none;stroke:var(--iso-line);stroke-width:1.6;stroke-linecap:round;opacity:.85;filter:var(--iso-glow)}
+.iso .nd{fill:var(--iso-line);filter:var(--iso-glow);transform-box:fill-box;transform-origin:center}
+.iso .nd.am{fill:#E8A33A}
+.iso .hl{opacity:.5}
+.iso .hl line{stroke:var(--iso-line);stroke-width:.8;fill:none;opacity:.7}
+.iso .hl circle{fill:var(--iso-dot)}
+.iso .hl .hrow{stroke:var(--iso-line);stroke-width:2;fill:none}
+.iso .a{opacity:0;transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.iso .a.in{opacity:1;transform:none}
+.iso .gc.a{transform:translateY(10px);transition:opacity .3s ease,transform .42s cubic-bezier(.2,.8,.2,1)}
+.iso .hl.a{opacity:0}.iso .hl.a.in{opacity:.5}
+.iso .dr{stroke-dasharray:300;stroke-dashoffset:300;transition:stroke-dashoffset .75s ease}
+.iso .dr.in{stroke-dashoffset:0}
+.iso .pu:not(.a),.iso .pu.in{animation:npulse 1.8s ease-in-out infinite}
+@keyframes npulse{50%{opacity:.45;transform:scale(.8)}}
+/* ==/ISO-CSS== */
 @keyframes blink{50%{opacity:.2}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
 @keyframes kick{0%{transform:translate(0,0) rotate(0)}45%{transform:translate(11px,-10px) rotate(-9deg)}100%{transform:translate(8px,-7px) rotate(-8deg)}}
 @keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 /* intro overlay */
-#intro{position:fixed;inset:0;z-index:120;background:#0B1416;display:none;place-items:center;transition:opacity 1.2s ease;color:#E6EEEC;cursor:pointer}
+#intro{--iso-stroke:#2B3A37;--iso-top:rgba(92,195,217,.10);--iso-left:#0F1B1D;--iso-right:#152524;--iso-socket:rgba(92,195,217,.28);--iso-lift-l:#1C6F7F;--iso-lift-r:#2F97AD;--iso-line:#5CC3D9;--iso-dot:#8FE0EF;--iso-glow:url(#isoGlow);position:fixed;inset:0;z-index:120;background:#0B1416;display:none;place-items:center;transition:opacity 1.2s ease;color:#E6EEEC;cursor:pointer}
 html.js #intro{display:grid}
 #intro.fade{opacity:0;pointer-events:none}
 #intro .logo{font-size:clamp(2.2rem,6vw,4.2rem);gap:.5em;will-change:transform}
 #intro .logo .wm{opacity:0}
-#intro.play .logo .wm{animation:fadeup .9s cubic-bezier(.2,.7,.2,1) 2s forwards}
-#intro.play .mark .br{stroke-dasharray:220;stroke-dashoffset:220;animation:draw 1.2s cubic-bezier(.4,0,.2,1) forwards}
-#intro.play .mark .b2{animation-delay:.25s}
-#intro.play .mark .cell{stroke-dasharray:300;stroke-dashoffset:300;animation:draw 1.1s cubic-bezier(.4,0,.2,1) .8s forwards}
-#intro.play .mark .r3{animation-delay:1s}
-#intro.play .mark .rowdy{animation:pop .5s cubic-bezier(.2,.8,.2,1) 1.7s both,kick .8s cubic-bezier(.3,.7,.2,1) 2.3s forwards,blink 1.3s steps(1) 3.2s infinite}
+#intro.play .logo .wm{animation:fadeup .9s cubic-bezier(.2,.7,.2,1) 3.1s forwards}
 /* the page builds out of the logo */
 html.js .gate .b{opacity:0;transform:translateY(18px);transition:opacity 1s ease,transform 1.1s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
 html.js .gate.built .b{opacity:1;transform:none}
@@ -566,12 +581,12 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('error', fu
 if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledrejection', function(e){ var d=document.createElement('div'); d.style.cssText='position:fixed;top:40px;left:0;right:0;z-index:9999;background:#8A5A00;color:#fff;padding:8px 12px;font:13px Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap'; d.textContent='Promise error: '+((e.reason&&e.reason.message)||e.reason); document.body.appendChild(d); });
 </script>
 <script>document.documentElement.classList.add("gated"); document.documentElement.classList.add("js");</script>
-<div id="intro" aria-hidden="true"><span class="logo"><svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><b class="wm">Rowdy<i>QL</i></b></span></div>
+<div id="intro" aria-hidden="true"><span class="logo"><svg class="mark" data-holo="anim" aria-hidden="true"></svg><b class="wm">Rowdy<i>QL</i></b></span></div>
 <div class="gate" id="gate">
   <canvas id="gateBg" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="gtop">
-      <a class="logo" id="gateLogo" href="#" style="font-size:1.1rem"><svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><b class="wm">Rowdy<i>QL</i></b></a><span id="gateHost" hidden></span>
+      <a class="logo" id="gateLogo" href="#" style="font-size:1.1rem"><svg class="mark" data-holo aria-hidden="true"></svg><b class="wm">Rowdy<i>QL</i></b></a><span id="gateHost" hidden></span>
       <div class="links"><button type="button" class="gbtn ghost" id="lnkLang">EN</button><button type="button" class="gbtn" id="lnkIn" data-i18n="g_signin"></button><button type="button" class="gbtn primary" id="lnkUp" data-i18n="g_signup"></button></div>
     </div>
     <section id="landing">
@@ -610,7 +625,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
 </div>
 
 <header class="top">
-  <div class="brand"><span class="logo" id="appLogo" style="font-size:1rem"><svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><b class="wm">Rowdy<i>QL</i></b></span><span data-i18n="brand_sub"></span></div>
+  <div class="brand"><span class="logo" id="appLogo" style="font-size:1rem"><svg class="mark" data-holo aria-hidden="true"></svg><b class="wm">Rowdy<i>QL</i></b></span><span data-i18n="brand_sub"></span></div>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-unit="home" data-i18n="tab_home"></button>
     <button class="tab" role="tab" aria-selected="false" data-unit="intro" data-i18n="tab_intro"></button>
@@ -641,7 +656,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
         <p class="lede" id="helloSub"></p>
         <div class="controls" id="helloCta"></div>
       </div>
-      <div class="hello-art" aria-hidden="true"><svg class="mark" viewBox="0 0 130 100"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg></div>
+      <div class="hello-art" aria-hidden="true"><svg class="mark" data-holo aria-hidden="true"></svg></div>
     </section>
     <section class="sec" id="h-stats" data-title="nav_h_stats">
       <div class="sec-head"><h2 data-i18n="hs_h2"></h2><p class="lede" data-i18n="hs_lede"></p></div>
@@ -1462,6 +1477,60 @@ try { const raw = localStorage.getItem('dbs_lang'); lang = raw ? raw.replace(/"/
 if (lang !== 'he' && lang !== 'en') lang = 'he';
 let teacher = false;
 const $ = s => document.querySelector(s);
+
+/* ==HOLO== the mark, generated: isometric grid, the cell that rises out of its socket, and the rotating hologram lattice */
+const HOLO = (() => {
+  const CO = Math.cos(Math.PI / 6), SI = Math.sin(Math.PI / 6);
+  const P = (x, y, z) => [(x - y) * CO, (x + y) * SI - z];
+  const f = n => n.toFixed(2);
+  const poly = (pts, cls) => '<polygon class="' + cls + '" points="' + pts.map(q => f(q[0]) + ',' + f(q[1])).join(' ') + '"/>';
+  const box = (x, y, w, h, z, cls) => { const t = [P(x, y, z), P(x + w, y, z), P(x + w, y + w, z), P(x, y + w, z)]; const l = [P(x, y + w, z), P(x + w, y + w, z), P(x + w, y + w, z - h), P(x, y + w, z - h)]; const r = [P(x + w, y, z), P(x + w, y + w, z), P(x + w, y + w, z - h), P(x + w, y, z - h)]; return '<g class="' + cls + '">' + poly(l, 'fc lf') + poly(r, 'fc rt') + poly(t, 'fc tp') + '</g>'; };
+  const cell = 22, gap = 5, cols = 4, rows = 3, LIFT = 26, OVER = 9, LI = 2, LJ = 1;
+  const cx = LI * (cell + gap) + cell / 2, cy = LJ * (cell + gap) + cell / 2;
+  const VIEW = '-68 0 160 100';
+  function defs(){ const x = LI * (cell + gap), y = LJ * (cell + gap); const L = P(x, y + cell, 0), M = P(x + cell, y + cell, 0), R = P(x + cell, y, 0);
+    return '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="isoGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="isoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FE0EF"/><stop offset="1" stop-color="#3FB1C9"/></linearGradient><clipPath id="isoSocket"><polygon points="' + f(L[0]) + ',' + f(L[1]) + ' ' + f(M[0]) + ',' + f(M[1]) + ' ' + f(R[0]) + ',' + f(R[1]) + ' ' + f(R[0]) + ',-300 ' + f(L[0]) + ',-300"/></clipPath></defs></svg>'; }
+  function build(anim){ let out = ''; const centers = {};
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) { const x = i * (cell + gap), y = j * (cell + gap); const lift = (i === LI && j === LJ); centers[i + ',' + j] = P(x + cell / 2, y + cell / 2, 1);
+      out += '<g class="gc' + (anim ? ' a' : '') + '" style="--d:' + (i * 150 + j * 25) + 'ms">' + box(x, y, cell, 8, 0, lift ? 'sk' : '') + '</g>';
+      if (lift) out += '<g clip-path="url(#isoSocket)"><g class="lft lc" style="' + (anim ? 'opacity:0;transform:translateY(' + LIFT + 'px)' : '') + '">' + box(x, y, cell, 30, LIFT, 'lft') + '</g></g>'; }
+    const top = P(cx, cy, LIFT + 1); const from = ['0,0', '3,0', '1,2', '3,2'];
+    from.forEach((k, i) => { const a = centers[k]; out += '<path class="eg' + (anim ? ' dr' : '') + '" style="--d:' + (2360 + i * 90) + 'ms" d="M' + f(a[0]) + ',' + f(a[1]) + ' Q' + f((a[0] + top[0]) / 2) + ',' + f(Math.min(a[1], top[1]) - 16) + ' ' + f(top[0]) + ',' + f(top[1]) + '"/>'; });
+    from.forEach((k, i) => { const c = centers[k]; out += '<circle class="nd pu' + (anim ? ' a' : '') + '" style="--d:' + (2610 + i * 60) + 'ms;animation-delay:' + (i * .3) + 's" cx="' + f(c[0]) + '" cy="' + f(c[1]) + '" r="2.6"/>'; });
+    out += '<circle class="nd am' + (anim ? ' a' : '') + '" style="--d:2860ms" cx="' + f(top[0]) + '" cy="' + f(top[1]) + '" r="3.2"/>';
+    out += '<g class="hl hgrp' + (anim ? ' a' : '') + '" style="--d:2960ms"></g>';
+    return out; }
+  function lattice(theta){ const n = 3, d = 17, zBase = LIFT - 31, half = (n - 1) * d / 2; const pts = [];
+    for (let z = 0; z < n; z++) for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { const lx = x * d - half, ly = y * d - half; const rx = lx * Math.cos(theta) - ly * Math.sin(theta), ry = lx * Math.sin(theta) + ly * Math.cos(theta); pts.push({ x, y, z, p: P(cx + rx, cy + ry, zBase + z * d) }); }
+    const at = (x, y, z) => pts[z * n * n + y * n + x]; let out = '';
+    pts.forEach(q => { [[1,0,0],[0,1,0],[0,0,1]].forEach(dv => { if (q.x + dv[0] < n && q.y + dv[1] < n && q.z + dv[2] < n) { const b = at(q.x + dv[0], q.y + dv[1], q.z + dv[2]); out += '<line x1="' + f(q.p[0]) + '" y1="' + f(q.p[1]) + '" x2="' + f(b.p[0]) + '" y2="' + f(b.p[1]) + '"/>'; } }); });
+    const row = [at(0, 1, 1), at(1, 1, 1), at(2, 1, 1)]; out += '<polyline class="hrow" points="' + row.map(r => f(r.p[0]) + ',' + f(r.p[1])).join(' ') + '"/>';
+    pts.forEach(q => { const on = q.y === 1 && q.z === 1; out += '<circle cx="' + f(q.p[0]) + '" cy="' + f(q.p[1]) + '" r="' + (on ? 2.2 : 1.3) + '"' + (on ? ' style="fill:var(--iso-line)"' : '') + '/>'; });
+    return out; }
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; const spinning = []; let raf = 0, last = 0;
+  function spin(now){ raf = requestAnimationFrame(spin); if (now - last < 33 || document.hidden) return; last = now;
+    for (let i = spinning.length - 1; i >= 0; i--) { const g = spinning[i]; if (!g.isConnected) { spinning.splice(i, 1); continue; } if (g.checkVisibility && !g.checkVisibility()) continue; g.innerHTML = lattice((now - g._t0) * 0.00032); }
+    if (!spinning.length) { cancelAnimationFrame(raf); raf = 0; } }
+  function mount(svg, anim){ if (!svg || svg.dataset.mounted) return svg; svg.dataset.mounted = '1'; svg.setAttribute('viewBox', VIEW); svg.classList.add('iso'); svg.innerHTML = build(anim);
+    const g = svg.querySelector('.hgrp'); g._t0 = performance.now(); if (reduce) g.innerHTML = lattice(.4); else { g.innerHTML = lattice(0); spinning.push(g); if (!raf) raf = requestAnimationFrame(spin); } return svg; }
+  function mountAll(root){ (root || document).querySelectorAll('svg[data-holo]').forEach(sv => mount(sv, sv.dataset.holo === 'anim')); }
+  /* the intro: grid lands in column triplets, the cell pushes out of its socket (exponential thrust, coast, settle), then the wiring and the hologram */
+  function play(svg){ if (!svg) return;
+    svg.querySelectorAll('.a, .dr').forEach(e => { const d = parseInt(e.style.getPropertyValue('--d') || '0') || 0; setTimeout(() => e.classList.add('in'), 80 + d); });
+    const cellG = svg.querySelector('.lc'); if (!cellG) return; const t0 = performance.now() + 960; const TA = 700, TB = 230, TC = 460, H = LIFT + OVER;
+    const step = () => { const t = performance.now() - t0;
+      if (t < 0) { cellG.style.opacity = Math.max(0, Math.min(1, (t + 420) / 320)).toFixed(2); requestAnimationFrame(step); return; } cellG.style.opacity = 1;
+      let h; if (t < TA) { const u = t / TA; h = .8 * H * (Math.exp(3.2 * u) - 1) / (Math.exp(3.2) - 1); }
+      else if (t < TA + TB) { const u = (t - TA) / TB; h = .8 * H + .2 * H * (1 - (1 - u) * (1 - u)); }
+      else if (t < TA + TB + TC) { const u = (t - TA - TB) / TC; const e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; h = H - OVER * e; }
+      else h = LIFT;
+      cellG.style.transform = 'translateY(' + (LIFT - h).toFixed(2) + 'px)'; if (t < TA + TB + TC + 50) requestAnimationFrame(step); };
+    requestAnimationFrame(step); }
+  if (!document.getElementById('isoGlow')) document.body.insertAdjacentHTML('afterbegin', defs());
+  mountAll();
+  return { mount, mountAll, play };
+})();
+/* ==/HOLO== */
 const $$ = s => Array.from(document.querySelectorAll(s));
 const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.he[k] != null ? I18N.he[k] : k); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -1920,8 +1989,8 @@ function observeReveal(){
   $$('.reveal:not(.in)').forEach(x => revealIO.observe(x));
 }
 function sideNotice(){
-  const n = el('div', 'notice'); n.innerHTML = '<svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><div><b>' + t(greetingKey()) + (firstName() ? ', ' + firstName() : '') + '</b><span>' + t('notice_sub') + '</span></div>';
-  document.body.appendChild(n); requestAnimationFrame(() => n.classList.add('in')); setTimeout(() => { n.classList.add('out'); setTimeout(() => n.remove(), 500); }, 4500);
+  const n = el('div', 'notice'); n.innerHTML = '<svg class="mark" data-holo aria-hidden="true"></svg><div><b>' + t(greetingKey()) + (firstName() ? ', ' + firstName() : '') + '</b><span>' + t('notice_sub') + '</span></div>';
+  document.body.appendChild(n); HOLO.mountAll(n); requestAnimationFrame(() => n.classList.add('in')); setTimeout(() => { n.classList.add('out'); setTimeout(() => n.remove(), 500); }, 4500);
 }
 
 /* =========================== RAIL, PROGRESS, UNITS =========================== */
@@ -2262,7 +2331,7 @@ function buildPage(){ built = true; $('#gate').classList.add('built'); }
 function playIntro(){
   const intro = $('#intro'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!intro || reduce || !document.documentElement.classList.contains('js')) { if (intro) intro.remove(); buildPage(); $('#gateLogo').classList.add('show'); return; }
-  intro.classList.add('play');
+  intro.classList.add('play'); HOLO.play(intro.querySelector('svg.mark'));
   const go = () => {
     if (intro.dataset.done) return; intro.dataset.done = '1';
     const lg = intro.querySelector('.logo'); const gateOpen = !$('#gate').hidden; const tgtEl = gateOpen ? $('#gateLogo') : $('#appLogo');
@@ -2271,7 +2340,7 @@ function playIntro(){
     intro.classList.add('fade'); setTimeout(buildPage, 350);
     setTimeout(() => { intro.remove(); $('#gateLogo').classList.add('show'); }, 1250);
   };
-  setTimeout(go, 3400); intro.addEventListener('click', go);
+  setTimeout(go, 4300); intro.addEventListener('click', go);
 }
 /* animated background: a schema slowly wiring itself */
 function startGateBg(){
