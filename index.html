@@ -449,7 +449,8 @@ html.gated .spine,html.gated .top,html.gated .shell{visibility:hidden}
 /* landing */
 .hero-l{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:2.5rem;align-items:start;padding:1.2rem 0 2.6rem}
 .hero-l>div:first-child{padding-top:1.2rem}
-.hero-l .kicker{color:#5CC3D9;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;direction:ltr;text-align:start;display:block;margin-bottom:.9rem}
+.hero-l .kicker{color:#5CC3D9;font-family:var(--display);font-weight:800;font-size:clamp(1.05rem,1.8vw,1.65rem);letter-spacing:-.01em;line-height:1.15;text-wrap:balance;direction:ltr;text-align:start;display:block;margin-bottom:.3rem}
+html[dir="rtl"] .hero-l .kicker{text-align:end}
 .hero-l h1{font-size:clamp(2.1rem,3.8vw,3.4rem);color:#fff;line-height:1.1;font-weight:900}
 .hero-l p{color:#93A5A1;font-size:1.08rem;max-width:52ch;margin-top:.9rem}
 .demo{background:rgba(23,33,32,.88);border:1px solid #2B3A37;border-radius:16px;padding:1rem 1.1rem;box-shadow:0 30px 80px rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:.6rem;height:21.5rem;overflow:hidden}
@@ -611,7 +612,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
     <section id="landing">
       <div class="hero-l">
         <div>
-          <span class="kicker b" style="--d:.25s">Query · Schema · JOIN · DDL · 3NF · Foreign key</span>
+          <span class="kicker b" style="--d:.25s">Query, Schema, JOIN, DDL, 3NF, FK…</span>
           <h1 class="b" style="--d:.45s" data-i18n="l_h1"></h1>
           <p class="b" style="--d:.65s" data-i18n="l_sub"></p>
           <div class="controls b" style="--d:.85s;margin-top:1.3rem"><button type="button" class="gbtn primary" id="ctaUp" data-i18n="l_cta"></button><button type="button" class="gbtn" id="ctaIn" data-i18n="l_have"></button></div>
