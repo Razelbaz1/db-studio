@@ -497,6 +497,22 @@ html[lang="en"] .story.static .story-caps{direction:ltr}
 .gate{container-type:inline-size}
 @supports (width:1cqw){.story{width:100cqw;margin-inline:calc(50% - 50cqw)}}
 .story{margin-top:2.6rem;margin-bottom:2.6rem;border-top:1px solid #2B3A37;border-bottom:1px solid #2B3A37}
+/* ==PTOOLS-CSS== presenter toolkit: annotation overlay, laser cursor, floating bar */
+.annot{position:fixed;inset:0;width:100%;height:100%;z-index:85;pointer-events:none;display:none}
+html.present .annot{display:block}
+html.pt-laser,html.pt-laser *{cursor:none!important}
+html.pt-draw .annot{cursor:crosshair}
+.ptools{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:86;display:flex;align-items:center;gap:.2rem;padding:.35rem .5rem;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);direction:ltr;font-size:16px}
+.ptools[hidden]{display:none}
+.ptools button{font:inherit;font-size:.82rem;border:1px solid transparent;background:transparent;color:var(--ink);border-radius:999px;padding:.35rem .65rem;cursor:pointer;min-height:36px;white-space:nowrap}
+.ptools button:hover{border-color:var(--line)}
+.ptools button.on{background:var(--accent);color:var(--on-accent)}
+.ptools .sw{display:inline-flex;gap:.3rem;padding:0 .4rem}
+.ptools .sw i{width:16px;height:16px;border-radius:50%;cursor:pointer;border:2px solid transparent;display:inline-block;box-sizing:border-box}
+.ptools .sw i.on{border-color:var(--ink)}
+.ptools .zl{font-family:var(--mono);font-size:.75rem;color:var(--muted);min-width:3.2ch;text-align:center}
+.ptools .sep{width:1px;height:20px;background:var(--line);margin:0 .25rem}
+/* ==/PTOOLS-CSS== */
 .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;padding:0 0 2.4rem}
 .feat div{background:rgba(23,33,32,.72);border:1px solid #2B3A37;border-radius:14px;padding:1rem 1.1rem;transition:border-color .2s}
 .feat div:hover{border-color:#5CC3D9}
@@ -1243,7 +1259,7 @@ r3_0:"כל הסטודנטים מהנדסת תעשייה", r3_1:"סטודנטים
 r3_e:"A ∪ B מכיל את כל A. כשמחסרים מ-A קבוצה שמכילה אותו, לא נשאר כלום: התוצאה תמיד ריקה, בלי קשר לנתונים. אף סעיף לא אומר 'קבוצה ריקה', ולכן התשובה היא 'כל האחרות שגויות'. המלכודת הזו הופיעה במבחן.",
 
 t_title:"קוד מרצה", t_body:"הקוד פותח את הערות המרצה ואת כל הפתרונות בעמוד. לא נשמר בדפדפן אחרי סגירה.", t_ph:"הקלידו קוד", t_ok:"פתח", t_cancel:"ביטול", t_bad:"קוד שגוי.", t_good:"מצב מרצה פתוח: הערות ופתרונות גלויים.",
-teacher_on:"מרצה ✓", present_off:"סיום הצגה",
+teacher_on:"מרצה ✓", present_off:"סיום הצגה", pt_laser:"מצביע", pt_pen:"עט", pt_erase:"מחק", pt_undo:"בטל", pt_clear:"נקה", pt_zout:"−", pt_zin:"+", pt_zreset:"100%",
 
 g_signup:"הרשמה", g_signin:"כניסה", g_email:"אימייל", g_pass:"סיסמה (8 תווים לפחות)", g_pass_in:"סיסמה", g_name:"שם מלא", g_first:"שם פרטי", g_last:"שם משפחה", g_birth:"תאריך לידה", g_year:"שנת לימוד", g_y1:"א'", g_y2:"ב'", g_y3:"ג'", g_y4:"ד' ומעלה", g_sem:"סמסטר", g_semA:"סמסטר א'", g_semB:"סמסטר ב'",
 g_consent:"קראתי ואני מסכים/ה ל<a href=\"#\" id=\"termsLink\">תנאי הפרטיות המלאים</a>.",
@@ -1482,7 +1498,7 @@ r3_0:"All Industrial Engineering students", r3_1:"IE students who are not CS stu
 r3_e:"A ∪ B contains all of A. Subtracting a superset of A from A leaves nothing: the result is always empty, regardless of data. No option says 'empty set', so the answer is 'all others are wrong'. This trap appeared in a real exam.",
 
 t_title:"Teacher code", t_body:"The code reveals teacher notes and every solution on the page. It is not stored after you close the page.", t_ph:"Enter code", t_ok:"Unlock", t_cancel:"Cancel", t_bad:"Wrong code.", t_good:"Teacher mode on: notes and solutions visible.",
-teacher_on:"Teacher ✓", present_off:"Exit presenter",
+teacher_on:"Teacher ✓", present_off:"Exit presenter", pt_laser:"Pointer", pt_pen:"Pen", pt_erase:"Erase", pt_undo:"Undo", pt_clear:"Clear", pt_zout:"−", pt_zin:"+", pt_zreset:"100%",
 
 g_signup:"Sign up", g_signin:"Sign in", g_email:"Email", g_pass:"Password (8+ characters)", g_pass_in:"Password", g_name:"Full name", g_first:"First name", g_last:"Last name", g_birth:"Date of birth", g_year:"Year of study", g_y1:"1st", g_y2:"2nd", g_y3:"3rd", g_y4:"4th+", g_sem:"Semester", g_semA:"Semester A", g_semB:"Semester B",
 g_consent:"I have read and agree to the <a href=\"#\" id=\"termsLink\">full privacy terms</a>.",
@@ -2689,6 +2705,45 @@ const STORY = (() => {
 
 /* the story starts observing as soon as the page exists; it only animates while on screen */
 try { STORY.init($('#story')); } catch (e) { console.error('story init', e); }
+
+/* ==PTOOLS== presenter toolkit: laser pointer with a trail, pen/eraser annotations that stick to the page, smooth zoom of the content */
+const PT = (() => {
+  const root = document.documentElement; const sh = $('.shell'); let tool = null, color = '#5CC3D9', strokes = [], cur = null, trail = [], raf = 0, zoom = 1, busy = false, dpr = 1;
+  const cv = document.createElement('canvas'); cv.className = 'annot'; document.body.appendChild(cv); const cx = cv.getContext('2d');
+  const bar = document.createElement('div'); bar.className = 'ptools'; bar.hidden = true; document.body.appendChild(bar);
+  const BTNS = [['laser', 'pt_laser'], ['pen', 'pt_pen'], ['erase', 'pt_erase'], ['undo', 'pt_undo'], ['clear', 'pt_clear'], null, ['zout', 'pt_zout'], ['zin', 'pt_zin'], ['zreset', 'pt_zreset']];
+  function render(){ const sw = '<span class="sw">' + ['#5CC3D9', '#E8A33A', '#F4F7F6'].map(c => '<i data-c="' + c + '" style="background:' + c + '"' + (c === color ? ' class="on"' : '') + '></i>').join('') + '</span>';
+    bar.innerHTML = BTNS.map(b => b ? '<button type="button" data-act="' + b[0] + '"' + (b[0] === tool ? ' class="on"' : '') + '>' + t(b[1]) + '</button>' : sw + '<span class="sep"></span>').join('') + '<b class="zl">' + Math.round(zoom * 100) + '%</b>'; }
+  function size(){ dpr = Math.min(2, devicePixelRatio || 1); cv.width = Math.round(innerWidth * dpr); cv.height = Math.round(innerHeight * dpr); draw(); }
+  function draw(){ cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, innerWidth, innerHeight); cx.lineCap = 'round'; cx.lineJoin = 'round';
+    strokes.forEach(st => { const q = st.pts; if (q.length < 2) return; cx.strokeStyle = st.c; cx.lineWidth = st.w; cx.shadowColor = st.c; cx.shadowBlur = 6; cx.beginPath(); cx.moveTo(q[0][0] - scrollX, q[0][1] - scrollY);
+      for (let i = 1; i < q.length - 1; i++) { const mx = (q[i][0] + q[i + 1][0]) / 2 - scrollX, my = (q[i][1] + q[i + 1][1]) / 2 - scrollY; cx.quadraticCurveTo(q[i][0] - scrollX, q[i][1] - scrollY, mx, my); }
+      const l = q[q.length - 1]; cx.lineTo(l[0] - scrollX, l[1] - scrollY); cx.stroke(); }); cx.shadowBlur = 0;
+    if (tool === 'laser' && trail.length) { const now = performance.now(); trail = trail.filter(q => now - q.t < 520);
+      for (let i = 1; i < trail.length; i++) { const a = 1 - (now - trail[i].t) / 520; cx.strokeStyle = 'rgba(92,195,217,' + (a * .7).toFixed(2) + ')'; cx.lineWidth = 2 + 6 * a; cx.beginPath(); cx.moveTo(trail[i - 1].x, trail[i - 1].y); cx.lineTo(trail[i].x, trail[i].y); cx.stroke(); }
+      const h = trail[trail.length - 1]; if (h) { cx.fillStyle = '#5CC3D9'; cx.shadowColor = '#5CC3D9'; cx.shadowBlur = 18; cx.beginPath(); cx.arc(h.x, h.y, 6, 0, 6.2832); cx.fill(); cx.fillStyle = '#fff'; cx.shadowBlur = 0; cx.beginPath(); cx.arc(h.x, h.y, 2.4, 0, 6.2832); cx.fill(); } } }
+  function loop(){ draw(); raf = (tool === 'laser') ? requestAnimationFrame(loop) : 0; }
+  function setTool(n){ tool = (tool === n) ? null : n; root.classList.toggle('pt-draw', tool === 'pen' || tool === 'erase'); root.classList.toggle('pt-laser', tool === 'laser'); cv.style.pointerEvents = (tool === 'pen' || tool === 'erase') ? 'auto' : 'none'; trail = []; if (tool === 'laser' && !raf) loop(); else draw(); render(); }
+  const pg = e => [e.clientX + scrollX, e.clientY + scrollY];
+  cv.addEventListener('pointerdown', e => { if (tool === 'pen') { cur = { c: color, w: 3.2, pts: [pg(e)] }; strokes.push(cur); } else if (tool === 'erase') erase(e); cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+  cv.addEventListener('pointermove', e => { if (tool === 'pen' && cur) { cur.pts.push(pg(e)); draw(); } else if (tool === 'erase' && e.buttons) erase(e); });
+  cv.addEventListener('pointerup', () => { cur = null; }); cv.addEventListener('pointercancel', () => { cur = null; });
+  function erase(e){ const [x, y] = pg(e); const n = strokes.length; strokes = strokes.filter(st => !st.pts.some(q => Math.hypot(q[0] - x, q[1] - y) < 16)); if (strokes.length !== n) draw(); }
+  window.addEventListener('pointermove', e => { if (tool === 'laser') trail.push({ x: e.clientX, y: e.clientY, t: performance.now() }); }, { passive: true });
+  window.addEventListener('scroll', () => { if (strokes.length || tool === 'laser') draw(); }, { passive: true }); window.addEventListener('resize', size);
+  /* zoom: animate a transform around the viewport centre, then swap to CSS zoom (real layout) keeping the same point under the centre */
+  function setZoom(Z){ Z = Math.round(Math.max(.6, Math.min(2.4, Z)) * 100) / 100; if (busy || !sh || Z === zoom) return; busy = true; const r = Z / zoom, R = sh.getBoundingClientRect(); const fx = innerWidth / 2, fy = innerHeight / 2;
+    const ox = (fx - R.left) / R.width * 100, oy = (fy - R.top) / R.height * 100; const pageX = scrollX + fx, pageY = scrollY + fy, shX = R.left + scrollX, shY = R.top + scrollY;
+    sh.style.transformOrigin = ox + '% ' + oy + '%'; sh.style.transition = 'transform .45s cubic-bezier(.2,.8,.2,1)'; requestAnimationFrame(() => { sh.style.transform = 'scale(' + r + ')'; });
+    setTimeout(() => { sh.style.transition = 'none'; sh.style.transform = ''; sh.style.zoom = Z; zoom = Z; window.scrollTo(shX + (pageX - shX) * r - fx, shY + (pageY - shY) * r - fy); busy = false; render(); draw(); }, 470); }
+  function act(a){ if (a === 'laser' || a === 'pen' || a === 'erase') setTool(a); else if (a === 'undo') { strokes.pop(); draw(); } else if (a === 'clear') { strokes = []; draw(); } else if (a === 'zin') setZoom(zoom * 1.25); else if (a === 'zout') setZoom(zoom / 1.25); else if (a === 'zreset') setZoom(1); }
+  bar.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b) act(b.dataset.act); const sw = e.target.closest('[data-c]'); if (sw) { color = sw.dataset.c; if (tool !== 'pen') setTool('pen'); else render(); } });
+  document.addEventListener('keydown', e => { if (!root.classList.contains('present') || e.ctrlKey || e.metaKey || e.altKey) return; const tg = e.target; if (tg && (/^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName) || tg.isContentEditable)) return;
+    const k = e.key.toLowerCase(); const map = { l: 'laser', d: 'pen', e: 'erase', u: 'undo', c: 'clear', '+': 'zin', '=': 'zin', '-': 'zout', '0': 'zreset' }; if (map[k]) { act(map[k]); e.preventDefault(); } else if (e.key === 'Escape' && tool) setTool(tool); });
+  new MutationObserver(() => { const on = root.classList.contains('present'); bar.hidden = !on; if (on) { size(); render(); } else { if (tool) setTool(tool); strokes = []; trail = []; draw(); if (zoom !== 1) setZoom(1); } }).observe(root, { attributes: true, attributeFilter: ['class'] });
+  return { render };
+})();
+/* ==/PTOOLS== */
 const $$ = s => Array.from(document.querySelectorAll(s));
 const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.he[k] != null ? I18N.he[k] : k); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -3202,7 +3257,7 @@ $('#btnToc').addEventListener('click', () => { railOn = !railOn; applyRail(); up
 /* =========================== LANG, PRESENTER, TEACHER =========================== */
 function applyLang(){
   document.documentElement.lang = lang; document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr'; $('#gate').setAttribute('dir', document.documentElement.dir); $('#gate').setAttribute('lang', lang);
-  $('#btnLang').textContent = lang === 'he' ? 'EN' : 'עב';
+  $('#btnLang').textContent = lang === 'he' ? 'EN' : 'עב'; if (typeof PT !== 'undefined') PT.render();
   $$('[data-i18n]').forEach(e => e.innerHTML = t(e.dataset.i18n));
   $$('[data-tnote]').forEach(e => { e.innerHTML = '<b>'+t('an_note_t')+':</b> ' + t(e.dataset.tnote+'_tnote'); e.hidden = !teacher; });
   $('#btnPresent').textContent = document.documentElement.classList.contains('present') ? t('present_off') : t('present');
