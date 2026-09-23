@@ -241,6 +241,24 @@ pre.sql .k{color:var(--accent);font-weight:500}
 .note{border:1px dashed var(--amber);background:var(--amber-soft);border-radius:10px;padding:.7rem .9rem;font-size:.92rem}
 .note b{color:var(--pk)}
 
+/* ---------- relational algebra lab & exercises ---------- */
+.palette{display:flex;gap:.35rem;flex-wrap:wrap}
+.palette button{border:1px solid var(--line);background:var(--surface);border-radius:8px;min-width:2.4rem;min-height:40px;padding:.3rem .6rem;font-family:var(--mono);font-size:1rem}
+.palette button:hover{border-color:var(--accent);color:var(--accent)}
+textarea.raq{width:100%;font-family:var(--mono);font-size:1.05rem;direction:ltr;text-align:left;background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;resize:vertical;line-height:1.5}
+textarea.raq:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+table.bridge{width:100%;direction:rtl;text-align:start;font-family:var(--body)}
+html[dir="ltr"] table.bridge{direction:ltr}
+table.bridge td:first-child{font-family:var(--mono);font-size:1.05rem;direction:ltr;text-align:left;white-space:nowrap}
+table.bridge td:nth-child(3){font-family:var(--mono);direction:ltr;text-align:left;white-space:nowrap}
+.exlist{display:flex;flex-direction:column;gap:1rem}
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.7rem}
+.ex .exh{display:flex;justify-content:space-between;gap:1rem;align-items:baseline;flex-wrap:wrap}
+.ex .exh b{font-size:1.02rem}
+.ex .lvl{font-size:.72rem;border-radius:999px;padding:.1rem .55rem;background:var(--surface2);color:var(--muted);font-family:var(--mono)}
+.ex.solved{border-color:var(--good)}
+.ex.solved .exh b::before{content:"✓ ";color:var(--good)}
+.exres .tbl{max-width:100%}
 /* ---------- popover ---------- */
 #pop{position:fixed;z-index:50;max-width:min(340px,90vw);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:.8rem .95rem;box-shadow:var(--shadow);font-size:.92rem;line-height:1.5}
 #pop::before{content:"";position:absolute;width:12px;height:12px;background:var(--surface);border-inline-start:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg);top:-7px;left:var(--ax,20px)}
@@ -738,36 +756,87 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
       </div>
     </section>
 
-    <section class="sec" id="r-exercise" data-title="nav_r_ex">
+    <section class="sec" id="r-sets" data-title="nav_r_sets">
       <div class="sec-head">
-        <h2 data-i18n="ex_h2"></h2>
-        <p class="lede" data-i18n="ex_lede"></p>
+        <h2>∪ ∩ − <span data-i18n="st_h2"></span></h2>
+        <p class="lede" data-i18n="st_lede"></p>
       </div>
       <div class="bench">
-        <div class="qbox" data-i18n="ex_q"></div>
-        <div class="builder">
-          <label><span data-i18n="ex_step1"></span><select id="exJoin"></select></label>
-          <label><span data-i18n="ex_step2"></span><select id="exSel"></select></label>
-          <label><span data-i18n="ex_step3"></span><select id="exProj"></select></label>
+        <div class="bench-head">
+          <div class="ra big" id="stExpr"></div>
+          <div class="steps"><button class="step" data-st="u" aria-pressed="true">A ∪ B</button><button class="step" data-st="i" aria-pressed="false">A ∩ B</button><button class="step" data-st="d" aria-pressed="false">A − B</button><button class="step" data-st="x" aria-pressed="false" data-i18n="st_bad"></button></div>
         </div>
-        <div class="ra big" id="exExpr"></div>
-        <div class="controls">
-          <button class="btn primary" id="exCheck" data-i18n="ex_check"></button>
-          <span class="count" id="exTries"></span>
-        </div>
-        <div class="tables" id="exOut"></div>
-        <div class="msg" id="exMsg" data-i18n="ex_msg0"></div>
-        <div class="reveal" id="exReveal">
-          <div class="controls">
-            <button class="btn small" id="exHint1" disabled data-i18n="ex_hint1_b"></button>
-            <button class="btn small" id="exHint2" disabled data-i18n="ex_hint2_b"></button>
-            <button class="btn small" id="exSol" disabled data-i18n="ex_sol_b"></button>
-          </div>
-          <div class="hint" id="exHint1T" hidden data-i18n="ex_hint1"></div>
-          <div class="hint" id="exHint2T" hidden data-i18n="ex_hint2"></div>
-          <div class="hint" id="exSolT" hidden data-i18n="ex_sol"></div>
-        </div>
+        <div class="tables" id="stTables"></div>
+        <div class="msg" id="stMsg"></div>
       </div>
+    </section>
+
+    <section class="sec" id="r-product" data-title="nav_r_prod">
+      <div class="sec-head">
+        <h2>× <span data-i18n="pr_h2"></span></h2>
+        <p class="lede" data-i18n="pr_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head"><div class="ra big">Bikes × Stations</div><span class="count" id="prCount"></span></div>
+        <div class="tables" id="prTables"></div>
+        <div class="msg" data-i18n="pr_msg"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="r-rename" data-title="nav_r_ren">
+      <div class="sec-head">
+        <h2>ρ → <span data-i18n="rn_h2"></span></h2>
+        <p class="lede" data-i18n="rn_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head"><div class="ra big">ρ<sub>E</sub>(Staff) × ρ<sub>M</sub>(Staff)</div>
+          <div class="steps"><button class="step" data-rn="0" aria-pressed="true" data-i18n="rn_s0"></button><button class="step" data-rn="1" aria-pressed="false" data-i18n="rn_s1"></button><button class="step" data-rn="2" aria-pressed="false" data-i18n="rn_s2"></button></div></div>
+        <div class="tables" id="rnTables"></div>
+        <div class="msg" id="rnMsg"></div>
+      </div>
+      <div style="height:1rem"></div>
+      <div class="prose"><p data-i18n="rn_assign"></p></div>
+      <div class="ra big" style="margin-top:.6rem">Managers ← π<sub>M.StaffID, M.FullName</sub>(σ<sub>E.ManagerID = M.StaffID</sub>(ρ<sub>E</sub>(Staff) × ρ<sub>M</sub>(Staff)))<br>π<sub>StaffID, FullName</sub>(Staff) − Managers</div>
+    </section>
+
+    <section class="sec" id="r-schema2" data-title="nav_r_schema">
+      <div class="sec-head">
+        <span class="eyebrow" data-i18n="sc2_eyebrow"></span>
+        <h2 data-i18n="sc2_h2"></h2>
+        <p class="lede" data-i18n="sc2_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="bench-head"><h3 data-i18n="sc2_bench"></h3><span class="count" data-i18n="sc2_hint"></span></div>
+        <div class="tables" id="rideTables"></div>
+        <div class="legend"><span><i style="background:var(--pk-bg)"></i><span data-i18n="lg_pk"></span></span><span><i style="background:var(--fk-bg)"></i><span data-i18n="lg_fk"></span></span></div>
+      </div>
+      <div style="height:1rem"></div>
+      <div class="cards" id="fkCards"></div>
+      <div class="tnote" data-tnote="sc2" hidden></div>
+    </section>
+
+    <section class="sec" id="r-lab" data-title="nav_r_lab">
+      <div class="sec-head">
+        <h2 data-i18n="lab_h2"></h2>
+        <p class="lede" data-i18n="lab_lede"></p>
+      </div>
+      <div class="bench">
+        <div class="palette" id="labPal"></div>
+        <textarea class="raq" id="labQ" rows="3" spellcheck="false" dir="ltr"></textarea>
+        <div class="controls"><button class="btn primary" id="labRun" data-i18n="run"></button><select id="labEx"></select><span class="count" data-i18n="lab_tip"></span></div>
+        <div id="labOut" class="tables"></div>
+        <div class="msg" id="labMsg" data-i18n="lab_msg0"></div>
+      </div>
+      <div style="height:1rem"></div>
+      <div class="tblwrap"><table class="data bridge" id="bridge"></table></div>
+    </section>
+
+    <section class="sec" id="r-exercises" data-title="nav_r_ex">
+      <div class="sec-head">
+        <h2 data-i18n="ex2_h2"></h2>
+        <p class="lede" data-i18n="ex2_lede"></p>
+      </div>
+      <div class="exlist" id="exList"></div>
       <div style="height:1rem"></div>
       <div class="note" data-i18n="ex_note"></div>
     </section>
@@ -795,7 +864,44 @@ brand_sub:"קורס תכנון בסיסי נתונים", tab_intro:"מבוא", t
 present:"מצב מרצה", teacher:"קוד מרצה", run:"הרץ", reset:"איפוס", lg_pk:"מפתח ראשי", lg_fk:"מפתח זר",
 toc_show:"תוכן עניינים", toc_hide:"הסתר תוכן", hud_l:"אתם כאן",
 nav_why:"למה בסיס נתונים", nav_anomaly:"הניסוי: טבלה אחת", nav_schema:"מה זו סכמה", nav_decl:"לשאול, לא לתכנת", nav_ind:"איפה זה חי", nav_map:"מפת הקורס", nav_quiz:"בדיקה עצמית",
-nav_r_data:"הטבלאות שלנו", nav_r_sel:"σ בחירה", nav_r_proj:"π הטלה", nav_r_join:"⋈ צירוף", nav_r_div:"÷ חילוק", nav_r_tree:"קריאת ביטוי", nav_r_ex:"תרגיל",
+nav_r_data:"הטבלאות שלנו", nav_r_sel:"σ בחירה", nav_r_proj:"π הטלה", nav_r_join:"⋈ צירוף", nav_r_div:"÷ חילוק", nav_r_tree:"קריאת ביטוי",
+nav_r_sets:"∪ ∩ − קבוצות", nav_r_prod:"× מכפלה", nav_r_ren:"ρ כינוי והשמה", nav_r_schema:"הסכמה לתרגול", nav_r_lab:"מחשבון אלגברה", nav_r_ex:"תרגילים",
+st_h2:"פעולות קבוצות", st_lede:"שתי טבלאות עם אותן עמודות הן פשוט שתי קבוצות של שורות, ואפשר לאחד, לחתוך ולהחסיר. התנאי היחיד: תאימות איחוד, אותו מספר עמודות ואותם טיפוסים, לפי הסדר.", st_bad:"לא תואם",
+st_A:"A = רוכבים מאריאל", st_B:"B = רוכבים במנוי חודשי",
+st_msg_u:"<b>איחוד</b>: כל מי שנמצא ב-A או ב-B. רוכב שנמצא בשתיהן מופיע פעם אחת, כי התוצאה היא קבוצה.", st_msg_i:"<b>חיתוך</b>: רק מי שנמצא גם ב-A וגם ב-B.", st_msg_d:"<b>הפרש</b>: מי שנמצא ב-A ולא ב-B. שימו לב שהכיוון חשוב: B − A נותן תוצאה אחרת.",
+st_msg_x:"<b>לא תואם</b>: A היא עמודה אחת של מספרים, וניסינו לאחד אותה עם שמות תחנות. אותו מספר עמודות, אבל טיפוס שונה. במבחן זו טעות שנופלים בה כשמאחדים תוצאות של שני ענפים שלא הוטלו על אותן עמודות.",
+pr_h2:"מכפלה קרטזית", pr_lede:"כל שורה מהטבלה הראשונה מול כל שורה מהשנייה. לבד היא כמעט חסרת משמעות, אבל היא הבסיס לכל צירוף: JOIN הוא מכפלה ואחריה σ.", pr_msg:"3 אופניים × 2 תחנות = 6 שורות. שמות העמודות מקבלים תחילית של הטבלה כדי שלא יתבלבלו. עם 1,000 אופניים ו-100 תחנות היו כאן 100,000 שורות, ולכן במבחן תמיד מסננים מיד אחרי המכפלה.",
+rn_h2:"כינוי והשמה", rn_lede:"ρ נותן לטבלה או לפעולה שם אחר בלי לשנות אותה. הצורך העיקרי: צירוף של טבלה עם עצמה (Self-Join), שבו חייבים שני עותקים עם שמות שונים. השמה (→ או ←) שומרת תוצאת ביניים בשם כדי להשתמש בה שוב.",
+rn_s0:"1. שני עותקים", rn_s1:"2. המכפלה", rn_s2:"3. σ: עובד מול המנהל שלו",
+rn_msg0:"Staff מופיעה פעמיים, עם כינוי E (employee) ו-M (manager). בלי הכינויים לא היה אפשר להבחין בין StaffID של העובד ל-StaffID של המנהל.", rn_msg1:"7 × 7 = 49 זוגות. רובם חסרי משמעות: עובד מול עובד שאינו המנהל שלו.", rn_msg2:"σ<sub>E.ManagerID = M.StaffID</sub> משאירה רק את הזוגות הנכונים: 6 עובדים, כל אחד ליד המנהל שלו. עכשיו π<sub>E.FullName, M.FullName</sub> נותנת רשימת \"מי מדווח למי\".",
+rn_assign:"<strong>השמה</strong> היא הדרך לפרק שאלה מסובכת לשלבים. במקום ביטוי אחד ארוך, שומרים תוצאת ביניים בשם ומשתמשים בה. למשל \"עובדים שאינם מנהלים\": קודם מגדירים את קבוצת המנהלים, ואז מחסירים אותה מכל העובדים.",
+sc2_eyebrow:"סכמת התרגול", sc2_h2:"RideOn: אופניים שיתופיים בעיר", sc2_lede:"כל התרגילים והמחשבון עובדים על הסכמה הזו, ואותה סכמה תלווה אותנו גם ב-SQL. שש טבלאות: תחנות, רוכבים, אופניים, נסיעות, צוות ותחזוקה.",
+sc2_bench:"הנתונים המלאים", sc2_hint:"הטבלאות קטנות בכוונה: אפשר לבדוק כל תוצאה ביד",
+fk_h:"איך הטבלאות מתחברות", fk1:"Rides.RiderID → Riders.RiderID: מי רכב", fk2:"Rides.BikeID → Bikes.BikeID: על איזה אופניים", fk3:"Rides.FromStation ו-Rides.ToStation → Stations.StationID: מאיפה ולאן. שני מפתחות זרים לאותה טבלה, ולכן צירוף טבעי לא יעבוד כאן: צריך צירוף עם תנאי מפורש", fk4:"Staff.ManagerID → Staff.StaffID: מי המנהל של מי. מפתח זר לאותה טבלה, ולכן Self-Join", fk5:"Maintenance.BikeID → Bikes, Maintenance.StaffID → Staff: מי טיפל באיזה אופניים",
+sc2_tnote:"לעצור על FromStation/ToStation ולשאול: למה Rides ⋈ Stations לא עובד? (אין עמודה משותפת בשם. זה הרגע ללמד צירוף טטה.)",
+lab_h2:"מחשבון אלגברה רלציונית", lab_lede:"כותבים ביטוי ומריצים אותו על הסכמה. הפרמטר של π, σ ו-ρ נכתב בסוגריים מרובעים, והטבלה בסוגריים רגילים. אפשר גם השמות עם ← ולהשתמש בשם בהמשך, מופרד בנקודה-פסיק.",
+lab_tip:"Ctrl+Enter מריץ", lab_msg0:"נסו: π[FullName](σ[City='Ariel'](Riders))",
+lab_ex0:"דוגמאות…", lab_ex1:"σ: נסיעות ארוכות", lab_ex2:"⋈ טבעי: מי רכב", lab_ex3:"⋈ עם תנאי: מאיזו תחנה", lab_ex4:"− : אופניים שלא נסעו ב-2025", lab_ex5:"ρ ו-×: מי מדווח למי", lab_ex6:"÷: רכב על כל סוג", lab_ex7:"השמה בשני שלבים",
+lab_rows:"{n} שורות · {c} עמודות",
+br_h1:"אלגברה", br_h2:"משמעות", br_h3:"SQL Server",
+br1:"בחירת שורות", br2:"בחירת עמודות (בלי כפילויות)", br3:"צירוף על עמודות משותפות", br4:"צירוף עם תנאי", br5:"כל הזוגות", br6:"איחוד", br7:"חיתוך", br8:"הפרש", br9:"כינוי", br10:"'לכל': מי מחובר לכולם",
+ex2_h2:"תרגילים על RideOn", ex2_lede:"12 תרגילים, מהקל לקשה, באותו סגנון שיופיע במבחן. הבדיקה מריצה את הביטוי שלכם ומשווה את הטבלה שיוצאת לתוצאה הנכונה, אז כל ניסוח שקול מתקבל. רמזים נפתחים אחרי ניסיון, הפתרון אחרי שניים.",
+ex_check:"בדוק", ex_tries:"ניסיונות: {n}", ex_hint1_b:"רמז 1", ex_hint2_b:"רמז 2", ex_sol_b:"פתרון",
+exr_ok:"נכון! הטבלה שלכם זהה לתוצאה הצפויה.", exr_cols:"מספר העמודות שונה: קיבלתם {a}, צפוי {b}. בדקו את ה-π.", exr_rows:"העמודות במקום, אבל יש {a} שורות במקום {b}. {d}", exr_more:"יש שורות מיותרות, כנראה תנאי חלש מדי או צירוף חסר.", exr_less:"חסרות שורות, כנראה תנאי חזק מדי או ענף שנשכח.", exr_err:"שגיאה בביטוי: {e}", exr_empty:"כתבו ביטוי ואז בדוק.",
+lv1:"בסיסי", lv2:"צירוף", lv3:"מורכב", lv4:"Self-Join", lv5:"מבחן",
+q1:"שמות התחנות ומספר העמדות (Docks) בכל אחת.", q1h1:"רק עמודות, בלי סינון: π בלבד.", q1h2:"π[StationName, Docks] על Stations.", q1s:"π[StationName, Docks](Stations)",
+q2:"שמות אנשי הצוות שמדווחים לאיש צוות מספר 3.", q2h1:"σ על ManagerID ואז π על השם.", q2h2:"σ[ManagerID=3] בפנים, π[FullName] בחוץ.", q2s:"π[FullName](σ[ManagerID=3](Staff))",
+q3:"שמות הרוכבים שביצעו נסיעה של 45 דקות לפחות.", q3h1:"השם ב-Riders, הדקות ב-Rides. יש עמודה משותפת, אז צירוף טבעי.", q3h2:"σ[Minutes>=45] על Riders ⋈ Rides, ואז π[FullName].", q3s:"π[FullName](σ[Minutes>=45](Riders ⋈ Rides))",
+q4:"מזהה וסוג של האופניים שנסעו לפחות פעם אחת בשנת 2025.", q4h1:"תאריכים הם מחרוזות 'YYYY-MM-DD', אפשר להשוות אותן.", q4h2:"σ[RideDate>='2025-01-01' ∧ RideDate<='2025-12-31'] על Bikes ⋈ Rides, ואז π[BikeID, BikeType].", q4s:"π[BikeID, BikeType](σ[RideDate>='2025-01-01' ∧ RideDate<='2025-12-31'](Bikes ⋈ Rides))",
+q5:"מספרי הנסיעות שהתחילו בתחנה Central, או שבוצעו על ידי רוכבים מהעיר Ariel.", q5h1:"שני ענפים ואיחוד. כל ענף חייב להסתיים ב-π[RideID] כדי שהאיחוד יהיה חוקי.", q5h2:"הענף הראשון צריך צירוף עם תנאי: Rides ⋈[FromStation=StationID] Stations. השני: Rides ⋈ Riders.", q5s:"π[RideID](σ[StationName='Central'](Rides ⋈[FromStation=StationID] Stations)) ∪ π[RideID](σ[City='Ariel'](Rides ⋈ Riders))",
+q6:"מזהי האופניים שעדיין לא נסעו בשנת 2025.", q6h1:"'לא' = הפרש: כל האופניים פחות אלה שכן נסעו.", q6h2:"π[BikeID](Bikes) − π[BikeID](σ[…2025…](Rides)). שני הצדדים עם עמודה אחת, BikeID.", q6s:"π[BikeID](Bikes) − π[BikeID](σ[RideDate>='2025-01-01' ∧ RideDate<='2025-12-31'](Rides))",
+q7:"שמות אנשי הצוות שמדווחים למנהל בתפקיד Ops Manager.", q7h1:"הטבלה מול עצמה: עותק לעובדים ועותק למנהלים, עם ρ.", q7h2:"ρ[E](Staff) × ρ[M](Staff), ואז σ[E.ManagerID=M.StaffID ∧ M.Role='Ops Manager'], ואז π[E.FullName].", q7s:"π[E.FullName](σ[E.ManagerID=M.StaffID ∧ M.Role='Ops Manager'](ρ[E](Staff) × ρ[M](Staff)))",
+q8:"מזהה ושם של אנשי הצוות שאינם מנהלים (אף אחד לא מדווח להם).", q8h1:"קודם מוצאים את המנהלים (Self-Join), ואז מחסירים אותם מכל הצוות.", q8h2:"Managers ← π[M.StaffID, M.FullName](σ[E.ManagerID=M.StaffID](ρ[E](Staff) × ρ[M](Staff))); ואז π[StaffID, FullName](Staff) − Managers.", q8s:"Managers ← π[M.StaffID, M.FullName](σ[E.ManagerID=M.StaffID](ρ[E](Staff) × ρ[M](Staff))); π[StaffID, FullName](Staff) − Managers",
+q9:"שמות התחנות שמספר העמדות בהן זהה לזה של תחנת Central (בלי Central עצמה).", q9h1:"צריך להשוות שורה לשורה אחרת באותה טבלה: שני עותקים של Stations.", q9h2:"ρ[S1](Stations) × ρ[S2](Stations), σ[S1.StationName='Central' ∧ S1.Docks=S2.Docks ∧ S1.StationID≠S2.StationID], π[S2.StationName].", q9s:"π[S2.StationName](σ[S1.StationName='Central' ∧ S1.Docks=S2.Docks ∧ S1.StationID≠S2.StationID](ρ[S1](Stations) × ρ[S2](Stations)))",
+q10:"מזהי הרוכבים שרכבו לפחות פעם אחת, אך מעולם לא על אופניים חשמליים (Electric).", q10h1:"מי שרכב, פחות מי שרכב על חשמליים.", q10h2:"π[RiderID](Rides) − π[RiderID](σ[BikeType='Electric'](Rides ⋈ Bikes)).", q10s:"π[RiderID](Rides) − π[RiderID](σ[BikeType='Electric'](Rides ⋈ Bikes))",
+q11:"מזהי הרוכבים שרכבו על כל סוגי האופניים הקיימים.", q11h1:"'כל' = חילוק. המחלק: קבוצת הסוגים.", q11h2:"π[RiderID, BikeType](Rides ⋈ Bikes) ÷ π[BikeType](Bikes).", q11s:"π[RiderID, BikeType](Rides ⋈ Bikes) ÷ π[BikeType](Bikes)",
+q12:"מזהי הרוכבים שהתחילו נסיעה גם בתחנת Central וגם בתחנת Market.", q12h1:"'גם וגם' על שתי נסיעות שונות = חיתוך של שני ענפים, לא σ אחת עם ∧.", q12h2:"השמה תחסוך כפילות: T ← Rides ⋈[FromStation=StationID] Stations; ואז π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T)).", q12s:"T ← Rides ⋈[FromStation=StationID] Stations; π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T))",
+
 
 hero_eyebrow:"מפגש 1 · מבוא",
 hero_h1:"כל מערכת שהשתמשתם בה היום יושבת על טבלאות.",
@@ -987,7 +1093,44 @@ brand_sub:"Database Design course", tab_intro:"Intro", tab_ra:"Relational Algebr
 present:"Presenter mode", teacher:"Teacher code", run:"Run", reset:"Reset", lg_pk:"Primary key", lg_fk:"Foreign key",
 toc_show:"Contents", toc_hide:"Hide contents", hud_l:"You are here",
 nav_why:"Why a database", nav_anomaly:"The experiment", nav_schema:"What is a schema", nav_decl:"Ask, don't program", nav_ind:"Where it lives", nav_map:"Course map", nav_quiz:"Self-check",
-nav_r_data:"Our tables", nav_r_sel:"σ Select", nav_r_proj:"π Project", nav_r_join:"⋈ Join", nav_r_div:"÷ Divide", nav_r_tree:"Reading an expression", nav_r_ex:"Exercise",
+nav_r_data:"Our tables", nav_r_sel:"σ Select", nav_r_proj:"π Project", nav_r_join:"⋈ Join", nav_r_div:"÷ Divide", nav_r_tree:"Reading an expression",
+nav_r_sets:"∪ ∩ − sets", nav_r_prod:"× product", nav_r_ren:"ρ rename & assign", nav_r_schema:"Practice schema", nav_r_lab:"Algebra calculator", nav_r_ex:"Exercises",
+st_h2:"Set operations", st_lede:"Two tables with the same columns are just two sets of rows, so you can union, intersect and subtract them. The one condition is union compatibility: same number of columns, same types, in order.", st_bad:"incompatible",
+st_A:"A = riders from Ariel", st_B:"B = riders on a monthly plan",
+st_msg_u:"<b>Union</b>: everyone in A or in B. A rider in both appears once, because the result is a set.", st_msg_i:"<b>Intersection</b>: only those in both A and B.", st_msg_d:"<b>Difference</b>: those in A and not in B. Direction matters: B − A gives a different result.",
+st_msg_x:"<b>Incompatible</b>: A is one column of numbers, and we tried to union it with station names. Same number of columns, different type. In exams this is the classic slip when uniting two branches that were not projected onto the same columns.",
+pr_h2:"Cartesian product", pr_lede:"Every row of the first table against every row of the second. On its own it is nearly meaningless, but it is the basis of every join: a JOIN is a product followed by σ.", pr_msg:"3 bikes × 2 stations = 6 rows. Column names get the table prefix so they cannot be confused. With 1,000 bikes and 100 stations there would be 100,000 rows, which is why in exams you always filter right after the product.",
+rn_h2:"Rename and assignment", rn_lede:"ρ gives a table or an operation another name without changing it. The main need: joining a table with itself (self-join), which requires two copies with different names. Assignment (→ or ←) stores an intermediate result under a name for reuse.",
+rn_s0:"1. Two copies", rn_s1:"2. The product", rn_s2:"3. σ: employee next to their manager",
+rn_msg0:"Staff appears twice, aliased E (employee) and M (manager). Without the aliases there would be no way to tell the employee's StaffID from the manager's.", rn_msg1:"7 × 7 = 49 pairs. Most are meaningless: an employee next to someone who is not their manager.", rn_msg2:"σ<sub>E.ManagerID = M.StaffID</sub> keeps only the right pairs: 6 employees, each next to their manager. Now π<sub>E.FullName, M.FullName</sub> gives a \"who reports to whom\" list.",
+rn_assign:"<strong>Assignment</strong> is how you break a hard question into steps. Instead of one long expression, store an intermediate result under a name and use it. For example \"staff who are not managers\": first define the set of managers, then subtract it from all staff.",
+sc2_eyebrow:"Practice schema", sc2_h2:"RideOn: city bike sharing", sc2_lede:"Every exercise and the calculator work on this schema, and the same schema follows us into SQL. Six tables: stations, riders, bikes, rides, staff and maintenance.",
+sc2_bench:"The full data", sc2_hint:"The tables are small on purpose: every result can be checked by hand",
+fk_h:"How the tables connect", fk1:"Rides.RiderID → Riders.RiderID: who rode", fk2:"Rides.BikeID → Bikes.BikeID: on which bike", fk3:"Rides.FromStation and Rides.ToStation → Stations.StationID: from where to where. Two foreign keys to the same table, so a natural join will not work here: you need a join with an explicit condition", fk4:"Staff.ManagerID → Staff.StaffID: who manages whom. A foreign key to the same table, hence self-join", fk5:"Maintenance.BikeID → Bikes, Maintenance.StaffID → Staff: who serviced which bike",
+sc2_tnote:"Stop on FromStation/ToStation and ask: why does Rides ⋈ Stations not work? (No shared column name. This is the moment to teach theta join.)",
+lab_h2:"Relational algebra calculator", lab_lede:"Write an expression and run it on the schema. The parameter of π, σ and ρ goes in square brackets, the table in round ones. Assignments with ← are allowed; use the name later, separated by a semicolon.",
+lab_tip:"Ctrl+Enter runs", lab_msg0:"Try: π[FullName](σ[City='Ariel'](Riders))",
+lab_ex0:"Examples…", lab_ex1:"σ: long rides", lab_ex2:"natural ⋈: who rode", lab_ex3:"⋈ with condition: from which station", lab_ex4:"−: bikes not ridden in 2025", lab_ex5:"ρ and ×: who reports to whom", lab_ex6:"÷: rode every type", lab_ex7:"assignment in two steps",
+lab_rows:"{n} rows · {c} columns",
+br_h1:"Algebra", br_h2:"Meaning", br_h3:"SQL Server",
+br1:"choose rows", br2:"choose columns (no duplicates)", br3:"join on shared columns", br4:"join with a condition", br5:"all pairs", br6:"union", br7:"intersection", br8:"difference", br9:"rename", br10:"'for all': who is connected to everyone",
+ex2_h2:"Exercises on RideOn", ex2_lede:"12 exercises, easy to hard, in the style that appears in the exam. The checker runs your expression and compares the resulting table with the correct result, so any equivalent formulation counts. Hints unlock after an attempt, the solution after two.",
+ex_check:"Check", ex_tries:"Attempts: {n}", ex_hint1_b:"Hint 1", ex_hint2_b:"Hint 2", ex_sol_b:"Solution",
+exr_ok:"Correct! Your table equals the expected result.", exr_cols:"Different number of columns: you got {a}, expected {b}. Check the π.", exr_rows:"Columns are right, but there are {a} rows instead of {b}. {d}", exr_more:"Extra rows: probably a condition that is too weak or a missing join.", exr_less:"Missing rows: probably a condition that is too strong or a forgotten branch.", exr_err:"Error in the expression: {e}", exr_empty:"Write an expression, then Check.",
+lv1:"basic", lv2:"join", lv3:"complex", lv4:"self-join", lv5:"exam",
+q1:"Station names and the number of docks at each.", q1h1:"Columns only, no filtering: π alone.", q1h2:"π[StationName, Docks] on Stations.", q1s:"π[StationName, Docks](Stations)",
+q2:"Names of staff who report to staff member 3.", q2h1:"σ on ManagerID, then π on the name.", q2h2:"σ[ManagerID=3] inside, π[FullName] outside.", q2s:"π[FullName](σ[ManagerID=3](Staff))",
+q3:"Names of riders who made a ride of at least 45 minutes.", q3h1:"The name is in Riders, the minutes in Rides. There is a shared column, so natural join.", q3h2:"σ[Minutes>=45] on Riders ⋈ Rides, then π[FullName].", q3s:"π[FullName](σ[Minutes>=45](Riders ⋈ Rides))",
+q4:"ID and type of bikes ridden at least once in 2025.", q4h1:"Dates are 'YYYY-MM-DD' strings; they compare as text.", q4h2:"σ[RideDate>='2025-01-01' ∧ RideDate<='2025-12-31'] on Bikes ⋈ Rides, then π[BikeID, BikeType].", q4s:"π[BikeID, BikeType](σ[RideDate>='2025-01-01' ∧ RideDate<='2025-12-31'](Bikes ⋈ Rides))",
+q5:"Ride numbers of rides that started at station Central, or were made by riders from the city Ariel.", q5h1:"Two branches and a union. Each branch must end with π[RideID] for the union to be legal.", q5h2:"The first branch needs a join with a condition: Rides ⋈[FromStation=StationID] Stations. The second: Rides ⋈ Riders.", q5s:"π[RideID](σ[StationName='Central'](Rides ⋈[FromStation=StationID] Stations)) ∪ π[RideID](σ[City='Ariel'](Rides ⋈ Riders))",
+q6:"IDs of bikes not yet ridden in 2025.", q6h1:"'Not' = difference: all bikes minus those that were ridden.", q6h2:"π[BikeID](Bikes) − π[BikeID](σ[…2025…](Rides)). Both sides with one column, BikeID.", q6s:"π[BikeID](Bikes) − π[BikeID](σ[RideDate>='2025-01-01' ∧ RideDate<='2025-12-31'](Rides))",
+q7:"Names of staff who report to a manager whose role is Ops Manager.", q7h1:"The table against itself: one copy for employees, one for managers, with ρ.", q7h2:"ρ[E](Staff) × ρ[M](Staff), then σ[E.ManagerID=M.StaffID ∧ M.Role='Ops Manager'], then π[E.FullName].", q7s:"π[E.FullName](σ[E.ManagerID=M.StaffID ∧ M.Role='Ops Manager'](ρ[E](Staff) × ρ[M](Staff)))",
+q8:"ID and name of staff who are not managers (nobody reports to them).", q8h1:"First find the managers (self-join), then subtract them from all staff.", q8h2:"Managers ← π[M.StaffID, M.FullName](σ[E.ManagerID=M.StaffID](ρ[E](Staff) × ρ[M](Staff))); then π[StaffID, FullName](Staff) − Managers.", q8s:"Managers ← π[M.StaffID, M.FullName](σ[E.ManagerID=M.StaffID](ρ[E](Staff) × ρ[M](Staff))); π[StaffID, FullName](Staff) − Managers",
+q9:"Names of stations with the same number of docks as station Central (excluding Central itself).", q9h1:"You need to compare a row with another row of the same table: two copies of Stations.", q9h2:"ρ[S1](Stations) × ρ[S2](Stations), σ[S1.StationName='Central' ∧ S1.Docks=S2.Docks ∧ S1.StationID≠S2.StationID], π[S2.StationName].", q9s:"π[S2.StationName](σ[S1.StationName='Central' ∧ S1.Docks=S2.Docks ∧ S1.StationID≠S2.StationID](ρ[S1](Stations) × ρ[S2](Stations)))",
+q10:"IDs of riders who rode at least once but never on an Electric bike.", q10h1:"Those who rode, minus those who rode electric.", q10h2:"π[RiderID](Rides) − π[RiderID](σ[BikeType='Electric'](Rides ⋈ Bikes)).", q10s:"π[RiderID](Rides) − π[RiderID](σ[BikeType='Electric'](Rides ⋈ Bikes))",
+q11:"IDs of riders who rode every existing bike type.", q11h1:"'Every' = division. The divisor: the set of types.", q11h2:"π[RiderID, BikeType](Rides ⋈ Bikes) ÷ π[BikeType](Bikes).", q11s:"π[RiderID, BikeType](Rides ⋈ Bikes) ÷ π[BikeType](Bikes)",
+q12:"IDs of riders who started a ride both at station Central and at station Market.", q12h1:"'Both' across two different rides = an intersection of two branches, not one σ with ∧.", q12h2:"Assignment saves repetition: T ← Rides ⋈[FromStation=StationID] Stations; then π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T)).", q12s:"T ← Rides ⋈[FromStation=StationID] Stations; π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T))",
+
 
 hero_eyebrow:"Session 1 · Introduction",
 hero_h1:"Every system you used today runs on tables.",
@@ -1448,37 +1591,156 @@ function renderTree(){
   const out = $('#treeOut'); out.innerHTML = ''; const s = steps[treeStep]; out.appendChild(table(s.cols, s.rows, {title: t('tr_d'+treeStep)}));
 }
 
-/* =========================== RA: EXERCISE =========================== */
-const EXJ = [ {k:'ex_j0', f:joinSE, cols:['SID','Name','Faculty','CID','Grade'], expr:'Students ⋈ Enroll'}, {k:'ex_j1', f:joinEC, cols:['SID','CID','Grade','Title'], expr:'Enroll ⋈ Courses'}, {k:'ex_j2', f:productSE, cols:['SID','Name','Faculty','Enroll.SID','CID','Grade'], expr:'Students × Enroll'}, {k:'ex_j3', f:joinSEC, cols:['SID','Name','Faculty','CID','Grade','Title'], expr:'Students ⋈ Enroll ⋈ Courses'} ];
-const EXS = [ {k:'ex_s0', need:['Grade'], f:r=>r.Grade>=90, expr:'Grade ≥ 90'}, {k:'ex_s1', need:['CID'], f:r=>r.CID==='DB', expr:"CID='DB'"}, {k:'ex_s2', need:['CID','Grade'], f:r=>r.CID==='DB'&&r.Grade>=90, expr:"CID='DB' ∧ Grade≥90"}, {k:'ex_s3', need:['Faculty','Grade'], f:r=>r.Faculty==='IE'&&r.Grade>=90, expr:"Faculty='IE' ∧ Grade≥90"}, {k:'ex_s4', need:['Title','Grade'], f:r=>r.Title==='Databases'&&r.Grade>=90, expr:"Title='Databases' ∧ Grade≥90"} ];
-const EXP = [ {k:'ex_p0', cols:['Name']}, {k:'ex_p1', cols:['SID']}, {k:'ex_p2', cols:['Name','Grade']}, {k:'ex_p3', cols:['Faculty']} ];
-const EXPECTED = JSON.stringify(project(joinSE().filter(r=>r.CID==='DB'&&r.Grade>=90), ['Name']).map(r=>r.Name).sort());
-let exTries = load('dbs_ex_tries', 0), exSolved = load('dbs_ex_solved', false);
-function fillSel(id, arr){ const s = $('#'+id); const cur = s.value; s.innerHTML=''; arr.forEach((o,i)=>{ const op = el('option',null,t(o.k)); op.value=i; s.appendChild(op); }); if (cur) s.value = cur; }
-function exExpr(){ const j = EXJ[+$('#exJoin').value], s = EXS[+$('#exSel').value], p = EXP[+$('#exProj').value]; $('#exExpr').innerHTML = 'π<sub>'+p.cols.join(', ')+'</sub>(σ<sub>'+s.expr+'</sub>('+j.expr+'))'; }
-function exGates(){
-  $('#exTries').textContent = t('ex_tries',{n:exTries});
-  $('#exHint1').disabled = !(exTries>=1 || teacher); $('#exHint2').disabled = !(exTries>=1 || teacher); $('#exSol').disabled = !(exTries>=2 || teacher || exSolved);
-  if (teacher) { $('#exHint1T').hidden = false; $('#exHint2T').hidden = false; $('#exSolT').hidden = false; }
+/* =========================== RA v2: RideOn schema, algebra engine, lab, exercises =========================== */
+const RIDE = {
+  Stations: { cols:['StationID','StationName','District','Docks'], keys:{StationID:'pk'}, rows:[[1,'Central','Center',30],[2,'Campus','North',20],[3,'Market','Center',15],[4,'Harbor','South',30],[5,'Park','North',10]] },
+  Riders: { cols:['RiderID','FullName','City','Plan'], keys:{RiderID:'pk'}, rows:[[101,'Dana Levi','Ariel','Student'],[102,'Noa Bar','Ariel','Monthly'],[103,'Tom Katz','Tel Aviv','PayPerRide'],[104,'Amir Cohen','Ariel','Monthly'],[105,'Lihi Mor','Haifa','Student'],[106,'Yael Peretz','Tel Aviv','Monthly']] },
+  Bikes: { cols:['BikeID','BikeType','ModelYear'], keys:{BikeID:'pk'}, rows:[[11,'Classic',2022],[12,'Electric',2024],[13,'Classic',2021],[14,'Cargo',2023],[15,'Electric',2023],[16,'Classic',2024]] },
+  Rides: { cols:['RideID','RiderID','BikeID','FromStation','ToStation','RideDate','Minutes'], keys:{RideID:'pk',RiderID:'fk',BikeID:'fk',FromStation:'fk',ToStation:'fk'}, rows:[[1001,101,11,1,2,'2025-03-02',25],[1002,101,12,2,1,'2025-03-05',48],[1003,102,13,1,3,'2024-11-20',15],[1004,103,12,4,1,'2025-04-11',52],[1005,104,14,2,5,'2025-05-01',33],[1006,104,15,1,4,'2025-05-03',60],[1007,105,11,3,3,'2024-12-30',12],[1008,102,15,2,2,'2025-06-14',45],[1009,101,14,1,5,'2025-06-20',30],[1010,104,11,3,1,'2025-07-07',18],[1011,106,16,4,2,'2025-07-09',40],[1012,102,12,5,1,'2025-08-15',22]] },
+  Staff: { cols:['StaffID','FullName','Role','ManagerID'], keys:{StaffID:'pk',ManagerID:'fk'}, rows:[[1,'Rina Adler','Director',null],[2,'Eli Shaked','Ops Manager',1],[3,'Maya Gold','Ops Manager',1],[4,'Omer Dahan','Mechanic',2],[5,'Sara Ben','Mechanic',2],[6,'Yoav Lev','Dispatcher',3],[7,'Tal Friedman','Mechanic',3]] },
+  Maintenance: { cols:['BikeID','StaffID','ServiceDate','ServiceType','Cost'], keys:{BikeID:'pk',StaffID:'pk',ServiceDate:'pk'}, rows:[[11,4,'2025-02-10','Brakes',120],[12,4,'2025-03-01','Battery',400],[13,5,'2025-01-15','Tires',90],[15,7,'2025-05-20','Battery',380],[11,5,'2025-06-01','Chain',60],[14,7,'2025-06-11','Brakes',150]] },
+};
+/* ---- relation helpers: {cols:[{name, rel}], rows:[[...]]} with set semantics ---- */
+const RAE = (() => {
+  const base = name => { const t = RIDE[name]; return { cols: t.cols.map(c => ({name:c, rel:name})), rows: t.rows.map(r => r.slice()) }; };
+  const dedupe = R => { const seen = new Set(); R.rows = R.rows.filter(r => { const k = JSON.stringify(r); if (seen.has(k)) return false; seen.add(k); return true; }); return R; };
+  const label = c => (c.rel ? c.rel + '.' : '') + c.name;
+  const findCol = (R, ref) => { const dot = ref.indexOf('.'); let idx = []; if (dot > 0) { const rel = ref.slice(0, dot), nm = ref.slice(dot + 1); idx = R.cols.map((c, i) => (c.name === nm && c.rel === rel) ? i : -1).filter(i => i >= 0); } else idx = R.cols.map((c, i) => c.name === ref ? i : -1).filter(i => i >= 0); if (!idx.length) throw new Error(lang === 'he' ? 'עמודה לא קיימת: ' + ref : 'unknown column: ' + ref); if (idx.length > 1) throw new Error(lang === 'he' ? 'עמודה דו-משמעית, ציינו טבלה: ' + ref : 'ambiguous column, qualify it: ' + ref); return idx[0]; };
+  const compatible = (A, B) => { if (A.cols.length !== B.cols.length) throw new Error(lang === 'he' ? 'לא תואם לאיחוד: ' + A.cols.length + ' עמודות מול ' + B.cols.length : 'not union-compatible: ' + A.cols.length + ' columns vs ' + B.cols.length); if (A.rows.length && B.rows.length) for (let i = 0; i < A.cols.length; i++) { if (typeof A.rows[0][i] !== typeof B.rows[0][i] && A.rows[0][i] != null && B.rows[0][i] != null) throw new Error(lang === 'he' ? 'לא תואם לאיחוד: עמודה ' + (i+1) + ' היא ' + (typeof A.rows[0][i] === 'number' ? 'מספר' : 'טקסט') + ' מול ' + (typeof B.rows[0][i] === 'number' ? 'מספר' : 'טקסט') : 'not union-compatible: column ' + (i+1) + ' is ' + typeof A.rows[0][i] + ' vs ' + typeof B.rows[0][i]); } };
+  const ops = {
+    project(R, attrs){ const idx = attrs.map(a => findCol(R, a)); return dedupe({ cols: idx.map(i => R.cols[i]), rows: R.rows.map(r => idx.map(i => r[i])) }); },
+    select(R, pred){ return { cols: R.cols, rows: R.rows.filter(r => pred(R, r)) }; },
+    rename(R, name, attrs){ const cols = R.cols.map((c, i) => ({ name: attrs && attrs[i] ? attrs[i] : c.name, rel: name })); return { cols, rows: R.rows }; },
+    product(A, B){ const cols = A.cols.concat(B.cols); const rows = []; A.rows.forEach(a => B.rows.forEach(b => rows.push(a.concat(b)))); return { cols, rows }; },
+    natjoin(A, B){ const common = A.cols.map((c, i) => ({ i, j: B.cols.findIndex(d => d.name === c.name) })).filter(p => p.j >= 0); if (!common.length) return ops.product(A, B); const keep = B.cols.map((c, j) => common.some(p => p.j === j) ? -1 : j).filter(j => j >= 0); const cols = A.cols.concat(keep.map(j => B.cols[j])); const rows = []; A.rows.forEach(a => B.rows.forEach(b => { if (common.every(p => a[p.i] === b[p.j])) rows.push(a.concat(keep.map(j => b[j]))); })); return dedupe({ cols, rows }); },
+    thetajoin(A, B, pred){ const P = ops.product(A, B); return { cols: P.cols, rows: P.rows.filter(r => pred(P, r)) }; },
+    union(A, B){ compatible(A, B); return dedupe({ cols: A.cols, rows: A.rows.concat(B.rows) }); },
+    intersect(A, B){ compatible(A, B); const set = new Set(B.rows.map(r => JSON.stringify(r))); return { cols: A.cols, rows: A.rows.filter(r => set.has(JSON.stringify(r))) }; },
+    minus(A, B){ compatible(A, B); const set = new Set(B.rows.map(r => JSON.stringify(r))); return { cols: A.cols, rows: A.rows.filter(r => !set.has(JSON.stringify(r))) }; },
+    divide(A, B){ const bIdx = B.cols.map(c => { const i = A.cols.findIndex(d => d.name === c.name); if (i < 0) throw new Error(lang === 'he' ? 'חילוק: העמודה ' + c.name + ' לא קיימת במחולק' : 'division: column ' + c.name + ' missing in the dividend'); return i; }); const keep = A.cols.map((c, i) => bIdx.includes(i) ? -1 : i).filter(i => i >= 0); const need = B.rows.map(r => JSON.stringify(r)); const groups = {}; A.rows.forEach(r => { const k = JSON.stringify(keep.map(i => r[i])); (groups[k] = groups[k] || new Set()).add(JSON.stringify(bIdx.map(i => r[i]))); }); const rows = Object.keys(groups).filter(k => need.every(n => groups[k].has(n))).map(k => JSON.parse(k)); return { cols: keep.map(i => A.cols[i]), rows }; },
+  };
+  /* ---- tokenizer + parser ---- */
+  const SYM = { 'π':'PI','σ':'SIG','ρ':'RHO','⋈':'JOIN','×':'TIMES','∪':'UNION','∩':'INTER','−':'MINUS','÷':'DIV','→':'TO','←':'FROM','∧':'AND','∨':'OR','¬':'NOT','≠':'NE','≤':'LE','≥':'GE' };
+  const WORDS = { PI:'PI', SIGMA:'SIG', RHO:'RHO', JOIN:'JOIN', TIMES:'TIMES', UNION:'UNION', INTERSECT:'INTER', MINUS:'MINUS', EXCEPT:'MINUS', DIV:'DIV', AND:'AND', OR:'OR', NOT:'NOT' };
+  function tokenize(src){ const toks = []; let i = 0; while (i < src.length) { const ch = src[i]; if (/\s/.test(ch)) { i++; continue; } if (SYM[ch]) { toks.push({t:SYM[ch]}); i++; continue; } if (ch === '-' && src[i+1] === '>') { toks.push({t:'TO'}); i += 2; continue; } if (ch === '<' && src[i+1] === '-') { toks.push({t:'FROM'}); i += 2; continue; } if (ch === '!' && src[i+1] === '=') { toks.push({t:'NE'}); i += 2; continue; } if (ch === '<' && src[i+1] === '>') { toks.push({t:'NE'}); i += 2; continue; } if (ch === '<' && src[i+1] === '=') { toks.push({t:'LE'}); i += 2; continue; } if (ch === '>' && src[i+1] === '=') { toks.push({t:'GE'}); i += 2; continue; } if ('()[],;=<>'.includes(ch)) { toks.push({t: {'(':'LP',')':'RP','[':'LB',']':'RB',',':'COMMA',';':'SEMI','=':'EQ','<':'LT','>':'GT'}[ch]}); i++; continue; } if (ch === "'" || ch === '"') { let j = i + 1; while (j < src.length && src[j] !== ch) j++; toks.push({t:'STR', v: src.slice(i + 1, j)}); i = j + 1; continue; } if (/[0-9]/.test(ch)) { let j = i; while (j < src.length && /[0-9.]/.test(src[j])) j++; toks.push({t:'NUM', v: parseFloat(src.slice(i, j))}); i = j; continue; } if (/[A-Za-z_֐-׿]/.test(ch)) { let j = i; while (j < src.length && /[A-Za-z0-9_.֐-׿]/.test(src[j])) j++; const w = src.slice(i, j); const up = w.toUpperCase(); if (WORDS[up]) toks.push({t: WORDS[up]}); else toks.push({t:'ID', v: w}); i = j; continue; } throw new Error((lang === 'he' ? 'תו לא צפוי: ' : 'unexpected character: ') + ch); } toks.push({t:'END'}); return toks; }
+  function parse(src){ const toks = tokenize(src); let k = 0; const peek = () => toks[k].t; const next = () => toks[k++]; const expect = (t, what) => { if (peek() !== t) throw new Error((lang === 'he' ? 'ציפיתי ל-' : 'expected ') + (what || t) + (lang === 'he' ? ' אבל קיבלתי ' : ' but got ') + describe(toks[k])); return next(); };
+    const describe = tk => tk.t === 'END' ? (lang === 'he' ? 'סוף הביטוי' : 'end of expression') : (tk.v !== undefined ? String(tk.v) : tk.t);
+    const stmts = []; function program(){ stmts.push(stmt()); while (peek() === 'SEMI') { next(); if (peek() === 'END') break; stmts.push(stmt()); } expect('END', lang === 'he' ? 'סוף' : 'end'); return stmts; }
+    function stmt(){ if (peek() === 'ID' && (toks[k+1].t === 'FROM' || (toks[k+1].t === 'EQ' && toks[k+2].t !== 'ID' && toks[k+2].t !== 'NUM' && toks[k+2].t !== 'STR'))) { const name = next().v; next(); return { assign: name, expr: expr() }; } const e = expr(); if (peek() === 'TO') { next(); const name = expect('ID', lang === 'he' ? 'שם' : 'a name').v; return { assign: name, expr: e }; } return { expr: e }; }
+    function expr(){ let left = joinexpr(); while (['UNION','INTER','MINUS'].includes(peek())) { const op = next().t; const right = joinexpr(); left = { op, left, right }; } return left; }
+    function joinexpr(){ let left = unary(); while (['TIMES','JOIN','DIV'].includes(peek())) { const op = next().t; let cond = null; if (op === 'JOIN' && peek() === 'LB') { next(); cond = condition(); expect('RB', ']'); } const right = unary(); left = { op, left, right, cond }; } return left; }
+    function param(){ if (peek() === 'LB') { next(); const start = k; let depth = 0; while (!(peek() === 'RB' && depth === 0)) { if (peek() === 'END') throw new Error(lang === 'he' ? 'חסר ]' : 'missing ]'); if (peek() === 'LB') depth++; if (peek() === 'RB') depth--; next(); } const inner = toks.slice(start, k); next(); return inner; } const start = k; while (peek() !== 'LP') { if (peek() === 'END') throw new Error(lang === 'he' ? 'חסר ( אחרי הפרמטר' : 'missing ( after the parameter'); next(); } return toks.slice(start, k); }
+    function unary(){ const t = peek(); if (t === 'PI') { next(); const attrs = param().filter(x => x.t === 'ID').map(x => x.v); if (!attrs.length) throw new Error(lang === 'he' ? 'π צריכה רשימת עמודות' : 'π needs a column list'); expect('LP', '('); const e = expr(); expect('RP', ')'); return { op:'PI', attrs, e }; } if (t === 'SIG') { next(); const inner = param(); const cond = parseCond(inner); expect('LP', '('); const e = expr(); expect('RP', ')'); return { op:'SIG', cond, e }; } if (t === 'RHO') { next(); const inner = param(); const ids = inner.filter(x => x.t === 'ID').map(x => x.v); if (!ids.length) throw new Error(lang === 'he' ? 'ρ צריכה שם' : 'ρ needs a name'); expect('LP', '('); const e = expr(); expect('RP', ')'); return { op:'RHO', name: ids[0], attrs: ids.length > 1 ? ids.slice(1) : null, e }; } if (t === 'LP') { next(); const e = expr(); expect('RP', ')'); return e; } if (t === 'ID') return { op:'REL', name: next().v }; throw new Error((lang === 'he' ? 'לא צפוי: ' : 'unexpected: ') + describe(toks[k])); }
+    function parseCond(inner){ const save = toks, sk = k; toks.length; const sub = inner.concat([{t:'END'}]); const savedToks = toks.slice(); /* parse condition on a sub-token stream */ const p = parseCondStream(sub); return p; }
+    function condition(){ /* condition inline until matching ] handled by caller */ const start = k; let depth = 0; while (!(peek() === 'RB' && depth === 0)) { if (peek() === 'END') throw new Error(lang === 'he' ? 'חסר ]' : 'missing ]'); if (peek() === 'LB') depth++; if (peek() === 'RB') depth--; next(); } return parseCondStream(toks.slice(start, k).concat([{t:'END'}])); }
+    return program();
+  }
+  function parseCondStream(tk){ let k = 0; const peek = () => tk[k].t; const next = () => tk[k++];
+    function or(){ let l = and(); while (peek() === 'OR') { next(); const r = and(); l = { c:'OR', l, r }; } return l; }
+    function and(){ let l = not(); while (peek() === 'AND') { next(); const r = not(); l = { c:'AND', l, r }; } return l; }
+    function not(){ if (peek() === 'NOT') { next(); return { c:'NOT', e: not() }; } if (peek() === 'LP') { next(); const e = or(); if (peek() !== 'RP') throw new Error(lang === 'he' ? 'חסר ) בתנאי' : 'missing ) in condition'); next(); return e; } return cmp(); }
+    function operand(){ const t = next(); if (t.t === 'ID') return { a: t.v }; if (t.t === 'NUM' || t.t === 'STR') return { v: t.v }; throw new Error(lang === 'he' ? 'תנאי לא תקין' : 'invalid condition'); }
+    function cmp(){ const l = operand(); const op = next().t; if (!['EQ','NE','LT','GT','LE','GE'].includes(op)) throw new Error(lang === 'he' ? 'חסר אופרטור השוואה (=, ≠, <, >, ≤, ≥)' : 'missing comparison operator'); const r = operand(); return { c: op, l, r }; }
+    const e = or(); if (peek() !== 'END') throw new Error(lang === 'he' ? 'תנאי לא תקין' : 'invalid condition'); return e; }
+  function evalCond(c, R, row){ const val = o => o.a !== undefined ? row[findCol(R, o.a)] : o.v; switch (c.c) { case 'AND': return evalCond(c.l, R, row) && evalCond(c.r, R, row); case 'OR': return evalCond(c.l, R, row) || evalCond(c.r, R, row); case 'NOT': return !evalCond(c.e, R, row); default: { const a = val(c.l), b = val(c.r); if (a == null || b == null) return false; switch (c.c) { case 'EQ': return a === b; case 'NE': return a !== b; case 'LT': return a < b; case 'GT': return a > b; case 'LE': return a <= b; case 'GE': return a >= b; } } } }
+  function evalNode(n, env){ switch (n.op) { case 'REL': if (env[n.name]) return env[n.name]; if (RIDE[n.name]) return base(n.name); throw new Error((lang === 'he' ? 'טבלה לא קיימת: ' : 'unknown table: ') + n.name); case 'PI': return ops.project(evalNode(n.e, env), n.attrs); case 'SIG': { const R = evalNode(n.e, env); return ops.select(R, (Rr, row) => evalCond(n.cond, Rr, row)); } case 'RHO': return ops.rename(evalNode(n.e, env), n.name, n.attrs); case 'TIMES': return ops.product(evalNode(n.left, env), evalNode(n.right, env)); case 'JOIN': { const A = evalNode(n.left, env), B = evalNode(n.right, env); return n.cond ? ops.thetajoin(A, B, (P, row) => evalCond(n.cond, P, row)) : ops.natjoin(A, B); } case 'DIV': return ops.divide(evalNode(n.left, env), evalNode(n.right, env)); case 'UNION': return ops.union(evalNode(n.left, env), evalNode(n.right, env)); case 'INTER': return ops.intersect(evalNode(n.left, env), evalNode(n.right, env)); case 'MINUS': return ops.minus(evalNode(n.left, env), evalNode(n.right, env)); } throw new Error('bad node'); }
+  function run(src){ const stmts = parse(src); const env = {}; let last = null; stmts.forEach(st => { const R = dedupe(evalNode(st.expr, env)); if (st.assign) env[st.assign] = R; last = R; }); return last; }
+  const toTable = R => ({ cols: R.cols.map(label), rows: R.rows });
+  const key = R => JSON.stringify(R.rows.map(r => JSON.stringify(r)).sort());
+  return { run, toTable, key, base };
+})();
+
+/* ---- visualizers: set operations, product, rename/self-join ---- */
+let stMode = 'u', rnStep = 0;
+function renderSets(){
+  const A = RAE.run("π[RiderID](σ[City='Ariel'](Riders))"), B = RAE.run("π[RiderID](σ[Plan='Monthly'](Riders))");
+  $$('[data-st]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.st === stMode)));
+  const box = $('#stTables'); box.innerHTML = ''; const msg = $('#stMsg');
+  const setA = new Set(A.rows.map(r => r[0])), setB = new Set(B.rows.map(r => r[0]));
+  const mark = (rows, other, mode) => rows.map(r => ({RiderID: r[0]}));
+  let res = null, expr = '';
+  try { if (stMode === 'u') { res = RAE.run("π[RiderID](σ[City='Ariel'](Riders)) ∪ π[RiderID](σ[Plan='Monthly'](Riders))"); expr = 'A ∪ B'; } else if (stMode === 'i') { res = RAE.run("π[RiderID](σ[City='Ariel'](Riders)) ∩ π[RiderID](σ[Plan='Monthly'](Riders))"); expr = 'A ∩ B'; } else if (stMode === 'd') { res = RAE.run("π[RiderID](σ[City='Ariel'](Riders)) − π[RiderID](σ[Plan='Monthly'](Riders))"); expr = 'A − B'; } else { expr = 'A ∪ π<sub>StationName</sub>(Stations)'; RAE.run("π[RiderID](σ[City='Ariel'](Riders)) ∪ π[StationName](Stations)"); } } catch(e) { res = null; }
+  $('#stExpr').innerHTML = expr;
+  const hit = r => stMode === 'u' ? true : stMode === 'i' ? (setA.has(r.RiderID) && setB.has(r.RiderID)) : stMode === 'd' ? (setA.has(r.RiderID) && !setB.has(r.RiderID)) : false;
+  box.appendChild(table(['RiderID'], mark(A.rows), {title: t('st_A'), rowClass: r => stMode === 'x' ? '' : (hit(r) ? 'hit' : 'miss')}));
+  if (stMode === 'x') box.appendChild(table(['StationName'], RAE.run("π[StationName](Stations)").rows.map(r => ({StationName: r[0]})), {title:'π[StationName](Stations)', rowClass: () => 'badrow'}));
+  else box.appendChild(table(['RiderID'], mark(B.rows), {title: t('st_B'), rowClass: r => stMode === 'u' ? (setA.has(r.RiderID) ? 'dup' : 'hit') : stMode === 'i' ? (setA.has(r.RiderID) ? 'hit' : 'miss') : 'miss'}));
+  if (res) box.appendChild(table(['RiderID'], res.rows.map(r => ({RiderID: r[0]})), {title:'Result'}));
+  msg.className = 'msg' + (stMode === 'x' ? ' bad' : ''); msg.innerHTML = t('st_msg_' + stMode);
 }
-function renderExercise(){ fillSel('exJoin', EXJ); fillSel('exSel', EXS); fillSel('exProj', EXP); exExpr(); exGates(); ['exHint1T','exHint2T','exSolT'].forEach(id => { $('#'+id).innerHTML = t(id.replace('T','').replace('exHint','ex_hint').replace('exSol','ex_sol')); }); }
-['exJoin','exSel','exProj'].forEach(id => $('#'+id).addEventListener('change', exExpr));
-$('#exCheck').addEventListener('click', () => {
-  const j = EXJ[+$('#exJoin').value], s = EXS[+$('#exSel').value], p = EXP[+$('#exProj').value];
-  const base = j.f(); const msg = $('#exMsg'); const out = $('#exOut'); out.innerHTML = ''; msg.className = 'msg';
-  exTries++; store('dbs_ex_tries', exTries);
-  const missing = s.need.concat(p.cols).filter(c => !j.cols.includes(c));
-  if (missing.length) { msg.classList.add('bad'); msg.innerHTML = t('ex_bad_join'); exGates(); return; }
-  const res = project(base.filter(s.f), p.cols); out.appendChild(table(p.cols, res, {title:'Your result'}));
-  if (p.cols.length !== 1 || p.cols[0] !== 'Name') { msg.classList.add('bad'); msg.innerHTML = t('ex_bad_cols',{c:p.cols.join(', ')}); exGates(); return; }
-  const got = JSON.stringify(res.map(r=>r.Name).sort());
-  if (got === EXPECTED) { msg.classList.add('good'); msg.innerHTML = t('ex_ok'); exSolved = true; store('dbs_ex_solved', true); }
-  else { msg.classList.add('bad'); msg.innerHTML = t('ex_bad_rows',{n:res.length, m:JSON.parse(EXPECTED).length}); }
-  exGates();
-});
-$('#exHint1').addEventListener('click', () => $('#exHint1T').hidden = false);
-$('#exHint2').addEventListener('click', () => $('#exHint2T').hidden = false);
-$('#exSol').addEventListener('click', () => $('#exSolT').hidden = false);
+$$('[data-st]').forEach(b => b.addEventListener('click', () => { stMode = b.dataset.st; renderSets(); }));
+function renderProduct(){
+  const box = $('#prTables'); box.innerHTML = '';
+  const bikes = RAE.run("σ[BikeID<=13](Bikes)"), st = RAE.run("σ[StationID<=2](Stations)"), P = RAE.run("σ[BikeID<=13](Bikes) × σ[StationID<=2](Stations)");
+  const tb = RAE.toTable(bikes), ts = RAE.toTable(st), tp = RAE.toTable(P);
+  box.appendChild(table(tb.cols, tb.rows, {title:'Bikes (3)'})); box.appendChild(table(ts.cols, ts.rows, {title:'Stations (2)'})); box.appendChild(table(tp.cols, tp.rows, {title:'Bikes × Stations'}));
+  $('#prCount').textContent = tb.rows.length + ' × ' + ts.rows.length + ' = ' + tp.rows.length;
+}
+function renderRename(){
+  $$('[data-rn]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.rn === rnStep)));
+  const box = $('#rnTables'); box.innerHTML = ''; const msg = $('#rnMsg');
+  const E = RAE.toTable(RAE.run("ρ[E](Staff)")), M = RAE.toTable(RAE.run("ρ[M](Staff)"));
+  if (rnStep === 0) { box.appendChild(table(E.cols, E.rows, {title:'ρ[E](Staff)'})); box.appendChild(table(M.cols, M.rows, {title:'ρ[M](Staff)'})); }
+  else if (rnStep === 1) { const P = RAE.toTable(RAE.run("ρ[E](Staff) × ρ[M](Staff)")); const sample = [0,1,2,8,9,10,16,17,18,24,25,26]; box.appendChild(table(P.cols, sample.map(i => P.rows[i]), {title: 'E × M (12 ' + (lang === 'he' ? 'מתוך' : 'of') + ' 49)', rowClass: r => r[3] === r[4] ? 'good' : 'badrow'})); }
+  else { const J = RAE.toTable(RAE.run("σ[E.ManagerID=M.StaffID](ρ[E](Staff) × ρ[M](Staff))")); box.appendChild(table(J.cols, J.rows, {title:'σ[E.ManagerID = M.StaffID](E × M)', rowClass: () => 'good'})); const N = RAE.toTable(RAE.run("π[E.FullName, M.FullName](σ[E.ManagerID=M.StaffID](ρ[E](Staff) × ρ[M](Staff)))")); box.appendChild(table(N.cols, N.rows, {title:'π[E.FullName, M.FullName](…)'})); }
+  msg.innerHTML = t('rn_msg' + rnStep);
+}
+$$('[data-rn]').forEach(b => b.addEventListener('click', () => { rnStep = +b.dataset.rn; renderRename(); }));
+/* ---- schema + FK cards ---- */
+function renderRideSchema(){
+  const box = $('#rideTables'); box.innerHTML = '';
+  Object.keys(RIDE).forEach(name => { const tt = RIDE[name]; box.appendChild(table(tt.cols, tt.rows, {title: name, keys: tt.keys})); });
+  const fk = $('#fkCards'); fk.innerHTML = ''; const h = el('h3', null, t('fk_h')); h.style.gridColumn = '1/-1'; fk.appendChild(h);
+  ['fk1','fk2','fk3','fk4','fk5'].forEach(k => { const c = el('div','card pinnable'); c.appendChild(el('p', null, t(k))); c.querySelector('p').style.color = 'var(--ink)'; fk.appendChild(c); });
+}
+/* ---- lab ---- */
+const LAB_EX = [ ['lab_ex1', "σ[Minutes>=45](Rides)"], ['lab_ex2', "π[FullName, RideDate, Minutes](Riders ⋈ Rides)"], ['lab_ex3', "π[RideID, StationName](Rides ⋈[FromStation=StationID] Stations)"], ['lab_ex4', "π[BikeID](Bikes) − π[BikeID](σ[RideDate>='2025-01-01'](Rides))"], ['lab_ex5', "π[E.FullName, M.FullName](σ[E.ManagerID=M.StaffID](ρ[E](Staff) × ρ[M](Staff)))"], ['lab_ex6', "π[RiderID, BikeType](Rides ⋈ Bikes) ÷ π[BikeType](Bikes)"], ['lab_ex7', "Long ← σ[Minutes>=45](Rides);\nπ[FullName](Riders ⋈ Long)"] ];
+function insertAt(ta, text, back){ const s0 = ta.selectionStart, e0 = ta.selectionEnd; ta.value = ta.value.slice(0, s0) + text + ta.value.slice(e0); const pos = s0 + text.length - (back || 0); ta.focus(); ta.setSelectionRange(pos, pos); }
+function renderLab(){
+  const pal = $('#labPal'); pal.innerHTML = '';
+  [['π','π[ ]( )',5],['σ','σ[ ]( )',5],['ρ','ρ[ ]( )',5],['⋈','⋈ ',0],['⋈[ ]','⋈[ ] ',3],['×','× ',0],['∪','∪ ',0],['∩','∩ ',0],['−','− ',0],['÷','÷ ',0],['←','← ',0],['∧','∧ ',0],['∨','∨ ',0],['≠','≠',0],['≤','≤',0],['≥','≥',0]].forEach(p => { const b = el('button', null, p[0]); b.type = 'button'; b.addEventListener('click', () => insertAt($('#labQ'), p[1], p[2])); pal.appendChild(b); });
+  const sel = $('#labEx'); sel.innerHTML = '<option value="">' + t('lab_ex0') + '</option>'; LAB_EX.forEach((x, i) => { const o = el('option', null, t(x[0])); o.value = i; sel.appendChild(o); });
+  const br = $('#bridge'); br.innerHTML = '<tr><th>' + t('br_h1') + '</th><th>' + t('br_h2') + '</th><th>' + t('br_h3') + '</th></tr>';
+  [['σ<sub>c</sub>(R)','br1','SELECT * FROM R WHERE c'],['π<sub>a,b</sub>(R)','br2','SELECT DISTINCT a, b FROM R'],['R ⋈ S','br3','R JOIN S ON R.k = S.k'],['R ⋈<sub>c</sub> S','br4','R JOIN S ON c'],['R × S','br5','R CROSS JOIN S'],['R ∪ S','br6','… UNION …'],['R ∩ S','br7','… INTERSECT …'],['R − S','br8','… EXCEPT …'],['ρ<sub>X</sub>(R)','br9','FROM R AS X'],['R ÷ S','br10','GROUP BY … HAVING COUNT(DISTINCT …) = (SELECT COUNT(*) FROM S)']].forEach(r => { const tr = el('tr'); tr.appendChild(el('td', null, r[0])); tr.appendChild(el('td', null, t(r[1]))); tr.appendChild(el('td', null, r[2])); br.appendChild(tr); });
+}
+function runLab(){ const q = $('#labQ').value.trim(); const out = $('#labOut'); out.innerHTML = ''; const msg = $('#labMsg'); if (!q) { msg.className = 'msg'; msg.innerHTML = t('lab_msg0'); return; } try { const R = RAE.toTable(RAE.run(q)); out.appendChild(table(R.cols, R.rows, {title:'Result'})); msg.className = 'msg good'; msg.textContent = t('lab_rows', {n: R.rows.length, c: R.cols.length}); } catch(e) { msg.className = 'msg bad'; msg.textContent = t('exr_err', {e: e.message}); } }
+$('#labRun').addEventListener('click', runLab);
+$('#labQ').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); runLab(); } });
+$('#labEx').addEventListener('change', e => { const i = e.target.value; if (i !== '') { $('#labQ').value = LAB_EX[+i][1]; runLab(); } });
+/* ---- exercises ---- */
+const EXS2 = [ {id:'q1',lv:1},{id:'q2',lv:1},{id:'q3',lv:2},{id:'q4',lv:2},{id:'q5',lv:3},{id:'q6',lv:3},{id:'q7',lv:4},{id:'q8',lv:4},{id:'q9',lv:4},{id:'q10',lv:5},{id:'q11',lv:5},{id:'q12',lv:5} ];
+let exState = load('dbs_ra_ex', {});
+function renderExercises(){
+  const list = $('#exList'); list.innerHTML = '';
+  EXS2.forEach((ex, i) => {
+    const st = exState[ex.id] || { tries: 0, solved: false, q: '' };
+    const card = el('div', 'ex' + (st.solved ? ' solved' : '')); card.dataset.ex = ex.id;
+    card.innerHTML = '<div class="exh"><b>' + (i+1) + '. ' + t(ex.id) + '</b><span class="lvl">' + t('lv' + ex.lv) + '</span></div>'
+      + '<textarea class="raq" rows="2" spellcheck="false" dir="ltr">' + esc(st.q || '') + '</textarea>'
+      + '<div class="controls"><button type="button" class="btn primary exCheck">' + t('ex_check') + '</button><button type="button" class="btn small exH1" ' + (st.tries >= 1 || teacher ? '' : 'disabled') + '>' + t('ex_hint1_b') + '</button><button type="button" class="btn small exH2" ' + (st.tries >= 1 || teacher ? '' : 'disabled') + '>' + t('ex_hint2_b') + '</button><button type="button" class="btn small exS" ' + (st.tries >= 2 || teacher || st.solved ? '' : 'disabled') + '>' + t('ex_sol_b') + '</button><span class="count">' + t('ex_tries', {n: st.tries}) + '</span></div>'
+      + '<div class="tables exres"></div><div class="msg exmsg" hidden></div><div class="hint exh1" hidden>' + t(ex.id + 'h1') + '</div><div class="hint exh2" hidden>' + t(ex.id + 'h2') + '</div><div class="hint exsol" hidden><span class="ra">' + esc(t(ex.id + 's')) + '</span></div>';
+    if (teacher) { card.querySelector('.exh1').hidden = false; card.querySelector('.exh2').hidden = false; card.querySelector('.exsol').hidden = false; }
+    const ta = card.querySelector('textarea'); ta.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); checkEx(ex, card); } });
+    card.querySelector('.exCheck').addEventListener('click', () => checkEx(ex, card));
+    card.querySelector('.exH1').addEventListener('click', () => card.querySelector('.exh1').hidden = false);
+    card.querySelector('.exH2').addEventListener('click', () => card.querySelector('.exh2').hidden = false);
+    card.querySelector('.exS').addEventListener('click', () => card.querySelector('.exsol').hidden = false);
+    list.appendChild(card);
+  });
+}
+function checkEx(ex, card){
+  const ta = card.querySelector('textarea'), res = card.querySelector('.exres'), msg = card.querySelector('.exmsg'); res.innerHTML = ''; msg.hidden = false; msg.className = 'msg exmsg';
+  const q = ta.value.trim(); if (!q) { msg.textContent = t('exr_empty'); return; }
+  const st = exState[ex.id] = exState[ex.id] || { tries: 0, solved: false, q: '' }; st.tries++; st.q = q;
+  try { const R = RAE.run(q); const ref = RAE.run(I18N.he[ex.id + 's']); const tR = RAE.toTable(R); res.appendChild(table(tR.cols, tR.rows, {title:'Result'}));
+    if (R.cols.length !== ref.cols.length) { msg.classList.add('bad'); msg.textContent = t('exr_cols', {a: R.cols.length, b: ref.cols.length}); }
+    else if (RAE.key(R) === RAE.key(ref)) { msg.classList.add('good'); msg.textContent = t('exr_ok'); st.solved = true; card.classList.add('solved'); }
+    else { msg.classList.add('bad'); msg.textContent = t('exr_rows', {a: R.rows.length, b: ref.rows.length, d: t(R.rows.length > ref.rows.length ? 'exr_more' : 'exr_less')}); }
+  } catch(e) { msg.classList.add('bad'); msg.textContent = t('exr_err', {e: e.message}); }
+  store('dbs_ra_ex', exState);
+  const b1 = card.querySelector('.exH1'), b2 = card.querySelector('.exH2'), b3 = card.querySelector('.exS'); b1.disabled = b2.disabled = !(st.tries >= 1 || teacher); b3.disabled = !(st.tries >= 2 || teacher || st.solved); card.querySelector('.count').textContent = t('ex_tries', {n: st.tries});
+}
+function renderRaV2(){ renderSets(); renderProduct(); renderRename(); renderRideSchema(); renderLab(); renderExercises(); }
 
 /* =========================== RAIL, PROGRESS, UNITS =========================== */
 let unit = 'intro';
@@ -1519,7 +1781,7 @@ function applyLang(){
   $('#btnPresent').textContent = document.documentElement.classList.contains('present') ? t('present_off') : t('present');
   $('#btnTeacher').innerHTML = '🔑 ' + (teacher ? t('teacher_on') : t('teacher'));
   renderHero(); renderAnomaly(); renderSchema(); renderLists(); renderQuiz('quizIntro','intro');
-  renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderExercise(); renderQuiz('quizRa','ra');
+  renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderRaV2(); renderQuiz('quizRa','ra');
   renderRail(); renderSpine(); applyRail(); store('dbs_lang', lang); updateNav(false);
   gateRefresh();
 }
@@ -1701,14 +1963,14 @@ function onSession(){
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 
 /* ---- progress sync: local storage stays the cache, the account is the record ---- */
-const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ex_tries','dbs_ex_solved'];
+const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ra_ex'];
 const syncTimers = {};
 function syncKey(k, v){ if (!sb || !session || !session.user) return; clearTimeout(syncTimers[k]); syncTimers[k] = setTimeout(async () => { try { await sb.from('progress').upsert({ user_id: session.user.id, key: k, value: v, updated_at: new Date().toISOString() }); } catch(e){} }, 800); }
 async function pullProgress(){
   if (!sb || !session || !session.user) return;
   try {
     const { data } = await sb.from('progress').select('key,value').eq('user_id', session.user.id); const have = new Set();
-    (data || []).forEach(r => { have.add(r.key); try { localStorage.setItem(r.key, JSON.stringify(r.value)); } catch(e){} if (r.key === 'dbs_visited') Object.assign(visited, r.value || {}); if (r.key === 'dbs_ex_tries') exTries = r.value || 0; if (r.key === 'dbs_ex_solved') exSolved = !!r.value; });
+    (data || []).forEach(r => { have.add(r.key); try { localStorage.setItem(r.key, JSON.stringify(r.value)); } catch(e){} if (r.key === 'dbs_visited') Object.assign(visited, r.value || {}); if (r.key === 'dbs_ra_ex') exState = r.value || {}; });
     SYNC_KEYS.forEach(k => { if (!have.has(k)) { const v = load(k, null); if (v !== null) syncKey(k, v); } });
   } catch(e){}
 }
@@ -1725,7 +1987,7 @@ async function showDashboard(){
     const { data: prog } = await sb.from('progress').select('user_id,key,value');
     const byUser = {}; (prog || []).forEach(r => { (byUser[r.user_id] = byUser[r.user_id] || {})[r.key] = r.value; });
     rows = (roster || []).map(u => { const p = byUser[u.id] || {}; const qi = p.dbs_quiz_intro || {}, qr = p.dbs_quiz_ra || {};
-      return { name: u.full_name, email: u.email, year: u.study_year, sem: u.semester, joined: (u.created_at || '').slice(0,16).replace('T',' '), last: u.last_active ? u.last_active.slice(0,16).replace('T',' ') : '', sec: Object.keys(p.dbs_visited || {}).length, qi: Object.values(qi).filter(x => x && x.ok).length + '/4', qr: Object.values(qr).filter(x => x && x.ok).length + '/3', ex: p.dbs_ex_solved ? '✓' : String(p.dbs_ex_tries || 0), goals: u.goals || '', int: u.interests || '' }; });
+      return { name: u.full_name, email: u.email, year: u.study_year, sem: u.semester, joined: (u.created_at || '').slice(0,16).replace('T',' '), last: u.last_active ? u.last_active.slice(0,16).replace('T',' ') : '', sec: Object.keys(p.dbs_visited || {}).length, qi: Object.values(qi).filter(x => x && x.ok).length + '/4', qr: Object.values(qr).filter(x => x && x.ok).length + '/3', ex: Object.values(p.dbs_ra_ex || {}).filter(x => x && x.solved).length + '/12', goals: u.goals || '', int: u.interests || '' }; });
   } catch(e) { $('#dashBody').textContent = t('g_err_gen') + ' (' + ((e && e.message) || e) + ')'; return; }
   const body = $('#dashBody'); body.className = ''; body.innerHTML = '';
   if (!rows.length) { body.textContent = t('d_none'); return; }
