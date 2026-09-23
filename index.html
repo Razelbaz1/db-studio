@@ -6,7 +6,7 @@
 <title>RowdyQL</title>
 <meta name="description" content="RowdyQL: סביבת לימוד אינטראקטיבית לקורס תכנון בסיסי נתונים">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta property="og:type" content="website"><meta property="og:title" content="RowdyQL"><meta property="og:description" content="כותבים שאילתה, רואים מה קרה, מבינים למה."><meta property="og:url" content="https://rowdyql.com/"><meta property="og:image" content="https://rowdyql.com/og.png"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:title" content="RowdyQL"><meta property="og:description" content="עוד לא מבינים מילה? הגעתם בול בזמן."><meta property="og:url" content="https://rowdyql.com/"><meta property="og:image" content="https://rowdyql.com/og.png"><meta name="twitter:card" content="summary_large_image">
 <style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -611,7 +611,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
     <section id="landing">
       <div class="hero-l">
         <div>
-          <span class="kicker b" style="--d:.25s">SELECT * FROM Course WHERE Understood = TRUE;</span>
+          <span class="kicker b" style="--d:.25s">Query · Schema · JOIN · DDL · 3NF · Foreign key</span>
           <h1 class="b" style="--d:.45s" data-i18n="l_h1"></h1>
           <p class="b" style="--d:.65s" data-i18n="l_sub"></p>
           <div class="controls b" style="--d:.85s;margin-top:1.3rem"><button type="button" class="gbtn primary" id="ctaUp" data-i18n="l_cta"></button><button type="button" class="gbtn" id="ctaIn" data-i18n="l_have"></button></div>
@@ -1226,9 +1226,9 @@ g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב 
 g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכניסה היא <code>SELECT</code>. הסיסמה נשמרת כגיבוב, אף פעם לא כטקסט.",
 e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"אותיות בלבד, בעברית או באנגלית, 2 עד 30 תווים", e_birth:"תאריך לידה לא סביר",
 g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
-l_h1:"כותבים שאילתה, רואים מה קרה, מבינים למה.",
-l_sub:"ברוכים הבאים ל-RowdyQL, סביבת התרגול של הקורס תכנון בסיסי נתונים. מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת המבחן וברמת ראיונות עבודה.",
-l_cta:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
+l_h1:"עוד לא מבינים מילה? הגעתם בול בזמן.",
+l_sub:"ברוכים הבאים ל-RowdyQL, סביבת התרגול של הקורס תכנון בסיסי נתונים. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת המבחן וברמת ראיונות עבודה.",
+l_cta:"מכאן מתחילים", l_have:"כבר יש לי חשבון",
 l_feat_h:"מה יש בפנים", l_how_h:"איך זה עובד",
 l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."]],
 l_how:[["פותחים חשבון",""],["לומדים לפי המפגשים","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","ממחישים, תרגילים ובחינות עצמיות."]],
@@ -1465,9 +1465,9 @@ g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: deta
 g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SELECT</code>. The password is stored as a hash, never as text.",
 e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Letters only, Hebrew or English, 2 to 30 characters", e_birth:"Implausible date of birth",
 g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
-l_h1:"Write a query, see what happened, understand why.",
-l_sub:"Welcome to RowdyQL, the practice environment of the Database Design course. You start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
-l_cta:"Create an account, one minute", l_have:"I already have an account",
+l_h1:"Don't understand a word yet? Perfect timing.",
+l_sub:"Welcome to RowdyQL, the practice environment of the Database Design course. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
+l_cta:"Start here", l_have:"I already have an account",
 l_feat_h:"What is inside", l_how_h:"How it works",
 l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."]],
 l_how:[["Create an account",""],["Learn by session","at your own pace, as much as you like."],["Practice until it sticks","visualizers, exercises and self-checks."]],

@@ -11,7 +11,7 @@ html = f"""<!doctype html>
 <title>{title}</title>
 <meta name="description" content="RowdyQL: סביבת לימוד אינטראקטיבית לקורס תכנון בסיסי נתונים">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta property="og:type" content="website"><meta property="og:title" content="RowdyQL"><meta property="og:description" content="כותבים שאילתה, רואים מה קרה, מבינים למה."><meta property="og:url" content="https://rowdyql.com/"><meta property="og:image" content="https://rowdyql.com/og.png"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:title" content="RowdyQL"><meta property="og:description" content="עוד לא מבינים מילה? הגעתם בול בזמן."><meta property="og:url" content="https://rowdyql.com/"><meta property="og:image" content="https://rowdyql.com/og.png"><meta name="twitter:card" content="summary_large_image">
 <style>:root{{color-scheme:light dark}}body{{margin:0}}img{{max-width:100%}}[hidden]{{display:none!important}}</style>
 </head>
 <body>
