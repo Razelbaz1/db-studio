@@ -529,7 +529,7 @@ html.pt-draw .annot{cursor:crosshair}
 .pt-tab[hidden]{display:none}
 html.present .shell{will-change:transform}
 /* ==/PTOOLS-CSS== */
-.stat{display:inline-block;border-radius:999px;padding:.1rem .6rem;font-size:.78rem;background:var(--good-bg);color:var(--good);cursor:pointer;white-space:nowrap}.stat.bad{background:var(--bad-bg);color:var(--bad)}
+.ustat{display:inline-block;border-radius:999px;padding:.1rem .6rem;font-size:.78rem;background:var(--good-bg);color:var(--good);cursor:pointer;white-space:nowrap}.ustat.bad{background:var(--bad-bg);color:var(--bad)}
 .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;padding:0 0 2.4rem}
 .feat div{background:rgba(23,33,32,.72);border:1px solid #2B3A37;border-radius:14px;padding:1rem 1.1rem;transition:border-color .2s}
 .feat div:hover{border-color:#5CC3D9}
@@ -3536,13 +3536,13 @@ function renderDash(){
   h += '<h3 class="dsec">' + t('d_s_table') + '</h3><details class="colpick-wrap"><summary>' + t('d_cols') + ' · ' + cols.length + '/' + DCOLS.length + '</summary><div class="colpick">' + DCOLS.map(c => '<label class="chk"><input type="checkbox" data-col="' + c[0] + '"' + (D.cols.includes(c[0]) ? ' checked' : '') + '><span>' + t(c[1]) + '</span></label>').join('') + '</div></details>';
   const sorted = rows.slice().sort((a, b) => { const k = D.sort.k; const ka = k === 'joined' ? a.joinedTs : k === 'last' ? a.lastTs : k === 'lastvisit' ? a.lastvisitTs : k === 'ex' ? a.exN : k === 'qi' ? a.qiN : k === 'qr' ? a.qrN : a[k]; const kb = k === 'joined' ? b.joinedTs : k === 'last' ? b.lastTs : k === 'lastvisit' ? b.lastvisitTs : k === 'ex' ? b.exN : k === 'qi' ? b.qiN : k === 'qr' ? b.qrN : b[k]; return (ka > kb ? 1 : ka < kb ? -1 : 0) * D.sort.dir; });
   h += '<div class="tblwrap dtwrap"><table class="data dtable"><tr>' + cols.map(c => '<th data-sort="' + c[0] + '">' + t(c[1]) + (D.sort.k === c[0] ? (D.sort.dir > 0 ? ' ↑' : ' ↓') : '') + '</th>').join('') + '</tr>';
-  sorted.forEach(r => { h += '<tr>' + cols.map(c => { const v = r[c[0]]; if (c[0] === 'note') return '<td class="notecell" data-id="' + r.id + '" title="' + t('d_note_edit') + '">' + (v ? esc(String(v).slice(0, 40)) + (String(v).length > 40 ? '…' : '') : '<span class="count">+</span>') + '</td>'; if (c[0] === 'status') return '<td><span class="stat' + (v === 'blocked' ? ' bad' : '') + '" data-sid="' + r.id + '" title="' + esc(r.snote) + '">' + t(v === 'blocked' ? 'd_blocked' : 'd_active') + '</span></td>'; if (c[0] === 'goals' || c[0] === 'int') return '<td class="wrapcell">' + esc(v || '') + '</td>'; return '<td>' + esc(v == null ? '' : v) + '</td>'; }).join('') + '</tr>'; });
+  sorted.forEach(r => { h += '<tr>' + cols.map(c => { const v = r[c[0]]; if (c[0] === 'note') return '<td class="notecell" data-id="' + r.id + '" title="' + t('d_note_edit') + '">' + (v ? esc(String(v).slice(0, 40)) + (String(v).length > 40 ? '…' : '') : '<span class="count">+</span>') + '</td>'; if (c[0] === 'status') return '<td><span class="ustat' + (v === 'blocked' ? ' bad' : '') + '" data-sid="' + r.id + '" title="' + esc(r.snote) + '">' + t(v === 'blocked' ? 'd_blocked' : 'd_active') + '</span></td>'; if (c[0] === 'goals' || c[0] === 'int') return '<td class="wrapcell">' + esc(v || '') + '</td>'; return '<td>' + esc(v == null ? '' : v) + '</td>'; }).join('') + '</tr>'; });
   h += '</table></div><p class="count">' + t('d_rows', {n: rows.length}) + '</p>';
   box.innerHTML = h;
   box.querySelectorAll('[data-col]').forEach(cb => cb.addEventListener('change', () => { D.cols = DCOLS.map(c => c[0]).filter(k => box.querySelector('[data-col="' + k + '"]').checked); store('dbs_dash_cols', D.cols); renderDash(); }));
   box.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', () => { const k = th.dataset.sort; if (D.sort.k === k) D.sort.dir *= -1; else { D.sort.k = k; D.sort.dir = 1; } renderDash(); }));
   box.querySelectorAll('.notecell').forEach(td => td.addEventListener('click', () => editNote(td.dataset.id)));
-  box.querySelectorAll('.stat').forEach(sp => sp.addEventListener('click', () => editStatus(sp.dataset.sid)));
+  box.querySelectorAll('.ustat').forEach(sp => sp.addEventListener('click', () => editStatus(sp.dataset.sid)));
   const tip = $('#dashTip'); box.querySelectorAll('.bar').forEach(g => { g.addEventListener('mousemove', e => { tip.hidden = false; tip.textContent = g.dataset.l + ': ' + g.dataset.v; tip.style.left = (e.clientX + 12) + 'px'; tip.style.top = (e.clientY - 28) + 'px'; }); g.addEventListener('mouseleave', () => tip.hidden = true); });
   D.filteredSorted = sorted; D.visibleCols = cols;
 }
