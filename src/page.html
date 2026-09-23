@@ -75,6 +75,21 @@ html.norail .rail{display:none}
 .spine{position:fixed;top:50%;transform:translateY(-50%);inset-inline-end:.85rem;z-index:40;display:none;flex-direction:column;gap:.7rem;align-items:flex-end;padding:.6rem .35rem;border-radius:999px}
 html.norail .spine{display:flex}
 html.present .spine{display:none!important}
+/* position pill: lives in the always-visible top bar; shown when the side dots are not (presenter mode, tablets) */
+.now{display:none;align-items:center;gap:.7rem;padding:.35rem .9rem;border:1px solid var(--line);border-radius:999px;background:var(--surface2);color:var(--ink);font:inherit;font-size:.9rem;cursor:pointer;min-height:40px;max-width:min(46vw,520px)}
+.now b{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now .pos{font-family:var(--mono);font-size:.78rem;color:var(--muted);white-space:nowrap}
+.now .dots{display:flex;gap:.3rem;align-items:center}
+.now .dots i{width:.45rem;height:.45rem;border-radius:50%;background:var(--line)}
+.now .dots i.done{background:var(--good)}
+.now .dots i.cur{background:var(--accent);transform:scale(1.5);box-shadow:0 0 0 3px var(--accent-soft)}
+html.present .now{display:inline-flex;font-size:1rem}
+@media (max-width:1024px){.now{display:inline-flex;max-width:60vw}.now .dots{display:none}}
+.nowmenu{position:fixed;z-index:60;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:.4rem;display:flex;flex-direction:column;gap:.1rem;min-width:240px;max-height:70vh;overflow:auto}
+.nowmenu button{text-align:start;border:0;background:transparent;padding:.55rem .8rem;border-radius:8px;font:inherit;color:var(--ink);display:flex;gap:.6rem;align-items:center;min-height:42px}
+.nowmenu button:hover{background:var(--surface2)}
+.nowmenu button.cur{background:var(--accent-soft);font-weight:700}
+.nowmenu button .n{font-family:var(--mono);font-size:.78rem;color:var(--muted);width:1.6rem}
 html.norail:not(.present) .shell{padding-inline-end:3.6rem}
 .sp{display:flex;flex-direction:row-reverse;align-items:center;gap:.6rem;text-decoration:none;color:var(--muted);position:relative}
 .sp i{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;transition:transform .3s,background .3s,box-shadow .3s;border:1px solid var(--surface)}
@@ -550,6 +565,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
     <button class="tab" role="tab" aria-selected="true" data-unit="intro" data-i18n="tab_intro"></button>
     <button class="tab" role="tab" aria-selected="false" data-unit="ra" data-i18n="tab_ra"></button>
   </div>
+  <button type="button" class="now" id="nowPill" hidden aria-haspopup="menu"><span class="dots" id="nowDots"></span><b id="nowTitle"></b><span class="pos" id="nowPos"></span></button>
   <div class="tools">
     <button class="btn small ghost" id="btnToc" aria-pressed="false">☰ <span id="btnTocT"></span></button>
     <button class="btn small ghost" id="btnPresent" data-i18n="present"></button>
@@ -1791,10 +1807,16 @@ function updateNav(flash){
   $$('#rail a').forEach(a => { const id = a.getAttribute('href').slice(1); a.classList.toggle('active', id === activeSec); a.classList.toggle('done', !!visited[id]); });
   $$('#spine .sp').forEach(a => { const id = a.dataset.sec; a.classList.toggle('cur', id === activeSec); a.classList.toggle('done', !!visited[id] && id !== activeSec); });
   const done = secs.filter(s => visited[s.id]).length; $('#prog').style.width = (100*done/secs.length) + '%';
+  const idx = secs.findIndex(s => s.id === activeSec); $('#nowPill').hidden = false; $('#nowTitle').textContent = t(cur.dataset.title); $('#nowPos').textContent = (idx + 1) + ' / ' + secs.length; $('#nowDots').innerHTML = secs.map(s => '<i class="' + (s.id === activeSec ? 'cur' : visited[s.id] ? 'done' : '') + '"></i>').join('');
   if (flash || changed) { const sp = $('#spine'); sp.classList.add('show'); clearTimeout(spineTimer); spineTimer = setTimeout(() => sp.classList.remove('show'), 1800); }
 }
 window.addEventListener('scroll', () => { if (navTick) return; navTick = true; requestAnimationFrame(() => { navTick = false; updateNav(true); }); }, {passive:true});
 window.addEventListener('resize', () => updateNav(false));
+function sectionList(){ return $$('#u-' + unit + ' section.sec'); }
+function jumpSection(delta){ const secs = sectionList(); const i = Math.max(0, Math.min(secs.length - 1, secs.findIndex(s => s.id === activeSec) + delta)); secs[i].scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+$('#nowPill').addEventListener('click', e => { e.stopPropagation(); const old = $('.nowmenu'); if (old) { old.remove(); return; } const m = el('div', 'nowmenu'); sectionList().forEach((sec, i) => { const b = el('button', sec.id === activeSec ? 'cur' : ''); b.type = 'button'; b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + t(sec.dataset.title) + '</span>'; b.addEventListener('click', () => { m.remove(); sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); m.appendChild(b); }); document.body.appendChild(m); const r = $('#nowPill').getBoundingClientRect(); m.style.top = (r.bottom + 6) + 'px'; const w = m.offsetWidth; m.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + 'px'; });
+document.addEventListener('click', e => { const m = $('.nowmenu'); if (m && !m.contains(e.target)) m.remove(); });
+document.addEventListener('keydown', e => { if (!document.documentElement.classList.contains('present') || e.target.matches('input,select,textarea') || $('#gate') && !$('#gate').hidden) return; if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); jumpSection(1); } if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); jumpSection(-1); } });
 function applyRail(){ document.documentElement.classList.toggle('norail', !railOn); $('#btnToc').setAttribute('aria-pressed', String(railOn)); $('#btnTocT').textContent = railOn ? t('toc_hide') : t('toc_show'); store('dbs_rail', railOn); }
 $('#btnToc').addEventListener('click', () => { railOn = !railOn; applyRail(); updateNav(false); });
 
