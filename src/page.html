@@ -116,6 +116,56 @@ section.sec:last-child{border-bottom:0}
 .prose{max-width:76ch;display:flex;flex-direction:column;gap:.8rem}
 .prose strong{font-weight:700}
 
+/* ---------- home ---------- */
+.home-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem;align-items:center;padding:2rem 0 2.2rem}
+.hello h1{font-size:clamp(2rem,3.4vw,3rem)}
+.hello .lede{margin-top:.6rem}
+.hello .controls{margin-top:1.2rem}
+.hello-art .mark{height:7.5rem;width:auto;color:var(--ink);opacity:.9}
+.hello-art .mark .rowdy{animation:blink 1.4s steps(1) infinite}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem;transition:transform .25s,border-color .25s,box-shadow .25s}
+.stat:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow)}
+.stat .v{font-family:var(--mono);font-size:1.7rem;color:var(--accent);line-height:1.1}
+.stat .v small{font-size:.9rem;color:var(--muted)}
+.stat .l{font-size:.9rem;color:var(--muted)}
+.stat .bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.stat .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));border-radius:3px;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.9rem}
+.sess{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem;text-align:start;font:inherit;color:inherit;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;overflow:hidden}
+.sess::after{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:var(--line)}
+.sess.open::after{background:linear-gradient(90deg,var(--accent),var(--good))}
+.sess:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow)}
+.sess.soon{cursor:default;opacity:.72}
+.sess.soon:hover{transform:none;border-color:var(--line);box-shadow:none}
+.sess .top{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.sess .num{font-family:var(--mono);color:var(--accent);font-size:.85rem}
+.sess .date{font-family:var(--mono);color:var(--muted);font-size:.8rem;direction:ltr}
+.sess b{font-size:1rem;line-height:1.3}
+.sess .st{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--muted);margin-top:.2rem}
+.sess .ring{width:2.2rem;height:2.2rem;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p,0)*1%),var(--surface2) 0);display:grid;place-items:center;font-family:var(--mono);font-size:.62rem;color:var(--ink)}
+.sess .ring i{width:1.6rem;height:1.6rem;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-style:normal}
+.sess .pill{font-size:.72rem;border-radius:999px;padding:.1rem .55rem;background:var(--accent-soft);color:var(--accent);font-weight:500}
+.sess.soon .pill{background:var(--surface2);color:var(--muted)}
+.sess.done .pill{background:var(--good-bg);color:var(--good)}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem}
+.quick button{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;text-align:start;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:.3rem;transition:transform .25s,border-color .25s,box-shadow .25s}
+.quick button:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow)}
+.quick button .ic{font-family:var(--mono);color:var(--accent);font-size:1.3rem}
+.quick button span{color:var(--muted);font-size:.9rem}
+/* scroll reveal (opt-in per element); disabled for reduced motion */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:var(--rd,0s)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none}}
+/* side notice (login greeting) */
+.notice{position:fixed;top:5.2rem;inset-inline-end:1rem;z-index:75;background:var(--surface);color:var(--ink);border:1px solid var(--accent);border-radius:14px;padding:.8rem 1rem;box-shadow:var(--shadow);max-width:min(340px,86vw);display:flex;gap:.7rem;align-items:flex-start;transform:translateX(calc(var(--dir,1)*120%));transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .4s}
+html[dir="rtl"] .notice{--dir:-1}
+.notice.in{transform:none}
+.notice.out{opacity:0}
+.notice b{display:block}
+.notice span{color:var(--muted);font-size:.9rem}
+.notice .mark{height:2.2rem;width:auto;flex:none;color:var(--accent)}
+@media (max-width:800px){.home-hero{grid-template-columns:1fr}.hello-art{display:none}}
 /* ---------- hero ---------- */
 .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3rem;align-items:center;padding:1.5rem 0 2.5rem}
 .hero h1{font-size:clamp(1.9rem,2.6vw,3rem)}
@@ -562,7 +612,8 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
 <header class="top">
   <div class="brand"><span class="logo" id="appLogo" style="font-size:1rem"><svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><b class="wm">Rowdy<i>QL</i></b></span><span data-i18n="brand_sub"></span></div>
   <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-unit="intro" data-i18n="tab_intro"></button>
+    <button class="tab" role="tab" aria-selected="true" data-unit="home" data-i18n="tab_home"></button>
+    <button class="tab" role="tab" aria-selected="false" data-unit="intro" data-i18n="tab_intro"></button>
     <button class="tab" role="tab" aria-selected="false" data-unit="ra" data-i18n="tab_ra"></button>
   </div>
   <button type="button" class="now" id="nowPill" hidden aria-haspopup="menu"><span class="dots" id="nowDots"></span><b id="nowTitle"></b><span class="pos" id="nowPos"></span></button>
@@ -581,8 +632,33 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
   <nav class="rail" id="rail" aria-label="Sections"></nav>
   <main class="content">
 
+  <!-- =========================== UNIT: HOME =========================== -->
+  <div class="unit" id="u-home" hidden>
+    <section class="sec home-hero" id="h-hello" data-title="nav_h_hello">
+      <div class="hello">
+        <span class="eyebrow" id="helloDate"></span>
+        <h1 id="helloH1"></h1>
+        <p class="lede" id="helloSub"></p>
+        <div class="controls" id="helloCta"></div>
+      </div>
+      <div class="hello-art" aria-hidden="true"><svg class="mark" viewBox="0 0 130 100"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg></div>
+    </section>
+    <section class="sec" id="h-stats" data-title="nav_h_stats">
+      <div class="sec-head"><h2 data-i18n="hs_h2"></h2><p class="lede" data-i18n="hs_lede"></p></div>
+      <div class="stats" id="homeStats"></div>
+    </section>
+    <section class="sec" id="h-sessions" data-title="nav_h_sessions">
+      <div class="sec-head"><h2 data-i18n="hsx_h2"></h2><p class="lede" data-i18n="hsx_lede"></p></div>
+      <div class="sessions" id="homeSessions"></div>
+    </section>
+    <section class="sec" id="h-tools" data-title="nav_h_tools">
+      <div class="sec-head"><h2 data-i18n="ht_h2"></h2></div>
+      <div class="quick" id="homeQuick"></div>
+    </section>
+  </div>
+
   <!-- =========================== UNIT: INTRO =========================== -->
-  <div class="unit" id="u-intro">
+  <div class="unit" id="u-intro" hidden>
 
     <section class="sec hero" id="s-why" data-title="nav_why">
       <div class="sec-head">
@@ -902,9 +978,19 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
 /* =========================== I18N =========================== */
 const I18N = {
 he: {
-brand_sub:"קורס תכנון בסיסי נתונים", tab_intro:"מבוא", tab_ra:"אלגברה רלציונית",
+brand_sub:"קורס תכנון בסיסי נתונים", tab_home:"בית", tab_intro:"מבוא", tab_ra:"אלגברה רלציונית",
 present:"מצב מרצה", teacher:"קוד מרצה", run:"הרץ", reset:"איפוס", lg_pk:"מפתח ראשי", lg_fk:"מפתח זר",
 toc_show:"תוכן עניינים", toc_hide:"הסתר תוכן", hud_l:"אתם כאן",
+nav_h_hello:"שלום", nav_h_stats:"ההתקדמות שלי", nav_h_sessions:"המפגשים", nav_h_tools:"כלים",
+gr_morning:"בוקר טוב", gr_noon:"צהריים טובים", gr_evening:"ערב טוב", gr_night:"לילה טוב",
+hello_sub_new:"כאן מתחילים. המפגש הראשון פתוח, ואפשר לצעוד קדימה בקצב שלכם.", hello_sub_back:"עצרתם ב<b>{s}</b>. ממשיכים משם?", hello_next:"המפגש הקרוב: {d} · {t}",
+hello_continue:"המשך מאיפה שעצרתי", hello_start:"התחלה מהמבוא", hello_ra:"לאלגברה רלציונית",
+notice_sub:"ההתקדמות נשמרת לחשבון, מכל מכשיר.",
+hs_h2:"ההתקדמות שלי", hs_lede:"מה שכבר עברתם, מה שנפתר, ומה שנשאר. הכל נשמר לחשבון.",
+st_sections:"סעיפים שנצפו", st_ex:"תרגילי אלגברה שנפתרו", st_qi:"שאלון מבוא", st_qr:"שאלון אלגברה", st_days:"ימים פעילים", st_days_s:"ימים",
+hsx_h2:"המפגשים", hsx_lede:"יחידה לכל מפגש תרגול. הכרטיסים נפתחים לפי התקדמות הסמסטר, והטבעת מראה כמה מכל יחידה כבר עברתם.",
+sx_open:"פתוח", sx_soon:"בקרוב", sx_done:"הושלם", sx_progress:"{p}%",
+ht_h2:"כלים מהירים", qk_lab:"מחשבון אלגברה", qk_lab_s:"להריץ ביטויים על סכמת RideOn", qk_ex:"תרגילי אלגברה", qk_ex_s:"12 תרגילים עם בדיקה מיידית", qk_map:"מפת הקורס", qk_map_s:"מה נלמד מתי, ומה רק בתרגול", qk_quiz:"בדיקה עצמית", qk_quiz_s:"שאלות בסגנון המבחן",
 nav_why:"למה בסיס נתונים", nav_anomaly:"הניסוי: טבלה אחת", nav_schema:"מה זו סכמה", nav_decl:"לשאול, לא לתכנת", nav_ind:"איפה זה חי", nav_map:"מפת הקורס", nav_quiz:"בדיקה עצמית",
 nav_r_data:"הטבלאות שלנו", nav_r_sel:"σ בחירה", nav_r_proj:"π הטלה", nav_r_join:"⋈ צירוף", nav_r_div:"÷ חילוק", nav_r_tree:"קריאת ביטוי",
 nav_r_sets:"∪ ∩ − קבוצות", nav_r_prod:"× מכפלה", nav_r_ren:"ρ כינוי והשמה", nav_r_schema:"הסכמה לתרגול", nav_r_lab:"מחשבון אלגברה", nav_r_ex:"תרגילים",
@@ -1131,9 +1217,19 @@ sync_on:"ההתקדמות נשמרת לחשבון",
 pt_body:"<ol><li><b>מי מפעיל:</b> צוות התרגול של הקורס \"תכנון בסיסי נתונים\" באוניברסיטת אריאל. הסביבה היא כלי עזר לימודי ואינה מערכת רשמית של האוניברסיטה.</li><li><b>מה נאסף:</b> אימייל, שם מלא, שנת לימוד, סמסטר, מספר תעודת זהות, וההתקדמות שלכם בסביבה (סעיפים שנצפו, תוצאות בחינה עצמית ותרגילים).</li><li><b>למה:</b> זיהוי חד-משמעי מול רשימת הקורס, מעקב התקדמות אישי, וחישוב בונוס או נוכחות אם יוחלט על כך.</li><li><b>מי רואה:</b> צוות הקורס בלבד. מספר תעודת הזהות נשמר בטבלה נפרדת שרק צוות הקורס יכול לקרוא. הנתונים לא נמסרים לצד שלישי ולא משמשים לשום מטרה אחרת.</li><li><b>איפה:</b> הנתונים מאוחסנים בשירות Supabase על שרתים באיחוד האירופי, מוצפנים בתעבורה ובאחסון. הסיסמה נשמרת כגיבוב בלבד ואינה ניתנת לקריאה.</li><li><b>כמה זמן:</b> עד תום שנת הלימודים שבה נרשמתם ועוד 12 חודשים לצורך ערעורים, ואז הנתונים נמחקים.</li><li><b>הזכויות שלכם:</b> אפשר לבקש עיון, תיקון או מחיקה של הפרטים בכל עת בפנייה למתרגל. מחיקת החשבון מוחקת גם את ההתקדמות.</li><li>ההרשמה מהווה הסכמה לתנאים אלה.</li></ol>",
 },
 en: {
-brand_sub:"Database Design course", tab_intro:"Intro", tab_ra:"Relational Algebra",
+brand_sub:"Database Design course", tab_home:"Home", tab_intro:"Intro", tab_ra:"Relational Algebra",
 present:"Presenter mode", teacher:"Teacher code", run:"Run", reset:"Reset", lg_pk:"Primary key", lg_fk:"Foreign key",
 toc_show:"Contents", toc_hide:"Hide contents", hud_l:"You are here",
+nav_h_hello:"Hello", nav_h_stats:"My progress", nav_h_sessions:"Sessions", nav_h_tools:"Tools",
+gr_morning:"Good morning", gr_noon:"Good afternoon", gr_evening:"Good evening", gr_night:"Good night",
+hello_sub_new:"This is where it starts. The first session is open; move forward at your own pace.", hello_sub_back:"You stopped at <b>{s}</b>. Continue from there?", hello_next:"Next session: {d} · {t}",
+hello_continue:"Continue where I stopped", hello_start:"Start with the intro", hello_ra:"To relational algebra",
+notice_sub:"Progress is saved to your account, on any device.",
+hs_h2:"My progress", hs_lede:"What you have covered, what you solved, and what is left. All saved to your account.",
+st_sections:"Sections viewed", st_ex:"Algebra exercises solved", st_qi:"Intro quiz", st_qr:"Algebra quiz", st_days:"Active days", st_days_s:"days",
+hsx_h2:"Sessions", hsx_lede:"One unit per tutorial session. Cards open as the semester progresses; the ring shows how much of each unit you have covered.",
+sx_open:"open", sx_soon:"soon", sx_done:"done", sx_progress:"{p}%",
+ht_h2:"Quick tools", qk_lab:"Algebra calculator", qk_lab_s:"Run expressions on the RideOn schema", qk_ex:"Algebra exercises", qk_ex_s:"12 exercises with instant checking", qk_map:"Course map", qk_map_s:"What is taught when, and what only in the tutorial", qk_quiz:"Self-check", qk_quiz_s:"Exam-style questions",
 nav_why:"Why a database", nav_anomaly:"The experiment", nav_schema:"What is a schema", nav_decl:"Ask, don't program", nav_ind:"Where it lives", nav_map:"Course map", nav_quiz:"Self-check",
 nav_r_data:"Our tables", nav_r_sel:"σ Select", nav_r_proj:"π Project", nav_r_join:"⋈ Join", nav_r_div:"÷ Divide", nav_r_tree:"Reading an expression",
 nav_r_sets:"∪ ∩ − sets", nav_r_prod:"× product", nav_r_ren:"ρ rename & assign", nav_r_schema:"Practice schema", nav_r_lab:"Algebra calculator", nav_r_ex:"Exercises",
@@ -1784,6 +1880,50 @@ function checkEx(ex, card){
 }
 function renderRaV2(){ renderSets(); renderProduct(); renderRename(); renderRideSchema(); renderLab(); renderExercises(); }
 
+/* =========================== HOME =========================== */
+const SESSION_DATES = ['19.10','26.10','02.11','09.11','16.11','23.11','30.11','07.12','14.12','21.12','28.12','04.01'];
+const SESSION_UNIT = { 1: 'intro', 2: 'ra', 3: 'ra' };
+function greetingKey(){ const h = new Date().getHours(); return h >= 5 && h < 12 ? 'gr_morning' : h < 17 ? 'gr_noon' : h < 22 ? 'gr_evening' : 'gr_night'; }
+function firstName(){ const n = (profile && (profile.first_name || profile.full_name)) || ''; return n.trim().split(' ')[0] || ''; }
+function unitProgress(u){ const secs = $$('#u-' + u + ' section.sec'); const done = secs.filter(x => visited[x.id]).length; return secs.length ? Math.round(100 * done / secs.length) : 0; }
+function markDay(){ try { const days = load('dbs_days', []); const k = new Date().toISOString().slice(0,10); if (!days.includes(k)) { days.push(k); store('dbs_days', days); } } catch(e){} }
+function goTo(u, secId){ setUnit(u); if (secId) setTimeout(() => { const el2 = $('#' + secId); if (el2) el2.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80); }
+function nextSession(){ const now = new Date(); const y = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1; for (let i = 0; i < 12; i++) { const [d, m] = SESSION_DATES[i].split('.').map(Number); const dt = new Date(m === 1 ? y + 1 : y, m - 1, d); if (dt >= now) return i + 1; } return null; }
+function renderHome(){
+  if (!$('#u-home')) return;
+  const name = firstName(); $('#helloH1').textContent = t(greetingKey()) + (name ? ', ' + name : '');
+  const now = new Date(); $('#helloDate').textContent = now.toLocaleDateString(lang === 'he' ? 'he-IL' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  const last = load('dbs_last_sec', null); const lastEl = last && $('#' + last.id) ? $('#' + last.id) : null;
+  const ns = nextSession(); const nextTxt = ns ? t('hello_next', { d: SESSION_DATES[ns - 1], t: t('tl' + ns) }) : '';
+  $('#helloSub').innerHTML = (lastEl && last.unit !== 'home' ? t('hello_sub_back', { s: t(lastEl.dataset.title) }) : t('hello_sub_new')) + (nextTxt ? '<br><span class="count">' + nextTxt + '</span>' : '');
+  const cta = $('#helloCta'); cta.innerHTML = '';
+  if (lastEl && last.unit !== 'home') { const b = el('button', 'btn primary', t('hello_continue')); b.addEventListener('click', () => goTo(last.unit, last.id)); cta.appendChild(b); }
+  const b1 = el('button', lastEl && last.unit !== 'home' ? 'btn' : 'btn primary', t('hello_start')); b1.addEventListener('click', () => goTo('intro')); cta.appendChild(b1);
+  const b2 = el('button', 'btn', t('hello_ra')); b2.addEventListener('click', () => goTo('ra')); cta.appendChild(b2);
+  const allSecs = $$('#u-intro section.sec, #u-ra section.sec'); const seen = allSecs.filter(x => visited[x.id]).length;
+  const qi = Object.values(load('dbs_quiz_intro', {})).filter(x => x && x.ok).length, qr = Object.values(load('dbs_quiz_ra', {})).filter(x => x && x.ok).length, ex = Object.values(exState || {}).filter(x => x && x.solved).length, days = load('dbs_days', []).length;
+  const stats = [['st_sections', seen, allSecs.length], ['st_ex', ex, 12], ['st_qi', qi, 4], ['st_qr', qr, 3], ['st_days', days, null]];
+  const sb2 = $('#homeStats'); sb2.innerHTML = '';
+  stats.forEach((st, i) => { const d = el('div', 'stat reveal'); d.style.setProperty('--rd', (i * 0.07) + 's'); d.innerHTML = '<div class="v">' + st[1] + (st[2] ? '<small> / ' + st[2] + '</small>' : '<small> ' + t('st_days_s') + '</small>') + '</div><div class="l">' + t(st[0]) + '</div>' + (st[2] ? '<div class="bar"><i data-w="' + Math.round(100 * st[1] / st[2]) + '"></i></div>' : ''); sb2.appendChild(d); });
+  const grid = $('#homeSessions'); grid.innerHTML = '';
+  for (let i = 1; i <= 12; i++) { const u = SESSION_UNIT[i]; const p = u ? unitProgress(u) : 0; const state = !u ? 'soon' : p >= 100 ? 'done' : 'open';
+    const c = el('button', 'sess reveal ' + state); c.type = 'button'; c.style.setProperty('--rd', ((i - 1) * 0.05) + 's'); c.style.setProperty('--p', p);
+    c.innerHTML = '<div class="top"><span class="num">' + String(i).padStart(2, '0') + '</span><span class="date">' + SESSION_DATES[i - 1] + '</span></div><b>' + t('tl' + i).replace(/<span class="tag[^>]*>.*?<\/span>/g, '') + '</b><div class="st"><span class="pill">' + t('sx_' + state) + '</span>' + (u ? '<span class="ring"><i>' + p + '%</i></span>' : '') + '</div>';
+    if (u) c.addEventListener('click', () => goTo(u)); else c.disabled = true; grid.appendChild(c); }
+  const q = $('#homeQuick'); q.innerHTML = '';
+  [['qk_lab', 'qk_lab_s', 'ra', 'r-lab', 'π σ ⋈'], ['qk_ex', 'qk_ex_s', 'ra', 'r-exercises', '✓'], ['qk_map', 'qk_map_s', 'intro', 's-map', '12'], ['qk_quiz', 'qk_quiz_s', 'intro', 's-quiz-intro', '?']].forEach((x, i) => { const b = el('button', 'reveal'); b.type = 'button'; b.style.setProperty('--rd', (i * 0.06) + 's'); b.innerHTML = '<span class="ic">' + x[4] + '</span><b>' + t(x[0]) + '</b><span>' + t(x[1]) + '</span>'; b.addEventListener('click', () => goTo(x[2], x[3])); q.appendChild(b); });
+  observeReveal();
+}
+let revealIO = null;
+function observeReveal(){
+  if (!revealIO) revealIO = new IntersectionObserver(entries => { entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); en.target.querySelectorAll('.bar i[data-w]').forEach(b => b.style.width = b.dataset.w + '%'); revealIO.unobserve(en.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+  $$('.reveal:not(.in)').forEach(x => revealIO.observe(x));
+}
+function sideNotice(){
+  const n = el('div', 'notice'); n.innerHTML = '<svg class="mark" viewBox="0 0 130 100" aria-hidden="true"><path class="br b1" d="M30 2 h-22 v96 h22"/><path class="br b2" d="M100 2 h22 v96 h-22"/><path class="cell r1" d="M40 14 h50 v18 h-50 z"/><path class="cell r3" d="M40 68 h50 v18 h-50 z"/><rect class="rowdy" x="40" y="41" width="50" height="18" rx="3"/></svg><div><b>' + t(greetingKey()) + (firstName() ? ', ' + firstName() : '') + '</b><span>' + t('notice_sub') + '</span></div>';
+  document.body.appendChild(n); requestAnimationFrame(() => n.classList.add('in')); setTimeout(() => { n.classList.add('out'); setTimeout(() => n.remove(), 500); }, 4500);
+}
+
 /* =========================== RAIL, PROGRESS, UNITS =========================== */
 let unit = 'intro';
 const visited = load('dbs_visited', {});
@@ -1791,7 +1931,7 @@ function renderRail(){
   const rail = $('#rail'); rail.innerHTML = '';
   $$('#u-'+unit+' section.sec').forEach(sec => { const a = el('a', visited[sec.id] ? 'done' : ''); a.href = '#'+sec.id; a.innerHTML = '<span class="dot"></span><span>'+t(sec.dataset.title)+'</span>'; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({behavior:'smooth', block:'start'}); }); rail.appendChild(a); });
 }
-function setUnit(u){ unit = u; $$('.unit').forEach(x => x.hidden = x.id !== 'u-'+u); $$('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.unit===u))); renderRail(); renderSpine(); window.scrollTo({top:0}); store('dbs_unit', u); updateNav(false); }
+function setUnit(u){ unit = u; if (u === 'home' && typeof renderHome === 'function') renderHome(); $$('.unit').forEach(x => x.hidden = x.id !== 'u-'+u); $$('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.unit===u))); renderRail(); renderSpine(); window.scrollTo({top:0}); store('dbs_unit', u); updateNav(false); }
 $$('.tab').forEach(b => b.addEventListener('click', () => setUnit(b.dataset.unit)));
 
 /* position tracking: the rail and the side spine follow the scroll position (section whose top passed 35% of the viewport) */
@@ -1802,7 +1942,7 @@ function updateNav(flash){
   const line = window.innerHeight * 0.35; let cur = secs[0];
   secs.forEach(s => { if (s.getBoundingClientRect().top <= line) cur = s; });
   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = secs[secs.length-1];
-  const changed = cur.id !== activeSec; activeSec = cur.id;
+  const changed = cur.id !== activeSec; activeSec = cur.id; if (unit !== 'home') store('dbs_last_sec', { unit, id: cur.id });
   if (!visited[cur.id]) { visited[cur.id] = true; store('dbs_visited', visited); }
   $$('#rail a').forEach(a => { const id = a.getAttribute('href').slice(1); a.classList.toggle('active', id === activeSec); a.classList.toggle('done', !!visited[id]); });
   $$('#spine .sp').forEach(a => { const id = a.dataset.sec; a.classList.toggle('cur', id === activeSec); a.classList.toggle('done', !!visited[id] && id !== activeSec); });
@@ -1829,7 +1969,7 @@ function applyLang(){
   $('#btnPresent').textContent = document.documentElement.classList.contains('present') ? t('present_off') : t('present');
   $('#btnTeacher').innerHTML = '🔑 ' + (teacher ? t('teacher_on') : t('teacher'));
   renderHero(); renderAnomaly(); renderSchema(); renderLists(); renderQuiz('quizIntro','intro');
-  renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderRaV2(); renderQuiz('quizRa','ra');
+  renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderRaV2(); renderQuiz('quizRa','ra'); renderHome();
   renderRail(); renderSpine(); applyRail(); store('dbs_lang', lang); updateNav(false);
   gateRefresh();
 }
@@ -2011,14 +2151,14 @@ async function loadProfile(){ if (!sb || !session || !session.user) return; try 
 function onSession(){
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) window.scrollTo({top:0});
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
-  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } if (sb && session.user) { pullProgress().then(() => { applyLang(); toast(t('sync_on')); }); logVisit(); } }
+  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); }); logVisit(); } else { setUnit('home'); sideNotice(); } }
   else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); if (built) { $('#gate').classList.add('built'); $('#gateLogo').classList.add('show'); } }
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
 
 async function logVisit(){ try { const last = +load('dbs_visit_at', 0); if (Date.now() - last < 30 * 60 * 1000) return; store('dbs_visit_at', Date.now()); await sb.from('events').insert({ user_id: session.user.id, kind: 'visit', meta: { lang, w: innerWidth } }); } catch(e){} }
 /* ---- progress sync: local storage stays the cache, the account is the record ---- */
-const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ra_ex'];
+const SYNC_KEYS = ['dbs_visited','dbs_quiz_intro','dbs_quiz_ra','dbs_ra_ex','dbs_days','dbs_last_sec'];
 const syncTimers = {};
 function syncKey(k, v){ if (!sb || !session || !session.user) return; clearTimeout(syncTimers[k]); syncTimers[k] = setTimeout(async () => { try { await sb.from('progress').upsert({ user_id: session.user.id, key: k, value: v, updated_at: new Date().toISOString() }); } catch(e){} }, 800); }
 async function pullProgress(){
@@ -2026,6 +2166,8 @@ async function pullProgress(){
   try {
     const { data } = await sb.from('progress').select('key,value').eq('user_id', session.user.id); const have = new Set();
     (data || []).forEach(r => { have.add(r.key); try { localStorage.setItem(r.key, JSON.stringify(r.value)); } catch(e){} if (r.key === 'dbs_visited') Object.assign(visited, r.value || {}); if (r.key === 'dbs_ra_ex') exState = r.value || {}; });
+    // merge active days (union) rather than overwrite
+    try { const srv = (data || []).find(r => r.key === 'dbs_days'); if (srv) { const merged = Array.from(new Set((srv.value || []).concat(load('dbs_days', [])))); store('dbs_days', merged); } } catch(e){}
     SYNC_KEYS.forEach(k => { if (!have.has(k)) { const v = load(k, null); if (v !== null) syncKey(k, v); } });
   } catch(e){}
 }
@@ -2152,6 +2294,6 @@ function startGateBg(){
 
 /* =========================== INIT =========================== */
 applyLang();
-setUnit(load('dbs_unit','intro'));
+setUnit(load('dbs_unit','home'));
 initAuth();
 </script>
