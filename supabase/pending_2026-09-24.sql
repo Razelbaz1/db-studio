@@ -1,5 +1,15 @@
--- RowdyQL · everything not yet applied to Supabase as of 2026-09-24. Run ONCE in the SQL editor (names + dashboard, then account status).
+-- RowdyQL · everything not yet applied to Supabase as of 2026-09-24. Run ONCE in the SQL editor; safe to re-run if it fails midway.
+-- Live state checked 2026-09-24: profiles has study_year/semester/consent_*, but NOT goals/interests/first_name/last_name/birth_date/status;
+-- tables events/notes do not exist. Order: (1) onboarding columns  (2) names + dashboard  (3) account status.
 
+-- ========== (1) onboarding v2 (2026-09-23): year/semester optional, free-text goals and interests ==========
+alter table public.profiles alter column study_year drop not null;
+alter table public.profiles alter column semester   drop not null;
+alter table public.profiles add column if not exists goals     text;
+alter table public.profiles add column if not exists interests text;
+drop table if exists public.identities_private;
+
+-- ========== (2) names + dashboard (2026-09-24) ==========
 -- RowdyQL migration 2026-09-24: first/last name, birth date, visit events, teacher notes, richer staff view
 -- Run once in the Supabase SQL editor (safe to re-run).
 
@@ -20,8 +30,11 @@ alter table public.events enable row level security;
 drop policy if exists events_insert_own on public.events;
 drop policy if exists events_select_own on public.events;
 drop policy if exists events_select_staff on public.events;
-create policy events_insert_own   on public.events for insert with check (user_id = auth.uid());
-create policy events_select_own   on public.events for select using (user_id = auth.uid());
+drop policy if exists events_insert_own on public.events;
+create policy events_insert_own on public.events for insert with check (user_id = auth.uid());
+drop policy if exists events_select_own on public.events;
+create policy events_select_own on public.events for select using (user_id = auth.uid());
+drop policy if exists events_select_staff on public.events;
 create policy events_select_staff on public.events for select using (public.is_teacher());
 
 -- ---------- notes: one private teacher note per student ----------
@@ -32,6 +45,7 @@ create table if not exists public.notes (
   updated_at timestamptz not null default now()
 );
 alter table public.notes enable row level security;
+drop policy if exists notes_staff on public.notes;
 drop policy if exists notes_staff on public.notes;
 create policy notes_staff on public.notes for all using (public.is_teacher()) with check (public.is_teacher());
 
@@ -76,6 +90,7 @@ create view public.staff_roster with (security_invoker = true) as
   from public.profiles p;
 
 
+-- ========== (3) account status (2026-09-24) ==========
 -- RowdyQL · account status: block / release a user from the teacher dashboard, with a private reason.
 -- Run AFTER migration_2026-09-24_names_dashboard.sql (or run supabase/pending_2026-09-24.sql, which contains both).
 
