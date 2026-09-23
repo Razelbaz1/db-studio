@@ -469,7 +469,7 @@ html[dir="rtl"] .hero-l .kicker{text-align:end}
 .story-track{height:520vh;position:relative}
 .story-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,#10201F 0%,#0B1416 70%)}
 .story-stage svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden}
-.story-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.story-stage canvas.story-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .story-cap{position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:max-content;max-width:min(54ch,88vw);text-align:center;font-family:"Heebo","Segoe UI",Arial,sans-serif;font-size:clamp(1.05rem,1.6vw,1.45rem);font-weight:500;line-height:1.45;color:#E6EEEC;text-wrap:balance;opacity:0;text-shadow:0 2px 16px rgba(0,0,0,.8);pointer-events:none;direction:rtl}
 html[lang="en"] .story-cap{direction:ltr}
 .story-end{position:absolute;left:50%;bottom:7vh;transform:translateX(-50%);opacity:0;pointer-events:none;display:flex;justify-content:center}
@@ -1655,7 +1655,7 @@ const STORY = (() => {
   function tick(p, dt, time){ const cam = camera(p); applyCam(cam); chapters.forEach(ch => { try { ch.update(p, ctx, dt, time); } catch (e) { console.error('story chapter ' + ch.id, e); } }); updateCaptions(p); if (endBox) { const o = seg(p, .9, .97); endBox.style.opacity = o; endBox.style.pointerEvents = o > .5 ? 'auto' : 'none'; } drawParticles(dt, cam, p); }
   function frame(t){ if (!running) return; const dt = Math.min(.05, lastT ? (t - lastT) / 1000 : .016); lastT = t; tick(progress(), dt, t / 1000); requestAnimationFrame(frame); }
   function start(){ if (running || isStatic) return; running = true; lastT = 0; requestAnimationFrame(frame); }
-  function stop(){ running = false; }
+  function stop(){ running = false; if (c2d && canvas) { c2d.setTransform(1, 0, 0, 1, 0, 0); c2d.clearRect(0, 0, canvas.width, canvas.height); } }
 
   /* ---- init ---- */
   function init(section, opts){
