@@ -1950,6 +1950,7 @@ $$('.tab').forEach(b => b.addEventListener('click', () => setUnit(b.dataset.unit
 let activeSec = null, railOn = load('dbs_rail', false), spineTimer = null, navTick = false;
 function renderSpine(){ const sp = $('#spine'); sp.innerHTML = ''; $$('#u-'+unit+' section.sec').forEach(sec => { const a = el('a','sp'); a.href = '#'+sec.id; a.dataset.sec = sec.id; a.innerHTML = '<i></i><span class="lbl">'+t(sec.dataset.title)+'</span>'; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({behavior:'smooth', block:'start'}); }); sp.appendChild(a); }); }
 function updateNav(flash){
+  if (document.documentElement.classList.contains('gated')) return; /* nothing to track while the sign-in gate covers the page */
   const secs = $$('#u-'+unit+' section.sec'); if (!secs.length) return;
   const line = window.innerHeight * 0.35; let cur = secs[0];
   secs.forEach(s => { if (s.getBoundingClientRect().top <= line) cur = s; });
@@ -2161,7 +2162,7 @@ function gateRefresh(){ renderLanding(); if (W.view === 'wizard') { wizRender();
 /* ---- session ---- */
 async function loadProfile(){ if (!sb || !session || !session.user) return; try { const { data } = await sb.from('profiles').select('full_name, study_year, semester, role').eq('id', session.user.id).maybeSingle(); profile = data || { full_name: (session.user.user_metadata || {}).full_name || session.user.email }; } catch(e) { profile = { full_name: session.user.email }; } }
 function onSession(){
-  const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) window.scrollTo({top:0});
+  const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) { window.scrollTo({top:0}); setTimeout(() => updateNav(false), 50); }
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
   if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); }); logVisit(); } else { setUnit('home'); sideNotice(); } }
   else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); if (built) { $('#gate').classList.add('built'); $('#gateLogo').classList.add('show'); } }
