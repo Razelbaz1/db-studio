@@ -86,8 +86,11 @@ const STORY = (() => {
   function rawP(){ const r = root.getBoundingClientRect(); const d = r.height - viewH(); return d > 0 ? clamp(-(r.top - viewTop()) / d) : 1; }
   function pinned(){ const r = root.getBoundingClientRect(), t = viewTop(); return r.top - t <= 2 && r.bottom - t >= viewH() - 2; }
   function scrollToBeat(p){ const r = root.getBoundingClientRect(); const top = curTop() + (r.top - viewTop()) + p * (r.height - viewH()); expectTop = Math.round(top); (scroller || window).scrollTo({ top, behavior: 'instant' }); }
-  function goto(i){ i = Math.max(0, Math.min(beats.length - 1, i)); const to = beats[i].p; const cap = tw ? capBox.textContent : capOf(beats[bi]); bi = i; scrollToBeat(to);
-    if (Math.abs(to - pShown) < 1e-4) { tw = null; return; } tw = { from: pShown, to, t0: performance.now(), dur: Math.max(900, Math.min(2800, Math.abs(to - pShown) * 11000)), k: 0, cap }; }
+  function goto(i){ i = Math.max(0, Math.min(beats.length - 1, i)); const prev = bi, to = beats[i].p; const cap = tw ? capBox.textContent : capOf(beats[bi]); bi = i; scrollToBeat(to);
+    if (Math.abs(to - pShown) < 1e-4) { tw = null; return; } const segB = beats[Math.max(prev, i)], custom = Math.abs(i - prev) === 1 && segB.dur;
+    tw = { from: pShown, to, t0: performance.now(), dur: custom || Math.max(900, Math.min(2800, Math.abs(to - pShown) * 11000)), even: !!custom, k: 0, cap }; }
+  /* a long step (beat.dur) runs at an even pace with soft ends, so the middle does not rush */
+  const even = (t, a = .12) => { const v = 1 / (1 - a); return t < a ? v * t * t / (2 * a) : t > 1 - a ? 1 - v * (1 - t) * (1 - t) / (2 * a) : v * (a / 2 + t - a); };
   const nearest = p => beats.reduce((b, x, i) => Math.abs(x.p - p) < Math.abs(beats[b].p - p) ? i : b, 0);
   const atEdge = dir => !tw && ((dir < 0 && bi === 0) || (dir > 0 && bi === beats.length - 1));
   /* a gesture = wheel events closer than 200 ms (event timestamps, not handler time); only a gesture that starts while the stage is pinned may step,
@@ -104,7 +107,7 @@ const STORY = (() => {
   function applyCam(cam){ world.setAttribute('transform', 'translate(' + cam.tx.toFixed(1) + ' ' + cam.ty.toFixed(1) + ') scale(' + cam.k.toFixed(3) + ')'); }
   function tick(p, dt, time){ const cam = camera(p); applyCam(cam); chapters.forEach(ch => { try { ch.update(p, ctx, dt, time); } catch (e) { console.error('story chapter ' + ch.id, e); } }); updateCaptions(p); if (endBox) { const o = seg(p, .9, .97); endBox.style.opacity = o; endBox.style.pointerEvents = o > .5 ? 'auto' : 'none'; } drawParticles(dt, cam, p); }
   function frame(t){ if (!running) return; const dt = Math.min(.05, lastT ? (t - lastT) / 1000 : .016); lastT = t;
-    if (tw) { tw.k = clamp((performance.now() - tw.t0) / tw.dur); pShown = tw.from + (tw.to - tw.from) * ease.inOut(tw.k); if (tw.k >= 1) { pShown = tw.to; tw = null; } }
+    if (tw) { tw.k = clamp((performance.now() - tw.t0) / tw.dur); pShown = tw.from + (tw.to - tw.from) * (tw.even ? even(tw.k) : ease.inOut(tw.k)); if (tw.k >= 1) { pShown = tw.to; tw = null; } }
     tick(progress(), dt, t / 1000); requestAnimationFrame(frame); }
   function start(){ if (running || isStatic) return; running = true; lastT = 0; requestAnimationFrame(frame); }
   function stop(){ running = false; if (c2d && canvas) { c2d.setTransform(1, 0, 0, 1, 0, 0); c2d.clearRect(0, 0, canvas.width, canvas.height); } }

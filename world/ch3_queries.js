@@ -24,7 +24,7 @@
   ];
   /* per-query timeline (local progress): rise R0..R1, type T0..T1, travel V0..V1 (arrival = V1) */
   const TL = QUERIES.map((q, i) => { const R0 = .04 + i * .05, V0 = .33 + i * .04; return { R0, R1: R0 + .10, T0: R0 + .04, T1: R0 + .16, V0, V1: V0 + .13 }; });   // all three finish typing (.30) and hover together before any leaves (.33)
-  const OPS = [[.46, .53], [.50, .58], [.54, .69]];         // σ, ⋈, γ windows on the panel
+  const OPS = [[.46, .52], [.53, .59], [.60, .68]];   // σ, ⋈, γ one after another, no overlap         // σ, ⋈, γ windows on the panel
 
   const S = {};
   let seed = 17;
@@ -154,7 +154,7 @@
           Q.tv = tv; Q.rise = E.outBack(seg(l, T.R0, T.R1)); Q.typed = typed;
           Q.alive = vis > 0 && tv < 1 && fade > 0;
           setO(Q.g, Q.alive ? vis * fade : 0);
-          const cv = E.outCubic(seg(l, .62 + i * .03, .68 + i * .03));
+          const cv = E.outCubic(seg(l, .74 + i * .03, .80 + i * .03));
           setO(Q.beam, Q.alive ? vis * (1 - seg(tv, 0, .12)) * (.9 - .55 * seg(l, T.R1, T.R1 + .06)) * fade : cv * .45 * fade);   // tethers the box, later the result card, to its monitor
           setA(Q.clipRect, 'width', f1(Q.tl * typed + (typed > 0 ? 2 : 0)));
           setA(Q.cursor, 'x', f1(Q.tx + Q.tl * typed));
@@ -171,7 +171,7 @@
             if (tb > 0 && tb < 1 && fade > 0) { const u = 1 - smooth(tb), pt = Q.tk.at(u); setA(b, 'transform', 'translate(' + f1(pt[0]) + ' ' + f1(pt[1]) + ') rotate(' + f1(Q.tk.ang(u)) + ')'); setO(b, fade * seg(tb, 0, .08) * (1 - seg(tb, .9, 1))); }
             else setO(b, 0);
             setA(Q.cbars[j], 'width', f1(CARD.bars[j] * E.outBack(seg(l, w1 - .01, w1 + .035)))); });
-          Q.flow.set(seg(l, .64 + i * .02, .72 + i * .02) * (1 - seg(l, .93, 1)) * fade * .9);
+          Q.flow.set(seg(l, .72 + i * .02, .80 + i * .02) * (1 - seg(l, .93, 1)) * fade * .9);
         });
 
         /* --- panel: appearance --- */
@@ -188,7 +188,7 @@
         const scanY = lerp(TB.y0 - 4, TB.y0 + RIDES_W.length * TB.pitch, sc);
         setA(P.scan, 'y1', f1(scanY)); setA(P.scan, 'y2', f1(scanY)); P.scanOn = sc > 0 && sc < 1;
         /* --- γ: matched rows fly into the result rows; ORDER BY re-sorts --- */
-        const gp = seg(l, OPS[2][0], OPS[2][0] + .10), ob = E.inOut(seg(l, .645, .69));
+        const gp = seg(l, OPS[2][0], OPS[2][0] + .10), ob = E.inOut(seg(l, .69, .74));
         const arrived = [0, 0, 0];
         P.rides.forEach((r, j) => {
           const e = E.outCubic(seg(l, .21 + j * .011, .26 + j * .011)); setA(r.bar, 'width', f1(r.w * e));
