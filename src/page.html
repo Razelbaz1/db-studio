@@ -669,6 +669,51 @@ section.sec[hidden]{display:none!important}
 .lsn-ref[open] summary::before{content:"−"}
 .lsn-ref[open] summary{border-bottom:1px solid var(--line)}
 .lsn-ref .tables{padding:1rem}
+/* ==ME== personal area: look, details, password; page background per user */
+:root[data-theme="dark"]{color-scheme:dark}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark}}
+html[data-bg="sand"]{--ground:#F6F0E4}html[data-bg="sky"]{--ground:#ECF3FB}html[data-bg="lilac"]{--ground:#F1EEFA}html[data-bg="rose"]{--ground:#FBEFF1}html[data-bg="stone"]{--ground:#F0F0EE}
+@media (prefers-color-scheme: dark){html[data-bg="sand"]:not([data-theme="light"]){--ground:#17140E}html[data-bg="sky"]:not([data-theme="light"]){--ground:#0D1420}html[data-bg="lilac"]:not([data-theme="light"]){--ground:#14121D}html[data-bg="rose"]:not([data-theme="light"]){--ground:#1C1114}html[data-bg="stone"]:not([data-theme="light"]){--ground:#141414}}
+html[data-bg="sand"][data-theme="dark"]{--ground:#17140E}html[data-bg="sky"][data-theme="dark"]{--ground:#0D1420}html[data-bg="lilac"][data-theme="dark"]{--ground:#14121D}html[data-bg="rose"][data-theme="dark"]{--ground:#1C1114}html[data-bg="stone"][data-theme="dark"]{--ground:#141414}
+.me-open{display:inline-flex;align-items:center;gap:.5rem;background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;border-radius:999px;min-height:32px}
+.me-open:hover #userName,.me-open:focus-visible #userName{text-decoration:underline;text-underline-offset:3px}
+.me-page{position:fixed;inset:0;z-index:85;background:var(--ground);color:var(--ink);overflow:auto}
+.me-wrap{max-width:780px;margin:0 auto;padding:1.4rem 1.2rem 5rem;display:flex;flex-direction:column;gap:1rem}
+.me-head{display:flex;align-items:center;gap:1rem;padding:.4rem 0 .6rem}
+.me-head .who{display:flex;flex-direction:column;min-width:0;flex:1}
+.me-head .who b{font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1.2;overflow-wrap:anywhere}
+.me-head .who span{color:var(--muted);font-size:.9rem;overflow-wrap:anywhere}
+.me-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.75rem}
+.me-card h3{font-size:1.05rem}
+.me-lbl{font-size:.85rem;color:var(--muted);font-weight:500;margin-top:.2rem}
+.me-av{--av-bg:var(--accent);--av-fg:var(--on-accent);width:2.6rem;height:2.6rem;border-radius:50%;background:var(--av-bg);color:var(--av-fg);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.15rem;line-height:1;flex:none;user-select:none;transition:transform .2s,box-shadow .2s}
+.me-av.gl{font-family:"Cambria Math","STIX Two Math","Segoe UI Symbol","Noto Sans Math",serif;font-weight:700;font-size:1.45rem}
+.me-av.big{width:4.2rem;height:4.2rem;font-size:1.8rem}
+.me-av.big.gl{font-size:2.3rem}
+.me-avgrid{display:grid;grid-template-columns:repeat(6,max-content);gap:.35rem}
+@media (max-width:360px){.me-avgrid{grid-template-columns:repeat(4,max-content)}}
+.me-swgrid{display:flex;flex-wrap:wrap;gap:.35rem}
+.me-avgrid button,.me-swgrid button{background:none;border:0;padding:.25rem;border-radius:50%;cursor:pointer;display:grid;place-items:center;min-width:44px;min-height:44px}
+.me-sw{width:2.2rem;height:2.2rem;border-radius:50%;border:1px solid var(--line);display:block;transition:transform .2s,box-shadow .2s}
+.me-avgrid button:hover .me-av,.me-swgrid button:hover .me-sw{transform:scale(1.08)}
+.me-avgrid button[aria-checked="true"] .me-av,.me-swgrid button[aria-checked="true"] .me-sw{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--accent)}
+.me-seg{display:inline-flex;flex-wrap:wrap;gap:.25rem;background:var(--surface2);padding:.25rem;border-radius:999px;align-self:flex-start;max-width:100%}
+.me-seg button{border:0;background:transparent;border-radius:999px;padding:.35rem .9rem;min-height:40px;font:inherit;font-size:.92rem;color:var(--ink);cursor:pointer}
+.me-seg button[aria-checked="true"]{background:var(--accent);color:var(--on-accent)}
+.me-hint{font-size:.85rem;color:var(--muted);margin:0}
+.me-hint:empty{display:none}
+.me-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.3rem .9rem}
+.me-f{display:flex;flex-direction:column;gap:.3rem;font-size:.86rem;color:var(--muted)}
+.me-f input,.me-f textarea,.me-f select{font:inherit;font-size:1rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.55rem .7rem;min-height:44px;width:100%}
+.me-f textarea{min-height:4.6rem;resize:vertical}
+.me-f input:focus,.me-f textarea:focus,.me-f select:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.me-f input[readonly]{background:var(--surface2);color:var(--muted)}
+.me-f input.bad{border-color:var(--bad)}
+.me-f .err{color:var(--bad);font-size:.8rem;min-height:1.1em}
+.gate .fp-link{align-self:flex-end;margin-top:-.5rem;padding:.2rem .4rem;min-height:36px;font-size:.88rem}
+/* LTR fields (email, password) in the RTL form: the check mark goes to the side the text does not start from */
+.gate[dir="rtl"] .f input[dir="ltr"]{padding-right:2.3rem}
+.gate[dir="rtl"] .f input[dir="ltr"]~.tick{inset-inline-end:auto;inset-inline-start:.85rem}
 </style>
 
 <script>/* diagnostics: on-screen error banner only when the URL contains ?debug (otherwise errors go to the console as usual) */
@@ -732,11 +777,11 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
   <button type="button" class="now" id="nowPill" hidden aria-haspopup="menu"><span class="dots" id="nowDots"></span><b id="nowTitle"></b><span class="pos" id="nowPos"></span></button>
   <div class="tools">
     <button class="btn small ghost" id="btnToc" aria-pressed="false">☰ <span id="btnTocT"></span></button>
-    <button class="btn small ghost" id="btnPresent" data-i18n="present"></button>
-    <button class="btn small ghost" id="btnTeacher" title="Teacher" data-only="campus">🔑 <span data-i18n="teacher"></span></button>
+    <button class="btn small ghost" id="btnPresent" data-i18n="present" hidden></button>
+    <button class="btn small ghost" id="btnTeacher" title="Teacher" data-only="campus" hidden>🔑 <span data-i18n="teacher"></span></button>
     <button class="btn small ghost" id="btnDash" hidden>📋 <span data-i18n="d_btn"></span></button>
     <button class="btn small primary" id="btnLang">EN</button>
-    <span class="userchip" id="userChip" hidden><i id="userInit"></i><span id="userName"></span><button class="btn small ghost" id="btnOut" style="min-height:30px;padding:.1rem .5rem" data-i18n="g_signout"></button></span>
+    <span class="userchip" id="userChip" hidden><button type="button" class="me-open" id="btnMe"><i id="userInit"></i><span id="userName"></span></button><button class="btn small ghost" id="btnOut" style="min-height:30px;padding:.1rem .5rem" data-i18n="g_signout"></button></span>
   </div>
 </header>
 <div class="progress"><i id="prog"></i></div>
@@ -1071,10 +1116,6 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
       </div>
       <details class="lsn-ref"><summary data-i18n="ref_ride"></summary><div class="tables" data-ref="ride"></div></details>
       <div class="exlist" id="exList"></div>
-      <div data-only="campus">
-        <div style="height:1rem"></div>
-        <div class="note" data-i18n="ex_note"></div>
-      </div>
     </section>
 
     <section class="sec" id="r-exercises2" data-title="nav_r_ex2">
@@ -1344,6 +1385,7 @@ d_c_name:"שם", d_c_email:"אימייל", d_c_year:"שנה", d_c_sem:"סמסט�
 sync_on:"ההתקדמות נשמרת לחשבון",
 
 ex3_h2:"תרגילים 7 עד 12", ex3_lede:"Self-Join ושאלות ברמת מבחן. אותם כללים: רמז אחרי ניסיון, הפתרון אחרי שניים.", nav_r_ex2:"תרגילים 7 עד 12", ref_ride:"הסכמה: RideOn", ref_toy:"הטבלאות: Students, Courses, Enroll", ls_intro1:"למה בסיס נתונים", ls_intro2:"סכמה ושאילתה ראשונה", ls_intro3:"בדיקה עצמית", ls_ra1:"σ ו-π: בחירה והטלה", ls_ra2:"∪ ∩ − ו-×: קבוצות ומכפלה", ls_ra3:"⋈ ו-ρ: צירוף וכינוי", ls_ra4:"÷ חילוק, וקריאת ביטוי", ls_ra5:"RideOn והמחשבון", ls_ra6:"תרגילים 1 עד 6", ls_ra7:"תרגילים 7 עד 12", ls_ra8:"בדיקה עצמית", ls_min:"{m} דק'", ls_upnext:"הבא בתור", ls_next:"לשיעור הבא", ls_next_ch:"לפרק הבא", ls_home:"חזרה לבית", ls_more:"זה הכל לעכשיו. השיעורים הבאים בדרך.", ls_count:"{n} שיעורים · {m} דק'", ch_n:"פרק {n}", ls_later:"בהמשך הקורס",
+me_title:"אזור אישי", me_look:"מראה", me_avatar:"אווטאר", me_av_ini:"האות הראשונה של השם", me_bg:"צבע רקע", bg_mint:"מנטה", bg_sand:"חול", bg_sky:"שמיים", bg_lilac:"לילך", bg_rose:"ורד", bg_stone:"אבן", me_mode:"תצוגה", me_m_system:"כמו במכשיר", me_m_light:"יום", me_m_dark:"לילה", me_m_auto:"לפי שעה", me_m_auto_s:"יום בין 07:00 ל-19:00, לילה בשאר השעות.", me_details:"פרטים אישיים", me_save:"שמירה", me_saved:"נשמר.", me_pass:"סיסמה", me_pass_why:"נשלח קוד לאימייל שלכם, ואיתו קובעים סיסמה חדשה.", me_send:"שלחו לי קוד", me_sent:"שלחנו קוד ל-{e}.", me_resend:"שליחה מחדש", me_code:"הקוד מהאימייל", me_new:"סיסמה חדשה", me_new2:"שוב, לאימות", me_update:"עדכון סיסמה", me_pw_ok:"הסיסמה עודכנה.", me_demo:"במצב הדגמה אין סיסמה לשנות.", e_code:"הקוד לא נכון או שפג תוקפו.", e_same:"זו הסיסמה הנוכחית. בחרו אחרת.", e_match:"הסיסמאות לא זהות.", e_wait:"אפשר לבקש שוב בעוד דקה.", g_forgot:"שכחתי סיסמה", fp_h:"איפוס סיסמה", fp_why:"נשלח קישור לאיפוס לאימייל שנרשמתם איתו.", fp_go:"שליחת קישור", fp_ok:"אם האימייל רשום אצלנו, שלחנו אליו קישור לאיפוס.", fp_back:"חזרה לכניסה", fp_demo:"במצב הדגמה לא נשלחים מיילים.", fp_expired:"הקישור כבר לא בתוקף. אפשר לבקש קישור חדש.", np_h:"סיסמה חדשה", lq_reset:"קישור איפוס יוצא לאימייל",
 },
 en: {
 brand_sub:"Databases and SQL, from zero", tab_home:"Home", tab_intro:"Intro", tab_ra:"Relational Algebra",
@@ -1584,6 +1626,7 @@ d_c_name:"Name", d_c_email:"Email", d_c_year:"Year", d_c_sem:"Semester", d_c_joi
 sync_on:"Progress is saved to your account",
 
 ex3_h2:"Exercises 7 to 12", ex3_lede:"Self-joins and exam-level questions. Same rules: a hint after one attempt, the solution after two.", nav_r_ex2:"Exercises 7–12", ref_ride:"Schema: RideOn", ref_toy:"Tables: Students, Courses, Enroll", ls_intro1:"Why a database", ls_intro2:"Schema and a first query", ls_intro3:"Self-check", ls_ra1:"σ and π: select and project", ls_ra2:"∪ ∩ − and ×: sets and product", ls_ra3:"⋈ and ρ: join and rename", ls_ra4:"÷ division, and reading an expression", ls_ra5:"RideOn and the calculator", ls_ra6:"Exercises 1–6", ls_ra7:"Exercises 7–12", ls_ra8:"Self-check", ls_min:"{m} min", ls_upnext:"Up next", ls_next:"Next lesson", ls_next_ch:"Next chapter", ls_home:"Back home", ls_more:"That's all for now. More lessons are on the way.", ls_count:"{n} lessons · {m} min", ch_n:"Chapter {n}", ls_later:"Later in the course",
+me_title:"My area", me_look:"Look", me_avatar:"Avatar", me_av_ini:"Your initial", me_bg:"Background", bg_mint:"Mint", bg_sand:"Sand", bg_sky:"Sky", bg_lilac:"Lilac", bg_rose:"Rose", bg_stone:"Stone", me_mode:"Display", me_m_system:"Like my device", me_m_light:"Day", me_m_dark:"Night", me_m_auto:"By the hour", me_m_auto_s:"Day from 07:00 to 19:00, night the rest of the time.", me_details:"Personal details", me_save:"Save", me_saved:"Saved.", me_pass:"Password", me_pass_why:"We'll email you a code; use it to set a new password.", me_send:"Send me a code", me_sent:"We sent a code to {e}.", me_resend:"Send again", me_code:"Code from the email", me_new:"New password", me_new2:"Again, to confirm", me_update:"Update password", me_pw_ok:"Password updated.", me_demo:"Demo mode has no password to change.", e_code:"The code is wrong or has expired.", e_same:"That's your current password. Pick another.", e_match:"The passwords don't match.", e_wait:"You can ask again in a minute.", g_forgot:"Forgot password", fp_h:"Reset password", fp_why:"We'll send a reset link to the email you signed up with.", fp_go:"Send link", fp_ok:"If this email is registered, we sent it a reset link.", fp_back:"Back to sign in", fp_demo:"Demo mode sends no emails.", fp_expired:"That link is no longer valid. You can request a new one.", np_h:"New password", lq_reset:"a reset link goes out to the email",
 }};
 
 /* =========================== CAMPUS LAYER =========================== */
@@ -1607,7 +1650,6 @@ st2_s:"תרגול · מפגשים 4 עד 9",
 st3_s:"תרגול · מפגשים 10 עד 11",
 st4_s:"בהרצאה עם ד\"ר אלקובי בלבד",
 hello_next:"המפגש הקרוב: {d} · {t}",
-ex_note:"<b>איך זה עובד בכיתה:</b> הרמזים נפתחים אחרי ניסיון ראשון, הפתרון המלא אחרי שני ניסיונות או עם קוד המרצה. מי שהחמיץ את המפגש יכול לחזור לכאן אחרי שהקוד שוחרר.",
 tl1:"סביבת עבודה: התקנה, טעינת סכמות, שאילתות ראשונות",
 tl2:"אלגברה רלציונית 1: קבוצות, σ, π, ∪, ∩, −, ×",
 tl3:"אלגברה רלציונית 2: צירופים, ÷, ρ, גשר ל-SQL",
@@ -1632,7 +1674,6 @@ ra_eyebrow:"מפגשים 2 עד 3 · אלגברה רלציונית",
 de_p2:"המתמטיקה שמאחורי הבחירות האלה היא <strong>אלגברה רלציונית</strong>: שפה של פעולות על טבלאות (בחירה, הטלה, צירוף). היא הנושא של שני המפגשים הבאים, ובלעדיה SQL נשאר אוסף של דפוסים לשינון.",
 mp_lede:"ארבעה שלבים בקורס, וכל אחד עונה על שאלה אחת. שלושה מהם מתורגלים כאן, ו-SQL הוא לב התרגול: שישה מפגשים של העמקה וחומר שחלקו לא מופיע בהרצאה. ERD נלמד בהרצאה בלבד.",
 cov_dialect:"<b>על הדיאלקט:</b> ההרצאה מלמדת את העקרונות, לפעמים בסינטקס MySQL, וזה נכון לכל דבר עקרוני. בכל מה שנוגע לסינטקס בפועל, במטלות ובמבחן, מיישרים לפי התרגול: SQL Server.",
-ex_locked:"הפתרון המלא נפתח אחרי שני ניסיונות, או עם קוד מרצה.",
 l_sub:"ברוכים הבאים ל-RowdyQL, סביבת התרגול של הקורס תכנון בסיסי נתונים. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת המבחן וברמת ראיונות עבודה.",
 l_how:[["פותחים חשבון","ותוך דקה אתם בפנים."],["לומדים לפי המפגשים","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","פותרים תרגילים ובחינות."]],
 l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."]],
@@ -1661,7 +1702,6 @@ st2_s:"Tutorial · sessions 4 to 9",
 st3_s:"Tutorial · sessions 10 to 11",
 st4_s:"Lecture with Dr. Alkobi only",
 hello_next:"Next session: {d} · {t}",
-ex_note:"<b>How this works in class:</b> hints unlock after the first attempt, the full solution after two attempts or with the teacher code. Whoever missed the session can come back here once the code is released.",
 tl1:"Working environment: install, load schemas, first queries",
 tl2:"Relational algebra 1: sets, σ, π, ∪, ∩, −, ×",
 tl3:"Relational algebra 2: joins, ÷, ρ, bridge to SQL",
@@ -1686,7 +1726,6 @@ ra_eyebrow:"Sessions 2 to 3 · Relational algebra",
 de_p2:"The mathematics behind those decisions is <strong>relational algebra</strong>: a language of operations on tables (select, project, join). It is the subject of the next two sessions, and without it SQL stays a pile of patterns to memorize.",
 mp_lede:"Four stages in the course, each answering one question. Three of them are practiced here, and SQL is the heart of the tutorial: six sessions of depth, part of it material the lecture does not cover. ERD is taught in the lecture only.",
 cov_dialect:"<b>On dialect:</b> the lecture teaches the principles, sometimes in MySQL syntax, and that holds for everything conceptual. For actual syntax, in homework and in the exam, we align with the tutorial: SQL Server.",
-ex_locked:"The full solution unlocks after two attempts, or with the teacher code.",
 l_sub:"Welcome to RowdyQL, the practice environment of the Database Design course. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
 l_how:[["Create an account","and you're in within a minute."],["Learn by session","at your own pace, as much as you like."],["Practice until it sticks","Solve exercises and tests."]],
 l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."]],
@@ -3585,7 +3624,7 @@ function applyLang(){
   $('#btnTeacher').innerHTML = '🔑 ' + (teacher ? t('teacher_on') : t('teacher'));
   renderHero(); renderAnomaly(); renderSchema(); renderLists(); renderQuiz('quizIntro','intro');
   renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderRaV2(); renderQuiz('quizRa','ra'); renderHome();
-  renderRail(); renderSpine(); renderLessonBar(); renderLessonEnd(); applyRail(); store('dbs_lang', lang); updateNav(false);
+  renderRail(); renderSpine(); renderLessonBar(); renderLessonEnd(); applyRail(); applyPrefs(); $('#btnMe').title = t('me_title'); store('dbs_lang', lang); updateNav(false);
   gateRefresh();
 }
 $('#btnLang').addEventListener('click', () => { lang = lang === 'he' ? 'en' : 'he'; applyLang(); });
@@ -3625,19 +3664,21 @@ function startIn(){ W.mode = 'in'; gateView('wizard'); }
 ['#lnkIn','#ctaIn'].forEach(sel => $(sel).addEventListener('click', startIn));
 $('#lnkLang').addEventListener('click', () => $('#btnLang').click());
 
-function chaptersHtml(){ if (W.mode === 'in') return ''; return CH.map((k, i) => '<span class="' + (i < W.ch ? 'done' : i === W.ch ? 'cur' : '') + '">' + (i+1) + ' · ' + t(k) + '</span>').join(''); }
+function chaptersHtml(){ if (W.mode !== 'up') return ''; return CH.map((k, i) => '<span class="' + (i < W.ch ? 'done' : i === W.ch ? 'cur' : '') + '">' + (i+1) + ' · ' + t(k) + '</span>').join(''); }
 function field(id, key, type, extra){ return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '" ' + (extra || '') + '><span class="tick">✓</span><span class="err" id="e_' + id + '"></span></label>'; }
 function seg(name, opts){ return '<div class="seg">' + opts.map(o => '<label><input type="radio" name="' + name + '" value="' + o[0] + '"' + (W.d[name] === o[0] ? ' checked' : '') + '><span>' + t(o[1]) + '</span></label>').join('') + '</div>'; }
 function recordStrip(cur){ const cols = ONB.map(k => [k, ONB_COL[k]]); return '<div class="record"><div class="rh">' + cols.map(c => '<span>' + c[1] + '</span>').join('') + '</div><div class="rr">' + cols.map(c => { const v = W.d[c[0]]; const cls = c[0] === cur ? 'cur' : (v ? '' : 'empty'); const txt = v ? esc(String(v).slice(0,16)) + (String(v).length > 16 ? '…' : '') : (W.skipped[c[0]] ? 'NULL' : '…'); return '<span class="' + cls + '">' + txt + '</span>'; }).join('') + '</div></div>'; }
 function navBtns(nextKey, showBack, skippable){ return '<div class="skiprow">' + (showBack ? '<button type="button" class="gbtn ghost" id="wBack">' + t('w_back') + '</button>' : '<span></span>') + '<div class="controls">' + (skippable ? '<button type="button" class="gbtn ghost skip" id="wSkip">' + t('w_skip') + '</button>' : '') + '<button type="submit" class="go" id="gGo">' + t(nextKey) + '</button></div></div>'; }
 function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FirstName', d.first], ['LastName', d.last], ['BirthDate', d.birth], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ...(ONB.includes('year') ? [['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL']] : []), ['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL'], ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map((r, i) => '<div class="rr2" style="--i:' + i + '"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
 
-function wizProgress(){ const total = 7 + ONB.length; let done = 0; if (W.mode === 'in') done = 0; else if (W.ch === 0) done = W.sub; else if (W.ch === 1) done = 5; else if (W.ch === 2) done = 6 + W.sub; else done = 6 + ONB.length; const bar = $('#wprogI'); if (bar) bar.style.width = (W.mode === 'in' ? 0 : Math.round(100 * (done + 1) / total)) + '%'; $('.wprog').hidden = W.mode === 'in'; }
+function wizProgress(){ const total = 7 + ONB.length; let done = 0; if (W.mode !== 'up') done = 0; else if (W.ch === 0) done = W.sub; else if (W.ch === 1) done = 5; else if (W.ch === 2) done = 6 + W.sub; else done = 6 + ONB.length; const bar = $('#wprogI'); if (bar) bar.style.width = (W.mode !== 'up' ? 0 : Math.round(100 * (done + 1) / total)) + '%'; $('.wprog').hidden = W.mode !== 'up'; }
 function wizRender(){
   const host = $('#stepHost'); clearTimeout(skipTimer); $('#chapters').innerHTML = chaptersHtml(); wizProgress(); $('#gMsg').hidden = true; $('#gOut').textContent = ''; $('#gTable').innerHTML = '';
   let h = '', focus = null, captcha = false;
   if (W.mode === 'in') {
-    h = '<div class="wstep"><h2>' + t('g_signin') + '</h2><p class="why">' + t('in_why') + '</p>' + field('gEmail','g_email','email','autocomplete="email" dir="ltr" value="' + esc(W.d.email) + '"') + field('gPass','g_pass_in','password','autocomplete="current-password" dir="ltr"') + navBtns('g_go_in', false, false) + '<button type="button" class="gbtn ghost" id="wToUp">' + t('in_to_up') + '</button></div>'; focus = 'gEmail'; captcha = true;
+    h = '<div class="wstep"><h2>' + t('g_signin') + '</h2><p class="why">' + t('in_why') + '</p>' + field('gEmail','g_email','email','autocomplete="email" dir="ltr" value="' + esc(W.d.email) + '"') + field('gPass','g_pass_in','password','autocomplete="current-password" dir="ltr"') + '<button type="button" class="gbtn ghost fp-link" id="wForgot">' + t('g_forgot') + '</button>' + navBtns('g_go_in', false, false) + '<button type="button" class="gbtn ghost" id="wToUp">' + t('in_to_up') + '</button></div>'; focus = 'gEmail'; captcha = true;
+  } else if (W.mode === 'reset') {
+    h = '<div class="wstep"><h2>' + t('fp_h') + '</h2><p class="why">' + t('fp_why') + '</p>' + field('gEmail','g_email','email','autocomplete="email" dir="ltr" value="' + esc(W.d.email) + '"') + navBtns('fp_go', false, false) + '<button type="button" class="gbtn ghost" id="wToIn2">' + t('fp_back') + '</button></div>'; focus = 'gEmail'; captcha = true;
   } else if (W.ch === 0) {
     const subs = [['gEmail','g_email','email','autocomplete="email" dir="ltr"','d_email_why','email'], ['gPass','g_pass','password','autocomplete="new-password" dir="ltr"','d_pass_why','pass'], ['gFirst','g_first','text','autocomplete="given-name" maxlength="30"','d_first_why','first'], ['gLast','g_last','text','autocomplete="family-name" maxlength="30"','d_last_why','last'], ['gBirth','g_birth','date','dir="ltr" min="1926-01-01" max="2012-12-31"','d_birth_why','birth']];
     const sd = subs[W.sub];
@@ -3659,6 +3700,8 @@ function wizRender(){
   const skip = $('#wSkip'); if (skip) { skipTimer = setTimeout(() => skip.classList.add('on'), 7000); skip.addEventListener('click', persuade); }
   const toIn = $('#wToIn'); if (toIn) toIn.addEventListener('click', startIn);
   const toUp = $('#wToUp'); if (toUp) toUp.addEventListener('click', startUp);
+  const fg = $('#wForgot'); if (fg) fg.addEventListener('click', () => { readInputs(); W.mode = 'reset'; wizRender(); });
+  const toIn2 = $('#wToIn2'); if (toIn2) toIn2.addEventListener('click', startIn);
   host.querySelectorAll('input,textarea').forEach(inp => { inp.addEventListener('input', () => { inp.dataset.touched = '1'; typeFoot(); readInputs(); validateStep(false); renderLive(); }); inp.addEventListener('change', () => { readInputs(); validateStep(false); renderLive(); }); });
   readInputs(); validateStep(false); renderLive();
   if (focus && $('#' + focus)) setTimeout(() => $('#' + focus).focus(), 60);
@@ -3669,6 +3712,7 @@ function validateStep(showAll){
   let ok = true; const d = W.d;
   const okEmail = validEmail(d.email) && (!DBS_CONFIG.requireEmailDomain || d.email.toLowerCase().endsWith('@' + DBS_CONFIG.requireEmailDomain.toLowerCase()));
   if (W.mode === 'in') { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail && d.pass.length >= 1; }
+  else if (W.mode === 'reset') { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail; }
   else if (W.ch === 0) { if (W.sub === 0) { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail; } else if (W.sub === 1) { const okP = d.pass.length >= 8; setErr('gPass', okP, 'e_pass', showAll); ok = okP; } else if (W.sub === 2) { const okF = NAME_RE.test(d.first); setErr('gFirst', okF, 'e_name', showAll); ok = okF; } else if (W.sub === 3) { const okL = NAME_RE.test(d.last); setErr('gLast', okL, 'e_name', showAll); ok = okL; } else { const okB = validBirth(d.birth); setErr('gBirth', okB, 'e_birth', showAll); ok = okB; } }
   else if (W.ch === 1) ok = d.consent;
   else if (W.ch === 2) { const k = ONB[W.sub]; ok = (k === 'year' || k === 'sem') ? !!d[k] : true; }
@@ -3680,9 +3724,10 @@ function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) {
 function persuade(){ const d = el('div','persuade'); d.innerHTML = '<div><h3>' + t('p_h') + '</h3><p>' + t('p_body') + '</p><div class="controls"><button type="button" class="gbtn primary" id="pStay">' + t('p_stay') + '</button><button type="button" class="gbtn ghost" id="pSkip">' + t('p_skip') + '</button></div></div>'; document.body.appendChild(d); $('#pStay').addEventListener('click', () => { d.remove(); const f = $('#gText'); if (f) f.focus(); }); $('#pSkip').addEventListener('click', () => { d.remove(); const k = ONB[W.sub]; W.skipped[k] = true; W.d[k] = ''; wizAdvance(); }); }
 
 function renderLive(){
-  const pre = $('#gLive'); if (!pre) return; const d = W.d; const nowKey = W.mode === 'in' ? 'email' : W.ch === 0 ? ['email','pass','first','last','birth'][W.sub] : W.ch === 1 ? 'consent' : W.ch === 2 ? ONB[W.sub] : ''; const NOW = (k, html) => k === nowKey ? "<span class='now'>" + html + "</span>" : html;
+  const pre = $('#gLive'); if (!pre) return; const d = W.d; const nowKey = W.mode !== 'up' ? 'email' : W.ch === 0 ? ['email','pass','first','last','birth'][W.sub] : W.ch === 1 ? 'consent' : W.ch === 2 ? ONB[W.sub] : ''; const NOW = (k, html) => k === nowKey ? "<span class='now'>" + html + "</span>" : html;
   const S = x => x ? "<span class='s'>'" + esc(x) + "'</span>" : "<span class='c'>NULL</span>"; const N = x => x ? "<span class='n'>" + esc(x) + "</span>" : "<span class='c'>NULL</span>"; const cur = "<span class='cur'></span>"; const clip = x => x.length > 28 ? x.slice(0,28) + '…' : x;
   if (W.mode === 'in') { pre.innerHTML = "<span class='c'>-- " + t('lq_pw') + "</span>\n<span class='k'>SELECT</span> *\n<span class='k'>FROM</span> Students\n<span class='k'>WHERE</span> Email = " + S(d.email) + "\n  <span class='k'>AND</span> PasswordHash = " + S(d.pass ? '•'.repeat(Math.min(d.pass.length, 12)) : '') + ";" + cur; return; }
+  if (W.mode === 'reset') { pre.innerHTML = "<span class='c'>-- " + t('lq_reset') + "</span>\n<span class='k'>UPDATE</span> Students\n<span class='k'>SET</span> ResetToken = <span class='n'>NEWID()</span>\n<span class='k'>WHERE</span> Email = " + S(d.email) + ";" + cur; return; }
   const cols = ['Email'], vals = [NOW('email', S(d.email))];
   if (W.ch > 0 || W.sub >= 1) { cols.push('PasswordHash'); vals.push(NOW('pass', d.pass ? "<span class='s'>'bcrypt(" + '•'.repeat(Math.min(d.pass.length, 10)) + ")'</span>" : "<span class='c'>NULL</span>")); }
   if (W.ch > 0 || W.sub >= 2) { cols.push('FirstName'); vals.push(NOW('first', S(d.first))); }
@@ -3707,6 +3752,10 @@ $('#gateForm').addEventListener('submit', async e => {
   W.busy = true; validateStep(false); gateMsg(t('g_working'), false); gateOut('<span class="c">…</span>');
   const d = W.d;
   try {
+    if (W.mode === 'reset') {
+      if (sb) { const { error } = await sb.auth.resetPasswordForEmail(d.email, { redirectTo: location.origin + location.pathname + '?reset=1', captchaToken: captchaToken || undefined }); if (error) throw error; }
+      gateOut('<b>(1 row affected)</b>'); gateMsg(t(sb ? 'fp_ok' : 'fp_demo'), false); resetCaptcha(); W.busy = false; validateStep(false); return;
+    }
     if (W.mode === 'up') {
       const meta = { full_name: fullName(), first_name: d.first, last_name: d.last, birth_date: d.birth, study_year: d.year ? +d.year : null, semester: d.sem || null, goals: d.goals || null, interests: d.interests || null, consent_at: new Date().toISOString(), consent_version: DBS_CONFIG.termsVersion };
       if (sb) { const { data, error } = await sb.auth.signUp({ email: d.email, password: d.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: fullName()}), false); if (data.session) { session = data.session; await loadProfile(); setTimeout(onSession, 900); } }
@@ -3718,7 +3767,7 @@ $('#gateForm').addEventListener('submit', async e => {
   } catch (err) {
     resetCaptcha(); W.busy = false; validateStep(false);
     const m = String((err && err.message) || err).toLowerCase(); gateOut('<span style="color:#F28B7E">ERROR</span>');
-    gateMsg(t(m.includes('captcha') ? 'g_err_captcha' : m.includes('already') || m.includes('registered') ? 'g_err_exists' : m.includes('invalid') || m.includes('bad') || m.includes('credentials') ? 'g_err_in' : 'g_err_gen'), true);
+    gateMsg(t(m.includes('security purposes') || m.includes('rate limit') ? 'e_wait' : m.includes('captcha') ? 'g_err_captcha' : m.includes('already') || m.includes('registered') ? 'g_err_exists' : m.includes('invalid') || m.includes('bad') || m.includes('credentials') ? 'g_err_in' : 'g_err_gen'), true);
   }
 });
 
@@ -3764,12 +3813,14 @@ function gateRefresh(){ renderLanding(); if (W.view === 'wizard') { wizRender();
 
 /* ---- session ---- */
 async function loadProfile(){ if (!sb || !session || !session.user) return; try { const { data } = await sb.from('profiles').select('full_name, study_year, semester, role').eq('id', session.user.id).maybeSingle(); profile = data || { full_name: (session.user.user_metadata || {}).full_name || session.user.email }; } catch(e) { profile = { full_name: session.user.email }; }
-  try { const { data: st } = await sb.from('profiles').select('status,status_note').eq('id', session.user.id).maybeSingle(); if (st) Object.assign(profile, st); } catch(e) {} }
+  try { const { data: st } = await sb.from('profiles').select('status,status_note').eq('id', session.user.id).maybeSingle(); if (st) Object.assign(profile, st); } catch(e) {}
+  /* personal details: optional columns (onboarding and names migrations), each read on its own so a missing one does not hide the rest */
+  for (const cols of ['first_name,last_name,birth_date', 'goals,interests']) { try { const { data: dt, error } = await sb.from('profiles').select(cols).eq('id', session.user.id).maybeSingle(); if (dt && !error) Object.assign(profile, dt); } catch(e) {} } }
 function onSession(){
   if (session && profile && profile.status === 'blocked') { if (sb) { try { sb.auth.signOut(); } catch(e) {} } session = null; profile = null; location.hash = '#signin'; setTimeout(() => gateMsg(t('g_blocked'), true), 400); }
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) { window.scrollTo({top:0}); setTimeout(() => updateNav(false), 50); }
-  const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher); $('#btnPresent').hidden = EDITION === 'public' && !isTeacher;
-  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); savedPopup(); }); logVisit(); } else { setUnit('home'); sideNotice(); savedPopup(); } }
+  const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher); $('#btnPresent').hidden = !isTeacher; $('#btnTeacher').hidden = !isTeacher; /* lecturer tools are for staff only, in every edition */
+  if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; applyPrefs(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); savedPopup(); }); logVisit(); } else { setUnit('home'); sideNotice(); savedPopup(); } }
   else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); if (built) { $('#gate').classList.add('built'); $('#gateLogo').classList.add('show'); } }
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; try { localStorage.removeItem('dbs_profile'); } catch(e){} onSession(); });
@@ -3864,6 +3915,132 @@ async function openDash(){
   try { await loadDash(); renderDash(); } catch(e) { $('#dashBody').textContent = t('g_err_gen') + ' (' + ((e && e.message) || e) + ')'; }
 }
 
+/* =========================== PERSONAL AREA: look, details, password =========================== */
+/* look (avatar, page background, day/night) lives in dbs_prefs, which syncs with the account like the progress does */
+const AVATARS = [['ini',''],['sigma','σ'],['pi','π'],['join','⋈'],['div','÷'],['union','∪'],['inter','∩'],['rho','ρ'],['gamma','γ'],['times','×'],['empty','∅'],['sum','∑']];
+const AV_COL = [['#0E5566','#FFFFFF'],['#5CC3D9','#0B1A1E'],['#E8A33A','#2A1A00'],['#2F7D4F','#FFFFFF'],['#C2503D','#FFFFFF'],['#6B5BD6','#FFFFFF']];
+const GROUNDS = [['mint','#F4F7F6','#0E1514'],['sand','#F6F0E4','#17140E'],['sky','#ECF3FB','#0D1420'],['lilac','#F1EEFA','#14121D'],['rose','#FBEFF1','#1C1114'],['stone','#F0F0EE','#141414']];
+const THEMES = ['system','light','dark','auto'];
+const prefs = () => load('dbs_prefs', {}) || {};
+function setPref(k, v){ const p = prefs(); p[k] = v; store('dbs_prefs', p); applyPrefs(); }
+function avatarOf(id){ let i = AVATARS.findIndex(a => a[0] === id); if (i < 0) i = 0; const c = AV_COL[i % AV_COL.length]; const ini = ((firstName() || (profile && profile.email) || '?').trim()[0] || '?').toUpperCase(); return { id: AVATARS[i][0], glyph: i === 0 ? ini : AVATARS[i][1], bg: c[0], fg: c[1] }; }
+function avatarEl(id, cls){ const a = avatarOf(id), s = el('span', 'me-av' + (a.id === 'ini' ? '' : ' gl') + (cls ? ' ' + cls : '')); s.textContent = a.glyph; s.style.setProperty('--av-bg', a.bg); s.style.setProperty('--av-fg', a.fg); return s; }
+/* day/night: 'system' follows the device, 'auto' is day from 07:00 to 19:00 */
+function applyTheme(){ const m = prefs().theme, r = document.documentElement; if (m === 'light' || m === 'dark') r.dataset.theme = m; else if (m === 'auto') { const h = new Date().getHours(); r.dataset.theme = h >= 7 && h < 19 ? 'light' : 'dark'; } else delete r.dataset.theme; }
+function applyPrefs(){
+  applyTheme(); const p = prefs(), r = document.documentElement;
+  if (p.bg && p.bg !== 'mint' && GROUNDS.some(g => g[0] === p.bg)) r.dataset.bg = p.bg; else delete r.dataset.bg;
+  const ui = $('#userInit'); if (ui) { const a = avatarOf(p.avatar); ui.textContent = a.glyph; ui.style.background = a.bg; ui.style.color = a.fg; }
+}
+setInterval(() => { if (prefs().theme === 'auto') applyTheme(); }, 5 * 60 * 1000);
+
+function meField(id, key, type, val, extra){ return '<label class="me-f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '" value="' + esc(val || '') + '" ' + (extra || '') + '><span class="err" id="e_' + id + '"></span></label>'; }
+function meSelect(id, key, opts, val){ return '<label class="me-f"><span>' + t(key) + '</span><select id="' + id + '"><option value="">—</option>' + opts.map(o => '<option value="' + o[0] + '"' + (String(val == null ? '' : val) === o[0] ? ' selected' : '') + '>' + t(o[1]) + '</option>').join('') + '</select><span class="err"></span></label>'; }
+function meArea(id, key, val){ return '<label class="me-f"><span>' + t(key) + '</span><textarea id="' + id + '" maxlength="400">' + esc(val || '') + '</textarea></label>'; }
+function meErr(id, key){ const e = $('#e_' + id); if (e) e.textContent = key ? t(key) : ''; const i = $('#' + id); if (i) i.classList.toggle('bad', !!key); }
+const meEmail = () => (session && session.user && session.user.email) || (profile && profile.email) || '';
+function openMe(){
+  let pg = $('#mePage'); if (!pg) { pg = el('div', 'me-page'); pg.id = 'mePage'; pg.setAttribute('role', 'dialog'); pg.setAttribute('aria-modal', 'true'); document.body.appendChild(pg); }
+  pg.setAttribute('aria-label', t('me_title')); document.documentElement.classList.add('gated'); renderMe(); pg.scrollTop = 0; setTimeout(() => { const c = $('#meClose'); if (c) c.focus(); }, 50);
+}
+function closeMe(){ const pg = $('#mePage'); if (!pg) return; pg.remove(); if (session) document.documentElement.classList.remove('gated'); updateNav(false); const b = $('#btnMe'); if (b) b.focus(); }
+$('#btnMe').addEventListener('click', openMe);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#mePage')) closeMe(); });
+function renderMe(){
+  const pg = $('#mePage'); if (!pg) return; const pr = profile || {}, campus = EDITION === 'campus', live = !!(sb && session && session.user);
+  const full = (pr.full_name || '').trim(), first = pr.first_name || full.split(' ')[0] || '', last = pr.last_name || full.split(' ').slice(1).join(' ');
+  pg.innerHTML = '<div class="me-wrap">'
+    + '<div class="me-head"><span id="meAvBig"></span><div class="who"><b id="meName">' + esc(full) + '</b><span>' + esc(meEmail()) + '</span></div><button type="button" class="btn small primary" id="meClose">' + t('d_close') + '</button></div>'
+    + '<section class="me-card"><h3>' + t('me_look') + '</h3>'
+    + '<div class="me-lbl" id="meAvL">' + t('me_avatar') + '</div><div class="me-avgrid" role="radiogroup" aria-labelledby="meAvL" id="meAv"></div>'
+    + '<div class="me-lbl" id="meBgL">' + t('me_bg') + '</div><div class="me-swgrid" role="radiogroup" aria-labelledby="meBgL" id="meBg"></div>'
+    + '<div class="me-lbl" id="meModeL">' + t('me_mode') + '</div><div class="me-seg" role="radiogroup" aria-labelledby="meModeL" id="meMode"></div><p class="me-hint" id="meModeHint"></p></section>'
+    + '<section class="me-card"><h3>' + t('me_details') + '</h3><div class="me-row">'
+    + meField('meFirst', 'g_first', 'text', first, 'maxlength="30" autocomplete="given-name"') + meField('meLast', 'g_last', 'text', last, 'maxlength="30" autocomplete="family-name"')
+    + meField('meBirth', 'g_birth', 'date', pr.birth_date || '', 'dir="ltr" min="1926-01-01" max="2012-12-31"') + meField('meEmail', 'g_email', 'email', meEmail(), 'dir="ltr" readonly')
+    + (campus ? meSelect('meYear', 'd_c_year', [['1','g_y1'],['2','g_y2'],['3','g_y3'],['4','g_y4']], pr.study_year) + meSelect('meSem', 'd_c_sem', [['A','g_semA'],['B','g_semB']], pr.semester) : '')
+    + '</div>' + meArea('meGoals', 'd_c_goals', pr.goals) + meArea('meInt', 'd_c_int', pr.interests)
+    + '<div class="controls"><button type="button" class="btn primary" id="meSave">' + t('me_save') + '</button><span class="me-hint" id="meMsg" role="status"></span></div></section>'
+    + '<section class="me-card"><h3>' + t('me_pass') + '</h3>' + (live ? '<p class="me-hint">' + t('me_pass_why') + '</p><div id="mePw"></div>' : '<p class="me-hint">' + t('me_demo') + '</p>') + '</section>'
+    + '</div>';
+  $('#meClose').addEventListener('click', closeMe); $('#meSave').addEventListener('click', meSave);
+  renderMeLook(); if (live) mePwStart();
+}
+function renderMeLook(focusGroup){
+  const p = prefs(), big = $('#meAvBig'); if (!big) return; big.innerHTML = ''; big.appendChild(avatarEl(p.avatar, 'big'));
+  const radio = (host, on, label, child, pick) => { const b = el('button'); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(on)); b.setAttribute('aria-label', label); b.title = label; if (typeof child === 'string') b.textContent = child; else b.appendChild(child); b.addEventListener('click', () => { pick(); renderMeLook(host.id); }); host.appendChild(b); };
+  const av = $('#meAv'); av.innerHTML = ''; const cur = avatarOf(p.avatar).id;
+  AVATARS.forEach(a => radio(av, a[0] === cur, a[0] === 'ini' ? t('me_av_ini') : a[1], avatarEl(a[0]), () => setPref('avatar', a[0])));
+  const bg = $('#meBg'); bg.innerHTML = ''; const curBg = GROUNDS.some(g => g[0] === p.bg) ? p.bg : 'mint';
+  GROUNDS.forEach(g => { const s = el('span', 'me-sw'); s.style.background = 'linear-gradient(135deg,' + g[1] + ' 50%,' + g[2] + ' 50%)'; radio(bg, g[0] === curBg, t('bg_' + g[0]), s, () => setPref('bg', g[0])); });
+  const md = $('#meMode'); md.innerHTML = ''; const curM = THEMES.includes(p.theme) ? p.theme : 'system';
+  THEMES.forEach(m => radio(md, m === curM, t('me_m_' + m), t('me_m_' + m), () => setPref('theme', m)));
+  $('#meModeHint').textContent = curM === 'auto' ? t('me_m_auto_s') : '';
+  if (focusGroup) { const f = $('#' + focusGroup + ' [aria-checked="true"]'); if (f) f.focus(); }
+}
+async function meSave(){
+  const v = id => ($('#' + id) || {}).value || '';
+  const first = normName(v('meFirst')), last = normName(v('meLast')), birth = v('meBirth');
+  const okF = NAME_RE.test(first), okL = NAME_RE.test(last), okB = !birth || validBirth(birth);
+  meErr('meFirst', okF ? '' : 'e_name'); meErr('meLast', okL ? '' : 'e_name'); meErr('meBirth', okB ? '' : 'e_birth');
+  if (!okF || !okL || !okB) return;
+  const full = first + ' ' + last, pay = { full_name: full, first_name: first, last_name: last, birth_date: birth || null, goals: v('meGoals').trim() || null, interests: v('meInt').trim() || null };
+  if (EDITION === 'campus') { pay.study_year = v('meYear') ? +v('meYear') : null; pay.semester = v('meSem') || null; }
+  const btn = $('#meSave'), msg = $('#meMsg'); btn.disabled = true; msg.textContent = t('g_working');
+  try {
+    if (sb && session && session.user) {
+      const upd = body => sb.from('profiles').update(body).eq('id', session.user.id).select('id');
+      let { data, error } = await upd(pay);
+      /* until the names migration runs, only the original columns exist: save what the table has */
+      if (error && /column|schema/i.test(error.message || '')) { const base = { full_name: full }; if ('study_year' in pay) { base.study_year = pay.study_year; base.semester = pay.semester; } ({ data, error } = await upd(base)); }
+      if (error || !data || !data.length) throw error || new Error('not saved');
+    }
+    profile = Object.assign(profile || {}, pay); if (!sb) store('dbs_profile', profile);
+    $('#userName').textContent = full; $('#meName').textContent = full; applyPrefs(); renderMeLook(); if (unit === 'home') renderHome();
+    msg.textContent = t('me_saved');
+  } catch (e) { msg.textContent = t('g_err_gen'); }
+  btn.disabled = false;
+}
+/* password: a code goes to the email (Supabase reauthentication), then code + new password */
+function authErr(e){ const m = String(((e && e.code) || '') + ' ' + ((e && e.message) || e)).toLowerCase();
+  return m.includes('same_password') || m.includes('different from the old') ? 'e_same' : m.includes('security purposes') || m.includes('rate limit') || m.includes('over_email_send_rate') ? 'e_wait' : m.includes('weak') || m.includes('at least') ? 'e_pass' : m.includes('captcha') ? 'g_err_captcha' : m.includes('nonce') || m.includes('reauth') || m.includes('otp') || m.includes('expired') || m.includes('invalid') ? 'e_code' : 'g_err_gen'; }
+function mePwStart(msgKey){ const box = $('#mePw'); if (!box) return; box.innerHTML = '<div class="controls"><button type="button" class="btn" id="meSend">' + t('me_send') + '</button><span class="me-hint" id="mePwMsg" role="status">' + (msgKey ? t(msgKey) : '') + '</span></div>'; $('#meSend').addEventListener('click', meSendCode); }
+async function meSendCode(){
+  const b = $('#meSend') || $('#meResend'), msg = $('#mePwMsg'); if (b) b.disabled = true; if (msg) msg.textContent = t('g_working');
+  try { const { error } = await sb.auth.reauthenticate(); if (error) throw error; mePwStep2(); }
+  catch (e) { const m = $('#mePwMsg'); if (m) m.textContent = t(authErr(e)); if (b) b.disabled = false; }
+}
+function mePwStep2(){
+  const box = $('#mePw'); if (!box) return;
+  box.innerHTML = '<p class="me-hint">' + t('me_sent', { e: esc(meEmail()) }) + '</p><div class="me-row">' + meField('meCode', 'me_code', 'text', '', 'inputmode="numeric" autocomplete="one-time-code" dir="ltr" maxlength="10"') + meField('meP1', 'me_new', 'password', '', 'autocomplete="new-password" dir="ltr"') + meField('meP2', 'me_new2', 'password', '', 'autocomplete="new-password" dir="ltr"') + '</div>'
+    + '<div class="controls"><button type="button" class="btn primary" id="meUpd">' + t('me_update') + '</button><button type="button" class="btn ghost" id="meResend">' + t('me_resend') + '</button><span class="me-hint" id="mePwMsg" role="status"></span></div>';
+  $('#meUpd').addEventListener('click', meUpdatePw); $('#meResend').addEventListener('click', meSendCode); setTimeout(() => { const c = $('#meCode'); if (c) c.focus(); }, 60);
+}
+async function meUpdatePw(){
+  const code = $('#meCode').value.trim(), p1 = $('#meP1').value, p2 = $('#meP2').value, okC = /^\d{6,10}$/.test(code);
+  meErr('meCode', okC ? '' : 'e_code'); meErr('meP1', p1.length >= 8 ? '' : 'e_pass'); meErr('meP2', p1 === p2 ? '' : 'e_match');
+  if (!okC || p1.length < 8 || p1 !== p2) return;
+  const b = $('#meUpd'), msg = $('#mePwMsg'); b.disabled = true; msg.textContent = t('g_working');
+  try { const { error } = await sb.auth.updateUser({ password: p1, nonce: code }); if (error) throw error; mePwStart('me_pw_ok'); }
+  catch (e) { msg.textContent = t(authErr(e)); b.disabled = false; }
+}
+/* forgotten password: the email link lands here with a recovery session (?reset=1 and #...type=recovery); ask for the new password */
+const RECOVERY = (() => { try { return /(^|[#&])type=recovery(&|$)/.test(location.hash) || new URLSearchParams(location.search).get('reset') === '1'; } catch(e) { return false; } })();
+const RECOVERY_ERR = RECOVERY && /(^|[#&])error(_code)?=/.test(location.hash);
+let npShown = false;
+function newPasswordPrompt(){
+  if (npShown || !sb || !session || !session.user) return; npShown = true;
+  const m = el('div', 'modal np'); m.innerHTML = '<div style="max-width:440px"><h3>' + t('np_h') + '</h3>' + meField('npP1', 'me_new', 'password', '', 'autocomplete="new-password" dir="ltr"') + meField('npP2', 'me_new2', 'password', '', 'autocomplete="new-password" dir="ltr"') + '<div class="controls"><button type="button" class="btn primary" id="npGo">' + t('me_save') + '</button><button type="button" class="btn ghost" id="npLater">' + t('d_close') + '</button><span class="me-hint" id="npMsg" role="status"></span></div></div>';
+  document.body.appendChild(m); setTimeout(() => { const f = $('#npP1'); if (f) f.focus(); }, 80);
+  $('#npLater').addEventListener('click', () => m.remove());
+  $('#npGo').addEventListener('click', async () => {
+    const p1 = $('#npP1').value, p2 = $('#npP2').value; meErr('npP1', p1.length >= 8 ? '' : 'e_pass'); meErr('npP2', p1 === p2 ? '' : 'e_match'); if (p1.length < 8 || p1 !== p2) return;
+    const b = $('#npGo'); b.disabled = true; $('#npMsg').textContent = t('g_working');
+    try { const { error } = await sb.auth.updateUser({ password: p1 }); if (error) throw error; m.remove(); toast(t('me_pw_ok')); } catch (e) { $('#npMsg').textContent = t(authErr(e)); b.disabled = false; }
+  });
+}
+function cleanAuthUrl(){ try { history.replaceState(null, '', location.pathname); } catch(e){} }
+
 /* ---- captcha (Cloudflare Turnstile), live site only ---- */
 function ensureCaptcha(){ if (!window.turnstile || captchaWidget !== null || !$('#gCaptcha')) return; try { captchaWidget = window.turnstile.render('#gCaptcha', { sitekey: DBS_CONFIG.turnstileSiteKey, theme: 'dark', language: lang === 'he' ? 'he' : 'en', callback: tok => { captchaToken = tok; validateStep(false); }, 'expired-callback': () => { captchaToken = ''; validateStep(false); }, 'error-callback': () => { captchaToken = ''; validateStep(false); } }); } catch(e) {} }
 function resetCaptcha(){ captchaToken = ''; if (captchaWidget !== null && window.turnstile) { try { window.turnstile.reset(captchaWidget); } catch(e){} } validateStep(false); }
@@ -3872,11 +4049,12 @@ async function initAuth(){
   startGateBg(); startDemo();
   const LIVE_HOSTS = ['rowdyql.com','www.rowdyql.com','razelbaz1.github.io','localhost','127.0.0.1'];
   if (DBS_CONFIG.supabaseUrl && DBS_CONFIG.supabaseAnonKey && LIVE_HOSTS.includes(location.hostname)) {
-    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await withTimeout(sb.auth.getSession(), 8000); session = data.session; await withTimeout(loadProfile(), 8000); sb.auth.onAuthStateChange(async (_ev, s2) => { if (!!s2 !== !!session) { session = s2; await loadProfile(); onSession(); } }); }
+    try { await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'); sb = window.supabase.createClient(DBS_CONFIG.supabaseUrl, DBS_CONFIG.supabaseAnonKey); const { data } = await withTimeout(sb.auth.getSession(), 8000); session = data.session; await withTimeout(loadProfile(), 8000); sb.auth.onAuthStateChange(async (ev, s2) => { if (!!s2 !== !!session) { session = s2; await loadProfile(); onSession(); } if (ev === 'PASSWORD_RECOVERY') setTimeout(newPasswordPrompt, 700); }); }
     catch (e) { sb = null; $('#gDemo').hidden = false; }
     if (sb && DBS_CONFIG.turnstileSiteKey) { try { await loadScript('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'); if (!$('#gCaptcha').hidden) ensureCaptcha(); } catch(e) {} }
   } else { $('#gDemo').hidden = false; const p = load('dbs_profile', null); if (p) { profile = p; session = { demo: true }; } }
   onSession(); playIntro();
+  if (RECOVERY) { if (session && session.user && !RECOVERY_ERR) setTimeout(newPasswordPrompt, 700); else if (RECOVERY_ERR && !session) { W.mode = 'reset'; gateView('wizard'); gateMsg(t('fp_expired'), true); } cleanAuthUrl(); }
 }
 /* ---- intro: the logo draws itself, then travels to its place in the header while the page builds around it ---- */
 let built = false;
@@ -3916,7 +4094,7 @@ function startGateBg(){
 }
 
 /* =========================== INIT =========================== */
-if (EDITION === 'public') $('#btnPresent').hidden = true; /* shown again for staff once signed in */
+applyPrefs();
 applyLang();
 setUnit(load('dbs_unit','home'));
 initAuth();
