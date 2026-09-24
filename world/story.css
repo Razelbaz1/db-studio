@@ -1,0 +1,30 @@
+/* ==STORY-CSS== scroll story section */
+.story{position:relative;background:#0B1416;color:#E6EEEC;direction:ltr}
+.story-track{height:520vh;position:relative}
+.story-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,#10201F 0%,#0B1416 70%)}
+.story-stage svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden}
+.story-stage canvas.story-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.story-cap{position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:max-content;max-width:min(54ch,88vw);text-align:center;font-family:"Heebo","Segoe UI",Arial,sans-serif;font-size:clamp(1.05rem,1.6vw,1.45rem);font-weight:500;line-height:1.45;color:#E6EEEC;text-wrap:balance;opacity:0;text-shadow:0 2px 16px rgba(0,0,0,.8);pointer-events:none;direction:rtl}
+html[lang="en"] .story-cap{direction:ltr}
+.story-end{position:absolute;left:50%;bottom:7vh;transform:translateX(-50%);opacity:0;pointer-events:none;display:flex;justify-content:center}
+.story-caps{display:none}
+.story.static .story-track{height:auto}
+.story.static .story-stage{position:relative;height:auto;aspect-ratio:16/9}
+.story.static .story-caps{display:flex;flex-direction:column;gap:.6rem;max-width:60ch;margin:1rem auto 2rem;padding:0 1rem;text-align:center;direction:rtl;font-family:"Heebo","Segoe UI",Arial,sans-serif}
+.story.static .story-caps p{margin:0;color:#93A5A1}
+html[lang="en"] .story.static .story-caps{direction:ltr}
+/* shared shape classes (all story svg classes start with s-) */
+.story svg .s-lf{fill:#0F1B1D;stroke:#2B3A37;stroke-width:1}
+.story svg .s-rt{fill:#152524;stroke:#2B3A37;stroke-width:1}
+.story svg .s-tp{fill:rgba(92,195,217,.12);stroke:#2B3A37;stroke-width:1}
+.story svg .s-lit .s-lf{fill:#1C6F7F}.story svg .s-lit .s-rt{fill:#2F97AD}.story svg .s-lit .s-tp{fill:url(#stCyan)}
+.story svg .s-cable{fill:none;stroke:#5CC3D9;stroke-width:2;stroke-linecap:round;opacity:.85}
+.story svg .s-cable.dim{stroke:#1C6F7F;opacity:.6}
+.story svg .s-mono{font-family:"IBM Plex Mono",Consolas,"Courier New",monospace}
+.story svg .s-text{font-family:"Heebo","Segoe UI",Arial,sans-serif}
+.story svg .s-rubik{font-family:"Rubik","Heebo",Arial,sans-serif;font-weight:800}
+.story svg .s-muted{fill:#93A5A1}
+.story svg .s-cyan{fill:#5CC3D9}
+.story svg .s-amber{fill:#E8A33A}
+.story svg .s-ink{fill:#E6EEEC}
+/* ==/STORY-CSS== */

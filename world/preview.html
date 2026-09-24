@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Story preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Heebo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="story.css">
+<style>
+body{margin:0;background:#0B1416;color:#E6EEEC;font-family:Heebo,sans-serif}
+.spacer{height:60vh;display:grid;place-items:center;color:#93A5A1;font-family:"IBM Plex Mono",monospace}
+.gbtn{font:inherit;border:1px solid #2B3A37;background:#172120;color:#E6EEEC;border-radius:10px;padding:.7rem 1.2rem;font-size:1rem;cursor:pointer;min-height:44px}
+.gbtn.primary{background:#5CC3D9;color:#0B1A1E;border-color:#5CC3D9;font-weight:700}
+#hud{position:fixed;top:8px;left:8px;z-index:9;font:12px "IBM Plex Mono",monospace;color:#93A5A1;background:rgba(0,0,0,.5);padding:4px 8px;border-radius:6px;direction:ltr}
+</style>
+</head>
+<body>
+<div id="hud">p=0.000</div>
+<div class="spacer">scroll ↓ (add ?p=0.42 to freeze at a progress, ?lang=en for English, ?static=1 for the no-motion layout)</div>
+<section class="story" id="story" aria-label="Story">
+  <div class="story-track">
+    <div class="story-stage">
+      <div class="story-end"><button type="button" class="gbtn primary" id="ctaUp3">פותחים חשבון, דקה אחת</button></div>
+    </div>
+  </div>
+</section>
+<div class="spacer">after the story</div>
+<script>
+const q = new URLSearchParams(location.search); var lang = q.get('lang') === 'en' ? 'en' : 'he';
+if (lang === 'en') { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; document.getElementById('ctaUp3').textContent = 'Create an account, one minute'; }
+</script>
+<script src="engine.js"></script>
+<script src="ch1_farm.js"></script>
+<script src="ch2_links.js"></script>
+<script src="ch3_queries.js"></script>
+<script src="ambient.js"></script>
+<script src="ch5_client.js"></script>
+<script>
+const force = q.get('p') != null ? parseFloat(q.get('p')) : null;
+STORY.init(document.getElementById('story'), { force, static: q.get('static') === '1' });
+const hud = document.getElementById('hud');
+setInterval(() => { const r = document.querySelector('.story-track').getBoundingClientRect(); const p = force != null ? force : Math.max(0, Math.min(1, -r.top / (r.height - innerHeight))); hud.textContent = 'p=' + p.toFixed(3) + '  nodes=' + document.querySelectorAll('.story svg *').length; }, 250);
+if (force != null) window.scrollTo(0, document.querySelector('.story-track').offsetTop + 10);
+</script>
+</body>
+</html>
