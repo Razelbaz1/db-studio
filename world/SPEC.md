@@ -78,3 +78,13 @@ except for the time-based bits. Never create/destroy nodes in `update`.
 ## Report
 When done, report: file path, one-paragraph summary of what is drawn and how it moves, SVG node count of your chapter, the shots you checked,
 and concerns (engine bugs, budget, anything a reviewer should look at).
+
+## Beat scroll (added 2026-09-24)
+The landing story no longer scrubs with raw scroll. `STORY.init(section, { beats: [{ p, cap }] })` defines rest points; while the stage is pinned,
+one scroll gesture (wheel events < 200 ms apart by event timestamp, a swipe > 40 px, or ArrowDown/PageDown/Space) tweens `p` to the next rest
+point (ease inOut, 0.9–2.8 s by distance) and snaps the page to that point's scroll position. A gesture that starts before the stage is pinned
+never steps (it only snaps to the nearest rest point). At the first/last rest point only a fresh gesture releases the page. Captions in beat mode
+belong to rest points (`cap` = chapter id or null) and crossfade: old out in the first 35% of the tween, new in over the last 45%.
+Pick rest points where the p-driven animation of the main chapter has finished (e.g. farm .21, links .366/.431, queries .505/.615, ambient .675,
+client .88, end 1). Tools: tools/beattest.js (behaviour on the built page), tools/beatentry.js (entry gesture).
+

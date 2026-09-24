@@ -6,6 +6,7 @@ const STORY = (() => {
   const LAYERS = ['bg', 'floor', 'farm', 'cables', 'pcs', 'queries', 'client', 'fx'];
   const chapters = [], flows = [];
   let root, stage, svg, defs, world, layers = {}, canvas, c2d, capBox, endBox, forced = null, isStatic = false, running = false, lastT = 0, dpr = 1, ctx, building = null;
+  let beats = null, bi = 0, pShown = 0, tw = null, scroller = null, expectTop = null, armed = true, lastWheelT = 0, lastAbs = 0, touchY = null, touchDir = 0;
 
   /* ---- math ---- */
   const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
@@ -69,14 +70,42 @@ const STORY = (() => {
 
   /* ---- captions ---- */
   const curLang = () => (typeof lang !== 'undefined' && lang === 'en') ? 'en' : 'he';
-  function updateCaptions(p){ let best = null; chapters.forEach(ch => (ch.captions || []).forEach(c => { if (p >= c.at[0] && p <= c.at[1]) best = c; })); if (!best) { capBox.style.opacity = 0; return; }
+  const capOf = b => { if (!b || !b.cap) return ''; const ch = chapters.find(c => c.id === b.cap); const c = ch && ch.captions && ch.captions[0]; return c ? (c[curLang()] || c.he) : ''; };
+  function beatCaptions(){ const to = capOf(beats[bi]); let txt = to, o = to ? 1 : 0;
+    if (tw) { const from = tw.cap, t = tw.k; if (from !== to) { if (t < .35) { txt = from; o = from ? 1 - t / .35 : 0; } else if (t < .55) { txt = ''; o = 0; } else { txt = to; o = to ? (t - .55) / .45 : 0; } } }
+    if (txt && capBox.textContent !== txt) capBox.textContent = txt; capBox.style.opacity = o; }
+  function updateCaptions(p){ if (beats) { beatCaptions(); return; } let best = null; chapters.forEach(ch => (ch.captions || []).forEach(c => { if (p >= c.at[0] && p <= c.at[1]) best = c; })); if (!best) { capBox.style.opacity = 0; return; }
     const txt = best[curLang()] || best.he; if (capBox.textContent !== txt) capBox.textContent = txt; capBox.style.opacity = Math.min(seg(p, best.at[0], best.at[0] + .035), 1 - seg(p, best.at[1] - .035, best.at[1])); }
 
   /* ---- progress + loop ---- */
-  function progress(){ if (forced != null) return forced; const r = root.getBoundingClientRect(); const d = r.height - innerHeight; return d > 0 ? clamp(-r.top / d) : 1; }
+  /* ---- beat scroll: while the stage is pinned, a scroll gesture moves one rest point; the page is released at both ends ---- */
+  function findScroller(n){ for (let x = n.parentElement; x && x !== document.body; x = x.parentElement) { const oy = getComputedStyle(x).overflowY; if ((oy === 'auto' || oy === 'scroll') && x.scrollHeight > x.clientHeight) return x; } return null; }
+  const viewH = () => scroller ? scroller.clientHeight : innerHeight;
+  const viewTop = () => scroller ? scroller.getBoundingClientRect().top : 0;
+  const curTop = () => scroller ? scroller.scrollTop : scrollY;
+  function rawP(){ const r = root.getBoundingClientRect(); const d = r.height - viewH(); return d > 0 ? clamp(-(r.top - viewTop()) / d) : 1; }
+  function pinned(){ const r = root.getBoundingClientRect(), t = viewTop(); return r.top - t <= 2 && r.bottom - t >= viewH() - 2; }
+  function scrollToBeat(p){ const r = root.getBoundingClientRect(); const top = curTop() + (r.top - viewTop()) + p * (r.height - viewH()); expectTop = Math.round(top); (scroller || window).scrollTo({ top, behavior: 'instant' }); }
+  function goto(i){ i = Math.max(0, Math.min(beats.length - 1, i)); const to = beats[i].p; const cap = tw ? capBox.textContent : capOf(beats[bi]); bi = i; scrollToBeat(to);
+    if (Math.abs(to - pShown) < 1e-4) { tw = null; return; } tw = { from: pShown, to, t0: performance.now(), dur: Math.max(900, Math.min(2800, Math.abs(to - pShown) * 11000)), k: 0, cap }; }
+  const nearest = p => beats.reduce((b, x, i) => Math.abs(x.p - p) < Math.abs(beats[b].p - p) ? i : b, 0);
+  const atEdge = dir => !tw && ((dir < 0 && bi === 0) || (dir > 0 && bi === beats.length - 1));
+  /* a gesture = wheel events closer than 200 ms (event timestamps, not handler time); only a gesture that starts while the stage is pinned may step,
+     and at an end only a fresh gesture releases the page, so the momentum of the gesture that got there does not carry the page away */
+  function onWheel(ev){ const now = ev.timeStamp || performance.now(), abs = Math.abs(ev.deltaY), gap = now - lastWheelT; lastWheelT = now; const pin = running && pinned(); if (gap > 200 || abs > lastAbs * 1.8 + 4) armed = pin; lastAbs = abs;
+    if (!pin || !ev.deltaY) return; const dir = Math.sign(ev.deltaY); if (atEdge(dir)) { if (!armed) ev.preventDefault(); return; } ev.preventDefault(); if (armed) { armed = false; goto(bi + dir); } }
+  function onKey(ev){ if (!running || !pinned() || ev.ctrlKey || ev.metaKey || ev.altKey) return; const tg = ev.target; if (tg && (/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(tg.tagName) || tg.isContentEditable)) return;
+    const k = ev.key; const dir = (k === 'ArrowDown' || k === 'PageDown' || (k === ' ' && !ev.shiftKey)) ? 1 : (k === 'ArrowUp' || k === 'PageUp' || (k === ' ' && ev.shiftKey)) ? -1 : 0; if (!dir || atEdge(dir)) return; ev.preventDefault(); goto(bi + dir); }
+  function onTouchStart(ev){ touchY = pinned() ? ev.touches[0].clientY : null; touchDir = 0; }
+  function onTouchMove(ev){ if (touchY == null) return; const dy = touchY - ev.touches[0].clientY; if (Math.abs(dy) < 6) return; touchDir = Math.sign(dy); if (atEdge(touchDir)) { touchY = null; return; } ev.preventDefault(); }
+  function onTouchEnd(ev){ if (touchY == null) return; const dy = touchY - (ev.changedTouches[0] || {}).clientY; touchY = null; if (Math.abs(dy) > 40) goto(bi + Math.sign(dy)); }
+  function onScroll(){ if (tw || !pinned()) return; const top = curTop(); if (expectTop != null && Math.abs(top - expectTop) < 3) return; armed = false; goto(nearest(rawP())); }
+  function progress(){ if (forced != null) return forced; if (beats) return pShown; const r = root.getBoundingClientRect(); const d = r.height - innerHeight; return d > 0 ? clamp(-r.top / d) : 1; }
   function applyCam(cam){ world.setAttribute('transform', 'translate(' + cam.tx.toFixed(1) + ' ' + cam.ty.toFixed(1) + ') scale(' + cam.k.toFixed(3) + ')'); }
   function tick(p, dt, time){ const cam = camera(p); applyCam(cam); chapters.forEach(ch => { try { ch.update(p, ctx, dt, time); } catch (e) { console.error('story chapter ' + ch.id, e); } }); updateCaptions(p); if (endBox) { const o = seg(p, .9, .97); endBox.style.opacity = o; endBox.style.pointerEvents = o > .5 ? 'auto' : 'none'; } drawParticles(dt, cam, p); }
-  function frame(t){ if (!running) return; const dt = Math.min(.05, lastT ? (t - lastT) / 1000 : .016); lastT = t; tick(progress(), dt, t / 1000); requestAnimationFrame(frame); }
+  function frame(t){ if (!running) return; const dt = Math.min(.05, lastT ? (t - lastT) / 1000 : .016); lastT = t;
+    if (tw) { tw.k = clamp((performance.now() - tw.t0) / tw.dur); pShown = tw.from + (tw.to - tw.from) * ease.inOut(tw.k); if (tw.k >= 1) { pShown = tw.to; tw = null; } }
+    tick(progress(), dt, t / 1000); requestAnimationFrame(frame); }
   function start(){ if (running || isStatic) return; running = true; lastT = 0; requestAnimationFrame(frame); }
   function stop(){ running = false; if (c2d && canvas) { c2d.setTransform(1, 0, 0, 1, 0, 0); c2d.clearRect(0, 0, canvas.width, canvas.height); } }
 
@@ -100,10 +129,13 @@ const STORY = (() => {
     chapters.forEach(ch => { ch.g = el('g', { class: 's-ch', 'data-ch': ch.id }, layers[ch.layer] || layers.fx); building = ch; try { ch.build(ctx, ch.g); } catch (e) { console.error('story build ' + ch.id, e); } building = null; });
     if (isStatic) { section.classList.add('static'); const list = document.createElement('div'); list.className = 'story-caps'; chapters.forEach(ch => (ch.captions || []).forEach(c => { const p = document.createElement('p'); p.textContent = c[curLang()] || c.he; list.appendChild(p); })); section.appendChild(list); tick(1, 0, 0); if (endBox) { endBox.style.opacity = 1; endBox.style.pointerEvents = 'auto'; } return; }
     if (forced != null) { for (let i = 0; i < 90; i++) tick(forced, .016, i * .016); start(); return; }
+    if (opts.beats && opts.beats.length > 1) { beats = opts.beats.slice().sort((a, b) => a.p - b.p); scroller = findScroller(root); bi = nearest(rawP()); pShown = beats[bi].p;
+      addEventListener('wheel', onWheel, { passive: false }); addEventListener('keydown', onKey); (scroller || window).addEventListener('scroll', onScroll, { passive: true });
+      stage.addEventListener('touchstart', onTouchStart, { passive: true }); addEventListener('touchmove', onTouchMove, { passive: false }); addEventListener('touchend', onTouchEnd, { passive: true }); }
     const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? start() : stop()), { rootMargin: '120px 0px' }); io.observe(root);
     tick(progress(), .016, 0);
   }
   function register(ch){ if (!ch || !ch.id || typeof ch.build !== 'function' || typeof ch.update !== 'function') throw new Error('bad chapter'); ch.layer = ch.layer || 'fx'; ch.range = ch.range || [0, 1]; chapters.push(ch); return ch; }
-  return { init, register, force: p => { forced = p == null ? null : clamp(p); }, chapters, W, H };
+  return { init, register, force: p => { forced = p == null ? null : clamp(p); }, chapters, W, H, state: () => ({ bi, pShown, tweening: !!tw, beats: beats && beats.length }) };
 })();
 /* ==/STORY-ENGINE== */

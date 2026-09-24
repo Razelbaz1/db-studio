@@ -36,9 +36,9 @@ if (lang === 'en') { document.documentElement.lang = 'en'; document.documentElem
 <script src="ch5_client.js"></script>
 <script>
 const force = q.get('p') != null ? parseFloat(q.get('p')) : null;
-STORY.init(document.getElementById('story'), { force, static: q.get('static') === '1' });
+STORY.init(document.getElementById('story'), { force, static: q.get('static') === '1', beats: [{ p: 0, cap: 'farm' }, { p: .21, cap: 'farm' }, { p: .366, cap: 'links' }, { p: .431, cap: 'links' }, { p: .505, cap: 'queries' }, { p: .615, cap: 'queries' }, { p: .675, cap: 'ambient' }, { p: .88, cap: 'client' }, { p: 1, cap: null }] });
 const hud = document.getElementById('hud');
-setInterval(() => { const r = document.querySelector('.story-track').getBoundingClientRect(); const p = force != null ? force : Math.max(0, Math.min(1, -r.top / (r.height - innerHeight))); hud.textContent = 'p=' + p.toFixed(3) + '  nodes=' + document.querySelectorAll('.story svg *').length; }, 250);
+setInterval(() => { const r = document.querySelector('.story-track').getBoundingClientRect(); const st = STORY.state(); const p = force != null ? force : st.pShown; hud.textContent = 'p=' + p.toFixed(3) + '  nodes=' + document.querySelectorAll('.story svg *').length; }, 250);
 if (force != null) window.scrollTo(0, document.querySelector('.story-track').offsetTop + 10);
 </script>
 </body>
