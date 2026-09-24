@@ -102,7 +102,10 @@ const STORY = (() => {
   function onTouchStart(ev){ touchY = pinned() ? ev.touches[0].clientY : null; touchDir = 0; }
   function onTouchMove(ev){ if (touchY == null) return; const dy = touchY - ev.touches[0].clientY; if (Math.abs(dy) < 6) return; touchDir = Math.sign(dy); if (atEdge(touchDir)) { touchY = null; return; } ev.preventDefault(); }
   function onTouchEnd(ev){ if (touchY == null) return; const dy = touchY - (ev.changedTouches[0] || {}).clientY; touchY = null; if (Math.abs(dy) > 40) goto(bi + Math.sign(dy)); }
-  function onScroll(){ if (tw || !pinned()) return; const top = curTop(); if (expectTop != null && Math.abs(top - expectTop) < 3) return; armed = false; goto(nearest(rawP())); }
+  /* scrolls the engine did not make (scrollbar drag, in-page jumps, the entering gesture) are left alone while they run;
+     once scrolling has settled for 160 ms inside the pinned range, the stage aligns to the nearest rest point */
+  let snapT = 0;
+  function onScroll(){ clearTimeout(snapT); snapT = setTimeout(() => { if (tw || !pinned()) return; const top = curTop(); if (expectTop != null && Math.abs(top - expectTop) < 3) return; armed = false; goto(nearest(rawP())); }, 160); }
   function progress(){ if (forced != null) return forced; if (beats) return pShown; const r = root.getBoundingClientRect(); const d = r.height - innerHeight; return d > 0 ? clamp(-r.top / d) : 1; }
   function applyCam(cam){ world.setAttribute('transform', 'translate(' + cam.tx.toFixed(1) + ' ' + cam.ty.toFixed(1) + ') scale(' + cam.k.toFixed(3) + ')'); }
   function tick(p, dt, time){ const cam = camera(p); applyCam(cam); chapters.forEach(ch => { try { ch.update(p, ctx, dt, time); } catch (e) { console.error('story chapter ' + ch.id, e); } }); updateCaptions(p); if (endBox) { const o = seg(p, .9, .97); endBox.style.opacity = o; endBox.style.pointerEvents = o > .5 ? 'auto' : 'none'; } drawParticles(dt, cam, p); }
