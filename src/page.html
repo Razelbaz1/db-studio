@@ -2103,8 +2103,8 @@ const STORY = (() => {
     { sym: 'γ', hover: [1115, 326], join: .85, bend: -40, n: 33, toks: [['… ', 'i'], ['GROUP BY', 'k'], [' s.name ', 'i'], ['ORDER BY', 'k'], [' 2 ', 'i'], ['DESC', 'k']] }
   ];
   /* per-query timeline (local progress): rise R0..R1, type T0..T1, travel V0..V1 (arrival = V1) */
-  const TL = QUERIES.map((q, i) => { const R0 = .04 + i * .05, V0 = .23 + i * .07; return { R0, R1: R0 + .10, T0: R0 + .04, T1: R0 + .16, V0, V1: V0 + .17 }; });
-  const OPS = [[.40, .48], [.47, .56], [.54, .69]];         // σ, ⋈, γ windows on the panel
+  const TL = QUERIES.map((q, i) => { const R0 = .04 + i * .05, V0 = .33 + i * .04; return { R0, R1: R0 + .10, T0: R0 + .04, T1: R0 + .16, V0, V1: V0 + .13 }; });   // all three finish typing (.30) and hover together before any leaves (.33)
+  const OPS = [[.46, .53], [.50, .58], [.54, .69]];         // σ, ⋈, γ windows on the panel
 
   const S = {};
   let seed = 17;
