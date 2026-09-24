@@ -636,6 +636,39 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 @media (prefers-reduced-motion: reduce){
   *{transition:none!important;animation:none!important}
 }
+/* ==EDITION + LESSONS== campus-only / public-only elements, one lesson on screen at a time */
+html[data-edition="public"] [data-only="campus"],html[data-edition="campus"] [data-only="public"]{display:none!important}
+section.sec[hidden]{display:none!important}
+.lsn-bar{display:flex;align-items:center;justify-content:space-between;gap:.6rem 1.4rem;flex-wrap:wrap;padding:.3rem 0 .9rem;border-bottom:1px solid var(--line)}
+.lsn-bar:empty{display:none}
+.lsn-t{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;min-width:0}
+.lsn-id{font-family:var(--mono);color:var(--accent);font-size:.85rem}
+.lsn-t b{font-weight:600;font-size:.98rem}
+.lsn-dur{color:var(--muted);font-size:.82rem}
+.lsn-dots{display:flex;align-items:center;gap:.05rem;flex-wrap:wrap}
+.lsn-dots button{width:1.6rem;height:1.6rem;display:grid;place-items:center;background:none;border:0;padding:0;cursor:pointer;border-radius:50%}
+.lsn-dots i{width:.6rem;height:.6rem;border-radius:50%;border:2px solid var(--line);transition:transform .2s,background .2s,border-color .2s}
+.lsn-dots button:hover i{border-color:var(--accent);transform:scale(1.2)}
+.lsn-dots button.done i{background:var(--good);border-color:var(--good)}
+.lsn-dots button.cur i{background:var(--accent);border-color:var(--accent);transform:scale(1.3)}
+.lsn-end{display:flex;flex-direction:column;align-items:center;gap:.45rem;text-align:center;max-width:560px;margin:2.2rem auto 1rem;padding:1.6rem 1.4rem;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.lsn-end:empty{display:none}
+.lsn-end b{font-size:1.15rem;line-height:1.35}
+.lsn-end .controls{margin-top:.6rem;justify-content:center}
+.lsn-more{color:var(--muted);margin:0}
+.rail a.lsn-rl.active{background:transparent;color:var(--ink);font-weight:600}
+.rail a.lsn-rs{padding-inline-start:1.7rem;min-height:36px;font-size:.86rem}
+.rail a.lsn-rs .dot{width:.45rem;height:.45rem}
+.lsn-chh{grid-column:1/-1;display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap;margin:1rem 0 0;font-size:1.05rem}
+.lsn-chh:first-child{margin-top:0}
+.lsn-chh span{font-size:.82rem;color:var(--muted);font-weight:400}
+.lsn-ref{margin:0 0 1.2rem;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.lsn-ref summary{list-style:none;display:flex;align-items:center;gap:.55rem;min-height:44px;padding:.45rem 1rem;color:var(--accent);font-weight:500;font-size:.95rem}
+.lsn-ref summary::-webkit-details-marker{display:none}
+.lsn-ref summary::before{content:"+";font-family:var(--mono);width:1rem;text-align:center}
+.lsn-ref[open] summary::before{content:"−"}
+.lsn-ref[open] summary{border-bottom:1px solid var(--line)}
+.lsn-ref .tables{padding:1rem}
 </style>
 
 <script>/* diagnostics: on-screen error banner only when the URL contains ?debug (otherwise errors go to the console as usual) */
@@ -700,7 +733,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
   <div class="tools">
     <button class="btn small ghost" id="btnToc" aria-pressed="false">☰ <span id="btnTocT"></span></button>
     <button class="btn small ghost" id="btnPresent" data-i18n="present"></button>
-    <button class="btn small ghost" id="btnTeacher" title="Teacher">🔑 <span data-i18n="teacher"></span></button>
+    <button class="btn small ghost" id="btnTeacher" title="Teacher" data-only="campus">🔑 <span data-i18n="teacher"></span></button>
     <button class="btn small ghost" id="btnDash" hidden>📋 <span data-i18n="d_btn"></span></button>
     <button class="btn small primary" id="btnLang">EN</button>
     <span class="userchip" id="userChip" hidden><i id="userInit"></i><span id="userName"></span><button class="btn small ghost" id="btnOut" style="min-height:30px;padding:.1rem .5rem" data-i18n="g_signout"></button></span>
@@ -831,15 +864,17 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
         <p class="lede" data-i18n="mp_lede"></p>
       </div>
       <div class="map" id="stages"></div>
-      <div style="height:1.5rem"></div>
-      <div class="timeline-wrap">
-        <h3 data-i18n="mp_tl_h"></h3>
-        <div class="timeline" id="timeline"></div>
-        <p class="note" data-i18n="mp_tl_note"></p>
+      <div data-only="campus">
+        <div style="height:1.5rem"></div>
+        <div class="timeline-wrap">
+          <h3 data-i18n="mp_tl_h"></h3>
+          <div class="timeline" id="timeline"></div>
+          <p class="note" data-i18n="mp_tl_note"></p>
+        </div>
+        <div style="height:1.8rem"></div>
+        <div class="sec-head"><h3 data-i18n="cov_h"></h3><p class="lede" style="font-size:1rem" data-i18n="cov_lede"></p></div>
+        <div class="cov" id="coverage"></div>
       </div>
-      <div style="height:1.8rem"></div>
-      <div class="sec-head"><h3 data-i18n="cov_h"></h3><p class="lede" style="font-size:1rem" data-i18n="cov_lede"></p></div>
-      <div class="cov" id="coverage"></div>
       <div style="height:.9rem"></div>
       <div class="note" data-i18n="cov_dialect"></div>
     </section>
@@ -1034,9 +1069,21 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
         <h2 data-i18n="ex2_h2"></h2>
         <p class="lede" data-i18n="ex2_lede"></p>
       </div>
+      <details class="lsn-ref"><summary data-i18n="ref_ride"></summary><div class="tables" data-ref="ride"></div></details>
       <div class="exlist" id="exList"></div>
-      <div style="height:1rem"></div>
-      <div class="note" data-i18n="ex_note"></div>
+      <div data-only="campus">
+        <div style="height:1rem"></div>
+        <div class="note" data-i18n="ex_note"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="r-exercises2" data-title="nav_r_ex2">
+      <div class="sec-head">
+        <h2 data-i18n="ex3_h2"></h2>
+        <p class="lede" data-i18n="ex3_lede"></p>
+      </div>
+      <details class="lsn-ref"><summary data-i18n="ref_ride"></summary><div class="tables" data-ref="ride"></div></details>
+      <div class="exlist" id="exList2"></div>
     </section>
 
     <section class="sec" id="r-quiz" data-title="nav_quiz">
@@ -1044,6 +1091,7 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
         <h2 data-i18n="qz_h2"></h2>
         <p class="lede" data-i18n="qz_lede_ra"></p>
       </div>
+      <details class="lsn-ref"><summary data-i18n="ref_toy"></summary><div class="tables" data-ref="toy"></div></details>
       <div class="quiz" id="quizRa"></div>
     </section>
 
@@ -1058,22 +1106,22 @@ if (location.search.indexOf('debug') !== -1) window.addEventListener('unhandledr
 /* =========================== I18N =========================== */
 const I18N = {
 he: {
-brand_sub:"קורס תכנון בסיסי נתונים", tab_home:"בית", tab_intro:"מבוא", tab_ra:"אלגברה רלציונית",
+brand_sub:"מסדי נתונים ו-SQL, מאפס", tab_home:"בית", tab_intro:"מבוא", tab_ra:"אלגברה רלציונית",
 present:"מצב מרצה", teacher:"קוד מרצה", run:"הרץ", reset:"איפוס", lg_pk:"מפתח ראשי", lg_fk:"מפתח זר",
 toc_show:"תוכן עניינים", toc_hide:"הסתר תוכן", hud_l:"אתם כאן",
-nav_h_hello:"שלום", nav_h_stats:"ההתקדמות שלי", nav_h_sessions:"המפגשים", nav_h_tools:"כלים",
+nav_h_hello:"שלום", nav_h_stats:"ההתקדמות שלי", nav_h_sessions:"השיעורים", nav_h_tools:"כלים",
 gr_morning:"בוקר טוב", gr_noon:"צהריים טובים", gr_evening:"ערב טוב", gr_night:"לילה טוב",
-hello_sub_new:"כאן מתחילים. המפגש הראשון פתוח, ואפשר לצעוד קדימה בקצב שלכם.", hello_sub_back:"עצרתם ב<b>{s}</b>. ממשיכים משם?", hello_next:"המפגש הקרוב: {d} · {t}",
+hello_sub_new:"כאן מתחילים. השיעור הראשון פתוח, ואפשר לצעוד קדימה בקצב שלכם.", hello_sub_back:"עצרתם ב<b>{s}</b>. ממשיכים משם?", 
 hello_continue:"המשך מאיפה שעצרתי", hello_start:"התחלה מהמבוא", hello_ra:"לאלגברה רלציונית",
 sv_h:"הכול נשמר.", sv_stats:"{v} סעיפים · {e} תרגילים · {q} תשובות", sv_hide:"לא להציג שוב", sv_ok:"ממשיכים",
 hs_h2:"ההתקדמות שלי", hs_lede:"מה שכבר עברתם, מה שנפתר, ומה שנשאר. הכל נשמר לחשבון.",
 st_sections:"סעיפים שנצפו", st_ex:"תרגילי אלגברה שנפתרו", st_qi:"שאלון מבוא", st_qr:"שאלון אלגברה", st_days:"ימים פעילים", st_days_s:"ימים",
-hsx_h2:"המפגשים", hsx_lede:"יחידה לכל מפגש תרגול. הכרטיסים נפתחים לפי התקדמות הסמסטר, והטבעת מראה כמה מכל יחידה כבר עברתם.",
+hsx_h2:"השיעורים", hsx_lede:"נושא אחד בכל שיעור, בערך רבע שעה. הטבעת מראה כמה מכל שיעור כבר עברתם.",
 sx_open:"פתוח", sx_soon:"בקרוב", sx_done:"הושלם", sx_progress:"{p}%",
-ht_h2:"כלים מהירים", qk_lab:"מחשבון אלגברה", qk_lab_s:"להריץ ביטויים על סכמת RideOn", qk_ex:"תרגילי אלגברה", qk_ex_s:"12 תרגילים עם בדיקה מיידית", qk_map:"מפת הקורס", qk_map_s:"מה נלמד מתי, ומה רק בתרגול", qk_quiz:"בדיקה עצמית", qk_quiz_s:"שאלות בסגנון המבחן",
+ht_h2:"כלים מהירים", qk_lab:"מחשבון אלגברה", qk_lab_s:"להריץ ביטויים על סכמת RideOn", qk_ex:"תרגילי אלגברה", qk_ex_s:"12 תרגילים עם בדיקה מיידית", qk_map:"מפת הקורס", qk_map_s:"ארבעה שלבים, וכל אחד עונה על שאלה אחת", qk_quiz:"בדיקה עצמית", qk_quiz_s:"שאלות בסגנון מבחן",
 nav_why:"למה בסיס נתונים", nav_anomaly:"הניסוי: טבלה אחת", nav_schema:"מה זו סכמה", nav_decl:"לשאול, לא לתכנת", nav_ind:"איפה זה חי", nav_map:"מפת הקורס", nav_quiz:"בדיקה עצמית",
 nav_r_data:"הטבלאות שלנו", nav_r_sel:"σ בחירה", nav_r_proj:"π הטלה", nav_r_join:"⋈ צירוף", nav_r_div:"÷ חילוק", nav_r_tree:"קריאת ביטוי",
-nav_r_sets:"∪ ∩ − קבוצות", nav_r_prod:"× מכפלה", nav_r_ren:"ρ כינוי והשמה", nav_r_schema:"הסכמה לתרגול", nav_r_lab:"מחשבון אלגברה", nav_r_ex:"תרגילים",
+nav_r_sets:"∪ ∩ − קבוצות", nav_r_prod:"× מכפלה", nav_r_ren:"ρ כינוי והשמה", nav_r_schema:"הסכמה לתרגול", nav_r_lab:"מחשבון אלגברה", nav_r_ex:"תרגילים 1 עד 6",
 st_h2:"פעולות קבוצות", st_lede:"שתי טבלאות עם אותן עמודות הן פשוט שתי קבוצות של שורות, ואפשר לאחד, לחתוך ולהחסיר. התנאי היחיד: תאימות איחוד, אותו מספר עמודות ואותם טיפוסים, לפי הסדר.", st_bad:"לא תואם",
 st_A:"A = רוכבים מאריאל", st_B:"B = רוכבים במנוי חודשי",
 st_msg_u:"<b>איחוד</b>: כל מי שנמצא ב-A או ב-B. רוכב שנמצא בשתיהן מופיע פעם אחת, כי התוצאה היא קבוצה.", st_msg_i:"<b>חיתוך</b>: רק מי שנמצא גם ב-A וגם ב-B.", st_msg_d:"<b>הפרש</b>: מי שנמצא ב-A ולא ב-B. שימו לב שהכיוון חשוב: B − A נותן תוצאה אחרת.",
@@ -1093,7 +1141,7 @@ lab_ex0:"דוגמאות…", lab_ex1:"σ: נסיעות ארוכות", lab_ex2:"�
 lab_rows:"{n} שורות · {c} עמודות",
 br_h1:"אלגברה", br_h2:"משמעות", br_h3:"SQL Server",
 br1:"בחירת שורות", br2:"בחירת עמודות (בלי כפילויות)", br3:"צירוף על עמודות משותפות", br4:"צירוף עם תנאי", br5:"כל הזוגות", br6:"איחוד", br7:"חיתוך", br8:"הפרש", br9:"כינוי", br10:"'לכל': מי מחובר לכולם",
-ex2_h2:"תרגילים על RideOn", ex2_lede:"12 תרגילים, מהקל לקשה, באותו סגנון שיופיע במבחן. הבדיקה מריצה את הביטוי שלכם ומשווה את הטבלה שיוצאת לתוצאה הנכונה, אז כל ניסוח שקול מתקבל. רמזים נפתחים אחרי ניסיון, הפתרון אחרי שניים.",
+ex2_h2:"תרגילים על RideOn", ex2_lede:"שישה תרגילים ראשונים מתוך 12, מהקל לקשה, בסגנון של שאלות מבחן. הבדיקה מריצה את הביטוי שלכם ומשווה את הטבלה שיוצאת לתוצאה הנכונה, אז כל ניסוח שקול מתקבל. רמזים נפתחים אחרי ניסיון, הפתרון אחרי שניים.",
 ex_check:"בדוק", ex_tries:"ניסיונות: {n}", ex_hint1_b:"רמז 1", ex_hint2_b:"רמז 2", ex_sol_b:"פתרון",
 exr_ok:"נכון! הטבלה שלכם זהה לתוצאה הצפויה.", exr_cols:"מספר העמודות שונה: קיבלתם {a}, צפוי {b}. בדקו את ה-π.", exr_rows:"העמודות במקום, אבל יש {a} שורות במקום {b}. {d}", exr_more:"יש שורות מיותרות, כנראה תנאי חלש מדי או צירוף חסר.", exr_less:"חסרות שורות, כנראה תנאי חזק מדי או ענף שנשכח.", exr_err:"שגיאה בביטוי: {e}", exr_empty:"כתבו ביטוי ואז בדוק.",
 lv1:"בסיסי", lv2:"צירוף", lv3:"מורכב", lv4:"Self-Join", lv5:"מבחן",
@@ -1111,7 +1159,7 @@ q11:"מזהי הרוכבים שרכבו על כל סוגי האופניים הק
 q12:"מזהי הרוכבים שהתחילו נסיעה גם בתחנת Central וגם בתחנת Market.", q12h1:"'גם וגם' על שתי נסיעות שונות = חיתוך של שני ענפים, לא σ אחת עם ∧.", q12h2:"השמה תחסוך כפילות: T ← Rides ⋈[FromStation=StationID] Stations; ואז π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T)).", q12s:"T ← Rides ⋈[FromStation=StationID] Stations; π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T))",
 
 
-hero_eyebrow:"מפגש 1 · מבוא",
+hero_eyebrow:"פרק 1 · מבוא",
 hero_h1:"כל מערכת שהשתמשתם בה היום יושבת על טבלאות.",
 hero_lede:"הבנק, הקופה במכולת, ווייז, מודל, הרישום לקורסים. מאחורי כל אחת מהן יש בסיס נתונים רלציוני, ובכולם מדברים בשפה אחת: SQL. בקורס נלמד לחשוב על נתונים כמו מי שמתכנן את הטבלאות האלה, לא רק מי שממלא אותן.",
 hero_t1:"ווייז", hero_t2:"הבנק", hero_t3:"מודל", hero_t4:"סופר", hero_t5:"רישום לקורסים", hero_t6:"וואטסאפ",
@@ -1124,7 +1172,7 @@ an_msg0:"זו הטבלה כפי שרוב האנשים היו בונים אותה
 an_msg_update:"הפסטיבל נדחה בשבוע. התאריך שלו כתוב ב-3 שורות שונות, וצריך לתקן את כולן. פספסתם אחת? עכשיו יש שני תאריכים לאותו אירוע, והמערכת לא יודעת מי צודק. זו <b>אנומליית עדכון</b>.",
 an_msg_delete:"עמיר ביטל את ההזמנה, ומחקנו את השורה. ביחד איתה נעלם גם האירוע Beach Party: השם, התאריך והמחיר. אף אחד לא יודע יותר שהוא קיים. זו <b>אנומליית מחיקה</b>.",
 an_msg_insert:"רוצים להוסיף אירוע חדש, Hackathon, שעדיין אין לו רכישות. אין איפה לשים אותו: כל שורה חייבת להיות רכישה של מישהו. זו <b>אנומליית הוספה</b>.",
-an_msg_split:"אותם נתונים, בשלוש טבלאות. כל עובדה נשמרת פעם אחת: תאריך הפסטיבל יושב בשורה אחת, אירוע יכול להתקיים בלי רכישות, ורכישה רק מצביעה על סטודנט ועל אירוע דרך מפתחות. זה בדיוק מה שנרמול עושה, ונגיע אליו במפגש 8.",
+an_msg_split:"אותם נתונים, בשלוש טבלאות. כל עובדה נשמרת פעם אחת: תאריך הפסטיבל יושב בשורה אחת, אירוע יכול להתקיים בלי רכישות, ורכישה רק מצביעה על סטודנט ועל אירוע דרך מפתחות. זה בדיוק מה שנרמול עושה, ונגיע אליו בפרק הנרמול.",
 an_note_t:"למרצה", an_tnote:"לתת להם לנחש מה יקרה לפני כל לחיצה. אחרי הפירוק, לשאול: מה קורה עכשיו כשהפסטיבל נדחה? (שורה אחת ב-Events).",
 
 sc_h2:"מה זו סכמה?",
@@ -1148,7 +1196,7 @@ de_lede:"עם הסכמה ביד, שאלה עסקית הופכת לשאילתה. 
 de_l1:"השאלה", de_l2:"השאילתה (SQL Server)", de_l3:"התשובה",
 de_q:"אילו סטודנטים מהנדסת תעשייה וניהול קנו כרטיס לפסטיבל האביב?",
 de_p1:"SQL היא שפה <strong>הצהרתית</strong>: מתארים את התוצאה הרצויה, ומנוע בסיס הנתונים בוחר בעצמו באיזה סדר לגשת לטבלאות, איפה לסנן ואיך לצרף. אתם לא כותבים לולאות.",
-de_p2:"המתמטיקה שמאחורי הבחירות האלה היא <strong>אלגברה רלציונית</strong>: שפה של פעולות על טבלאות (בחירה, הטלה, צירוף). היא הנושא של שני המפגשים הבאים, ובלעדיה SQL נשאר אוסף של דפוסים לשינון.",
+de_p2:"המתמטיקה שמאחורי הבחירות האלה היא <strong>אלגברה רלציונית</strong>: שפה של פעולות על טבלאות (בחירה, הטלה, צירוף). היא הנושא של הפרק הבא, ובלעדיה SQL נשאר אוסף של דפוסים לשינון.",
 h1_y:"1970", h1_t:"אדגר קוד ב-IBM מציע את המודל הרלציוני", h2_y:"1974", h2_t:"SEQUEL, השפה שתהפוך ל-SQL", h3_y:"1986", h3_t:"SQL נהיית תקן ANSI", h4_y:"היום", h4_t:"SQL Server 2022 במעבדה שלנו",
 
 in_h2:"איפה זה חי בשוק",
@@ -1162,27 +1210,27 @@ ind6_h:"האפליקציות שבטלפון", ind6_p:"בטלפון שלכם רצ
 in_dbms_h:"השמות שתפגשו", dbms_us:"בקורס",
 
 mp_h2:"מפת הקורס",
-mp_lede:"ארבעה שלבים בקורס, וכל אחד עונה על שאלה אחת. שלושה מהם מתורגלים כאן, ו-SQL הוא לב התרגול: שישה מפגשים של העמקה וחומר שחלקו לא מופיע בהרצאה. ERD נלמד בהרצאה בלבד.",
-st1_b:"אלגברה רלציונית", st1_p:"איך חושבים על שאלה כרצף פעולות על טבלאות", st1_s:"תרגול · מפגשים 2 עד 3",
-st2_b:"SQL", st2_p:"איך שואלים את זה בפועל, ב-SQL Server: מ-SELECT ועד פונקציות חלון", st2_s:"תרגול · מפגשים 4 עד 9",
-st3_b:"נרמול", st3_p:"איך מפרקים טבלה גדולה לטבלאות בלי לאבד מידע", st3_s:"תרגול · מפגשים 10 עד 11",
-st4_b:"ERD", st4_p:"איך מתכננים מאפס: מתיאור מילולי לתרשים ולטבלאות", st4_s:"בהרצאה עם ד\"ר אלקובי בלבד",
-lecture_only:"הרצאה בלבד",
-mp_tl_h:"12 מפגשי התרגול",
-tl1:"סביבת עבודה: התקנה, טעינת סכמות, שאילתות ראשונות", tl2:"אלגברה רלציונית 1: קבוצות, σ, π, ∪, ∩, −, ×", tl3:"אלגברה רלציונית 2: צירופים, ÷, ρ, גשר ל-SQL",
-tl4:"SQL 1: הכרת הסביבה, SELECT, WHERE, מיון, TOP<span class=\"tag new\">T-SQL</span>", tl5:"SQL 2: JOIN על כל סוגיו", tl6:"SQL 3: SET, CASE, אגרגציה, פונקציות שורה<span class=\"tag new\">חלקו לא בהרצאה</span>", tl7:"SQL 4: תתי-שאילתות, NOT EXISTS וחילוק ב-SQL",
-tl8:"SQL 5: CTE ו-Views<span class=\"tag new\">CTE לא בהרצאה</span>", tl9:"SQL 6: פונקציות חלון<span class=\"tag new\">לא בהרצאה</span>", tl10:"נרמול 1: תלויות, מפתחות, L/M/R", tl11:"נרמול 2: פתרון מלא בפורמט מבחן", tl12:"השלמה וחזרה, או חומר חדש לפי הסמסטר",
-mp_tl_note:"<b>שימו לב:</b> המפה נועדה לתמונה כללית של מה שצפוי בקורס. התאריכים וסדר התרגולים עשויים להשתנות ואינם מהווים התחייבות. במקרה של שינוי, ההודעות והפרסומים של צוות הקורס הם הקובעים. ERD ו-XML נלמדים בהרצאה. הציון: 95% מבחן מסכם, 5% תרגילי בית.",
-cov_h:"מה נלמד איפה", cov_lede:"כדי שתדעו מתי התרגול הוא המקור היחיד שלכם. הרשימה אומתה מול מצגות ההרצאה של תשפ\"ו, ותתעדכן אם יתווסף נושא השנה.",
-cov_only_t:"רק בתרגול", cov_both_t:"בהרצאה ובתרגול", cov_only_l:"רק בהרצאה",
-cov_only:["פונקציות חלון: OVER, PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, מסגרות ROWS BETWEEN","CTE (WITH)","CASE WHEN","INTERSECT ו-EXCEPT ב-SQL","תבנית NOT EXISTS לשאלות \"כל\" ולאנטי-צירוף","TOP, OFFSET/FETCH","פונקציות שורה: מחרוזות, מספרים, תאריכים, NULL","הסינטקס המלא של SQL Server (T-SQL)","רענון קצר של תורת הקבוצות ודה-מורגן"],
-cov_both:["אלגברה רלציונית, כל האופרטורים כולל ÷","SELECT, WHERE, GROUP BY, HAVING, DISTINCT, ORDER BY","UNION","צירופים פנימיים וחיצוניים, צירוף עצמי","תתי-שאילתות: IN, NOT IN, EXISTS, SOME/ANY, ALL","Views","חילוק ב-SQL דרך COUNT DISTINCT","נרמול: תלויות, מפתחות, L/M/R, 1NF עד BCNF"],
-cov_lect:["DDL ו-DML: CREATE, INSERT, UPDATE, DELETE","Closure של תלויות, 4NF","ERD ומיפוי לטבלאות","XML"],
-cov_dialect:"<b>על הדיאלקט:</b> ההרצאה מלמדת את העקרונות, לפעמים בסינטקס MySQL, וזה נכון לכל דבר עקרוני. בכל מה שנוגע לסינטקס בפועל, במטלות ובמבחן, מיישרים לפי התרגול: SQL Server.",
+mp_lede:"ארבעה שלבים בקורס, וכל אחד עונה על שאלה אחת. SQL הוא הלב שלו: מהשאילתה הראשונה ועד פונקציות חלון.",
+st1_b:"אלגברה רלציונית", st1_p:"איך חושבים על שאלה כרצף פעולות על טבלאות", 
+st2_b:"SQL", st2_p:"איך שואלים את זה בפועל, ב-SQL Server: מ-SELECT ועד פונקציות חלון", 
+st3_b:"נרמול", st3_p:"איך מפרקים טבלה גדולה לטבלאות בלי לאבד מידע", 
+st4_b:"ERD", st4_p:"איך מתכננים מאפס: מתיאור מילולי לתרשים ולטבלאות", 
+
+
+
+
+
+
+
+
+
+
+
+cov_dialect:"<b>על הדיאלקט:</b> העקרונות זהים בכל מסד נתונים רלציוני. את הסינטקס כותבים ב-SQL Server (T-SQL).",
 
 qz_h2:"בדיקה עצמית", qz_h2_intro:"שנבדוק שהכל יושב?",
 qz_lede_intro:"בלי לחץ, זה לא מבחן. נדבר על הכל לעומק עוד המון, זה היה רק מבוא.",
-qz_lede_ra:"שלוש שאלות 'מה מחזיר הביטוי'. בדיוק הסגנון שיופיע במבחן, על הטבלאות שלמעלה.",
+qz_lede_ra:"שלוש שאלות 'מה מחזיר הביטוי', בסגנון של שאלות מבחן, על Students, Courses ו-Enroll.",
 all_wrong:"כל התשובות האחרות שגויות.", correct:"נכון.", wrong:"לא נכון.", score_l:"ניקוד", of:"מתוך", reset_quiz:"נסו שוב",
 i1_q:"בטבלה Ticket_Purchases, איזו עמודה היא מפתח זר?",
 i1_0:"OrderNo", i1_1:"StudentID", i1_2:"Quantity", i1_3:"EventName", i1_4:"StudentName",
@@ -1197,9 +1245,9 @@ i4_q:"SQL היא שפה הצהרתית. המשמעות:",
 i4_0:"צריך לכתוב לולאות על השורות", i4_1:"כל שאילתה מתבצעת באותו סדר קבוע", i4_2:"השאילתה מתארת את התוצאה, והמנוע קובע את סדר הביצוע", i4_3:"אי אפשר לצרף שתי טבלאות", i4_4:"השפה מתאימה רק לקריאה, לא לכתיבה",
 i4_e:"אתם אומרים מה, המנוע מחליט איך. בגלל זה שתי שאילתות שונות יכולות להחזיר בדיוק את אותה תוצאה.",
 
-ra_eyebrow:"מפגשים 2 עד 3 · אלגברה רלציונית",
+ra_eyebrow:"פרק 2 · אלגברה רלציונית",
 ra_h1:"שפה של פעולות על טבלאות.",
-ra_lede:"כל פעולה מקבלת טבלה (או שתיים) ומחזירה טבלה. בגלל זה אפשר לשרשר: התוצאה של פעולה אחת היא הקלט של הבאה. כל הממחישים בעמוד עובדים על שלוש הטבלאות האלה.",
+ra_lede:"כל פעולה מקבלת טבלה (או שתיים) ומחזירה טבלה. בגלל זה אפשר לשרשר: התוצאה של פעולה אחת היא הקלט של הבאה. כל הממחישים בשיעור הזה עובדים על שלוש הטבלאות האלה.",
 ra_data_h:"סכמת הקורסים", ra_data_c:"Students(5) · Courses(3) · Enroll(11)",
 ra_p_sets:"טבלה באלגברה רלציונית היא <strong>קבוצה</strong> של שורות: אין כפילויות ואין סדר. זה ההבדל הראשון מ-SQL, שבו טבלה יכולה להכיל את אותה שורה פעמיים. תזכרו את זה כשנגיע ל-π.",
 ra_tnote:"לפתוח עם השאלה: מה ההבדל בין קבוצה לרשימה? ואז להראות ש-Enroll היא קבוצה של שלשות.",
@@ -1250,8 +1298,8 @@ ex_hint1_b:"רמז 1", ex_hint2_b:"רמז 2", ex_sol_b:"פתרון מלא",
 ex_hint1:"רמז 1: השם נמצא ב-Students, הציון והקורס ב-Enroll. חייבים לחבר את שתיהן.",
 ex_hint2:"רמז 2: התנאי צריך לדבר גם על הקורס וגם על הציון. תנאי על ציון בלבד יכניס סטודנטים שהצטיינו בקורס אחר.",
 ex_sol:"פתרון: π<sub>Name</sub>(σ<sub>CID='DB' ∧ Grade≥90</sub>(Students ⋈ Enroll)). ניסוח שקול: σ קודם על Enroll ואז ⋈ עם Students, ואז π. גם דרך Courses עם Title='Databases' נכונה.",
-ex_locked:"הפתרון המלא נפתח אחרי שני ניסיונות, או עם קוד מרצה.",
-ex_note:"<b>איך זה עובד בכיתה:</b> הרמזים נפתחים אחרי ניסיון ראשון, הפתרון המלא אחרי שני ניסיונות או עם קוד המרצה. מי שהחמיץ את המפגש יכול לחזור לכאן אחרי שהקוד שוחרר.",
+ex_locked:"הפתרון המלא נפתח אחרי שני ניסיונות.",
+
 
 r1_q:"מה מחזיר הביטוי π<sub>SID</sub>(σ<sub>CID='DB'</sub>(Enroll)) − π<sub>SID</sub>(σ<sub>CID='OR'</sub>(Enroll))?",
 r1_0:"סטודנטים שמשובצים ל-DB ולא משובצים ל-OR", r1_1:"סטודנטים שמשובצים ל-OR ולא משובצים ל-DB", r1_2:"סטודנטים שמשובצים גם ל-DB וגם ל-OR", r1_3:"סטודנטים שמשובצים ל-DB או ל-OR", r1_4:"כל הסטודנטים שמשובצים ל-DB",
@@ -1273,19 +1321,19 @@ g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכנ
 e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"אותיות בלבד, בעברית או באנגלית, 2 עד 30 תווים", e_birth:"תאריך לידה לא סביר",
 g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
 l_h1:"עוד לא מבינים מילה? הגעתם בול בזמן.",
-l_sub:"ברוכים הבאים ל-RowdyQL, סביבת התרגול של הקורס תכנון בסיסי נתונים. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת המבחן וברמת ראיונות עבודה.",
+l_sub:"ברוכים הבאים ל-RowdyQL. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת מבחן וברמת ראיונות עבודה.",
 l_cta:"מכאן מתחילים", l_cta2:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
 l_feat_h:"מה יש בפנים", l_how_h:"איך זה עובד",
-l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."]],
-l_how:[["פותחים חשבון","ותוך דקה אתם בפנים."],["לומדים לפי המפגשים","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","פותרים תרגילים ובחינות."]],
+l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון מבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב לטאבלט ובחזרה. איפה שעצרתם, שם ממשיכים."]],
+l_how:[["פותחים חשבון","ותוך דקה אתם בפנים."],["לומדים שיעור אחרי שיעור","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","פותרים תרגילים ובחינות."]],
 lq_d1:"מי קנה כרטיס לפסטיבל האביב?", lq_d2:"מי הזמין הכי הרבה כרטיסים?", lq_d3:"אותה שאלה, באלגברה רלציונית", lq_d4:"איך טבלאות מוצאות זו את זו: מפתח זר פוגש מפתח ראשי", lq_d5:"אלגברה רלציונית: סטודנטים מהנדסת תעשייה", lq_d6:"חילוק: ספקים שעבדו בכל הפסטיבלים", lq_d7:"הפרש: סטודנטים שלא קנו אף כרטיס", lq_pw:"הסיסמה לעולם לא נשמרת כטקסט, רק כגיבוב",
 ch_details:"פרטים", ch_terms:"תנאים", ch_meet:"היכרות", ch_done:"סיום",
-dt_h:"בואו נכיר", d_email_why:"האימייל הוא המזהה שלכם. אליו יגיע קישור האימות.", d_pass_why:"8 תווים לפחות. היא נשמרת כגיבוב, אף אחד לא יכול לקרוא אותה, גם לא אנחנו.", d_name_why:"כמו שתרצו שיופיע אצל המרצה.", d_first_why:"כמו בתעודה, כדי שנזהה אתכם ברשימת הקורס. אותיות בלבד, בעברית או באנגלית.", d_last_why:"ועכשיו שם המשפחה.", d_birth_why:"לזיהוי חד-משמעי מול רשימת הקורס. לא מוצג לאף אחד מלבד צוות הקורס.",
+dt_h:"בואו נכיר", d_email_why:"האימייל הוא המזהה שלכם. אליו יגיע קישור האימות.", d_pass_why:"8 תווים לפחות. היא נשמרת כגיבוב, אף אחד לא יכול לקרוא אותה, גם לא אנחנו.", d_name_why:"כמו שתרצו שנפנה אליכם.", d_first_why:"כמו שתרצו שנפנה אליכם. אותיות בלבד, בעברית או באנגלית.", d_last_why:"ועכשיו שם המשפחה.", d_birth_why:"לא מוצג לאף אחד.",
 in_why:"ברוכים השבים. אימייל וסיסמה, וממשיכים מאיפה שעצרתם.", in_to_up:"עדיין אין לכם חשבון? הרשמה", up_to_in:"כבר יש חשבון? כניסה",
 tm_h:"לפני שממשיכים", tm_why:"ארבע שורות על מה שנשמר ולמה. הנוסח המלא בקישור למטה.",
 t_s1:"נשמרים: אימייל, שם פרטי ושם משפחה, תאריך לידה, ותשובות ההיכרות אם תבחרו לענות.", t_s2:"לא נשמרים: תעודת זהות, טלפון, או כל דבר שלא הקלדתם כאן.", t_s3:"רואה את זה רק צוות הקורס, ורק לצורך הקורס.", t_s4:"אפשר לבקש מחיקה בכל רגע, והכל נעלם, כולל ההתקדמות.",
 o_h:"היכרות קצרה", o_year_q:"באיזו שנה אתם בתואר?", o_sem_q:"ואיזה סמסטר זה עכשיו?", o_goals_q:"מה הייתם רוצים לקחת מהקורס הזה? משפט אחד מספיק.", o_interests_q:"יש משהו בעולם הנתונים שמדבר אליכם? אפליקציה, תחום, שאלה שתמיד סקרנה אתכם. גם 'כלום עדיין' זו תשובה.",
-o_goals_ph:"למשל: להרגיש בטוח בכתיבת שאילתות, לעבור את המבחן בכבוד, להבין מה קורה מאחורי אקסל", o_int_ph:"למשל: ספורט, מוזיקה, מסחר, גיימינג, או שום דבר עדיין",
+o_goals_ph:"למשל: להרגיש בטוח בכתיבת שאילתות, להתכונן לראיון עבודה, להבין מה קורה מאחורי אקסל", o_int_ph:"למשל: ספורט, מוזיקה, מסחר, גיימינג, או שום דבר עדיין",
 w_next:"המשך", w_back:"חזרה", w_skip:"דלג",
 p_h:"רגע לפני שמדלגים", p_body:"התשובות האלה עוזרות לנו להתאים את התרגול: דוגמאות מהתחום שמעניין אתכם, ולראות מה חשוב לכם להשיג. זה לוקח 20 שניות, ואפשר גם לכתוב 'לא יודע'.", p_stay:"אשאר ואענה", p_skip:"דלג בכל זאת",
 r_h:"זה מה שיישמר", r_why:"שורה אחת בטבלת הסטודנטים. לחיצה על הרשמה מריצה את ה-INSERT.",
@@ -1294,25 +1342,26 @@ pt_body:"<ol><li><b>מי מפעיל:</b> צוות התרגול של הקורס \
 d_btn:"דשבורד", d_h:"לוח מרצה: נרשמים והתקדמות", d_title:"דשבורד מרצה", d_close:"סגור", d_s_kpi:"מדדים (לפי הסינון)", d_s_charts:"גרפים", d_s_table:"רשימת הסטודנטים", d_cols:"בחירת עמודות", d_export:"ייצוא CSV (מסונן)", d_f_search:"חיפוש לפי שם או אימייל", d_f_from:"נרשמו מ-", d_f_to:"עד", d_f_active:"פעילים ב-", d_f_any:"כל התקופה", d_f_7:"7 ימים", d_f_30:"30 יום", d_f_sem:"סמסטר", d_f_all:"הכל", d_f_year:"שנה", d_f_minex:"תרגילים לפחות", d_k_reg:"נרשמים", d_k_act:"פעילים ב-7 ימים", d_k_vis:"ביקורים ב-30 יום", d_k_ex:"ממוצע תרגילים (מ-12)", d_k_qi:"ממוצע שאלון מבוא (מ-4)", d_k_qr:"ממוצע שאלון אלגברה (מ-3)", d_c_reg:"הרשמות לפי יום (30 יום)", d_c_vis:"ביקורים לפי יום (30 יום)", d_ch_ex:"התפלגות תרגילים שנפתרו (מספר סטודנטים לפי כמות)", d_ch_qr:"התפלגות שאלון אלגברה (מספר סטודנטים לפי ציון)", d_note:"הערה", d_note_edit:"עריכת הערה", d_status:"סטטוס", d_active:"פעיל", d_blocked:"חסום", d_st_h:"סטטוס חשבון", d_st_now:"מצב נוכחי:", d_st_note:"סיבה (רק מרצים רואים)", d_block:"חסום חשבון", d_unblock:"שחרר חסימה", g_blocked:"החשבון הושהה. לבירור אפשר לפנות לצוות האתר.", d_note_save:"שמור", d_visits:"ביקורים", d_lastvisit:"ביקור אחרון", d_first:"שם פרטי", d_last:"שם משפחה", d_birth:"תאריך לידה", d_age:"גיל", d_rows:"{n} שורות", d_none:"אין נרשמים עדיין.", d_demo:"לוח המרצה זמין רק עם חיבור לשרת.", d_count:"{n} נרשמים", d_csv:"הורדת CSV",
 d_c_name:"שם", d_c_email:"אימייל", d_c_year:"שנה", d_c_sem:"סמסטר", d_c_joined:"נרשם", d_c_last:"פעיל לאחרונה", d_c_sec:"סעיפים", d_c_qi:"בחינה מבוא", d_c_qr:"בחינה אלגברה", d_c_ex:"תרגיל", d_c_goals:"מטרות", d_c_int:"תחומי עניין",
 sync_on:"ההתקדמות נשמרת לחשבון",
-pt_body:"<ol><li><b>מי מפעיל:</b> צוות התרגול של הקורס \"תכנון בסיסי נתונים\" באוניברסיטת אריאל. הסביבה היא כלי עזר לימודי ואינה מערכת רשמית של האוניברסיטה.</li><li><b>מה נאסף:</b> אימייל, שם מלא, שנת לימוד, סמסטר, מספר תעודת זהות, וההתקדמות שלכם בסביבה (סעיפים שנצפו, תוצאות בחינה עצמית ותרגילים).</li><li><b>למה:</b> זיהוי חד-משמעי מול רשימת הקורס, מעקב התקדמות אישי, וחישוב בונוס או נוכחות אם יוחלט על כך.</li><li><b>מי רואה:</b> צוות הקורס בלבד. מספר תעודת הזהות נשמר בטבלה נפרדת שרק צוות הקורס יכול לקרוא. הנתונים לא נמסרים לצד שלישי ולא משמשים לשום מטרה אחרת.</li><li><b>איפה:</b> הנתונים מאוחסנים בשירות Supabase על שרתים באיחוד האירופי, מוצפנים בתעבורה ובאחסון. הסיסמה נשמרת כגיבוב בלבד ואינה ניתנת לקריאה.</li><li><b>כמה זמן:</b> עד תום שנת הלימודים שבה נרשמתם ועוד 12 חודשים לצורך ערעורים, ואז הנתונים נמחקים.</li><li><b>הזכויות שלכם:</b> אפשר לבקש עיון, תיקון או מחיקה של הפרטים בכל עת בפנייה למתרגל. מחיקת החשבון מוחקת גם את ההתקדמות.</li><li>ההרשמה מהווה הסכמה לתנאים אלה.</li></ol>",
+
+ex3_h2:"תרגילים 7 עד 12", ex3_lede:"Self-Join ושאלות ברמת מבחן. אותם כללים: רמז אחרי ניסיון, הפתרון אחרי שניים.", nav_r_ex2:"תרגילים 7 עד 12", ref_ride:"הסכמה: RideOn", ref_toy:"הטבלאות: Students, Courses, Enroll", ls_intro1:"למה בסיס נתונים", ls_intro2:"סכמה ושאילתה ראשונה", ls_intro3:"בדיקה עצמית", ls_ra1:"σ ו-π: בחירה והטלה", ls_ra2:"∪ ∩ − ו-×: קבוצות ומכפלה", ls_ra3:"⋈ ו-ρ: צירוף וכינוי", ls_ra4:"÷ חילוק, וקריאת ביטוי", ls_ra5:"RideOn והמחשבון", ls_ra6:"תרגילים 1 עד 6", ls_ra7:"תרגילים 7 עד 12", ls_ra8:"בדיקה עצמית", ls_min:"{m} דק'", ls_upnext:"הבא בתור", ls_next:"לשיעור הבא", ls_next_ch:"לפרק הבא", ls_home:"חזרה לבית", ls_more:"זה הכל לעכשיו. השיעורים הבאים בדרך.", ls_count:"{n} שיעורים · {m} דק'", ch_n:"פרק {n}", ls_later:"בהמשך הקורס",
 },
 en: {
-brand_sub:"Database Design course", tab_home:"Home", tab_intro:"Intro", tab_ra:"Relational Algebra",
+brand_sub:"Databases and SQL, from zero", tab_home:"Home", tab_intro:"Intro", tab_ra:"Relational Algebra",
 present:"Presenter mode", teacher:"Teacher code", run:"Run", reset:"Reset", lg_pk:"Primary key", lg_fk:"Foreign key",
 toc_show:"Contents", toc_hide:"Hide contents", hud_l:"You are here",
-nav_h_hello:"Hello", nav_h_stats:"My progress", nav_h_sessions:"Sessions", nav_h_tools:"Tools",
+nav_h_hello:"Hello", nav_h_stats:"My progress", nav_h_sessions:"Lessons", nav_h_tools:"Tools",
 gr_morning:"Good morning", gr_noon:"Good afternoon", gr_evening:"Good evening", gr_night:"Good night",
-hello_sub_new:"This is where it starts. The first session is open; move forward at your own pace.", hello_sub_back:"You stopped at <b>{s}</b>. Continue from there?", hello_next:"Next session: {d} · {t}",
+hello_sub_new:"This is where it starts. The first lesson is open; move forward at your own pace.", hello_sub_back:"You stopped at <b>{s}</b>. Continue from there?", 
 hello_continue:"Continue where I stopped", hello_start:"Start with the intro", hello_ra:"To relational algebra",
 sv_h:"All saved.", sv_stats:"{v} sections · {e} exercises · {q} answers", sv_hide:"Don't show again", sv_ok:"Continue",
 hs_h2:"My progress", hs_lede:"What you have covered, what you solved, and what is left. All saved to your account.",
 st_sections:"Sections viewed", st_ex:"Algebra exercises solved", st_qi:"Intro quiz", st_qr:"Algebra quiz", st_days:"Active days", st_days_s:"days",
-hsx_h2:"Sessions", hsx_lede:"One unit per tutorial session. Cards open as the semester progresses; the ring shows how much of each unit you have covered.",
+hsx_h2:"Lessons", hsx_lede:"One topic per lesson, about a quarter of an hour. The ring shows how much of each lesson you have covered.",
 sx_open:"open", sx_soon:"soon", sx_done:"done", sx_progress:"{p}%",
-ht_h2:"Quick tools", qk_lab:"Algebra calculator", qk_lab_s:"Run expressions on the RideOn schema", qk_ex:"Algebra exercises", qk_ex_s:"12 exercises with instant checking", qk_map:"Course map", qk_map_s:"What is taught when, and what only in the tutorial", qk_quiz:"Self-check", qk_quiz_s:"Exam-style questions",
+ht_h2:"Quick tools", qk_lab:"Algebra calculator", qk_lab_s:"Run expressions on the RideOn schema", qk_ex:"Algebra exercises", qk_ex_s:"12 exercises with instant checking", qk_map:"Course map", qk_map_s:"Four stages, each answering one question", qk_quiz:"Self-check", qk_quiz_s:"Exam-style questions",
 nav_why:"Why a database", nav_anomaly:"The experiment", nav_schema:"What is a schema", nav_decl:"Ask, don't program", nav_ind:"Where it lives", nav_map:"Course map", nav_quiz:"Self-check",
 nav_r_data:"Our tables", nav_r_sel:"σ Select", nav_r_proj:"π Project", nav_r_join:"⋈ Join", nav_r_div:"÷ Divide", nav_r_tree:"Reading an expression",
-nav_r_sets:"∪ ∩ − sets", nav_r_prod:"× product", nav_r_ren:"ρ rename & assign", nav_r_schema:"Practice schema", nav_r_lab:"Algebra calculator", nav_r_ex:"Exercises",
+nav_r_sets:"∪ ∩ − sets", nav_r_prod:"× product", nav_r_ren:"ρ rename & assign", nav_r_schema:"Practice schema", nav_r_lab:"Algebra calculator", nav_r_ex:"Exercises 1–6",
 st_h2:"Set operations", st_lede:"Two tables with the same columns are just two sets of rows, so you can union, intersect and subtract them. The one condition is union compatibility: same number of columns, same types, in order.", st_bad:"incompatible",
 st_A:"A = riders from Ariel", st_B:"B = riders on a monthly plan",
 st_msg_u:"<b>Union</b>: everyone in A or in B. A rider in both appears once, because the result is a set.", st_msg_i:"<b>Intersection</b>: only those in both A and B.", st_msg_d:"<b>Difference</b>: those in A and not in B. Direction matters: B − A gives a different result.",
@@ -1332,7 +1381,7 @@ lab_ex0:"Examples…", lab_ex1:"σ: long rides", lab_ex2:"natural ⋈: who rode"
 lab_rows:"{n} rows · {c} columns",
 br_h1:"Algebra", br_h2:"Meaning", br_h3:"SQL Server",
 br1:"choose rows", br2:"choose columns (no duplicates)", br3:"join on shared columns", br4:"join with a condition", br5:"all pairs", br6:"union", br7:"intersection", br8:"difference", br9:"rename", br10:"'for all': who is connected to everyone",
-ex2_h2:"Exercises on RideOn", ex2_lede:"12 exercises, easy to hard, in the style that appears in the exam. The checker runs your expression and compares the resulting table with the correct result, so any equivalent formulation counts. Hints unlock after an attempt, the solution after two.",
+ex2_h2:"Exercises on RideOn", ex2_lede:"The first 6 of 12 exercises, easy to hard, exam style. The checker runs your expression and compares the resulting table with the correct result, so any equivalent formulation counts. Hints unlock after an attempt, the solution after two.",
 ex_check:"Check", ex_tries:"Attempts: {n}", ex_hint1_b:"Hint 1", ex_hint2_b:"Hint 2", ex_sol_b:"Solution",
 exr_ok:"Correct! Your table equals the expected result.", exr_cols:"Different number of columns: you got {a}, expected {b}. Check the π.", exr_rows:"Columns are right, but there are {a} rows instead of {b}. {d}", exr_more:"Extra rows: probably a condition that is too weak or a missing join.", exr_less:"Missing rows: probably a condition that is too strong or a forgotten branch.", exr_err:"Error in the expression: {e}", exr_empty:"Write an expression, then Check.",
 lv1:"basic", lv2:"join", lv3:"complex", lv4:"self-join", lv5:"exam",
@@ -1350,7 +1399,7 @@ q11:"IDs of riders who rode every existing bike type.", q11h1:"'Every' = divisio
 q12:"IDs of riders who started a ride both at station Central and at station Market.", q12h1:"'Both' across two different rides = an intersection of two branches, not one σ with ∧.", q12h2:"Assignment saves repetition: T ← Rides ⋈[FromStation=StationID] Stations; then π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T)).", q12s:"T ← Rides ⋈[FromStation=StationID] Stations; π[RiderID](σ[StationName='Central'](T)) ∩ π[RiderID](σ[StationName='Market'](T))",
 
 
-hero_eyebrow:"Session 1 · Introduction",
+hero_eyebrow:"Chapter 1 · Introduction",
 hero_h1:"Every system you used today runs on tables.",
 hero_lede:"Your bank, the supermarket checkout, Waze, Moodle, course registration. Behind each one sits a relational database, and all of them speak one language: SQL. In this course you learn to think about data like the person who designs those tables, not only the one who fills them in.",
 hero_t1:"Waze", hero_t2:"Your bank", hero_t3:"Moodle", hero_t4:"Supermarket", hero_t5:"Course registration", hero_t6:"WhatsApp",
@@ -1363,7 +1412,7 @@ an_msg0:"This is the table most people would build in Excel. Looks fine. Now let
 an_msg_update:"The festival moved by a week. Its date is written in 3 different rows, and all of them must change. Miss one, and the same event now has two dates. That is an <b>update anomaly</b>.",
 an_msg_delete:"Amir cancelled, so we deleted his row. With it, the Beach Party disappeared: name, date and price. Nobody knows it exists anymore. That is a <b>deletion anomaly</b>.",
 an_msg_insert:"We want to add a new event, Hackathon, that has no purchases yet. There is nowhere to put it: every row must be somebody's purchase. That is an <b>insertion anomaly</b>.",
-an_msg_split:"Same data, three tables. Every fact is stored once: the festival date sits in one row, an event can exist without purchases, and a purchase only points to a student and an event through keys. This is exactly what normalization does, and we reach it in session 8.",
+an_msg_split:"Same data, three tables. Every fact is stored once: the festival date sits in one row, an event can exist without purchases, and a purchase only points to a student and an event through keys. This is exactly what normalization does, and we reach it in the normalization chapter.",
 an_note_t:"Teacher", an_tnote:"Let them predict each outcome before pressing. After the split, ask: what happens now when the festival is postponed? (One row in Events.)",
 
 sc_h2:"What is a schema?",
@@ -1387,7 +1436,7 @@ de_lede:"With the schema in hand, a business question becomes a query. Notice it
 de_l1:"The question", de_l2:"The query (SQL Server)", de_l3:"The answer",
 de_q:"Which Industrial Engineering students bought a ticket to the Spring Festival?",
 de_p1:"SQL is <strong>declarative</strong>: you describe the result, and the database engine decides in what order to visit tables, where to filter and how to join. You never write loops.",
-de_p2:"The mathematics behind those decisions is <strong>relational algebra</strong>: a language of operations on tables (select, project, join). It is the subject of the next two sessions, and without it SQL stays a pile of patterns to memorize.",
+de_p2:"The mathematics behind those decisions is <strong>relational algebra</strong>: a language of operations on tables (select, project, join). It is the subject of the next chapter, and without it SQL stays a pile of patterns to memorize.",
 h1_y:"1970", h1_t:"Edgar Codd at IBM proposes the relational model", h2_y:"1974", h2_t:"SEQUEL, the language that becomes SQL", h3_y:"1986", h3_t:"SQL becomes an ANSI standard", h4_y:"Today", h4_t:"SQL Server 2022 in our lab",
 
 in_h2:"Where it lives in industry",
@@ -1401,27 +1450,27 @@ ind6_h:"The apps on your phone", ind6_p:"Dozens of SQLite databases are running 
 in_dbms_h:"Names you will meet", dbms_us:"this course",
 
 mp_h2:"Course map",
-mp_lede:"Four stages in the course, each answering one question. Three of them are practiced here, and SQL is the heart of the tutorial: six sessions of depth, part of it material the lecture does not cover. ERD is taught in the lecture only.",
-st1_b:"Relational algebra", st1_p:"How to think of a question as a sequence of operations on tables", st1_s:"Tutorial · sessions 2 to 3",
-st2_b:"SQL", st2_p:"How to actually ask it, in SQL Server: from SELECT to window functions", st2_s:"Tutorial · sessions 4 to 9",
-st3_b:"Normalization", st3_p:"How to split one big table into tables without losing information", st3_s:"Tutorial · sessions 10 to 11",
-st4_b:"ERD", st4_p:"How to design from scratch: from a verbal description to a diagram to tables", st4_s:"Lecture with Dr. Alkobi only",
-lecture_only:"lecture only",
-mp_tl_h:"The 12 tutorial sessions",
-tl1:"Working environment: install, load schemas, first queries", tl2:"Relational algebra 1: sets, σ, π, ∪, ∩, −, ×", tl3:"Relational algebra 2: joins, ÷, ρ, bridge to SQL",
-tl4:"SQL 1: the environment, SELECT, WHERE, sorting, TOP<span class=\"tag new\">T-SQL</span>", tl5:"SQL 2: JOIN in all its forms", tl6:"SQL 3: SET operators, CASE, aggregation, row functions<span class=\"tag new\">partly not in lecture</span>", tl7:"SQL 4: subqueries, NOT EXISTS and division in SQL",
-tl8:"SQL 5: CTEs and views<span class=\"tag new\">CTE not in lecture</span>", tl9:"SQL 6: window functions<span class=\"tag new\">not in lecture</span>", tl10:"Normalization 1: dependencies, keys, L/M/R", tl11:"Normalization 2: a full exam-format solution", tl12:"Completion and review, or new material depending on the semester",
-mp_tl_note:"<b>Please note:</b> this map gives a general picture of what to expect in the course. Dates and the order of sessions may change and are not a commitment. If anything changes, the course team's announcements are what counts. ERD and XML are taught in the lecture. Grade: 95% final exam, 5% homework.",
-cov_h:"What is taught where", cov_lede:"So you know when the tutorial is your only source. Verified against the 2025/26 lecture slides; updated if a topic is added this year.",
-cov_only_t:"Tutorial only", cov_both_t:"Lecture and tutorial", cov_only_l:"Lecture only",
-cov_only:["Window functions: OVER, PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, ROWS BETWEEN frames","CTE (WITH)","CASE WHEN","INTERSECT and EXCEPT in SQL","The NOT EXISTS pattern for \"all\" questions and anti-joins","TOP, OFFSET/FETCH","Row functions: strings, numbers, dates, NULL","Full SQL Server (T-SQL) syntax","A short refresher of set theory and De Morgan"],
-cov_both:["Relational algebra, all operators including ÷","SELECT, WHERE, GROUP BY, HAVING, DISTINCT, ORDER BY","UNION","Inner and outer joins, self join","Subqueries: IN, NOT IN, EXISTS, SOME/ANY, ALL","Views","Division in SQL via COUNT DISTINCT","Normalization: dependencies, keys, L/M/R, 1NF to BCNF"],
-cov_lect:["DDL and DML: CREATE, INSERT, UPDATE, DELETE","Dependency closure, 4NF","ERD and mapping to tables","XML"],
-cov_dialect:"<b>On dialect:</b> the lecture teaches the principles, sometimes in MySQL syntax, and that holds for everything conceptual. For actual syntax, in homework and in the exam, we align with the tutorial: SQL Server.",
+mp_lede:"Four stages in the course, each answering one question. SQL is its heart: from the first query to window functions.",
+st1_b:"Relational algebra", st1_p:"How to think of a question as a sequence of operations on tables", 
+st2_b:"SQL", st2_p:"How to actually ask it, in SQL Server: from SELECT to window functions", 
+st3_b:"Normalization", st3_p:"How to split one big table into tables without losing information", 
+st4_b:"ERD", st4_p:"How to design from scratch: from a verbal description to a diagram to tables", 
+
+
+
+
+
+
+
+
+
+
+
+cov_dialect:"<b>On dialect:</b> the principles are the same in every relational database. We write the syntax in SQL Server (T-SQL).",
 
 qz_h2:"Self-check", qz_h2_intro:"Shall we check it all landed?",
 qz_lede_intro:"No pressure, this is not a test. We will go much deeper into all of it. This was only the intro.",
-qz_lede_ra:"Three 'what does this expression return' questions. Exactly the exam style, on the tables above.",
+qz_lede_ra:"Three 'what does this expression return' questions, exam style, on Students, Courses and Enroll.",
 all_wrong:"All other answers are wrong.", correct:"Correct.", wrong:"Not quite.", score_l:"Score", of:"of", reset_quiz:"Try again",
 i1_q:"In Ticket_Purchases, which column is a foreign key?",
 i1_0:"OrderNo", i1_1:"StudentID", i1_2:"Quantity", i1_3:"EventName", i1_4:"StudentName",
@@ -1436,9 +1485,9 @@ i4_q:"SQL is declarative. That means:",
 i4_0:"You must write loops over the rows", i4_1:"Every query runs in the same fixed order", i4_2:"The query describes the result, and the engine decides the execution order", i4_3:"Two tables cannot be joined", i4_4:"The language is for reading only, not writing",
 i4_e:"You say what, the engine decides how. That is why two different queries can return exactly the same result.",
 
-ra_eyebrow:"Sessions 2 to 3 · Relational algebra",
+ra_eyebrow:"Chapter 2 · Relational algebra",
 ra_h1:"A language of operations on tables.",
-ra_lede:"Every operation takes a table (or two) and returns a table. That is why they chain: the output of one is the input of the next. Every visualizer on this page works on these three tables.",
+ra_lede:"Every operation takes a table (or two) and returns a table. That is why they chain: the output of one is the input of the next. Every visualizer in this lesson works on these three tables.",
 ra_data_h:"Courses schema", ra_data_c:"Students(5) · Courses(3) · Enroll(11)",
 ra_p_sets:"In relational algebra a table is a <strong>set</strong> of rows: no duplicates, no order. That is the first difference from SQL, where a table may contain the same row twice. Remember it when we reach π.",
 ra_tnote:"Open with: what is the difference between a set and a list? Then show that Enroll is a set of triples.",
@@ -1489,8 +1538,8 @@ ex_hint1_b:"Hint 1", ex_hint2_b:"Hint 2", ex_sol_b:"Full solution",
 ex_hint1:"Hint 1: the name lives in Students, the grade and course in Enroll. You must connect both.",
 ex_hint2:"Hint 2: the condition must mention both the course and the grade. A grade-only condition admits students who excelled in another course.",
 ex_sol:"Solution: π<sub>Name</sub>(σ<sub>CID='DB' ∧ Grade≥90</sub>(Students ⋈ Enroll)). Equivalent: σ first on Enroll, then ⋈ Students, then π. Going through Courses with Title='Databases' is also correct.",
-ex_locked:"The full solution unlocks after two attempts, or with the teacher code.",
-ex_note:"<b>How this works in class:</b> hints unlock after the first attempt, the full solution after two attempts or with the teacher code. Whoever missed the session can come back here once the code is released.",
+ex_locked:"The full solution unlocks after two attempts.",
+
 
 r1_q:"What does π<sub>SID</sub>(σ<sub>CID='DB'</sub>(Enroll)) − π<sub>SID</sub>(σ<sub>CID='OR'</sub>(Enroll)) return?",
 r1_0:"Students enrolled in DB and not enrolled in OR", r1_1:"Students enrolled in OR and not enrolled in DB", r1_2:"Students enrolled in both DB and OR", r1_3:"Students enrolled in DB or OR", r1_4:"All students enrolled in DB",
@@ -1512,19 +1561,19 @@ g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SE
 e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Letters only, Hebrew or English, 2 to 30 characters", e_birth:"Implausible date of birth",
 g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
 l_h1:"Don't understand a word yet? Perfect timing.",
-l_sub:"Welcome to RowdyQL, the practice environment of the Database Design course. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
+l_sub:"Welcome to RowdyQL. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
 l_cta:"Start here", l_cta2:"Create an account, one minute", l_have:"I already have an account",
 l_feat_h:"What is inside", l_how_h:"How it works",
-l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."]],
-l_how:[["Create an account","and you're in within a minute."],["Learn by session","at your own pace, as much as you like."],["Practice until it sticks","Solve exercises and tests."]],
+l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the computer to the tablet and back. Where you stopped is where you continue."]],
+l_how:[["Create an account","and you're in within a minute."],["Learn lesson by lesson","at your own pace, as much as you like."],["Practice until it sticks","Solve exercises and tests."]],
 lq_d1:"Who bought a ticket to the Spring Festival?", lq_d2:"Who ordered the most tickets?", lq_d3:"The same question, in relational algebra", lq_d4:"How tables find each other: a foreign key meets a primary key", lq_d5:"Relational algebra: Industrial Engineering students", lq_d6:"Division: suppliers who worked every festival", lq_d7:"Difference: students who never bought a ticket", lq_pw:"The password is never stored as text, only as a hash",
 ch_details:"Details", ch_terms:"Terms", ch_meet:"Meet", ch_done:"Done",
-dt_h:"Let us meet", d_email_why:"Your email is your identifier. The confirmation link goes there.", d_pass_why:"At least 8 characters. Stored as a hash: nobody can read it, not even us.", d_name_why:"As you want it to appear to the teacher.", d_first_why:"As on your ID, so we can match you to the course roster. Letters only, Hebrew or English.", d_last_why:"And now the last name.", d_birth_why:"For unambiguous matching against the course roster. Visible to course staff only.",
+dt_h:"Let us meet", d_email_why:"Your email is your identifier. The confirmation link goes there.", d_pass_why:"At least 8 characters. Stored as a hash: nobody can read it, not even us.", d_name_why:"What we should call you.", d_first_why:"What we should call you. Letters only, Hebrew or English.", d_last_why:"And now the last name.", d_birth_why:"Never shown to anyone.",
 in_why:"Welcome back. Email and password, and continue where you stopped.", in_to_up:"No account yet? Sign up", up_to_in:"Already have an account? Sign in",
 tm_h:"Before we continue", tm_why:"Four lines on what is stored and why. The full text is in the link below.",
 t_s1:"Stored: email, first and last name, date of birth, and your onboarding answers if you choose to answer.", t_s2:"Not stored: national ID, phone, or anything you did not type here.", t_s3:"Seen only by course staff, only for the course.", t_s4:"You can ask for deletion at any time, and everything goes, progress included.",
 o_h:"A short introduction", o_year_q:"Which year of your degree are you in?", o_sem_q:"And which semester is it now?", o_goals_q:"What would you like to take from this course? One sentence is enough.", o_interests_q:"Is there something in the data world that speaks to you? An app, a field, a question that always intrigued you. 'Nothing yet' is also an answer.",
-o_goals_ph:"e.g. feel confident writing queries, pass the exam well, understand what happens behind Excel", o_int_ph:"e.g. sports, music, trading, gaming, or nothing yet",
+o_goals_ph:"e.g. feel confident writing queries, prepare for a job interview, understand what happens behind Excel", o_int_ph:"e.g. sports, music, trading, gaming, or nothing yet",
 w_next:"Continue", w_back:"Back", w_skip:"Skip",
 p_h:"One moment before skipping", p_body:"These answers help us tailor the practice: examples from the field you care about, and a sense of what matters to you. It takes 20 seconds, and 'I do not know' is a valid answer.", p_stay:"I will stay and answer", p_skip:"Skip anyway",
 r_h:"This is what will be stored", r_why:"One row in the Students table. Pressing Sign up runs the INSERT.",
@@ -1533,14 +1582,138 @@ pt_body:"<ol><li><b>Who operates it:</b> the tutorial staff of the course \"Data
 d_btn:"Dashboard", d_h:"Teacher board: sign-ups and progress", d_title:"Teacher dashboard", d_close:"Close", d_s_kpi:"Metrics (filtered)", d_s_charts:"Charts", d_s_table:"Student list", d_cols:"Choose columns", d_export:"Export CSV (filtered)", d_f_search:"Search by name or email", d_f_from:"Joined from", d_f_to:"to", d_f_active:"Active in", d_f_any:"any time", d_f_7:"7 days", d_f_30:"30 days", d_f_sem:"Semester", d_f_all:"all", d_f_year:"Year", d_f_minex:"Min exercises", d_k_reg:"Registered", d_k_act:"Active in 7 days", d_k_vis:"Visits in 30 days", d_k_ex:"Avg exercises (of 12)", d_k_qi:"Avg intro quiz (of 4)", d_k_qr:"Avg algebra quiz (of 3)", d_c_reg:"Sign-ups per day (30 days)", d_c_vis:"Visits per day (30 days)", d_ch_ex:"Exercises solved, distribution (students per count)", d_ch_qr:"Algebra quiz, distribution (students per score)", d_note:"Note", d_note_edit:"Edit note", d_status:"Status", d_active:"Active", d_blocked:"Blocked", d_st_h:"Account status", d_st_now:"Current:", d_st_note:"Reason (teachers only)", d_block:"Block account", d_unblock:"Release", g_blocked:"This account is suspended. Please contact the site team.", d_note_save:"Save", d_visits:"Visits", d_lastvisit:"Last visit", d_first:"First name", d_last:"Last name", d_birth:"Date of birth", d_age:"Age", d_rows:"{n} rows", d_none:"No sign-ups yet.", d_demo:"The teacher board needs the server connection.", d_count:"{n} registered", d_csv:"Download CSV",
 d_c_name:"Name", d_c_email:"Email", d_c_year:"Year", d_c_sem:"Semester", d_c_joined:"Joined", d_c_last:"Last active", d_c_sec:"Sections", d_c_qi:"Intro quiz", d_c_qr:"Algebra quiz", d_c_ex:"Exercise", d_c_goals:"Goals", d_c_int:"Interests",
 sync_on:"Progress is saved to your account",
-pt_body:"<ol><li><b>Who operates it:</b> the tutorial staff of the course \"Database Design\" at Ariel University. The environment is a study aid, not an official university system.</li><li><b>What is collected:</b> email, full name, year of study, semester, national ID number, and your progress in the environment (sections viewed, self-check and exercise results).</li><li><b>Why:</b> unambiguous matching against the course roster, personal progress tracking, and bonus or attendance calculation if decided.</li><li><b>Who sees it:</b> course staff only. The ID number is stored in a separate table readable only by course staff. Data is never passed to third parties or used for any other purpose.</li><li><b>Where:</b> data is stored on Supabase servers in the EU, encrypted in transit and at rest. Passwords are stored as hashes only and cannot be read.</li><li><b>How long:</b> until the end of the academic year you registered in plus 12 months for appeals, then deleted.</li><li><b>Your rights:</b> you can ask to view, correct or delete your details at any time by contacting the TA. Deleting the account also deletes progress.</li><li>Signing up constitutes agreement to these terms.</li></ol>",
+
+ex3_h2:"Exercises 7 to 12", ex3_lede:"Self-joins and exam-level questions. Same rules: a hint after one attempt, the solution after two.", nav_r_ex2:"Exercises 7–12", ref_ride:"Schema: RideOn", ref_toy:"Tables: Students, Courses, Enroll", ls_intro1:"Why a database", ls_intro2:"Schema and a first query", ls_intro3:"Self-check", ls_ra1:"σ and π: select and project", ls_ra2:"∪ ∩ − and ×: sets and product", ls_ra3:"⋈ and ρ: join and rename", ls_ra4:"÷ division, and reading an expression", ls_ra5:"RideOn and the calculator", ls_ra6:"Exercises 1–6", ls_ra7:"Exercises 7–12", ls_ra8:"Self-check", ls_min:"{m} min", ls_upnext:"Up next", ls_next:"Next lesson", ls_next_ch:"Next chapter", ls_home:"Back home", ls_more:"That's all for now. More lessons are on the way.", ls_count:"{n} lessons · {m} min", ch_n:"Chapter {n}", ls_later:"Later in the course",
 }};
+
+/* =========================== CAMPUS LAYER =========================== */
+/* Only the university course (edition "campus") sees these: meetings and dates, what the lecture covers, course-team wording.
+   They override the edition-neutral strings above; at launch this block and CAMPUS go away. */
+const I18N_CAMPUS = {
+he: {
+lecture_only:"הרצאה בלבד",
+mp_tl_h:"12 מפגשי התרגול",
+mp_tl_note:"<b>שימו לב:</b> המפה נועדה לתמונה כללית של מה שצפוי בקורס. התאריכים וסדר התרגולים עשויים להשתנות ואינם מהווים התחייבות. במקרה של שינוי, ההודעות והפרסומים של צוות הקורס הם הקובעים. ERD ו-XML נלמדים בהרצאה. הציון: 95% מבחן מסכם, 5% תרגילי בית.",
+cov_h:"מה נלמד איפה",
+cov_lede:"כדי שתדעו מתי התרגול הוא המקור היחיד שלכם. הרשימה אומתה מול מצגות ההרצאה של תשפ\"ו, ותתעדכן אם יתווסף נושא השנה.",
+cov_only_t:"רק בתרגול",
+cov_both_t:"בהרצאה ובתרגול",
+cov_only_l:"רק בהרצאה",
+cov_only:["פונקציות חלון: OVER, PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, מסגרות ROWS BETWEEN","CTE (WITH)","CASE WHEN","INTERSECT ו-EXCEPT ב-SQL","תבנית NOT EXISTS לשאלות \"כל\" ולאנטי-צירוף","TOP, OFFSET/FETCH","פונקציות שורה: מחרוזות, מספרים, תאריכים, NULL","הסינטקס המלא של SQL Server (T-SQL)","רענון קצר של תורת הקבוצות ודה-מורגן"],
+cov_both:["אלגברה רלציונית, כל האופרטורים כולל ÷","SELECT, WHERE, GROUP BY, HAVING, DISTINCT, ORDER BY","UNION","צירופים פנימיים וחיצוניים, צירוף עצמי","תתי-שאילתות: IN, NOT IN, EXISTS, SOME/ANY, ALL","Views","חילוק ב-SQL דרך COUNT DISTINCT","נרמול: תלויות, מפתחות, L/M/R, 1NF עד BCNF"],
+cov_lect:["DDL ו-DML: CREATE, INSERT, UPDATE, DELETE","Closure של תלויות, 4NF","ERD ומיפוי לטבלאות","XML"],
+st1_s:"תרגול · מפגשים 2 עד 3",
+st2_s:"תרגול · מפגשים 4 עד 9",
+st3_s:"תרגול · מפגשים 10 עד 11",
+st4_s:"בהרצאה עם ד\"ר אלקובי בלבד",
+hello_next:"המפגש הקרוב: {d} · {t}",
+ex_note:"<b>איך זה עובד בכיתה:</b> הרמזים נפתחים אחרי ניסיון ראשון, הפתרון המלא אחרי שני ניסיונות או עם קוד המרצה. מי שהחמיץ את המפגש יכול לחזור לכאן אחרי שהקוד שוחרר.",
+tl1:"סביבת עבודה: התקנה, טעינת סכמות, שאילתות ראשונות",
+tl2:"אלגברה רלציונית 1: קבוצות, σ, π, ∪, ∩, −, ×",
+tl3:"אלגברה רלציונית 2: צירופים, ÷, ρ, גשר ל-SQL",
+tl4:"SQL 1: הכרת הסביבה, SELECT, WHERE, מיון, TOP<span class=\"tag new\">T-SQL</span>",
+tl5:"SQL 2: JOIN על כל סוגיו",
+tl6:"SQL 3: SET, CASE, אגרגציה, פונקציות שורה<span class=\"tag new\">חלקו לא בהרצאה</span>",
+tl7:"SQL 4: תתי-שאילתות, NOT EXISTS וחילוק ב-SQL",
+tl8:"SQL 5: CTE ו-Views<span class=\"tag new\">CTE לא בהרצאה</span>",
+tl9:"SQL 6: פונקציות חלון<span class=\"tag new\">לא בהרצאה</span>",
+tl10:"נרמול 1: תלויות, מפתחות, L/M/R",
+tl11:"נרמול 2: פתרון מלא בפורמט מבחן",
+tl12:"השלמה וחזרה, או חומר חדש לפי הסמסטר",
+brand_sub:"קורס תכנון בסיסי נתונים",
+nav_h_sessions:"המפגשים",
+hsx_h2:"המפגשים",
+hsx_lede:"יחידה לכל מפגש תרגול. הכרטיסים נפתחים לפי התקדמות הסמסטר, והטבעת מראה כמה מכל יחידה כבר עברתם.",
+hello_sub_new:"כאן מתחילים. המפגש הראשון פתוח, ואפשר לצעוד קדימה בקצב שלכם.",
+qk_map_s:"מה נלמד מתי, ומה רק בתרגול",
+qk_quiz_s:"שאלות בסגנון המבחן",
+hero_eyebrow:"מפגש 1 · מבוא",
+ra_eyebrow:"מפגשים 2 עד 3 · אלגברה רלציונית",
+de_p2:"המתמטיקה שמאחורי הבחירות האלה היא <strong>אלגברה רלציונית</strong>: שפה של פעולות על טבלאות (בחירה, הטלה, צירוף). היא הנושא של שני המפגשים הבאים, ובלעדיה SQL נשאר אוסף של דפוסים לשינון.",
+mp_lede:"ארבעה שלבים בקורס, וכל אחד עונה על שאלה אחת. שלושה מהם מתורגלים כאן, ו-SQL הוא לב התרגול: שישה מפגשים של העמקה וחומר שחלקו לא מופיע בהרצאה. ERD נלמד בהרצאה בלבד.",
+cov_dialect:"<b>על הדיאלקט:</b> ההרצאה מלמדת את העקרונות, לפעמים בסינטקס MySQL, וזה נכון לכל דבר עקרוני. בכל מה שנוגע לסינטקס בפועל, במטלות ובמבחן, מיישרים לפי התרגול: SQL Server.",
+ex_locked:"הפתרון המלא נפתח אחרי שני ניסיונות, או עם קוד מרצה.",
+l_sub:"ברוכים הבאים ל-RowdyQL, סביבת התרגול של הקורס תכנון בסיסי נתונים. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת המבחן וברמת ראיונות עבודה.",
+l_how:[["פותחים חשבון","ותוך דקה אתם בפנים."],["לומדים לפי המפגשים","ובקצב שלכם, כמה שתרצו."],["מתרגלים עד שזה יושב","פותרים תרגילים ובחינות."]],
+l_feat:[["σ π ⋈","ממחישים חיים","כל אופרטור ופעולה עם אנימציה על טבלאות אמיתיות. רואים מה קורה לשורות, לא רק קוראים על זה."],["✓","תרגילים שנבדקים מיד","הבדיקה משווה תוצאות, לא טקסט. יש יותר מדרך אחת נכונה, וכולן מתקבלות."],["?","שאלות בסגנון המבחן","שש אפשרויות, מלכודות אמיתיות, והסבר מיד אחרי הבחירה."],["↻","התקדמות שנשמרת","מהמחשב בכיתה לטאבלט בבית. איפה שעצרתם, שם ממשיכים."]],
+d_name_why:"כמו שתרצו שיופיע אצל המרצה.",
+d_first_why:"כמו בתעודה, כדי שנזהה אתכם ברשימת הקורס. אותיות בלבד, בעברית או באנגלית.",
+d_birth_why:"לזיהוי חד-משמעי מול רשימת הקורס. לא מוצג לאף אחד מלבד צוות הקורס.",
+o_goals_ph:"למשל: להרגיש בטוח בכתיבת שאילתות, לעבור את המבחן בכבוד, להבין מה קורה מאחורי אקסל",
+an_msg_split:"אותם נתונים, בשלוש טבלאות. כל עובדה נשמרת פעם אחת: תאריך הפסטיבל יושב בשורה אחת, אירוע יכול להתקיים בלי רכישות, ורכישה רק מצביעה על סטודנט ועל אירוע דרך מפתחות. זה בדיוק מה שנרמול עושה, ונגיע אליו במפגש 10.",
+qz_lede_ra:"שלוש שאלות 'מה מחזיר הביטוי'. בדיוק הסגנון שיופיע במבחן, על Students, Courses ו-Enroll.",
+ex2_lede:"שישה תרגילים ראשונים מתוך 12, מהקל לקשה, באותו סגנון שיופיע במבחן. הבדיקה מריצה את הביטוי שלכם ומשווה את הטבלה שיוצאת לתוצאה הנכונה, אז כל ניסוח שקול מתקבל. רמזים נפתחים אחרי ניסיון, הפתרון אחרי שניים."
+},
+en: {
+lecture_only:"lecture only",
+mp_tl_h:"The 12 tutorial sessions",
+mp_tl_note:"<b>Please note:</b> this map gives a general picture of what to expect in the course. Dates and the order of sessions may change and are not a commitment. If anything changes, the course team's announcements are what counts. ERD and XML are taught in the lecture. Grade: 95% final exam, 5% homework.",
+cov_h:"What is taught where",
+cov_lede:"So you know when the tutorial is your only source. Verified against the 2025/26 lecture slides; updated if a topic is added this year.",
+cov_only_t:"Tutorial only",
+cov_both_t:"Lecture and tutorial",
+cov_only_l:"Lecture only",
+cov_only:["Window functions: OVER, PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, ROWS BETWEEN frames","CTE (WITH)","CASE WHEN","INTERSECT and EXCEPT in SQL","The NOT EXISTS pattern for \"all\" questions and anti-joins","TOP, OFFSET/FETCH","Row functions: strings, numbers, dates, NULL","Full SQL Server (T-SQL) syntax","A short refresher of set theory and De Morgan"],
+cov_both:["Relational algebra, all operators including ÷","SELECT, WHERE, GROUP BY, HAVING, DISTINCT, ORDER BY","UNION","Inner and outer joins, self join","Subqueries: IN, NOT IN, EXISTS, SOME/ANY, ALL","Views","Division in SQL via COUNT DISTINCT","Normalization: dependencies, keys, L/M/R, 1NF to BCNF"],
+cov_lect:["DDL and DML: CREATE, INSERT, UPDATE, DELETE","Dependency closure, 4NF","ERD and mapping to tables","XML"],
+st1_s:"Tutorial · sessions 2 to 3",
+st2_s:"Tutorial · sessions 4 to 9",
+st3_s:"Tutorial · sessions 10 to 11",
+st4_s:"Lecture with Dr. Alkobi only",
+hello_next:"Next session: {d} · {t}",
+ex_note:"<b>How this works in class:</b> hints unlock after the first attempt, the full solution after two attempts or with the teacher code. Whoever missed the session can come back here once the code is released.",
+tl1:"Working environment: install, load schemas, first queries",
+tl2:"Relational algebra 1: sets, σ, π, ∪, ∩, −, ×",
+tl3:"Relational algebra 2: joins, ÷, ρ, bridge to SQL",
+tl4:"SQL 1: the environment, SELECT, WHERE, sorting, TOP<span class=\"tag new\">T-SQL</span>",
+tl5:"SQL 2: JOIN in all its forms",
+tl6:"SQL 3: SET operators, CASE, aggregation, row functions<span class=\"tag new\">partly not in lecture</span>",
+tl7:"SQL 4: subqueries, NOT EXISTS and division in SQL",
+tl8:"SQL 5: CTEs and views<span class=\"tag new\">CTE not in lecture</span>",
+tl9:"SQL 6: window functions<span class=\"tag new\">not in lecture</span>",
+tl10:"Normalization 1: dependencies, keys, L/M/R",
+tl11:"Normalization 2: a full exam-format solution",
+tl12:"Completion and review, or new material depending on the semester",
+brand_sub:"Database Design course",
+nav_h_sessions:"Sessions",
+hsx_h2:"Sessions",
+hsx_lede:"One unit per tutorial session. Cards open as the semester progresses; the ring shows how much of each unit you have covered.",
+hello_sub_new:"This is where it starts. The first session is open; move forward at your own pace.",
+qk_map_s:"What is taught when, and what only in the tutorial",
+qk_quiz_s:"Exam-style questions",
+hero_eyebrow:"Session 1 · Introduction",
+ra_eyebrow:"Sessions 2 to 3 · Relational algebra",
+de_p2:"The mathematics behind those decisions is <strong>relational algebra</strong>: a language of operations on tables (select, project, join). It is the subject of the next two sessions, and without it SQL stays a pile of patterns to memorize.",
+mp_lede:"Four stages in the course, each answering one question. Three of them are practiced here, and SQL is the heart of the tutorial: six sessions of depth, part of it material the lecture does not cover. ERD is taught in the lecture only.",
+cov_dialect:"<b>On dialect:</b> the lecture teaches the principles, sometimes in MySQL syntax, and that holds for everything conceptual. For actual syntax, in homework and in the exam, we align with the tutorial: SQL Server.",
+ex_locked:"The full solution unlocks after two attempts, or with the teacher code.",
+l_sub:"Welcome to RowdyQL, the practice environment of the Database Design course. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
+l_how:[["Create an account","and you're in within a minute."],["Learn by session","at your own pace, as much as you like."],["Practice until it sticks","Solve exercises and tests."]],
+l_feat:[["σ π ⋈","Live visualizers","Every operator and clause animated on real tables. You see what happens to the rows instead of reading about it."],["✓","Exercises checked instantly","The checker compares results, not text. There is more than one right answer, and all of them count."],["?","Exam-style questions","Six options, real traps, and an explanation right after you choose."],["↻","Progress that follows you","From the classroom computer to the tablet at home. Where you stopped is where you continue."]],
+d_name_why:"As you want it to appear to the teacher.",
+d_first_why:"As on your ID, so we can match you to the course roster. Letters only, Hebrew or English.",
+d_birth_why:"For unambiguous matching against the course roster. Visible to course staff only.",
+o_goals_ph:"e.g. feel confident writing queries, pass the exam well, understand what happens behind Excel",
+an_msg_split:"Same data, three tables. Every fact is stored once: the festival date sits in one row, an event can exist without purchases, and a purchase only points to a student and an event through keys. This is exactly what normalization does, and we reach it in session 10.",
+qz_lede_ra:"Three 'what does this expression return' questions. Exactly the exam style, on Students, Courses and Enroll.",
+ex2_lede:"The first 6 of 12 exercises, easy to hard, in the style that appears in the exam. The checker runs your expression and compares the resulting table with the correct result, so any equivalent formulation counts. Hints unlock after an attempt, the solution after two."
+}};
+const CAMPUS = {
+  dates: ['19.10','26.10','02.11','09.11','16.11','23.11','30.11','07.12','14.12','21.12','28.12','04.01'],
+  meetings: { 1: ['intro1','intro2','intro3'], 2: ['ra1','ra2'], 3: ['ra3','ra4','ra5','ra6','ra7','ra8'] },
+};
 
 /* =========================== STATE & HELPERS =========================== */
 let lang = 'he';
 try { const raw = localStorage.getItem('dbs_lang'); lang = raw ? raw.replace(/"/g,'') : 'he'; } catch(e){}
 if (lang !== 'he' && lang !== 'en') lang = 'he';
 let teacher = false;
+/* Edition: 'campus' = the university course (meetings, dates, what the lecture covers, teacher code); 'public' = the standalone course.
+   Everyone who signs up now is a campus student. At launch SITE_EDITION becomes 'public' and all accounts are reset.
+   ?preview=public (or ?preview=campus) shows the other edition in this browser only. */
+const SITE_EDITION = 'campus';
+const EDITION = (() => { try { const q = new URLSearchParams(location.search).get('preview'); if (q === 'public' || q === 'campus') return q; } catch(e){} return SITE_EDITION; })();
+document.documentElement.dataset.edition = EDITION;
 const $ = s => document.querySelector(s);
 
 /* ==HOLO== the mark, generated: isometric grid, the cell that rises out of its socket, and the rotating hologram lattice */
@@ -2797,7 +2970,9 @@ const PT = (() => {
 })();
 /* ==/PTOOLS== */
 const $$ = s => Array.from(document.querySelectorAll(s));
-const t = (k, vars) => { let s = (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : (I18N.he[k] != null ? I18N.he[k] : k); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
+/* tv = raw value (string or array): campus override first when the edition is campus, then the neutral string, Hebrew as fallback */
+const tv = k => { for (const L of [lang, 'he']) { if (EDITION === 'campus' && I18N_CAMPUS[L] && I18N_CAMPUS[L][k] != null) return I18N_CAMPUS[L][k]; if (I18N[L] && I18N[L][k] != null) return I18N[L][k]; } return k; };
+const t = (k, vars) => { let s = tv(k); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
 const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} if (SYNC_KEYS.includes(k)) syncKey(k, v); };
 const load = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } };
@@ -2941,12 +3116,16 @@ function renderLists(){
   for (let i=1;i<=6;i++){ const c = el('div','card pinnable'); c.appendChild(el('h3',null,t('ind'+i+'_h'))); c.appendChild(el('p',null,t('ind'+i+'_p'))); c.appendChild(el('code',null,codes[i-1])); ind.appendChild(c); }
   const db = $('#dbms'); db.innerHTML = '';
   [['SQL Server',true],['PostgreSQL',false],['MySQL',false],['Oracle',false],['SQLite',false]].forEach(p => { const s = el('span', p[1]?'us':'', p[0] + (p[1] ? ' · ' + t('dbms_us') : '')); db.appendChild(s); });
+  const campus = EDITION === 'campus', stageUnit = ['ra', null, null, null];
   const st = $('#stages'); st.innerHTML = ''; const syms = ['σ π ⋈','SELECT','1NF → 3NF','◇ ▭'];
-  for (let i=1;i<=4;i++){ const s = el('div','stage pinnable'); if (i===4) s.style.opacity = '.7'; s.appendChild(el('span','sym',syms[i-1])); const b = el('b',null,t('st'+i+'_b')); if (i===4) b.innerHTML += '<span class="tag">'+t('lecture_only')+'</span>'; s.appendChild(b); s.appendChild(el('p',null,t('st'+i+'_p'))); s.appendChild(el('small',null,t('st'+i+'_s'))); st.appendChild(s); }
-  const tl = $('#timeline'); tl.innerHTML = ''; const dates = ['19.10','26.10','02.11','09.11','16.11','23.11','30.11','07.12','14.12','21.12','28.12','04.01'];
-  for (let i=1;i<=12;i++){ const d = el('div','pinnable'); d.appendChild(el('span','d',dates[i-1])); d.appendChild(el('span',null,t('tl'+i))); tl.appendChild(d); }
+  for (let i=1;i<=4;i++){ const s = el('div','stage pinnable'); if (campus && i===4) s.style.opacity = '.7'; s.appendChild(el('span','sym',syms[i-1])); const b = el('b',null,t('st'+i+'_b')); if (campus && i===4) b.innerHTML += '<span class="tag">'+t('lecture_only')+'</span>'; s.appendChild(b); s.appendChild(el('p',null,t('st'+i+'_p')));
+    let sub = t('sx_soon'); if (campus) sub = t('st'+i+'_s'); else if (stageUnit[i-1]) { const ls = LESSONS.filter(l => l.unit === stageUnit[i-1]); sub = t('ls_count', { n: ls.length, m: ls.reduce((a, l) => a + l.min, 0) }); }
+    s.appendChild(el('small',null,sub)); st.appendChild(s); }
+  if (!campus) return; /* meetings, dates and what the lecture covers exist only in the campus edition */
+  const tl = $('#timeline'); tl.innerHTML = '';
+  for (let i=1;i<=12;i++){ const d = el('div','pinnable'); d.appendChild(el('span','d',CAMPUS.dates[i-1])); d.appendChild(el('span',null,t('tl'+i))); tl.appendChild(d); }
   const cov = $('#coverage'); cov.innerHTML = '';
-  [['cov_only_t','cov_only','only'],['cov_both_t','cov_both',''],['cov_only_l','cov_lect','']].forEach(c => { const card = el('div','card pinnable ' + c[2]); card.appendChild(el('h3',null,t(c[0]))); const ul = el('ul'); ((I18N[lang] || I18N.he)[c[1]] || I18N.he[c[1]]).forEach(x => ul.appendChild(el('li',null,x))); card.appendChild(ul); cov.appendChild(card); });
+  [['cov_only_t','cov_only','only'],['cov_both_t','cov_both',''],['cov_only_l','cov_lect','']].forEach(c => { const card = el('div','card pinnable ' + c[2]); card.appendChild(el('h3',null,t(c[0]))); const ul = el('ul'); tv(c[1]).forEach(x => ul.appendChild(el('li',null,x))); card.appendChild(ul); cov.appendChild(card); });
 }
 
 /* =========================== QUIZ =========================== */
@@ -3183,7 +3362,7 @@ $('#labEx').addEventListener('change', e => { const i = e.target.value; if (i !=
 const EXS2 = [ {id:'q1',lv:1},{id:'q2',lv:1},{id:'q3',lv:2},{id:'q4',lv:2},{id:'q5',lv:3},{id:'q6',lv:3},{id:'q7',lv:4},{id:'q8',lv:4},{id:'q9',lv:4},{id:'q10',lv:5},{id:'q11',lv:5},{id:'q12',lv:5} ];
 let exState = load('dbs_ra_ex', {});
 function renderExercises(){
-  const list = $('#exList'); list.innerHTML = '';
+  const list = $('#exList'), list2 = $('#exList2'); list.innerHTML = ''; if (list2) list2.innerHTML = ''; /* 1-6 and 7-12 are two lessons */
   EXS2.forEach((ex, i) => {
     const st = exState[ex.id] || { tries: 0, solved: false, q: '' };
     const card = el('div', 'ex' + (st.solved ? ' solved' : '')); card.dataset.ex = ex.id;
@@ -3197,7 +3376,7 @@ function renderExercises(){
     card.querySelector('.exH1').addEventListener('click', () => card.querySelector('.exh1').hidden = false);
     card.querySelector('.exH2').addEventListener('click', () => card.querySelector('.exh2').hidden = false);
     card.querySelector('.exS').addEventListener('click', () => card.querySelector('.exsol').hidden = false);
-    list.appendChild(card);
+    (i < 6 || !list2 ? list : list2).appendChild(card);
   });
 }
 function checkEx(ex, card){
@@ -3212,27 +3391,29 @@ function checkEx(ex, card){
   store('dbs_ra_ex', exState);
   const b1 = card.querySelector('.exH1'), b2 = card.querySelector('.exH2'), b3 = card.querySelector('.exS'); b1.disabled = b2.disabled = !(st.tries >= 1 || teacher); b3.disabled = !(st.tries >= 2 || teacher || st.solved); card.querySelector('.count').textContent = t('ex_tries', {n: st.tries});
 }
-function renderRaV2(){ renderSets(); renderProduct(); renderRename(); renderRideSchema(); renderLab(); renderExercises(); }
+function renderRaV2(){ renderSets(); renderProduct(); renderRename(); renderRideSchema(); renderLab(); renderExercises(); renderRefs(); }
+/* reference tables for lessons that use a schema introduced in an earlier lesson (exercises: RideOn, algebra self-check: the three toy tables) */
+function renderRefs(){
+  $$('[data-ref="ride"]').forEach(box => { box.innerHTML = ''; Object.keys(RIDE).forEach(name => { const tt = RIDE[name]; box.appendChild(table(tt.cols, tt.rows, {title: name, keys: tt.keys})); }); });
+  $$('[data-ref="toy"]').forEach(box => { box.innerHTML = ''; box.appendChild(table(['SID','Name','Faculty'], RA.students, {title:'Students', keys:{SID:'pk'}})); box.appendChild(table(['CID','Title'], RA.courses, {title:'Courses', keys:{CID:'pk'}})); box.appendChild(table(['SID','CID','Grade'], RA.enroll, {title:'Enroll', keys:{SID:'fk',CID:'fk'}})); });
+}
 
 /* =========================== HOME =========================== */
-const SESSION_DATES = ['19.10','26.10','02.11','09.11','16.11','23.11','30.11','07.12','14.12','21.12','28.12','04.01'];
-const SESSION_UNIT = { 1: 'intro', 2: 'ra', 3: 'ra' };
 function greetingKey(){ const h = new Date().getHours(); return h >= 5 && h < 12 ? 'gr_morning' : h < 17 ? 'gr_noon' : h < 22 ? 'gr_evening' : 'gr_night'; }
 function firstName(){ const n = (profile && (profile.first_name || profile.full_name)) || ''; return n.trim().split(' ')[0] || ''; }
-function unitProgress(u){ const secs = $$('#u-' + u + ' section.sec'); const done = secs.filter(x => visited[x.id]).length; return secs.length ? Math.round(100 * done / secs.length) : 0; }
 function markDay(){ try { const days = load('dbs_days', []); const k = new Date().toISOString().slice(0,10); if (!days.includes(k)) { days.push(k); store('dbs_days', days); } } catch(e){} }
-function goTo(u, secId){ setUnit(u); if (secId) setTimeout(() => { const el2 = $('#' + secId); if (el2) el2.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80); }
-function nextSession(){ const now = new Date(); const y = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1; for (let i = 0; i < 12; i++) { const [d, m] = SESSION_DATES[i].split('.').map(Number); const dt = new Date(m === 1 ? y + 1 : y, m - 1, d); if (dt >= now) return i + 1; } return null; }
+function goTo(u, secId){ setUnit(u, secId ? lessonOf(secId) : null, secId); }
+function nextSession(){ const now = new Date(); const y = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1; for (let i = 0; i < 12; i++) { const [d, m] = CAMPUS.dates[i].split('.').map(Number); const dt = new Date(m === 1 ? y + 1 : y, m - 1, d); if (dt >= now) return i + 1; } return null; }
 function renderHome(){
   if (!$('#u-home')) return;
   const name = firstName(); $('#helloH1').textContent = t(greetingKey()) + (name ? ', ' + name : '');
   const now = new Date(); $('#helloDate').textContent = now.toLocaleDateString(lang === 'he' ? 'he-IL' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
   const last = load('dbs_last_sec', null); const lastEl = last && $('#' + last.id) ? $('#' + last.id) : null;
-  const ns = nextSession(); const nextTxt = ns ? t('hello_next', { d: SESSION_DATES[ns - 1], t: t('tl' + ns) }) : '';
+  const ns = EDITION === 'campus' ? nextSession() : null; const nextTxt = ns ? t('hello_next', { d: CAMPUS.dates[ns - 1], t: t('tl' + ns) }) : '';
   $('#helloSub').innerHTML = (lastEl && last.unit !== 'home' ? t('hello_sub_back', { s: t(lastEl.dataset.title) }) : t('hello_sub_new')) + (nextTxt ? '<br><span class="count">' + nextTxt + '</span>' : '');
   const cta = $('#helloCta'); cta.innerHTML = '';
   if (lastEl && last.unit !== 'home') { const b = el('button', 'btn primary', t('hello_continue')); b.addEventListener('click', () => goTo(last.unit, last.id)); cta.appendChild(b); }
-  const b1 = el('button', lastEl && last.unit !== 'home' ? 'btn' : 'btn primary', t('hello_start')); b1.addEventListener('click', () => goTo('intro')); cta.appendChild(b1);
+  const b1 = el('button', lastEl && last.unit !== 'home' ? 'btn' : 'btn primary', t('hello_start')); b1.addEventListener('click', () => goTo('intro', 's-why')); cta.appendChild(b1);
   const b2 = el('button', 'btn', t('hello_ra')); b2.addEventListener('click', () => goTo('ra')); cta.appendChild(b2);
   const allSecs = $$('#u-intro section.sec, #u-ra section.sec'); const seen = allSecs.filter(x => visited[x.id]).length;
   const qi = Object.values(load('dbs_quiz_intro', {})).filter(x => x && x.ok).length, qr = Object.values(load('dbs_quiz_ra', {})).filter(x => x && x.ok).length, ex = Object.values(exState || {}).filter(x => x && x.solved).length, days = load('dbs_days', []).length;
@@ -3240,13 +3421,28 @@ function renderHome(){
   const sb2 = $('#homeStats'); sb2.innerHTML = '';
   stats.forEach((st, i) => { const d = el('div', 'stat reveal'); d.style.setProperty('--rd', (i * 0.07) + 's'); d.innerHTML = '<div class="v">' + st[1] + (st[2] ? '<small> / ' + st[2] + '</small>' : '<small> ' + t('st_days_s') + '</small>') + '</div><div class="l">' + t(st[0]) + '</div>' + (st[2] ? '<div class="bar"><i data-w="' + Math.round(100 * st[1] / st[2]) + '"></i></div>' : ''); sb2.appendChild(d); });
   const grid = $('#homeSessions'); grid.innerHTML = '';
-  for (let i = 1; i <= 12; i++) { const u = SESSION_UNIT[i]; const p = u ? unitProgress(u) : 0; const state = !u ? 'soon' : p >= 100 ? 'done' : 'open';
-    const c = el('button', 'sess reveal ' + state); c.type = 'button'; c.style.setProperty('--rd', ((i - 1) * 0.05) + 's'); c.style.setProperty('--p', p);
-    c.innerHTML = '<div class="top"><span class="num">' + String(i).padStart(2, '0') + '</span><span class="date">' + SESSION_DATES[i - 1] + '</span></div><b>' + t('tl' + i).replace(/<span class="tag[^>]*>.*?<\/span>/g, '') + '</b><div class="st"><span class="pill">' + t('sx_' + state) + '</span>' + (u ? '<span class="ring"><i>' + p + '%</i></span>' : '') + '</div>';
-    if (u) c.addEventListener('click', () => goTo(u)); else c.disabled = true; grid.appendChild(c); }
+  if (EDITION === 'campus') meetingCards(grid); else lessonCards(grid);
   const q = $('#homeQuick'); q.innerHTML = '';
-  [['qk_lab', 'qk_lab_s', 'ra', 'r-lab', 'π σ ⋈'], ['qk_ex', 'qk_ex_s', 'ra', 'r-exercises', '✓'], ['qk_map', 'qk_map_s', 'intro', 's-map', '12'], ['qk_quiz', 'qk_quiz_s', 'intro', 's-quiz-intro', '?']].forEach((x, i) => { const b = el('button', 'reveal'); b.type = 'button'; b.style.setProperty('--rd', (i * 0.06) + 's'); b.innerHTML = '<span class="ic">' + x[4] + '</span><b>' + t(x[0]) + '</b><span>' + t(x[1]) + '</span>'; b.addEventListener('click', () => goTo(x[2], x[3])); q.appendChild(b); });
+  [['qk_lab', 'qk_lab_s', 'ra', 'r-lab', 'π σ ⋈'], ['qk_ex', 'qk_ex_s', 'ra', 'r-exercises', '✓'], ['qk_map', 'qk_map_s', 'intro', 's-map', EDITION === 'campus' ? '12' : '4'], ['qk_quiz', 'qk_quiz_s', 'intro', 's-quiz-intro', '?']].forEach((x, i) => { const b = el('button', 'reveal'); b.type = 'button'; b.style.setProperty('--rd', (i * 0.06) + 's'); b.innerHTML = '<span class="ic">' + x[4] + '</span><b>' + t(x[0]) + '</b><span>' + t(x[1]) + '</span>'; b.addEventListener('click', () => goTo(x[2], x[3])); q.appendChild(b); });
   observeReveal();
+}
+/* campus: one card per meeting with its date; a meeting opens its first unfinished lesson */
+function meetingCards(grid){
+  for (let i = 1; i <= 12; i++) { const ls = (CAMPUS.meetings[i] || []).map(lessonById).filter(Boolean); const secs = [].concat(...ls.map(l => l.secs)); const p = secs.length ? Math.round(100 * secs.filter(id => visited[id]).length / secs.length) : 0; const state = !ls.length ? 'soon' : p >= 100 ? 'done' : 'open';
+    const c = el('button', 'sess reveal ' + state); c.type = 'button'; c.style.setProperty('--rd', ((i - 1) * 0.05) + 's'); c.style.setProperty('--p', p);
+    c.innerHTML = '<div class="top"><span class="num">' + String(i).padStart(2, '0') + '</span><span class="date">' + CAMPUS.dates[i - 1] + '</span></div><b>' + t('tl' + i).replace(/<span class="tag[^>]*>.*?<\/span>/g, '') + '</b><div class="st"><span class="pill">' + t('sx_' + state) + '</span>' + (ls.length ? '<span class="ring"><i>' + p + '%</i></span>' : '') + '</div>';
+    if (ls.length) c.addEventListener('click', () => { const l = ls.find(x => lessonPct(x) < 100) || ls[0]; setUnit(l.unit, l); }); else c.disabled = true; grid.appendChild(c); }
+}
+/* standalone course: the lessons of each chapter, then the chapters still to come */
+function lessonCards(grid){
+  COURSE.forEach((ch, ci) => { if (!ch.lessons.length) return;
+    grid.appendChild(el('h3', 'lsn-chh', t('ch_n', { n: ci + 1 }) + ' · ' + t('tab_' + ch.unit) + '<span>' + t('ls_count', { n: ch.lessons.length, m: ch.lessons.reduce((a, l) => a + l.min, 0) }) + '</span>'));
+    ch.lessons.forEach((l, i) => { const p = lessonPct(l), state = p >= 100 ? 'done' : 'open';
+      const c = el('button', 'sess reveal ' + state); c.type = 'button'; c.style.setProperty('--rd', (i * 0.05) + 's'); c.style.setProperty('--p', p);
+      c.innerHTML = '<div class="top"><span class="num">' + l.n + '</span><span class="lsn-dur">' + t('ls_min', { m: l.min }) + '</span></div><b>' + t('ls_' + l.id) + '</b><div class="st"><span class="pill">' + t('sx_' + state) + '</span><span class="ring"><i>' + p + '%</i></span></div>';
+      c.addEventListener('click', () => setUnit(l.unit, l)); grid.appendChild(c); }); });
+  grid.appendChild(el('h3', 'lsn-chh', t('ls_later')));
+  ['st2_b', 'st3_b', 'st4_b'].forEach((k, i) => { const c = el('button', 'sess reveal soon'); c.type = 'button'; c.disabled = true; c.innerHTML = '<div class="top"><span class="num">' + (COURSE.length + i + 1) + '</span></div><b>' + t(k) + '</b><div class="st"><span class="pill">' + t('sx_soon') + '</span></div>'; grid.appendChild(c); });
 }
 let revealIO = null;
 function observeReveal(){
@@ -3272,25 +3468,95 @@ function sideNotice(){
 /* =========================== RAIL, PROGRESS, UNITS =========================== */
 let unit = 'intro';
 const visited = load('dbs_visited', {});
+
+/* ---- the course: one chapter per unit, split into lessons. A lesson is one idea of about 15-20 minutes, shown alone on screen with
+   "next lesson" at its end. min = estimated minutes (to calibrate against real timings). only: 'public' | 'campus' keeps a lesson in one edition. ---- */
+const COURSE = [
+  { unit: 'intro', lessons: [
+    { id: 'intro1', secs: ['s-why', 's-anomaly'], min: 12 },
+    { id: 'intro2', secs: ['s-schema', 's-declarative', 's-industry', 's-map'], min: 15 },
+    { id: 'intro3', secs: ['s-quiz-intro'], min: 5 },
+  ]},
+  { unit: 'ra', lessons: [
+    { id: 'ra1', secs: ['r-data', 'r-select', 'r-project'], min: 15 },
+    { id: 'ra2', secs: ['r-sets', 'r-product'], min: 12 },
+    { id: 'ra3', secs: ['r-join', 'r-rename'], min: 15 },
+    { id: 'ra4', secs: ['r-divide', 'r-tree'], min: 15 },
+    { id: 'ra5', secs: ['r-schema2', 'r-lab'], min: 15 },
+    { id: 'ra6', secs: ['r-exercises'], min: 20 },
+    { id: 'ra7', secs: ['r-exercises2'], min: 25 },
+    { id: 'ra8', secs: ['r-quiz'], min: 5 },
+  ]},
+];
+const LESSONS = [];
+COURSE.forEach((ch, ci) => { ch.lessons = ch.lessons.filter(l => !l.only || l.only === EDITION); ch.lessons.forEach((l, li) => { l.unit = ch.unit; l.n = (ci + 1) + '.' + (li + 1); LESSONS.push(l); }); });
+/* each unit follows the course order, with a lesson bar on top and a "next lesson" card at the end */
+COURSE.forEach(ch => { const u = $('#u-' + ch.unit); if (!u) return; u.insertBefore(el('div', 'lsn-bar'), u.firstChild); ch.lessons.forEach(l => l.secs.forEach(id => { const s = document.getElementById(id); if (s) u.appendChild(s); })); u.appendChild(el('div', 'lsn-end')); });
+const lessonOf = id => LESSONS.find(l => l.secs.includes(id)) || null;
+const lessonById = id => LESSONS.find(l => l.id === id) || null;
+const lessonSecs = l => l.secs.map(id => document.getElementById(id)).filter(Boolean);
+const lessonPct = l => Math.round(100 * l.secs.filter(id => visited[id]).length / l.secs.length);
+let lesson = null;
+/* a unit opens on the lesson you were in, otherwise on its first unfinished lesson */
+function pickLesson(u){ const last = load('dbs_last_sec', null), mine = LESSONS.filter(l => l.unit === u); const lastL = last && last.unit === u ? lessonOf(last.id) : null; return lastL || mine.find(l => lessonPct(l) < 100) || mine[0] || null; }
+function openLesson(l, secId){
+  if (!l) return; lesson = l; activeSec = null;
+  $$('#u-' + l.unit + ' section.sec').forEach(s => s.hidden = !l.secs.includes(s.id));
+  renderLessonBar(); renderLessonEnd(); renderRail(); renderSpine();
+  window.scrollTo({ top: 0 });
+  if (secId && secId !== l.secs[0]) setTimeout(() => { const s = document.getElementById(secId); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+  updateNav(false);
+}
+function goLesson(l, secId){ if (!l) return; if (l.unit !== unit) setUnit(l.unit, l, secId); else openLesson(l, secId); }
+function renderLessonBar(){
+  if (!lesson) return; const bar = $('#u-' + lesson.unit + ' .lsn-bar'); if (!bar) return; bar.innerHTML = '';
+  bar.appendChild(el('div', 'lsn-t', '<span class="lsn-id">' + lesson.n + '</span><b>' + t('ls_' + lesson.id) + '</b><span class="lsn-dur">' + t('ls_min', { m: lesson.min }) + '</span>'));
+  const dots = el('div', 'lsn-dots'); LESSONS.filter(l => l.unit === lesson.unit).forEach(l => { const b = el('button', l === lesson ? 'cur' : lessonPct(l) >= 100 ? 'done' : '', '<i></i>'); b.type = 'button'; b.title = l.n + ' · ' + t('ls_' + l.id); b.setAttribute('aria-label', b.title); if (l === lesson) b.setAttribute('aria-current', 'step'); b.addEventListener('click', () => openLesson(l)); dots.appendChild(b); });
+  bar.appendChild(dots);
+}
+function renderLessonEnd(){
+  if (!lesson) return; const box = $('#u-' + lesson.unit + ' .lsn-end'); if (!box) return; box.innerHTML = '';
+  const nx = LESSONS[LESSONS.indexOf(lesson) + 1];
+  if (nx) { box.appendChild(el('span', 'eyebrow', t('ls_upnext'))); box.appendChild(el('b', null, '<span class="lsn-id">' + nx.n + '</span> ' + t('ls_' + nx.id))); box.appendChild(el('span', 'lsn-dur', t('ls_min', { m: nx.min }))); }
+  else box.appendChild(el('p', 'lsn-more', t('ls_more')));
+  const c = el('div', 'controls'), b = el('button', 'btn primary', nx ? t(nx.unit !== lesson.unit ? 'ls_next_ch' : 'ls_next') : t('ls_home')); b.type = 'button';
+  b.addEventListener('click', () => nx ? goLesson(nx) : setUnit('home')); c.appendChild(b); box.appendChild(c);
+}
 function renderRail(){
   const rail = $('#rail'); rail.innerHTML = '';
-  $$('#u-'+unit+' section.sec').forEach(sec => { const a = el('a', visited[sec.id] ? 'done' : ''); a.href = '#'+sec.id; a.innerHTML = '<span class="dot"></span><span>'+t(sec.dataset.title)+'</span>'; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({behavior:'smooth', block:'start'}); }); rail.appendChild(a); });
+  const secLink = (sec, cls) => { const a = el('a', cls, '<span class="dot"></span><span>' + t(sec.dataset.title) + '</span>'); a.href = '#' + sec.id; a.dataset.sec = sec.id; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); rail.appendChild(a); };
+  if (unit === 'home' || !lesson) $$('#u-home section.sec').forEach(sec => secLink(sec, ''));
+  else LESSONS.filter(l => l.unit === unit).forEach(l => {
+    const a = el('a', 'lsn-rl', '<span class="dot"></span><span><span class="lsn-id">' + l.n + '</span> ' + t('ls_' + l.id) + '</span>'); a.href = '#' + l.secs[0]; a.dataset.lsn = l.id; a.addEventListener('click', e => { e.preventDefault(); openLesson(l); }); rail.appendChild(a);
+    if (l === lesson && l.secs.length > 1) lessonSecs(l).forEach(sec => secLink(sec, 'lsn-rs'));
+  });
+  railState();
 }
-function setUnit(u){ unit = u; if (u === 'home' && typeof renderHome === 'function') renderHome(); $$('.unit').forEach(x => x.hidden = x.id !== 'u-'+u); $$('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.unit===u))); renderRail(); renderSpine(); window.scrollTo({top:0}); store('dbs_unit', u); updateNav(false); }
+function railState(){
+  $$('#rail a[data-sec]').forEach(a => { a.classList.toggle('active', a.dataset.sec === activeSec); a.classList.toggle('done', !!visited[a.dataset.sec]); });
+  $$('#rail a[data-lsn]').forEach(a => { const l = lessonById(a.dataset.lsn); a.classList.toggle('active', l === lesson); a.classList.toggle('done', !!l && lessonPct(l) >= 100); });
+}
+function setUnit(u, l, secId){
+  unit = u; if (u === 'home') { lesson = null; if (typeof renderHome === 'function') renderHome(); }
+  $$('.unit').forEach(x => x.hidden = x.id !== 'u-'+u); $$('.tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.unit===u))); store('dbs_unit', u);
+  if (u !== 'home') { openLesson(l || pickLesson(u), secId); return; }
+  renderRail(); renderSpine(); window.scrollTo({top:0}); updateNav(false);
+}
 $$('.tab').forEach(b => b.addEventListener('click', () => setUnit(b.dataset.unit)));
 
-/* position tracking: the rail and the side spine follow the scroll position (section whose top passed 35% of the viewport) */
+/* position tracking: the rail and the side spine follow the scroll position (section whose top passed 35% of the viewport), within the open lesson */
 let activeSec = null, railOn = load('dbs_rail', false), spineTimer = null, navTick = false;
-function renderSpine(){ const sp = $('#spine'); sp.innerHTML = ''; $$('#u-'+unit+' section.sec').forEach(sec => { const a = el('a','sp'); a.href = '#'+sec.id; a.dataset.sec = sec.id; a.innerHTML = '<i></i><span class="lbl">'+t(sec.dataset.title)+'</span>'; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({behavior:'smooth', block:'start'}); }); sp.appendChild(a); }); }
+function navSecs(){ return unit === 'home' || !lesson ? $$('#u-home section.sec') : lessonSecs(lesson); }
+function renderSpine(){ const sp = $('#spine'); sp.innerHTML = ''; navSecs().forEach(sec => { const a = el('a','sp'); a.href = '#'+sec.id; a.dataset.sec = sec.id; a.innerHTML = '<i></i><span class="lbl">'+t(sec.dataset.title)+'</span>'; a.addEventListener('click', e => { e.preventDefault(); sec.scrollIntoView({behavior:'smooth', block:'start'}); }); sp.appendChild(a); }); }
 function updateNav(flash){
   if (document.documentElement.classList.contains('gated')) return; /* nothing to track while the sign-in gate covers the page */
-  const secs = $$('#u-'+unit+' section.sec'); if (!secs.length) return;
+  const secs = navSecs(); if (!secs.length) return;
   const line = window.innerHeight * 0.35; let cur = secs[0];
   secs.forEach(s => { if (s.getBoundingClientRect().top <= line) cur = s; });
   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = secs[secs.length-1];
   const changed = cur.id !== activeSec; activeSec = cur.id; if (unit !== 'home') store('dbs_last_sec', { unit, id: cur.id });
   if (!visited[cur.id]) { visited[cur.id] = true; store('dbs_visited', visited); }
-  $$('#rail a').forEach(a => { const id = a.getAttribute('href').slice(1); a.classList.toggle('active', id === activeSec); a.classList.toggle('done', !!visited[id]); });
+  railState();
   $$('#spine .sp').forEach(a => { const id = a.dataset.sec; a.classList.toggle('cur', id === activeSec); a.classList.toggle('done', !!visited[id] && id !== activeSec); });
   const done = secs.filter(s => visited[s.id]).length; $('#prog').style.width = (100*done/secs.length) + '%';
   const idx = secs.findIndex(s => s.id === activeSec); $('#nowPill').hidden = false; $('#nowTitle').textContent = t(cur.dataset.title); $('#nowPos').textContent = (idx + 1) + ' / ' + secs.length; $('#nowDots').innerHTML = secs.map(s => '<i class="' + (s.id === activeSec ? 'cur' : visited[s.id] ? 'done' : '') + '"></i>').join('');
@@ -3298,8 +3564,11 @@ function updateNav(flash){
 }
 window.addEventListener('scroll', () => { if (navTick) return; navTick = true; requestAnimationFrame(() => { navTick = false; updateNav(true); }); }, {passive:true});
 window.addEventListener('resize', () => updateNav(false));
-function sectionList(){ return $$('#u-' + unit + ' section.sec'); }
-function jumpSection(delta){ const secs = sectionList(); const i = Math.max(0, Math.min(secs.length - 1, secs.findIndex(s => s.id === activeSec) + delta)); secs[i].scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function sectionList(){ return navSecs(); }
+/* presenter arrows: past the last section of a lesson they continue into the next lesson (and back) */
+function jumpSection(delta){ const secs = sectionList(); const i = secs.findIndex(s => s.id === activeSec) + delta;
+  if (lesson && (i < 0 || i >= secs.length)) { const nl = LESSONS[LESSONS.indexOf(lesson) + (i < 0 ? -1 : 1)]; if (nl) goLesson(nl, i < 0 ? nl.secs[nl.secs.length - 1] : null); return; }
+  secs[Math.max(0, Math.min(secs.length - 1, i))].scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 $('#nowPill').addEventListener('click', e => { e.stopPropagation(); const old = $('.nowmenu'); if (old) { old.remove(); return; } const m = el('div', 'nowmenu'); sectionList().forEach((sec, i) => { const b = el('button', sec.id === activeSec ? 'cur' : ''); b.type = 'button'; b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + t(sec.dataset.title) + '</span>'; b.addEventListener('click', () => { m.remove(); sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); m.appendChild(b); }); document.body.appendChild(m); const r = $('#nowPill').getBoundingClientRect(); m.style.top = (r.bottom + 6) + 'px'; const w = m.offsetWidth; m.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + 'px'; });
 document.addEventListener('click', e => { const m = $('.nowmenu'); if (m && !m.contains(e.target)) m.remove(); });
 document.addEventListener('keydown', e => { if (!document.documentElement.classList.contains('present') || e.target.matches('input,select,textarea') || $('#gate') && !$('#gate').hidden) return; if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); jumpSection(1); } if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); jumpSection(-1); } });
@@ -3316,12 +3585,12 @@ function applyLang(){
   $('#btnTeacher').innerHTML = '🔑 ' + (teacher ? t('teacher_on') : t('teacher'));
   renderHero(); renderAnomaly(); renderSchema(); renderLists(); renderQuiz('quizIntro','intro');
   renderRaData(); renderSelect(); renderProject(); renderJoin(); renderDivide(); renderTree(); renderRaV2(); renderQuiz('quizRa','ra'); renderHome();
-  renderRail(); renderSpine(); applyRail(); store('dbs_lang', lang); updateNav(false);
+  renderRail(); renderSpine(); renderLessonBar(); renderLessonEnd(); applyRail(); store('dbs_lang', lang); updateNav(false);
   gateRefresh();
 }
 $('#btnLang').addEventListener('click', () => { lang = lang === 'he' ? 'en' : 'he'; applyLang(); });
 $('#btnPresent').addEventListener('click', () => { document.documentElement.classList.toggle('present'); $('#btnPresent').textContent = document.documentElement.classList.contains('present') ? t('present_off') : t('present'); });
-document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'p' && !e.target.matches('input,select,textarea')) $('#btnPresent').click(); });
+document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'p' && !e.target.matches('input,select,textarea') && !$('#btnPresent').hidden) $('#btnPresent').click(); });
 function toast(msg){ const d = el('div','toast',msg); document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
 $('#btnTeacher').addEventListener('click', () => {
   if (teacher) return;
@@ -3346,7 +3615,8 @@ const fullName = () => (W.d.first + ' ' + W.d.last).trim();
 const NAME_RE = /^[A-Za-z\u05D0-\u05EA][A-Za-z\u05D0-\u05EA' -]{0,28}[A-Za-z\u05D0-\u05EA]$/;
 function normName(v){ v = String(v || '').trim().replace(/\s+/g, ' '); if (/^[A-Za-z' -]+$/.test(v)) v = v.toLowerCase().replace(/(^|[\s'-])([a-z])/g, (m, a, b) => a + b.toUpperCase()); return v; }
 function validBirth(v){ if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false; const d = new Date(v + 'T00:00:00'); if (isNaN(d)) return false; const age = (Date.now() - d.getTime()) / (365.25 * 86400000); return age >= 16 && age <= 100; }
-const CH = ['ch_details','ch_terms','ch_meet','ch_done'], ONB = ['year','sem','goals','interests'];
+const CH = ['ch_details','ch_terms','ch_meet','ch_done'], ONB = EDITION === 'campus' ? ['year','sem','goals','interests'] : ['goals','interests'];
+const ONB_COL = { year: 'StudyYear', sem: 'Semester', goals: 'Goals', interests: 'Interests' };
 let skipTimer = null;
 function gateView(v){ W.view = v; $('#landing').hidden = v !== 'landing'; $('#wizard').hidden = v === 'landing'; $('#gate').scrollTop = 0; if (v === 'wizard') wizRender(); }
 function startUp(){ W.mode = 'up'; W.ch = 0; W.sub = 0; gateView('wizard'); }
@@ -3358,11 +3628,11 @@ $('#lnkLang').addEventListener('click', () => $('#btnLang').click());
 function chaptersHtml(){ if (W.mode === 'in') return ''; return CH.map((k, i) => '<span class="' + (i < W.ch ? 'done' : i === W.ch ? 'cur' : '') + '">' + (i+1) + ' · ' + t(k) + '</span>').join(''); }
 function field(id, key, type, extra){ return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '" ' + (extra || '') + '><span class="tick">✓</span><span class="err" id="e_' + id + '"></span></label>'; }
 function seg(name, opts){ return '<div class="seg">' + opts.map(o => '<label><input type="radio" name="' + name + '" value="' + o[0] + '"' + (W.d[name] === o[0] ? ' checked' : '') + '><span>' + t(o[1]) + '</span></label>').join('') + '</div>'; }
-function recordStrip(cur){ const cols = [['year','StudyYear'],['sem','Semester'],['goals','Goals'],['interests','Interests']]; return '<div class="record"><div class="rh">' + cols.map(c => '<span>' + c[1] + '</span>').join('') + '</div><div class="rr">' + cols.map(c => { const v = W.d[c[0]]; const cls = c[0] === cur ? 'cur' : (v ? '' : 'empty'); const txt = v ? esc(String(v).slice(0,16)) + (String(v).length > 16 ? '…' : '') : (W.skipped[c[0]] ? 'NULL' : '…'); return '<span class="' + cls + '">' + txt + '</span>'; }).join('') + '</div></div>'; }
+function recordStrip(cur){ const cols = ONB.map(k => [k, ONB_COL[k]]); return '<div class="record"><div class="rh">' + cols.map(c => '<span>' + c[1] + '</span>').join('') + '</div><div class="rr">' + cols.map(c => { const v = W.d[c[0]]; const cls = c[0] === cur ? 'cur' : (v ? '' : 'empty'); const txt = v ? esc(String(v).slice(0,16)) + (String(v).length > 16 ? '…' : '') : (W.skipped[c[0]] ? 'NULL' : '…'); return '<span class="' + cls + '">' + txt + '</span>'; }).join('') + '</div></div>'; }
 function navBtns(nextKey, showBack, skippable){ return '<div class="skiprow">' + (showBack ? '<button type="button" class="gbtn ghost" id="wBack">' + t('w_back') + '</button>' : '<span></span>') + '<div class="controls">' + (skippable ? '<button type="button" class="gbtn ghost skip" id="wSkip">' + t('w_skip') + '</button>' : '') + '<button type="submit" class="go" id="gGo">' + t(nextKey) + '</button></div></div>'; }
-function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FirstName', d.first], ['LastName', d.last], ['BirthDate', d.birth], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL'], ['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL'], ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map((r, i) => '<div class="rr2" style="--i:' + i + '"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
+function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FirstName', d.first], ['LastName', d.last], ['BirthDate', d.birth], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ...(ONB.includes('year') ? [['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL']] : []), ['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL'], ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map((r, i) => '<div class="rr2" style="--i:' + i + '"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
 
-function wizProgress(){ const total = 11; let done = 0; if (W.mode === 'in') done = 0; else if (W.ch === 0) done = W.sub; else if (W.ch === 1) done = 5; else if (W.ch === 2) done = 6 + W.sub; else done = 10; const bar = $('#wprogI'); if (bar) bar.style.width = (W.mode === 'in' ? 0 : Math.round(100 * (done + 1) / total)) + '%'; $('.wprog').hidden = W.mode === 'in'; }
+function wizProgress(){ const total = 7 + ONB.length; let done = 0; if (W.mode === 'in') done = 0; else if (W.ch === 0) done = W.sub; else if (W.ch === 1) done = 5; else if (W.ch === 2) done = 6 + W.sub; else done = 6 + ONB.length; const bar = $('#wprogI'); if (bar) bar.style.width = (W.mode === 'in' ? 0 : Math.round(100 * (done + 1) / total)) + '%'; $('.wprog').hidden = W.mode === 'in'; }
 function wizRender(){
   const host = $('#stepHost'); clearTimeout(skipTimer); $('#chapters').innerHTML = chaptersHtml(); wizProgress(); $('#gMsg').hidden = true; $('#gOut').textContent = ''; $('#gTable').innerHTML = '';
   let h = '', focus = null, captcha = false;
@@ -3405,8 +3675,8 @@ function validateStep(showAll){
   const cap = $('#gCaptcha'); if (cap && !cap.hidden && captchaWidget !== null && !captchaToken) ok = false;
   const go = $('#gGo'); if (go) go.disabled = !ok || W.busy; return ok;
 }
-function wizAdvance(){ const nf = $('#gFirst'), nl = $('#gLast'); if (nf) nf.value = W.d.first; if (nl) nl.value = W.d.last; if (W.ch === 0 && W.sub < 4) W.sub++; else if (W.ch === 0) { W.ch = 1; W.sub = 0; } else if (W.ch === 1) { W.ch = 2; W.sub = 0; } else if (W.ch === 2 && W.sub < 3) W.sub++; else if (W.ch === 2) { W.ch = 3; W.sub = 0; } wizRender(); }
-function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) { W.ch = 0; W.sub = 4; } else if (W.ch === 2 && W.sub > 0) W.sub--; else if (W.ch === 2) { W.ch = 1; W.sub = 0; } else if (W.ch === 3) { W.ch = 2; W.sub = 3; } wizRender(); }
+function wizAdvance(){ const nf = $('#gFirst'), nl = $('#gLast'); if (nf) nf.value = W.d.first; if (nl) nl.value = W.d.last; if (W.ch === 0 && W.sub < 4) W.sub++; else if (W.ch === 0) { W.ch = 1; W.sub = 0; } else if (W.ch === 1) { W.ch = 2; W.sub = 0; } else if (W.ch === 2 && W.sub < ONB.length - 1) W.sub++; else if (W.ch === 2) { W.ch = 3; W.sub = 0; } wizRender(); }
+function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) { W.ch = 0; W.sub = 4; } else if (W.ch === 2 && W.sub > 0) W.sub--; else if (W.ch === 2) { W.ch = 1; W.sub = 0; } else if (W.ch === 3) { W.ch = 2; W.sub = ONB.length - 1; } wizRender(); }
 function persuade(){ const d = el('div','persuade'); d.innerHTML = '<div><h3>' + t('p_h') + '</h3><p>' + t('p_body') + '</p><div class="controls"><button type="button" class="gbtn primary" id="pStay">' + t('p_stay') + '</button><button type="button" class="gbtn ghost" id="pSkip">' + t('p_skip') + '</button></div></div>'; document.body.appendChild(d); $('#pStay').addEventListener('click', () => { d.remove(); const f = $('#gText'); if (f) f.focus(); }); $('#pSkip').addEventListener('click', () => { d.remove(); const k = ONB[W.sub]; W.skipped[k] = true; W.d[k] = ''; wizAdvance(); }); }
 
 function renderLive(){
@@ -3419,7 +3689,7 @@ function renderLive(){
   if (W.ch > 0 || W.sub >= 3) { cols.push('LastName'); vals.push(NOW('last', S(d.last))); }
   if (W.ch > 0 || W.sub >= 4) { cols.push('BirthDate'); vals.push(NOW('birth', S(d.birth))); }
   if (W.ch >= 1) { cols.push('Consent'); vals.push(NOW('consent', d.consent ? "<span class='n'>TRUE</span>" : "<span class='c'>FALSE</span>")); }
-  if (W.ch >= 2) { cols.push('StudyYear', 'Semester', 'Goals', 'Interests'); vals.push(NOW('year', N(d.year)), NOW('sem', S(d.sem)), NOW('goals', S(clip(d.goals))), NOW('interests', S(clip(d.interests)))); }
+  if (W.ch >= 2) ONB.forEach(k => { cols.push(ONB_COL[k]); vals.push(NOW(k, k === 'year' ? N(d.year) : k === 'sem' ? S(d.sem) : S(clip(d[k])))); });
   cols.push('RegisteredAt'); vals.push("<span class='n'>SYSDATETIME()</span>");
   pre.innerHTML = "<span class='k'>INSERT INTO</span> Students\n  (" + cols.join(', ') + ")\n<span class='k'>VALUES</span>\n  (" + vals.join(', ') + ");" + cur;
 }
@@ -3427,7 +3697,7 @@ let footTyped = '';
 function typeFoot(){ const box = $('#sidefoot'); if (!box || footTyped === lang) return; footTyped = lang; const html = t('g_foot'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; if (reduce) { box.innerHTML = html; return; } const parts = html.split(/(<code>.*?<\/code>)/); let pi = 0, ci = 0; box.innerHTML = ''; const tick = () => { if (pi >= parts.length) return; const part = parts[pi]; if (part.startsWith('<code>')) { box.insertAdjacentHTML('beforeend', part); pi++; ci = 0; setTimeout(tick, 120); return; } if (ci < part.length) { box.appendChild(document.createTextNode(part[ci])); ci++; setTimeout(tick, 18); } else { pi++; ci = 0; tick(); } }; tick(); }
 function gateMsg(text, bad){ const m = $('#gMsg'); m.hidden = false; m.className = 'msg' + (bad ? ' bad' : ''); m.innerHTML = text; }
 function gateOut(html){ $('#gOut').innerHTML = html; }
-function showRow(){ const d = W.d; const tb = table(['Email','FirstName','LastName','StudyYear','Semester','RegisteredAt'], [{Email: d.email, FirstName: d.first, LastName: d.last, StudyYear: d.year || null, Semester: d.sem || null, RegisteredAt: new Date().toISOString().slice(0,16).replace('T',' ')}]); tb.querySelectorAll('tr:nth-child(2)').forEach(r => r.classList.add('row-in')); $('#gTable').innerHTML = ''; $('#gTable').appendChild(tb); }
+function showRow(){ const d = W.d; const tb = table(['Email','FirstName','LastName'].concat(ONB.includes('year') ? ['StudyYear','Semester'] : [], ['RegisteredAt']), [{Email: d.email, FirstName: d.first, LastName: d.last, StudyYear: d.year || null, Semester: d.sem || null, RegisteredAt: new Date().toISOString().slice(0,16).replace('T',' ')}]); tb.querySelectorAll('tr:nth-child(2)').forEach(r => r.classList.add('row-in')); $('#gTable').innerHTML = ''; $('#gTable').appendChild(tb); }
 document.addEventListener('click', e => { if (e.target.id === 'termsLink') { e.preventDefault(); showTerms(); } });
 function showTerms(){ const d = el('div','modal'); d.innerHTML = '<div><h3>' + t('pt_h') + '</h3>' + t('pt_body') + '<div class="controls"><button type="button" class="btn primary" id="ptClose">' + t('pt_close') + '</button></div></div>'; document.body.appendChild(d); $('#ptClose').addEventListener('click', () => d.remove()); d.addEventListener('click', ev => { if (ev.target === d) d.remove(); }); }
 
@@ -3486,8 +3756,8 @@ function startDemo(){
   run();
 }
 function renderLanding(){ if (built) $('#gate').classList.add('built');
-  const f = $('#feat'); f.innerHTML = ''; ((I18N[lang] || I18N.he).l_feat || I18N.he.l_feat).forEach((x, i) => { const d = el('div','b'); d.style.setProperty('--d', (1.15 + i * 0.14) + 's'); d.innerHTML = '<span class="ic">' + esc(x[0]) + '</span><b>' + esc(x[1]) + '</b><span>' + esc(x[2]) + '</span>'; f.appendChild(d); });
-  const hw = $('#how'); hw.innerHTML = ''; ((I18N[lang] || I18N.he).l_how || I18N.he.l_how).forEach((x, i) => { const d = el('div','b'); d.style.setProperty('--d', (1.85 + i * 0.16) + 's'); d.innerHTML = '<b>' + esc(x[0]) + '</b>' + (x[1] ? '<span>' + esc(x[1]) + '</span>' : ''); hw.appendChild(d); });
+  const f = $('#feat'); f.innerHTML = ''; tv('l_feat').forEach((x, i) => { const d = el('div','b'); d.style.setProperty('--d', (1.15 + i * 0.14) + 's'); d.innerHTML = '<span class="ic">' + esc(x[0]) + '</span><b>' + esc(x[1]) + '</b><span>' + esc(x[2]) + '</span>'; f.appendChild(d); });
+  const hw = $('#how'); hw.innerHTML = ''; tv('l_how').forEach((x, i) => { const d = el('div','b'); d.style.setProperty('--d', (1.85 + i * 0.16) + 's'); d.innerHTML = '<b>' + esc(x[0]) + '</b>' + (x[1] ? '<span>' + esc(x[1]) + '</span>' : ''); hw.appendChild(d); });
   $('#lnkLang').textContent = lang === 'he' ? 'EN' : 'עב';
 }
 function gateRefresh(){ renderLanding(); if (W.view === 'wizard') { wizRender(); if (footTyped) { footTyped = ''; typeFoot(); } } }
@@ -3498,7 +3768,7 @@ async function loadProfile(){ if (!sb || !session || !session.user) return; try 
 function onSession(){
   if (session && profile && profile.status === 'blocked') { if (sb) { try { sb.auth.signOut(); } catch(e) {} } session = null; profile = null; location.hash = '#signin'; setTimeout(() => gateMsg(t('g_blocked'), true), 400); }
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) { window.scrollTo({top:0}); setTimeout(() => updateNav(false), 50); }
-  const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher);
+  const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher); $('#btnPresent').hidden = EDITION === 'public' && !isTeacher;
   if (on) { const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; $('#userInit').textContent = (name.trim()[0] || '?').toUpperCase(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); savedPopup(); }); logVisit(); } else { setUnit('home'); sideNotice(); savedPopup(); } }
   else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); if (built) { $('#gate').classList.add('built'); $('#gateLogo').classList.add('show'); } }
 }
@@ -3646,6 +3916,7 @@ function startGateBg(){
 }
 
 /* =========================== INIT =========================== */
+if (EDITION === 'public') $('#btnPresent').hidden = true; /* shown again for staff once signed in */
 applyLang();
 setUnit(load('dbs_unit','home'));
 initAuth();
