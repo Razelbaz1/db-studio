@@ -1360,7 +1360,7 @@ g_consent:"קראתי ואני מסכים/ה ל<a href=\"#\" id=\"termsLink\">ת
 g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב הדגמה: הפרטים נשמרים בדפדפן הזה בלבד.",
 g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכניסה היא <code>SELECT</code>. הסיסמה נשמרת כגיבוב, אף פעם לא כטקסט.",
 e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"אותיות בלבד, בעברית או באנגלית, 2 עד 30 תווים", e_birth:"תאריך לידה לא סביר",
-g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום. עברו לכניסה.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
+g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום.", g_to_in:"לכניסה", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
 l_h1:"עוד לא מבינים מילה? הגעתם בול בזמן.",
 l_sub:"ברוכים הבאים ל-RowdyQL. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת מבחן וברמת ראיונות עבודה.",
 l_cta:"מכאן מתחילים", l_cta2:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
@@ -1601,7 +1601,7 @@ g_consent:"I have read and agree to the <a href=\"#\" id=\"termsLink\">full priv
 g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: details are kept in this browser only.",
 g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SELECT</code>. The password is stored as a hash, never as text.",
 e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Letters only, Hebrew or English, 2 to 30 characters", e_birth:"Implausible date of birth",
-g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered. Switch to sign in.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
+g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered.", g_to_in:"Sign in", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
 l_h1:"Don't understand a word yet? Perfect timing.",
 l_sub:"Welcome to RowdyQL. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
 l_cta:"Start here", l_cta2:"Create an account, one minute", l_have:"I already have an account",
@@ -3740,7 +3740,7 @@ function renderLive(){
 }
 let footTyped = '';
 function typeFoot(){ const box = $('#sidefoot'); if (!box || footTyped === lang) return; footTyped = lang; const html = t('g_foot'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; if (reduce) { box.innerHTML = html; return; } const parts = html.split(/(<code>.*?<\/code>)/); let pi = 0, ci = 0; box.innerHTML = ''; const tick = () => { if (pi >= parts.length) return; const part = parts[pi]; if (part.startsWith('<code>')) { box.insertAdjacentHTML('beforeend', part); pi++; ci = 0; setTimeout(tick, 120); return; } if (ci < part.length) { box.appendChild(document.createTextNode(part[ci])); ci++; setTimeout(tick, 18); } else { pi++; ci = 0; tick(); } }; tick(); }
-function gateMsg(text, bad){ const m = $('#gMsg'); m.hidden = false; m.className = 'msg' + (bad ? ' bad' : ''); m.innerHTML = text; }
+function gateMsg(text, bad){ const m = $('#gMsg'); m.hidden = false; m.className = 'msg' + (bad ? ' bad' : ''); m.innerHTML = text; requestAnimationFrame(() => m.scrollIntoView({ behavior: 'smooth', block: 'nearest' })); }
 function gateOut(html){ $('#gOut').innerHTML = html; }
 function showRow(){ const d = W.d; const tb = table(['Email','FirstName','LastName'].concat(ONB.includes('year') ? ['StudyYear','Semester'] : [], ['RegisteredAt']), [{Email: d.email, FirstName: d.first, LastName: d.last, StudyYear: d.year || null, Semester: d.sem || null, RegisteredAt: new Date().toISOString().slice(0,16).replace('T',' ')}]); tb.querySelectorAll('tr:nth-child(2)').forEach(r => r.classList.add('row-in')); $('#gTable').innerHTML = ''; $('#gTable').appendChild(tb); }
 document.addEventListener('click', e => { if (e.target.id === 'termsLink') { e.preventDefault(); showTerms(); } });
@@ -3758,8 +3758,8 @@ $('#gateForm').addEventListener('submit', async e => {
     }
     if (W.mode === 'up') {
       const meta = { full_name: fullName(), first_name: d.first, last_name: d.last, birth_date: d.birth, study_year: d.year ? +d.year : null, semester: d.sem || null, goals: d.goals || null, interests: d.interests || null, consent_at: new Date().toISOString(), consent_version: DBS_CONFIG.termsVersion };
-      if (sb) { const { data, error } = await sb.auth.signUp({ email: d.email, password: d.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: fullName()}), false); if (data.session) { session = data.session; await loadProfile(); setTimeout(onSession, 900); } }
-      else { profile = { email: d.email, full_name: fullName(), first_name: d.first, last_name: d.last, birth_date: d.birth, study_year: meta.study_year, semester: meta.semester, goals: meta.goals, interests: meta.interests, consent_at: meta.consent_at }; store('dbs_profile', profile); showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t('g_ok_up_demo'), false); session = { demo: true }; setTimeout(onSession, 1200); }
+      if (sb) { const { data, error } = await sb.auth.signUp({ email: d.email, password: d.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; if (data.user && Array.isArray(data.user.identities) && !data.user.identities.length) throw new Error('already registered'); showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: fullName()}), false); if (data.session) { session = data.session; await loadProfile(); setTimeout(onSession, 900); } }
+      else { const ex = load('dbs_profile', null); if (ex && ex.email === d.email) throw new Error('already registered'); profile = { email: d.email, full_name: fullName(), first_name: d.first, last_name: d.last, birth_date: d.birth, study_year: meta.study_year, semester: meta.semester, goals: meta.goals, interests: meta.interests, consent_at: meta.consent_at }; store('dbs_profile', profile); showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t('g_ok_up_demo'), false); session = { demo: true }; setTimeout(onSession, 1200); }
     } else {
       if (sb) { const { data, error } = await sb.auth.signInWithPassword({ email: d.email, password: d.pass, options: { captchaToken: captchaToken || undefined } }); if (error) throw error; session = data.session; await loadProfile(); if (profile && profile.status === 'blocked') { try { await sb.auth.signOut(); } catch(e) {} session = null; profile = null; gateOut(''); gateMsg(t('g_blocked'), true); W.busy = false; return; } gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: (profile && profile.full_name) || ''}), false); setTimeout(onSession, 700); }
       else { const p = load('dbs_profile', null); if (!p || p.email !== d.email) throw new Error('bad'); profile = p; session = { demo: true }; gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: p.full_name}), false); setTimeout(onSession, 700); }
@@ -3767,7 +3767,12 @@ $('#gateForm').addEventListener('submit', async e => {
   } catch (err) {
     resetCaptcha(); W.busy = false; validateStep(false);
     const m = String((err && err.message) || err).toLowerCase(); gateOut('<span style="color:#F28B7E">ERROR</span>');
-    gateMsg(t(m.includes('security purposes') || m.includes('rate limit') ? 'e_wait' : m.includes('captcha') ? 'g_err_captcha' : m.includes('already') || m.includes('registered') ? 'g_err_exists' : m.includes('invalid') || m.includes('bad') || m.includes('credentials') ? 'g_err_in' : 'g_err_gen'), true);
+    const kind = m.includes('security purposes') || m.includes('rate limit') ? 'e_wait' : m.includes('captcha') ? 'g_err_captcha' : m.includes('already') || m.includes('registered') ? 'g_err_exists' : m.includes('invalid') || m.includes('bad') || m.includes('credentials') ? 'g_err_in' : 'g_err_gen';
+    if (kind === 'g_err_exists') {
+      gateOut('<span style="color:#F28B7E">Violation of UNIQUE KEY constraint (Email)</span>');
+      gateMsg(t(kind) + '<div class="controls" style="margin-top:.6rem"><button type="button" class="gbtn primary" id="gExIn">' + t('g_to_in') + '</button><button type="button" class="gbtn ghost" id="gExReset">' + t('g_forgot') + '</button></div>', true);
+      $('#gExIn').addEventListener('click', startIn); $('#gExReset').addEventListener('click', () => { W.mode = 'reset'; gateView('wizard'); });
+    } else gateMsg(t(kind), true);
   }
 });
 
