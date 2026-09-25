@@ -601,7 +601,7 @@ textarea.gt{min-height:6.5rem;resize:vertical;width:100%}
 .gate pre.live .n{color:#6BD09A}
 .gate pre.live .c{color:#93A5A1}
 .gate pre.live .cur{display:inline-block;width:.55em;height:1.1em;background:#5CC3D9;vertical-align:-2px;animation:pulse 1s infinite}
-.gate pre.live .now{text-shadow:0 0 12px rgba(92,195,217,.9);outline:1px solid rgba(92,195,217,.45);outline-offset:2px;border-radius:3px}
+.gate pre.live .lq-now{text-shadow:0 0 12px rgba(92,195,217,.9);outline:1px solid rgba(92,195,217,.45);outline-offset:2px;border-radius:3px}
 .gate .out{font-family:var(--mono);font-size:.82rem;color:#93A5A1;min-height:1.6rem;direction:ltr;text-align:left}
 .gate .out b{color:#6BD09A;font-weight:500}
 .gate table.data{background:#0B1416;color:#E6EEEC}
@@ -724,6 +724,16 @@ html[data-bg="sand"][data-theme="dark"]{--ground:#17140E}html[data-bg="sky"][dat
 .me-f .err{color:var(--bad);font-size:.8rem;min-height:1.1em}
 .btn.me-danger{background:var(--bad);border-color:var(--bad);color:var(--on-accent)}
 #meDel,#mePw{display:flex;flex-direction:column;gap:.7rem}
+.gate .f .eye{position:absolute;right:.5rem;top:1.95rem;width:2.3rem;height:2.3rem;display:grid;place-items:center;background:none;border:0;border-radius:8px;color:#93A5A1;cursor:pointer;padding:0}
+.gate .f .eye:hover,.gate .f .eye[aria-pressed="true"]{color:#5CC3D9}
+.gate .f .eye svg{width:1.25rem;height:1.25rem}
+.gate .f .eye .off{display:none}.gate .f .eye[aria-pressed="true"] .off{display:inline}
+.gate .f input.pw[dir]{padding-right:3rem}
+.gate .f:has(.eye) .tick{display:none}
+.gate .estat{min-height:1.4em;margin-top:-.5rem;font-size:.9rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;color:#93A5A1}
+.gate .estat:empty{display:none}
+.gate .estat.free{color:#6BD09A}.gate .estat.taken{color:#F28B7E}
+.gate .estat .gbtn.small{min-height:34px;padding:.25rem .75rem;font-size:.85rem}
 .gate .fp-link{align-self:flex-end;margin-top:-.5rem;padding:.2rem .4rem;min-height:36px;font-size:.88rem}
 /* LTR fields (email, password) in the RTL form: the check mark goes to the side the text does not start from */
 .gate[dir="rtl"] .f input[dir="ltr"]{padding-right:2.3rem}
@@ -1374,7 +1384,7 @@ g_consent:"קראתי ואני מסכים/ה ל<a href=\"#\" id=\"termsLink\">ת
 g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב הדגמה: הפרטים נשמרים בדפדפן הזה בלבד.",
 g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכניסה היא <code>SELECT</code>. הסיסמה נשמרת כגיבוב, אף פעם לא כטקסט.",
 e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"אותיות בלבד, בעברית או באנגלית, 2 עד 30 תווים", e_birth:"תאריך לידה לא סביר",
-g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום.", g_to_in:"לכניסה", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
+g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום.", g_to_in:"לכניסה", g_pass2:"אימות סיסמה", g_show:"הצגת הסיסמה", g_hide:"הסתרת הסיסמה", g_checking:"בודקים…", g_free:"האימייל פנוי.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
 l_h1:"עוד לא מבינים מילה? הגעתם בול בזמן.",
 l_sub:"ברוכים הבאים ל-RowdyQL. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת מבחן וברמת ראיונות עבודה.",
 l_cta:"מכאן מתחילים", l_cta2:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
@@ -1615,7 +1625,7 @@ g_consent:"I have read and agree to the <a href=\"#\" id=\"termsLink\">full priv
 g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: details are kept in this browser only.",
 g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SELECT</code>. The password is stored as a hash, never as text.",
 e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Letters only, Hebrew or English, 2 to 30 characters", e_birth:"Implausible date of birth",
-g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered.", g_to_in:"Sign in", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
+g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered.", g_to_in:"Sign in", g_pass2:"Confirm password", g_show:"Show password", g_hide:"Hide password", g_checking:"Checking…", g_free:"This email is available.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
 l_h1:"Don't understand a word yet? Perfect timing.",
 l_sub:"Welcome to RowdyQL. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
 l_cta:"Start here", l_cta2:"Create an account, one minute", l_have:"I already have an account",
@@ -3663,7 +3673,7 @@ const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/'
 const withTimeout = (pr, ms) => Promise.race([pr, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
 
 /* ---- wizard state ---- */
-const W = { view: 'landing', mode: 'up', ch: 0, sub: 0, busy: false, d: { email:'', pass:'', first:'', last:'', birth:'', consent:false, year:'', sem:'', goals:'', interests:'' }, skipped: {} };
+const W = { view: 'landing', mode: 'up', ch: 0, sub: 0, busy: false, d: { email:'', pass:'', pass2:'', first:'', last:'', birth:'', consent:false, year:'', sem:'', goals:'', interests:'' }, skipped: {} };
 const fullName = () => (W.d.first + ' ' + W.d.last).trim();
 const NAME_RE = /^[A-Za-z\u05D0-\u05EA][A-Za-z\u05D0-\u05EA' -]{0,28}[A-Za-z\u05D0-\u05EA]$/;
 function normName(v){ v = String(v || '').trim().replace(/\s+/g, ' '); if (/^[A-Za-z' -]+$/.test(v)) v = v.toLowerCase().replace(/(^|[\s'-])([a-z])/g, (m, a, b) => a + b.toUpperCase()); return v; }
@@ -3679,7 +3689,8 @@ function startIn(){ W.mode = 'in'; gateView('wizard'); }
 $('#lnkLang').addEventListener('click', () => $('#btnLang').click());
 
 function chaptersHtml(){ if (W.mode !== 'up') return ''; return CH.map((k, i) => '<span class="' + (i < W.ch ? 'done' : i === W.ch ? 'cur' : '') + '">' + (i+1) + ' · ' + t(k) + '</span>').join(''); }
-function field(id, key, type, extra){ return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '" ' + (extra || '') + '><span class="tick">✓</span><span class="err" id="e_' + id + '"></span></label>'; }
+const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="off" d="M4 4l16 16"/></svg>';
+function field(id, key, type, extra){ const pw = type === 'password'; return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '"' + (pw ? ' class="pw"' : '') + ' ' + (extra || '') + '>' + (pw ? '<button type="button" class="eye" data-for="' + id + '" aria-pressed="false" aria-label="' + esc(t('g_show')) + '">' + EYE + '</button>' : '') + '<span class="tick">✓</span><span class="err" id="e_' + id + '"></span></label>'; }
 function seg(name, opts){ return '<div class="seg">' + opts.map(o => '<label><input type="radio" name="' + name + '" value="' + o[0] + '"' + (W.d[name] === o[0] ? ' checked' : '') + '><span>' + t(o[1]) + '</span></label>').join('') + '</div>'; }
 function recordStrip(cur){ const cols = ONB.map(k => [k, ONB_COL[k]]); return '<div class="record"><div class="rh">' + cols.map(c => '<span>' + c[1] + '</span>').join('') + '</div><div class="rr">' + cols.map(c => { const v = W.d[c[0]]; const cls = c[0] === cur ? 'cur' : (v ? '' : 'empty'); const txt = v ? esc(String(v).slice(0,16)) + (String(v).length > 16 ? '…' : '') : (W.skipped[c[0]] ? 'NULL' : '…'); return '<span class="' + cls + '">' + txt + '</span>'; }).join('') + '</div></div>'; }
 function navBtns(nextKey, showBack, skippable){ return '<div class="skiprow">' + (showBack ? '<button type="button" class="gbtn ghost" id="wBack">' + t('w_back') + '</button>' : '<span></span>') + '<div class="controls">' + (skippable ? '<button type="button" class="gbtn ghost skip" id="wSkip">' + t('w_skip') + '</button>' : '') + '<button type="submit" class="go" id="gGo">' + t(nextKey) + '</button></div></div>'; }
@@ -3696,7 +3707,8 @@ function wizRender(){
   } else if (W.ch === 0) {
     const subs = [['gEmail','g_email','email','autocomplete="email" dir="ltr"','d_email_why','email'], ['gPass','g_pass','password','autocomplete="new-password" dir="ltr"','d_pass_why','pass'], ['gFirst','g_first','text','autocomplete="given-name" maxlength="30"','d_first_why','first'], ['gLast','g_last','text','autocomplete="family-name" maxlength="30"','d_last_why','last'], ['gBirth','g_birth','date','dir="ltr" min="1926-01-01" max="2012-12-31"','d_birth_why','birth']];
     const sd = subs[W.sub];
-    h = '<div class="wstep"><h2>' + t('dt_h') + '</h2><p class="why">' + t(sd[4]) + '</p>' + field(sd[0], sd[1], sd[2], sd[3] + ' value="' + esc(W.d[sd[5]]) + '"') + navBtns('w_next', W.sub > 0, false) + '<button type="button" class="gbtn ghost" id="wToIn">' + t('up_to_in') + '</button></div>'; focus = sd[0];
+    const extraField = W.sub === 0 ? '<div class="estat" id="gEmailSt" role="status"></div>' : W.sub === 1 ? field('gPass2', 'g_pass2', 'password', 'autocomplete="new-password" dir="ltr" value="' + esc(W.d.pass2) + '"') : '';
+    h = '<div class="wstep"><h2>' + t('dt_h') + '</h2><p class="why">' + t(sd[4]) + '</p>' + field(sd[0], sd[1], sd[2], sd[3] + ' value="' + esc(W.d[sd[5]]) + '"') + extraField + navBtns('w_next', W.sub > 0, false) + '<button type="button" class="gbtn ghost" id="wToIn">' + t('up_to_in') + '</button></div>'; focus = sd[0];
   } else if (W.ch === 1) {
     h = '<div class="wstep"><h2>' + t('tm_h') + '</h2><p class="why">' + t('tm_why') + '</p><ul class="tsum">' + ['t_s1','t_s2','t_s3','t_s4'].map(k => '<li>' + t(k) + '</li>').join('') + '</ul><label class="consent"><input type="checkbox" id="gConsent"' + (W.d.consent ? ' checked' : '') + '><span>' + t('g_consent') + '</span></label>' + navBtns('w_next', true, false) + '</div>';
   } else if (W.ch === 2) {
@@ -3716,29 +3728,50 @@ function wizRender(){
   const toUp = $('#wToUp'); if (toUp) toUp.addEventListener('click', startUp);
   const fg = $('#wForgot'); if (fg) fg.addEventListener('click', () => { readInputs(); W.mode = 'reset'; wizRender(); });
   const toIn2 = $('#wToIn2'); if (toIn2) toIn2.addEventListener('click', startIn);
+  host.querySelectorAll('.eye').forEach(b => b.addEventListener('click', ev => { ev.preventDefault(); const inp = $('#' + b.dataset.for); const show = inp.type === 'password'; inp.type = show ? 'text' : 'password'; b.setAttribute('aria-pressed', String(show)); b.setAttribute('aria-label', t(show ? 'g_hide' : 'g_show')); inp.focus(); }));
+  if (W.mode === 'up' && W.ch === 0 && W.sub === 0) { $('#gEmail').addEventListener('input', emailCheck); emailCheck(); }
   host.querySelectorAll('input,textarea').forEach(inp => { inp.addEventListener('input', () => { inp.dataset.touched = '1'; typeFoot(); readInputs(); validateStep(false); renderLive(); }); inp.addEventListener('change', () => { readInputs(); validateStep(false); renderLive(); }); });
   readInputs(); validateStep(false); renderLive();
   if (focus && $('#' + focus)) setTimeout(() => $('#' + focus).focus(), 60);
 }
-function readInputs(){ const g = id => $('#' + id); if (g('gEmail')) W.d.email = g('gEmail').value.trim(); if (g('gPass')) W.d.pass = g('gPass').value; if (g('gFirst')) W.d.first = normName(g('gFirst').value); if (g('gLast')) W.d.last = normName(g('gLast').value); if (g('gBirth')) W.d.birth = g('gBirth').value; if (g('gConsent')) W.d.consent = g('gConsent').checked; const y = document.querySelector('input[name=year]:checked'); if (y) W.d.year = y.value; const sm = document.querySelector('input[name=sem]:checked'); if (sm) W.d.sem = sm.value; if (g('gText') && W.ch === 2) W.d[ONB[W.sub]] = g('gText').value.trim(); }
+function readInputs(){ const g = id => $('#' + id); if (g('gEmail')) W.d.email = g('gEmail').value.trim(); if (g('gPass')) W.d.pass = g('gPass').value; if (g('gPass2')) W.d.pass2 = g('gPass2').value; if (g('gFirst')) W.d.first = normName(g('gFirst').value); if (g('gLast')) W.d.last = normName(g('gLast').value); if (g('gBirth')) W.d.birth = g('gBirth').value; if (g('gConsent')) W.d.consent = g('gConsent').checked; const y = document.querySelector('input[name=year]:checked'); if (y) W.d.year = y.value; const sm = document.querySelector('input[name=sem]:checked'); if (sm) W.d.sem = sm.value; if (g('gText') && W.ch === 2) W.d[ONB[W.sub]] = g('gText').value.trim(); }
 function setErr(id, ok, key, showAll){ const inp = $('#' + id); if (!inp) return; const e = $('#e_' + id); const touched = showAll || inp.dataset.touched; inp.classList.toggle('bad', !ok && !!touched && inp.value !== ''); inp.classList.toggle('ok', ok && inp.value !== ''); if (e) e.textContent = (!ok && touched && inp.value !== '') ? t(key) : ''; }
 function validateStep(showAll){
   let ok = true; const d = W.d;
   const okEmail = validEmail(d.email) && (!DBS_CONFIG.requireEmailDomain || d.email.toLowerCase().endsWith('@' + DBS_CONFIG.requireEmailDomain.toLowerCase()));
   if (W.mode === 'in') { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail && d.pass.length >= 1; }
   else if (W.mode === 'reset') { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail; }
-  else if (W.ch === 0) { if (W.sub === 0) { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail; } else if (W.sub === 1) { const okP = d.pass.length >= 8; setErr('gPass', okP, 'e_pass', showAll); ok = okP; } else if (W.sub === 2) { const okF = NAME_RE.test(d.first); setErr('gFirst', okF, 'e_name', showAll); ok = okF; } else if (W.sub === 3) { const okL = NAME_RE.test(d.last); setErr('gLast', okL, 'e_name', showAll); ok = okL; } else { const okB = validBirth(d.birth); setErr('gBirth', okB, 'e_birth', showAll); ok = okB; } }
+  else if (W.ch === 0) { if (W.sub === 0) { setErr('gEmail', okEmail, 'e_email', showAll); ok = okEmail && (EC.state === 'free' || EC.state === 'error'); } else if (W.sub === 1) { const okP = d.pass.length >= 8, okM = d.pass2 === d.pass; setErr('gPass', okP, 'e_pass', showAll); setErr('gPass2', okM && okP, okM ? 'e_pass' : 'e_match', showAll); ok = okP && okM; } else if (W.sub === 2) { const okF = NAME_RE.test(d.first); setErr('gFirst', okF, 'e_name', showAll); ok = okF; } else if (W.sub === 3) { const okL = NAME_RE.test(d.last); setErr('gLast', okL, 'e_name', showAll); ok = okL; } else { const okB = validBirth(d.birth); setErr('gBirth', okB, 'e_birth', showAll); ok = okB; } }
   else if (W.ch === 1) ok = d.consent;
   else if (W.ch === 2) { const k = ONB[W.sub]; ok = (k === 'year' || k === 'sem') ? !!d[k] : true; }
   const cap = $('#gCaptcha'); if (cap && !cap.hidden && captchaWidget !== null && !captchaToken) ok = false;
   const go = $('#gGo'); if (go) go.disabled = !ok || W.busy; return ok;
+}
+/* live check at the first sign-up step: is the email registered already? (rpc email_registered answers true/false only).
+   If the check itself fails (no network, function missing) the wizard does not block; the end of the sign-up still catches it. */
+const EC = { email: '', state: '', timer: null };
+function emailCheck(){
+  const f = $('#gEmail'), e = ((f && f.value) || W.d.email || '').trim().toLowerCase(); clearTimeout(EC.timer);
+  if (!validEmail(e)) { EC.email = ''; EC.state = ''; renderEmailState(); return; }
+  if (EC.email === e && EC.state && EC.state !== 'checking') { renderEmailState(); validateStep(false); return; }
+  EC.email = e; EC.state = 'checking'; renderEmailState(); validateStep(false);
+  EC.timer = setTimeout(async () => { let st = 'error';
+    try { if (sb) { const { data, error } = await sb.rpc('email_registered', { p_email: e }); if (!error && typeof data === 'boolean') st = data ? 'taken' : 'free'; }
+      else { const p = load('dbs_profile', null); st = p && String(p.email || '').toLowerCase() === e ? 'taken' : 'free'; } } catch(err) {}
+    if (EC.email !== e) return; EC.state = st; renderEmailState(); validateStep(false); }, 450);
+}
+function renderEmailState(){
+  const box = $('#gEmailSt'); if (!box) return; const st = EC.state; box.className = 'estat ' + st;
+  box.innerHTML = st === 'checking' ? t('g_checking') : st === 'free' ? '✓ ' + t('g_free') : st === 'taken' ? '<span>' + t('g_err_exists') + '</span><button type="button" class="gbtn primary small" id="gStIn">' + t('g_to_in') + '</button><button type="button" class="gbtn ghost small" id="gStReset">' + t('g_forgot') + '</button>' : '';
+  if (st === 'taken') { $('#gStIn').addEventListener('click', startIn); $('#gStReset').addEventListener('click', () => { W.mode = 'reset'; gateView('wizard'); }); }
+  const out = $('#gOut'); if (out && W.mode === 'up' && W.ch === 0 && W.sub === 0) out.innerHTML = st === 'free' || st === 'taken' ? '<span class="c">SELECT COUNT(*) FROM Students WHERE Email = \'' + esc(EC.email) + '\';</span><br><b style="color:' + (st === 'free' ? '#6BD09A' : '#F28B7E') + '">→ ' + (st === 'free' ? '0' : '1') + '</b>' : '';
 }
 function wizAdvance(){ const nf = $('#gFirst'), nl = $('#gLast'); if (nf) nf.value = W.d.first; if (nl) nl.value = W.d.last; if (W.ch === 0 && W.sub < 4) W.sub++; else if (W.ch === 0) { W.ch = 1; W.sub = 0; } else if (W.ch === 1) { W.ch = 2; W.sub = 0; } else if (W.ch === 2 && W.sub < ONB.length - 1) W.sub++; else if (W.ch === 2) { W.ch = 3; W.sub = 0; } wizRender(); }
 function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) { W.ch = 0; W.sub = 4; } else if (W.ch === 2 && W.sub > 0) W.sub--; else if (W.ch === 2) { W.ch = 1; W.sub = 0; } else if (W.ch === 3) { W.ch = 2; W.sub = ONB.length - 1; } wizRender(); }
 function persuade(){ const d = el('div','persuade'); d.innerHTML = '<div><h3>' + t('p_h') + '</h3><p>' + t('p_body') + '</p><div class="controls"><button type="button" class="gbtn primary" id="pStay">' + t('p_stay') + '</button><button type="button" class="gbtn ghost" id="pSkip">' + t('p_skip') + '</button></div></div>'; document.body.appendChild(d); $('#pStay').addEventListener('click', () => { d.remove(); const f = $('#gText'); if (f) f.focus(); }); $('#pSkip').addEventListener('click', () => { d.remove(); const k = ONB[W.sub]; W.skipped[k] = true; W.d[k] = ''; wizAdvance(); }); }
 
 function renderLive(){
-  const pre = $('#gLive'); if (!pre) return; const d = W.d; const nowKey = W.mode !== 'up' ? 'email' : W.ch === 0 ? ['email','pass','first','last','birth'][W.sub] : W.ch === 1 ? 'consent' : W.ch === 2 ? ONB[W.sub] : ''; const NOW = (k, html) => k === nowKey ? "<span class='now'>" + html + "</span>" : html;
+  const pre = $('#gLive'); if (!pre) return; const d = W.d; const nowKey = W.mode !== 'up' ? 'email' : W.ch === 0 ? ['email','pass','first','last','birth'][W.sub] : W.ch === 1 ? 'consent' : W.ch === 2 ? ONB[W.sub] : ''; const NOW = (k, html) => k === nowKey ? "<span class='lq-now'>" + html + "</span>" : html;
   const S = x => x ? "<span class='s'>'" + esc(x) + "'</span>" : "<span class='c'>NULL</span>"; const N = x => x ? "<span class='n'>" + esc(x) + "</span>" : "<span class='c'>NULL</span>"; const cur = "<span class='cur'></span>"; const clip = x => x.length > 28 ? x.slice(0,28) + '…' : x;
   if (W.mode === 'in') { pre.innerHTML = "<span class='c'>-- " + t('lq_pw') + "</span>\n<span class='k'>SELECT</span> *\n<span class='k'>FROM</span> Students\n<span class='k'>WHERE</span> Email = " + S(d.email) + "\n  <span class='k'>AND</span> PasswordHash = " + S(d.pass ? '•'.repeat(Math.min(d.pass.length, 12)) : '') + ";" + cur; return; }
   if (W.mode === 'reset') { pre.innerHTML = "<span class='c'>-- " + t('lq_reset') + "</span>\n<span class='k'>UPDATE</span> Students\n<span class='k'>SET</span> ResetToken = <span class='n'>NEWID()</span>\n<span class='k'>WHERE</span> Email = " + S(d.email) + ";" + cur; return; }
