@@ -734,6 +734,17 @@ html[data-bg="sand"][data-theme="dark"]{--ground:#17140E}html[data-bg="sky"][dat
 .gate .estat:empty{display:none}
 .gate .estat.free{color:#6BD09A}.gate .estat.taken{color:#F28B7E}
 .gate .estat .gbtn.small{min-height:34px;padding:.25rem .75rem;font-size:.85rem}
+.su-modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:1rem;background:rgba(5,10,11,.74);backdrop-filter:blur(4px);opacity:0;transition:opacity .35s ease}
+.su-modal.in{opacity:1}.su-modal.out{opacity:0}
+.su-card{--iso-stroke:#2B3A37;--iso-top:rgba(92,195,217,.10);--iso-left:#0F1B1D;--iso-right:#152524;--iso-socket:rgba(92,195,217,.28);--iso-lift-l:#1C6F7F;--iso-lift-r:#2F97AD;--iso-line:#5CC3D9;--iso-dot:#8FE0EF;--iso-glow:url(#isoGlow);position:relative;max-width:440px;width:100%;text-align:center;background:rgba(15,27,29,.97);border:1px solid #2B3A37;border-radius:20px;padding:1.8rem 1.6rem 1.5rem;color:#E6EEEC;box-shadow:0 0 0 1px rgba(92,195,217,.28),0 0 70px rgba(92,195,217,.22),0 30px 80px rgba(0,0,0,.6);transform:translateY(16px) scale(.95);transition:transform .55s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;align-items:center;gap:.7rem}
+.su-modal.in .su-card{transform:none}
+.su-card .mark{height:5.2rem;width:auto;overflow:visible}
+.su-card h2{font-family:var(--display);font-weight:900;font-size:1.75rem;color:#fff;margin:0}
+.su-card p{margin:0;color:#93A5A1;font-size:1rem;line-height:1.6}
+.su-card p b{color:#5CC3D9;font-weight:600;unicode-bidi:isolate}
+.su-card .su-tip{font-size:.85rem;color:#6F817D}
+.su-card .gbtn{margin-top:.5rem;min-width:8rem}
+.su-fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:101}
 .gate .fp-link{align-self:flex-end;margin-top:-.5rem;padding:.2rem .4rem;min-height:36px;font-size:.88rem}
 /* LTR fields (email, password) in the RTL form: the check mark goes to the side the text does not start from */
 .gate[dir="rtl"] .f input[dir="ltr"]{padding-right:2.3rem}
@@ -1384,7 +1395,7 @@ g_consent:"קראתי ואני מסכים/ה ל<a href=\"#\" id=\"termsLink\">ת
 g_go:"הרשמה", g_go_in:"כניסה", g_signout:"יציאה", g_demo:"מצב הדגמה: הפרטים נשמרים בדפדפן הזה בלבד.",
 g_foot:"ההרשמה שלכם היא בעצם <code>INSERT</code> אחד. הכניסה היא <code>SELECT</code>. הסיסמה נשמרת כגיבוב, אף פעם לא כטקסט.",
 e_email:"כתובת אימייל לא תקינה", e_pass:"לפחות 8 תווים", e_name:"אותיות בלבד, בעברית או באנגלית, 2 עד 30 תווים", e_birth:"תאריך לידה לא סביר",
-g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום.", g_to_in:"לכניסה", g_pass2:"אימות סיסמה", g_show:"הצגת הסיסמה", g_hide:"הסתרת הסיסמה", g_checking:"בודקים…", g_free:"האימייל פנוי.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
+g_working:"מריץ…", g_ok_up:"ההרשמה נקלטה. שלחנו קישור אימות לאימייל, לחצו עליו ואז היכנסו.", g_ok_up_demo:"ההרשמה נקלטה (מצב הדגמה).", g_ok_in:"ברוכים השבים, {n}.", g_err_in:"אימייל או סיסמה שגויים.", g_err_gen:"משהו השתבש. נסו שוב בעוד רגע.", g_err_exists:"האימייל הזה כבר רשום.", g_to_in:"לכניסה", su_h:"ברוכים הבאים, {n}!", su_h0:"ברוכים הבאים!", su_body:"ההרשמה נקלטה. שלחנו קישור אימות ל-{e}, לחצו עליו ואז היכנסו.", su_tip:"לא רואים את המייל? כדאי להציץ בספאם.", su_ok:"אישור", g_pass2:"אימות סיסמה", g_show:"הצגת הסיסמה", g_hide:"הסתרת הסיסמה", g_checking:"בודקים…", g_free:"האימייל פנוי.", g_err_domain:"יש להירשם עם אימייל של {d}.", g_err_captcha:"אשרו את בדיקת ה-CAPTCHA ונסו שוב.",
 l_h1:"עוד לא מבינים מילה? הגעתם בול בזמן.",
 l_sub:"ברוכים הבאים ל-RowdyQL. הג'יבריש שלמעלה יהיה בקרוב שפת האם שלכם: מתחילים מאפס, בלי להניח שום ידע קודם, ומתקדמים צעד אחר צעד עד לשאילתות שמשלבות כמה טבלאות, תת-שאילתות ופונקציות חלון, ועד לתכנון נכון של מסד נתונים. כל נושא מגיע עם ממחיש שאפשר לגעת בו, תרגיל שנבדק ברגע, ושאלות ברמת מבחן וברמת ראיונות עבודה.",
 l_cta:"מכאן מתחילים", l_cta2:"פותחים חשבון, דקה אחת", l_have:"כבר יש לי חשבון",
@@ -1625,7 +1636,7 @@ g_consent:"I have read and agree to the <a href=\"#\" id=\"termsLink\">full priv
 g_go:"Sign up", g_go_in:"Sign in", g_signout:"Sign out", g_demo:"Demo mode: details are kept in this browser only.",
 g_foot:"Your sign-up is really one <code>INSERT</code>. Signing in is a <code>SELECT</code>. The password is stored as a hash, never as text.",
 e_email:"Invalid email address", e_pass:"At least 8 characters", e_name:"Letters only, Hebrew or English, 2 to 30 characters", e_birth:"Implausible date of birth",
-g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered.", g_to_in:"Sign in", g_pass2:"Confirm password", g_show:"Show password", g_hide:"Hide password", g_checking:"Checking…", g_free:"This email is available.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
+g_working:"Executing…", g_ok_up:"Registered. We sent a confirmation link to your email; click it, then sign in.", g_ok_up_demo:"Registered (demo mode).", g_ok_in:"Welcome back, {n}.", g_err_in:"Wrong email or password.", g_err_gen:"Something went wrong. Try again in a moment.", g_err_exists:"This email is already registered.", g_to_in:"Sign in", su_h:"Welcome, {n}!", su_h0:"Welcome!", su_body:"You are signed up. We sent a verification link to {e}; click it, then sign in.", su_tip:"Can't see it? Check the spam folder.", su_ok:"OK", g_pass2:"Confirm password", g_show:"Show password", g_hide:"Hide password", g_checking:"Checking…", g_free:"This email is available.", g_err_domain:"Please sign up with a {d} email address.", g_err_captcha:"Complete the CAPTCHA check and try again.",
 l_h1:"Don't understand a word yet? Perfect timing.",
 l_sub:"Welcome to RowdyQL. The jargon above will soon be your mother tongue: you start from zero, with no prior knowledge assumed, and move step by step up to queries that combine several tables, subqueries and window functions, and to designing a database properly. Every topic comes with a visualizer you can touch, an exercise checked on the spot, and questions at exam level and at job-interview level.",
 l_cta:"Start here", l_cta2:"Create an account, one minute", l_have:"I already have an account",
@@ -3787,6 +3798,44 @@ function renderLive(){
 }
 let footTyped = '';
 function typeFoot(){ const box = $('#sidefoot'); if (!box || footTyped === lang) return; footTyped = lang; const html = t('g_foot'); const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; if (reduce) { box.innerHTML = html; return; } const parts = html.split(/(<code>.*?<\/code>)/); let pi = 0, ci = 0; box.innerHTML = ''; const tick = () => { if (pi >= parts.length) return; const part = parts[pi]; if (part.startsWith('<code>')) { box.insertAdjacentHTML('beforeend', part); pi++; ci = 0; setTimeout(tick, 120); return; } if (ci < part.length) { box.appendChild(document.createTextNode(part[ci])); ci++; setTimeout(tick, 18); } else { pi++; ci = 0; tick(); } }; tick(); }
+/* sign-up done: a glowing card with the logo building itself, digital confetti bursting out of it, "OK" back to the landing */
+function signupCelebrate(name, email){
+  const m = el('div', 'su-modal'); m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'suH');
+  m.innerHTML = '<div class="su-card"><svg class="mark" data-holo="anim" aria-hidden="true"></svg><h2 id="suH">' + esc(name ? t('su_h', { n: name }) : t('su_h0')) + '</h2><p>' + t('su_body', { e: '<b dir="ltr">' + esc(email) + '</b>' }) + '</p><p class="su-tip">' + t('su_tip') + '</p><button type="button" class="gbtn primary" id="suOk">' + t('su_ok') + '</button></div>';
+  document.body.appendChild(m); HOLO.mountAll(m); const card = m.querySelector('.su-card');
+  requestAnimationFrame(() => { m.classList.add('in'); HOLO.play(m.querySelector('svg')); });
+  const stop = confetti(card);
+  const done = () => { if (stop) stop(); m.classList.add('out'); setTimeout(() => m.remove(), 320);
+    W.d = { email: W.d.email, pass: '', pass2: '', first: '', last: '', birth: '', consent: false, year: '', sem: '', goals: '', interests: '' }; W.skipped = {}; W.ch = 0; W.sub = 0; W.busy = false; EC.email = ''; EC.state = '';
+    gateView('landing'); $('#gate').scrollTop = 0; };
+  $('#suOk').addEventListener('click', done); m.addEventListener('keydown', e => { if (e.key === 'Escape') done(); }); setTimeout(() => $('#suOk').focus(), 120);
+}
+/* confetti in the course style: table cells, frames, bars and query glyphs, cyan with a little amber, glowing; skipped for reduced motion */
+function confetti(from){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
+  const c = el('canvas', 'su-fx'); document.body.appendChild(c); const ctx = c.getContext('2d'); const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const fit = () => { c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }; fit(); addEventListener('resize', fit);
+  const COLS = ['#5CC3D9', '#8FE0EF', '#5CC3D9', '#E6FBFF', '#2F97AD'], GLYPHS = ['σ', 'π', '⋈', '÷', '∪', '∩', 'ρ', 'γ', '0', '1', '{', '}', '*', ';'];
+  const parts = []; let raf = 0, alive = true;
+  const burst = n => { if (!alive) return; const r = from.getBoundingClientRect(), ox = r.left + r.width / 2, oy = r.top + Math.min(90, r.height * .25);
+    for (let i = 0; i < n; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.6, sp = 5 + Math.random() * 10, k = Math.random();
+      parts.push({ x: ox + (Math.random() - .5) * 70, y: oy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 2, rot: Math.random() * 6.28, vr: (Math.random() - .5) * .3,
+        col: Math.random() < .13 ? '#E8A33A' : COLS[Math.random() * COLS.length | 0], kind: k < .35 ? 'cell' : k < .55 ? 'frame' : k < .72 ? 'bar' : 'glyph',
+        g: GLYPHS[Math.random() * GLYPHS.length | 0], s: 4 + Math.random() * 6, life: 0, max: 120 + Math.random() * 80 }); } };
+  const tick = () => { ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (const q of parts) { q.life++; q.vy += .2; q.vx *= .986; q.vy *= .986; q.x += q.vx; q.y += q.vy; q.rot += q.vr;
+      ctx.save(); ctx.globalAlpha = Math.max(0, 1 - q.life / q.max); ctx.translate(q.x, q.y); ctx.rotate(q.rot); ctx.shadowColor = q.col; ctx.shadowBlur = 14; ctx.fillStyle = ctx.strokeStyle = q.col;
+      if (q.kind === 'cell') ctx.fillRect(-q.s / 2, -q.s / 2, q.s, q.s);
+      else if (q.kind === 'frame') { ctx.lineWidth = 1.6; ctx.strokeRect(-q.s * .7, -q.s * .7, q.s * 1.4, q.s * 1.4); }
+      else if (q.kind === 'bar') ctx.fillRect(-q.s, -1.2, q.s * 2, 2.4);
+      else { ctx.font = '600 ' + Math.round(q.s * 2.4) + 'px "IBM Plex Mono", Consolas, monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(q.g, 0, 0); }
+      ctx.restore(); }
+    for (let i = parts.length - 1; i >= 0; i--) if (parts[i].life >= parts[i].max) parts.splice(i, 1);
+    if (parts.length && alive) raf = requestAnimationFrame(tick); else stop(); };
+  const stop = () => { if (!alive) return; alive = false; cancelAnimationFrame(raf); removeEventListener('resize', fit); c.remove(); };
+  burst(90); setTimeout(() => burst(55), 420); setTimeout(() => burst(60), 1700); /* the last one with the cell rising in the logo */ raf = requestAnimationFrame(tick);
+  return stop;
+}
 function gateMsg(text, bad){ const m = $('#gMsg'); m.hidden = false; m.className = 'msg' + (bad ? ' bad' : ''); m.innerHTML = text; requestAnimationFrame(() => m.scrollIntoView({ behavior: 'smooth', block: 'nearest' })); }
 function gateOut(html){ $('#gOut').innerHTML = html; }
 function showRow(){ const d = W.d; const tb = table(['Email','FirstName','LastName'].concat(ONB.includes('year') ? ['StudyYear','Semester'] : [], ['RegisteredAt']), [{Email: d.email, FirstName: d.first, LastName: d.last, StudyYear: d.year || null, Semester: d.sem || null, RegisteredAt: new Date().toISOString().slice(0,16).replace('T',' ')}]); tb.querySelectorAll('tr:nth-child(2)').forEach(r => r.classList.add('row-in')); $('#gTable').innerHTML = ''; $('#gTable').appendChild(tb); }
@@ -3805,7 +3854,7 @@ $('#gateForm').addEventListener('submit', async e => {
     }
     if (W.mode === 'up') {
       const meta = { full_name: fullName(), first_name: d.first, last_name: d.last, birth_date: d.birth, study_year: d.year ? +d.year : null, semester: d.sem || null, goals: d.goals || null, interests: d.interests || null, consent_at: new Date().toISOString(), consent_version: DBS_CONFIG.termsVersion };
-      if (sb) { const { data, error } = await sb.auth.signUp({ email: d.email, password: d.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; if (data.user && Array.isArray(data.user.identities) && !data.user.identities.length) throw new Error('already registered'); showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t(data.session ? 'g_ok_in' : 'g_ok_up', {n: fullName()}), false); if (data.session) { session = data.session; await loadProfile(); setTimeout(onSession, 900); } }
+      if (sb) { const { data, error } = await sb.auth.signUp({ email: d.email, password: d.pass, options: { data: meta, captchaToken: captchaToken || undefined } }); if (error) throw error; if (data.user && Array.isArray(data.user.identities) && !data.user.identities.length) throw new Error('already registered'); showRow(); gateOut('<b>(1 row affected)</b>'); if (data.session) { gateMsg(t('g_ok_in', {n: fullName()}), false); session = data.session; await loadProfile(); setTimeout(onSession, 900); } else { $('#gMsg').hidden = true; signupCelebrate(d.first, d.email); } }
       else { const ex = load('dbs_profile', null); if (ex && ex.email === d.email) throw new Error('already registered'); profile = { email: d.email, full_name: fullName(), first_name: d.first, last_name: d.last, birth_date: d.birth, study_year: meta.study_year, semester: meta.semester, goals: meta.goals, interests: meta.interests, consent_at: meta.consent_at }; store('dbs_profile', profile); showRow(); gateOut('<b>(1 row affected)</b>'); gateMsg(t('g_ok_up_demo'), false); session = { demo: true }; setTimeout(onSession, 1200); }
     } else {
       if (sb) { const { data, error } = await sb.auth.signInWithPassword({ email: d.email, password: d.pass, options: { captchaToken: captchaToken || undefined } }); if (error) throw error; session = data.session; await loadProfile(); if (profile && profile.status === 'blocked') { try { await sb.auth.signOut(); } catch(e) {} session = null; profile = null; gateOut(''); gateMsg(t('g_blocked'), true); W.busy = false; return; } gateOut('<b>(1 row)</b>'); gateMsg(t('g_ok_in', {n: (profile && profile.full_name) || ''}), false); setTimeout(onSession, 700); }
