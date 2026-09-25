@@ -753,6 +753,30 @@ html[data-bg="sand"][data-theme="dark"]{--ground:#17140E}html[data-bg="sky"][dat
 .lv-opt input{accent-color:var(--accent);width:1.05rem;height:1.05rem;margin:0;flex:none}
 .lv-trans{font-size:.8rem}
 .lv-hr{border:0;border-top:1px solid var(--line);margin:.2rem 0;width:100%}
+.ob-page{position:fixed;inset:0;z-index:95;background:rgba(5,12,14,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:1rem;opacity:0;transition:opacity .3s ease}
+.ob-page.in{opacity:1}
+.ob-card{width:100%;max-width:560px;max-height:92vh;overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:1.4rem 1.5rem 1.2rem;display:flex;flex-direction:column;gap:.9rem}
+.ob-top{display:flex;flex-direction:column;gap:.5rem}
+.ob-prog{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}.ob-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));transition:width .4s ease}
+#obStep{display:flex;flex-direction:column;gap:.85rem}
+#obStep h2{font-size:1.35rem;line-height:1.3}
+.ob-opts{display:grid;gap:.5rem}
+.ob-opts.two{grid-template-columns:1fr 1fr}
+.ob-opt{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.75rem 1rem;min-height:48px;font:inherit;color:var(--ink);text-align:start;cursor:pointer;transition:border-color .2s,background .2s}
+.ob-opt:hover{border-color:var(--accent)}
+.ob-opt[aria-checked="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.ob-opts.two .ob-opt{text-align:center;font-size:1.05rem}
+.ob-nav{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin-top:.2rem}
+.ob-later,.tour-skip{background:none;border:0;color:var(--muted);font:inherit;font-size:.86rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:.3rem;min-height:36px}
+.tour{position:fixed;inset:0;z-index:96}
+.tour.center{background:rgba(5,12,14,.6)}
+.tour-hole{position:fixed;border-radius:12px;box-shadow:0 0 0 9999px rgba(5,12,14,.6),0 0 0 2px #5CC3D9,0 0 26px rgba(92,195,217,.55);transition:top .35s ease,left .35s ease,width .35s ease,height .35s ease;pointer-events:none}
+.tour.center .tour-hole{display:none}
+.tour-tip{position:fixed;left:0;top:0;width:min(340px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);padding:1rem 1.1rem .7rem;display:flex;flex-direction:column;gap:.6rem;transition:top .35s ease,left .35s ease}
+.tour-tip p{margin:0;font-size:.95rem;line-height:1.55}
+.tour-foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.tour-n{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.tour-skip{align-self:flex-start;padding:0}
 .gate .fp-link{align-self:flex-end;margin-top:-.5rem;padding:.2rem .4rem;min-height:36px;font-size:.88rem}
 /* LTR fields (email, password) in the RTL form: the check mark goes to the side the text does not start from */
 .gate[dir="rtl"] .f input[dir="ltr"]{padding-right:2.3rem}
@@ -1428,7 +1452,7 @@ d_c_name:"שם", d_c_email:"אימייל", d_c_year:"שנה", d_c_sem:"סמסט�
 sync_on:"ההתקדמות נשמרת לחשבון",
 
 ex3_h2:"תרגילים 7 עד 12", ex3_lede:"Self-Join ושאלות ברמת מבחן. אותם כללים: רמז אחרי ניסיון, הפתרון אחרי שניים.", nav_r_ex2:"תרגילים 7 עד 12", ref_ride:"הסכמה: RideOn", ref_toy:"הטבלאות: Students, Courses, Enroll", ls_intro1:"למה בסיס נתונים", ls_intro2:"סכמה ושאילתה ראשונה", ls_intro3:"בדיקה עצמית", ls_ra1:"σ ו-π: בחירה והטלה", ls_ra2:"∪ ∩ − ו-×: קבוצות ומכפלה", ls_ra3:"⋈ ו-ρ: צירוף וכינוי", ls_ra4:"÷ חילוק, וקריאת ביטוי", ls_ra5:"RideOn והמחשבון", ls_ra6:"תרגילים 1 עד 6", ls_ra7:"תרגילים 7 עד 12", ls_ra8:"בדיקה עצמית", ls_min:"{m} דק'", ls_upnext:"הבא בתור", ls_next:"לשיעור הבא", ls_next_ch:"לפרק הבא", ls_home:"חזרה לבית", ls_more:"זה הכל לעכשיו. השיעורים הבאים בדרך.", ls_count:"{n} שיעורים · {m} דק'", ch_n:"פרק {n}", ls_later:"בהמשך הקורס",
-me_title:"אזור אישי", me_look:"מראה", me_avatar:"אווטאר", me_av_ini:"האות הראשונה של השם", me_bg:"צבע רקע", bg_mint:"מנטה", bg_sand:"חול", bg_sky:"שמיים", bg_lilac:"לילך", bg_rose:"ורד", bg_stone:"אבן", me_mode:"תצוגה", me_m_system:"כמו במכשיר", me_m_light:"יום", me_m_dark:"לילה", me_m_auto:"לפי שעה", me_m_auto_s:"יום בין 07:00 ל-19:00, לילה בשאר השעות.", me_details:"פרטים אישיים", me_save:"שמירה", me_saved:"נשמר.", me_pass:"סיסמה", me_pass_why:"נשלח קוד לאימייל שלכם, ואיתו קובעים סיסמה חדשה.", me_send:"שלחו לי קוד", me_sent:"שלחנו קוד ל-{e}.", me_resend:"שליחה מחדש", me_code:"הקוד מהאימייל", me_new:"סיסמה חדשה", me_new2:"שוב, לאימות", me_update:"עדכון סיסמה", me_pw_ok:"הסיסמה עודכנה.", me_demo:"במצב הדגמה אין סיסמה לשנות.", e_code:"הקוד לא נכון או שפג תוקפו.", e_same:"זו הסיסמה הנוכחית. בחרו אחרת.", e_match:"הסיסמאות לא זהות.", e_wait:"אפשר לבקש שוב בעוד דקה.", g_forgot:"שכחתי סיסמה", fp_h:"איפוס סיסמה", fp_why:"נשלח קישור לאיפוס לאימייל שנרשמתם איתו.", fp_go:"שליחת קישור", fp_ok:"אם האימייל רשום אצלנו, שלחנו אליו קישור לאיפוס.", fp_back:"חזרה לכניסה", fp_demo:"במצב הדגמה לא נשלחים מיילים.", fp_expired:"הקישור כבר לא בתוקף. אפשר לבקש קישור חדש.", np_h:"סיסמה חדשה", me_del:"מחיקת החשבון", me_del_why:"מוחק את החשבון, את ההתקדמות ואת כל מה שנשמר. אי אפשר לבטל את זה.", me_del_word:"מחיקה", me_del_type:"כדי לאשר, כתבו: {w}", me_del_go:"מחיקה לצמיתות", me_cancel:"ביטול", me_deleted:"החשבון נמחק.", lv_h:"עצוב לנו שבחרתם לעזוב 🙁", lv_sub:"תוכלו לספר לנו למה? אפשר לבחור יותר מסיבה אחת.", lv_content:"אין מספיק חומר לתרגול", lv_easy:"החומר לא תואם את הרמה שציפיתי: קל מדי", lv_hard:"החומר לא תואם את הרמה שציפיתי: קשה מדי למתחילים", lv_done:"השלמתי את הקורס", lv_tech:"בעיות טכניות", lv_other:"אחר", lv_note:"רוצים לפרט? זה לא חובה, אבל זה עוזר לנו להשתפר.", lv_note_other:"מה הסיבה?", lv_trans:"התשובות נשמרות בלי שם ובלי אימייל, ומשמשות רק לשיפור הקורס.", lv_stay:"בעצם, נשארים", lq_reset:"קישור איפוס יוצא לאימייל",
+me_title:"אזור אישי", me_look:"מראה", me_avatar:"אווטאר", me_av_ini:"האות הראשונה של השם", me_bg:"צבע רקע", bg_mint:"מנטה", bg_sand:"חול", bg_sky:"שמיים", bg_lilac:"לילך", bg_rose:"ורד", bg_stone:"אבן", me_mode:"תצוגה", me_m_system:"כמו במכשיר", me_m_light:"יום", me_m_dark:"לילה", me_m_auto:"לפי שעה", me_m_auto_s:"יום בין 07:00 ל-19:00, לילה בשאר השעות.", me_details:"פרטים אישיים", me_save:"שמירה", me_saved:"נשמר.", me_pass:"סיסמה", me_pass_why:"נשלח קוד לאימייל שלכם, ואיתו קובעים סיסמה חדשה.", me_send:"שלחו לי קוד", me_sent:"שלחנו קוד ל-{e}.", me_resend:"שליחה מחדש", me_code:"הקוד מהאימייל", me_new:"סיסמה חדשה", me_new2:"שוב, לאימות", me_update:"עדכון סיסמה", me_pw_ok:"הסיסמה עודכנה.", me_demo:"במצב הדגמה אין סיסמה לשנות.", e_code:"הקוד לא נכון או שפג תוקפו.", e_same:"זו הסיסמה הנוכחית. בחרו אחרת.", e_match:"הסיסמאות לא זהות.", e_wait:"אפשר לבקש שוב בעוד דקה.", g_forgot:"שכחתי סיסמה", fp_h:"איפוס סיסמה", fp_why:"נשלח קישור לאיפוס לאימייל שנרשמתם איתו.", fp_go:"שליחת קישור", fp_ok:"אם האימייל רשום אצלנו, שלחנו אליו קישור לאיפוס.", fp_back:"חזרה לכניסה", fp_demo:"במצב הדגמה לא נשלחים מיילים.", fp_expired:"הקישור כבר לא בתוקף. אפשר לבקש קישור חדש.", np_h:"סיסמה חדשה", me_del:"מחיקת החשבון", me_del_why:"מוחק את החשבון, את ההתקדמות ואת כל מה שנשמר. אי אפשר לבטל את זה.", me_del_word:"מחיקה", me_del_type:"כדי לאשר, כתבו: {w}", me_del_go:"מחיקה לצמיתות", me_cancel:"ביטול", me_deleted:"החשבון נמחק.", dt_h_acc:"פתיחת חשבון", ob_eyebrow:"היכרות קצרה", ob_studying:"אתם לומדים כרגע?", ob_yes:"כן", ob_no:"לא", ob_inst:"איפה אתם לומדים?", ob_pick:"בחרו מהרשימה", ob_g_uni:"אוניברסיטאות", ob_g_col:"מכללות", ob_g_more:"לימודים אחרים", ob_other_l:"שם המוסד", ob_year:"באיזו שנה?", ob_y1:"שנה א'", ob_y2:"שנה ב'", ob_y3:"שנה ג'", ob_y4:"שנה ד'", ob_y5:"תואר שני ומעלה", ob_goals:"מה הייתם רוצים לקחת מהקורס?", ob_optional:"לא חובה, אבל זה עוזר לנו להתאים את הקורס.", ob_goals_ph:"למשל: להרגיש בטוחים בכתיבת שאילתות, לשלוט בסינטקס, לרכוש ידע חדש, לרכוש יכולות במסדי נתונים", ob_level:"לפני שמתחילים: איך הייתם מגדירים את הרמה שלכם בנושא?", ob_lv1:"הנושא חדש לי לגמרי", ob_lv2:"שמעתי עליו, בלי ניסיון", ob_lv3:"יש לי בסיס", ob_lv4:"די בנוח איתו", ob_lv5:"שליטה טובה", ob_later:"אחר כך", ob_stud_f:"לומדים כרגע?", ob_inst_f:"מוסד לימודים", ob_year_f:"שנת לימוד", ob_level_f:"רמה בנושא", ob_goals_f:"מה רוצים לקחת מהקורס", d_c_stud:"בלימודים", d_c_inst:"מוסד", d_c_lvl:"רמה", me_tour:"סיור באתר", tour_thanks:"תודה!", tour_hi:"<b>ברוכים הבאים ל-RowdyQL.</b> סיור קצר על מה שיש כאן, ואפשר להתחיל.", tour_tabs:"<b>הלשוניות.</b> בית, ופרק לכל נושא. כל פרק מחולק לשיעורים קצרים, ובסוף כל שיעור יש כפתור לשיעור הבא.", tour_start:"<b>מכאן מתחילים.</b> בפעם הבאה יופיע כאן גם כפתור שממשיך בדיוק מאיפה שעצרתם.", tour_stats:"<b>ההתקדמות שלכם.</b> סעיפים שעברתם, תרגילים שפתרתם ובדיקות עצמיות. הכול נשמר בחשבון.", tour_meet:"<b>המפגשים.</b> כרטיס לכל מפגש תרגול, עם התאריך. לחיצה פותחת את השיעורים שלו.", tour_lessons:"<b>השיעורים.</b> כל כרטיס הוא שיעור של רבע שעה בערך, והטבעת מראה כמה ממנו עברתם.", tour_quick:"<b>כלים מהירים.</b> המחשבון, התרגילים, מפת הקורס והבדיקה העצמית, בלחיצה אחת.", tour_toc:"<b>תוכן העניינים.</b> השיעורים של הפרק והסעיפים של השיעור הפתוח.", tour_me:"<b>האזור האישי.</b> לחיצה על השם: אווטאר, צבע רקע, יום או לילה, והפרטים שלכם.", tour_lang:"<b>שפה.</b> מעבר בין עברית לאנגלית.", tour_end:"<b>זהו, אפשר להתחיל.</b> את הסיור אפשר לראות שוב באזור האישי.", tour_next:"הבא", tour_prev:"הקודם", tour_go:"מתחילים", tour_skip:"דלגו על הסיור", tour_n:"{i} מתוך {n}", lv_h:"עצוב לנו שבחרתם לעזוב 🙁", lv_sub:"תוכלו לספר לנו למה? אפשר לבחור יותר מסיבה אחת.", lv_content:"אין מספיק חומר לתרגול", lv_easy:"החומר לא תואם את הרמה שציפיתי: קל מדי", lv_hard:"החומר לא תואם את הרמה שציפיתי: קשה מדי למתחילים", lv_done:"השלמתי את הקורס", lv_tech:"בעיות טכניות", lv_other:"אחר", lv_note:"רוצים לפרט? זה לא חובה, אבל זה עוזר לנו להשתפר.", lv_note_other:"מה הסיבה?", lv_trans:"התשובות נשמרות בלי שם ובלי אימייל, ומשמשות רק לשיפור הקורס.", lv_stay:"בעצם, נשארים", lq_reset:"קישור איפוס יוצא לאימייל",
 },
 en: {
 brand_sub:"Databases and SQL, from zero", tab_home:"Home", tab_intro:"Intro", tab_ra:"Relational Algebra",
@@ -1669,7 +1693,7 @@ d_c_name:"Name", d_c_email:"Email", d_c_year:"Year", d_c_sem:"Semester", d_c_joi
 sync_on:"Progress is saved to your account",
 
 ex3_h2:"Exercises 7 to 12", ex3_lede:"Self-joins and exam-level questions. Same rules: a hint after one attempt, the solution after two.", nav_r_ex2:"Exercises 7–12", ref_ride:"Schema: RideOn", ref_toy:"Tables: Students, Courses, Enroll", ls_intro1:"Why a database", ls_intro2:"Schema and a first query", ls_intro3:"Self-check", ls_ra1:"σ and π: select and project", ls_ra2:"∪ ∩ − and ×: sets and product", ls_ra3:"⋈ and ρ: join and rename", ls_ra4:"÷ division, and reading an expression", ls_ra5:"RideOn and the calculator", ls_ra6:"Exercises 1–6", ls_ra7:"Exercises 7–12", ls_ra8:"Self-check", ls_min:"{m} min", ls_upnext:"Up next", ls_next:"Next lesson", ls_next_ch:"Next chapter", ls_home:"Back home", ls_more:"That's all for now. More lessons are on the way.", ls_count:"{n} lessons · {m} min", ch_n:"Chapter {n}", ls_later:"Later in the course",
-me_title:"My area", me_look:"Look", me_avatar:"Avatar", me_av_ini:"Your initial", me_bg:"Background", bg_mint:"Mint", bg_sand:"Sand", bg_sky:"Sky", bg_lilac:"Lilac", bg_rose:"Rose", bg_stone:"Stone", me_mode:"Display", me_m_system:"Like my device", me_m_light:"Day", me_m_dark:"Night", me_m_auto:"By the hour", me_m_auto_s:"Day from 07:00 to 19:00, night the rest of the time.", me_details:"Personal details", me_save:"Save", me_saved:"Saved.", me_pass:"Password", me_pass_why:"We'll email you a code; use it to set a new password.", me_send:"Send me a code", me_sent:"We sent a code to {e}.", me_resend:"Send again", me_code:"Code from the email", me_new:"New password", me_new2:"Again, to confirm", me_update:"Update password", me_pw_ok:"Password updated.", me_demo:"Demo mode has no password to change.", e_code:"The code is wrong or has expired.", e_same:"That's your current password. Pick another.", e_match:"The passwords don't match.", e_wait:"You can ask again in a minute.", g_forgot:"Forgot password", fp_h:"Reset password", fp_why:"We'll send a reset link to the email you signed up with.", fp_go:"Send link", fp_ok:"If this email is registered, we sent it a reset link.", fp_back:"Back to sign in", fp_demo:"Demo mode sends no emails.", fp_expired:"That link is no longer valid. You can request a new one.", np_h:"New password", me_del:"Delete account", me_del_why:"Deletes the account, the progress and everything saved. This cannot be undone.", me_del_word:"delete", me_del_type:"To confirm, type: {w}", me_del_go:"Delete for good", me_cancel:"Cancel", me_deleted:"The account was deleted.", lv_h:"We are sad to see you go 🙁", lv_sub:"Could you tell us why? You can pick more than one.", lv_content:"Not enough material to practice", lv_easy:"Not the level I expected: too easy", lv_hard:"Not the level I expected: too hard for beginners", lv_done:"I finished the course", lv_tech:"Technical problems", lv_other:"Other", lv_note:"Want to say more? Optional, but it helps us improve.", lv_note_other:"What is the reason?", lv_trans:"Answers are stored without your name or email, and are used only to improve the course.", lv_stay:"Actually, I will stay", lq_reset:"a reset link goes out to the email",
+me_title:"My area", me_look:"Look", me_avatar:"Avatar", me_av_ini:"Your initial", me_bg:"Background", bg_mint:"Mint", bg_sand:"Sand", bg_sky:"Sky", bg_lilac:"Lilac", bg_rose:"Rose", bg_stone:"Stone", me_mode:"Display", me_m_system:"Like my device", me_m_light:"Day", me_m_dark:"Night", me_m_auto:"By the hour", me_m_auto_s:"Day from 07:00 to 19:00, night the rest of the time.", me_details:"Personal details", me_save:"Save", me_saved:"Saved.", me_pass:"Password", me_pass_why:"We'll email you a code; use it to set a new password.", me_send:"Send me a code", me_sent:"We sent a code to {e}.", me_resend:"Send again", me_code:"Code from the email", me_new:"New password", me_new2:"Again, to confirm", me_update:"Update password", me_pw_ok:"Password updated.", me_demo:"Demo mode has no password to change.", e_code:"The code is wrong or has expired.", e_same:"That's your current password. Pick another.", e_match:"The passwords don't match.", e_wait:"You can ask again in a minute.", g_forgot:"Forgot password", fp_h:"Reset password", fp_why:"We'll send a reset link to the email you signed up with.", fp_go:"Send link", fp_ok:"If this email is registered, we sent it a reset link.", fp_back:"Back to sign in", fp_demo:"Demo mode sends no emails.", fp_expired:"That link is no longer valid. You can request a new one.", np_h:"New password", me_del:"Delete account", me_del_why:"Deletes the account, the progress and everything saved. This cannot be undone.", me_del_word:"delete", me_del_type:"To confirm, type: {w}", me_del_go:"Delete for good", me_cancel:"Cancel", me_deleted:"The account was deleted.", dt_h_acc:"Create your account", ob_eyebrow:"Getting to know you", ob_studying:"Are you studying right now?", ob_yes:"Yes", ob_no:"No", ob_inst:"Where do you study?", ob_pick:"Pick from the list", ob_g_uni:"Universities", ob_g_col:"Colleges", ob_g_more:"Other studies", ob_other_l:"Name of the institution", ob_year:"Which year?", ob_y1:"Year 1", ob_y2:"Year 2", ob_y3:"Year 3", ob_y4:"Year 4", ob_y5:"Master's or higher", ob_goals:"What would you like to get from the course?", ob_optional:"Optional, but it helps us fit the course to you.", ob_goals_ph:"e.g. feel confident writing queries, master the syntax, learn something new, gain database skills", ob_level:"Before we start: how would you describe your level in this subject?", ob_lv1:"Completely new to me", ob_lv2:"Heard of it, no experience", ob_lv3:"I have the basics", ob_lv4:"Fairly comfortable", ob_lv5:"Strong command", ob_later:"Later", ob_stud_f:"Studying now?", ob_inst_f:"Institution", ob_year_f:"Year", ob_level_f:"Level", ob_goals_f:"What you want from the course", d_c_stud:"Studying", d_c_inst:"Institution", d_c_lvl:"Level", me_tour:"Site tour", tour_thanks:"Thanks!", tour_hi:"<b>Welcome to RowdyQL.</b> A short tour of what is here, and you are ready.", tour_tabs:"<b>Tabs.</b> Home, and a chapter per topic. Each chapter is split into short lessons, with a button to the next lesson at the end of each.", tour_start:"<b>Start here.</b> Next time there will also be a button that continues exactly where you stopped.", tour_stats:"<b>Your progress.</b> Sections you went through, exercises you solved and self-checks. All saved to your account.", tour_meet:"<b>Sessions.</b> A card per tutorial session, with its date. A click opens its lessons.", tour_lessons:"<b>Lessons.</b> Each card is a lesson of about a quarter of an hour; the ring shows how much you have covered.", tour_quick:"<b>Quick tools.</b> The calculator, the exercises, the course map and the self-check, one click away.", tour_toc:"<b>Contents.</b> The lessons of the chapter and the sections of the open lesson.", tour_me:"<b>Your area.</b> Click your name: avatar, background, day or night, and your details.", tour_lang:"<b>Language.</b> Switch between Hebrew and English.", tour_end:"<b>That is it, you can start.</b> You can take the tour again from your area.", tour_next:"Next", tour_prev:"Back", tour_go:"Let's start", tour_skip:"Skip the tour", tour_n:"{i} of {n}", lv_h:"We are sad to see you go 🙁", lv_sub:"Could you tell us why? You can pick more than one.", lv_content:"Not enough material to practice", lv_easy:"Not the level I expected: too easy", lv_hard:"Not the level I expected: too hard for beginners", lv_done:"I finished the course", lv_tech:"Technical problems", lv_other:"Other", lv_note:"Want to say more? Optional, but it helps us improve.", lv_note_other:"What is the reason?", lv_trans:"Answers are stored without your name or email, and are used only to improve the course.", lv_stay:"Actually, I will stay", lq_reset:"a reset link goes out to the email",
 }};
 
 /* =========================== CAMPUS LAYER =========================== */
@@ -3697,7 +3721,7 @@ const fullName = () => (W.d.first + ' ' + W.d.last).trim();
 const NAME_RE = /^[A-Za-z\u05D0-\u05EA][A-Za-z\u05D0-\u05EA' -]{0,28}[A-Za-z\u05D0-\u05EA]$/;
 function normName(v){ v = String(v || '').trim().replace(/\s+/g, ' '); if (/^[A-Za-z' -]+$/.test(v)) v = v.toLowerCase().replace(/(^|[\s'-])([a-z])/g, (m, a, b) => a + b.toUpperCase()); return v; }
 function validBirth(v){ if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false; const d = new Date(v + 'T00:00:00'); if (isNaN(d)) return false; const age = (Date.now() - d.getTime()) / (365.25 * 86400000); return age >= 16 && age <= 100; }
-const CH = ['ch_details','ch_terms','ch_meet','ch_done'], ONB = EDITION === 'campus' ? ['year','sem','goals','interests'] : ['goals','interests'];
+const CH = ['ch_details','ch_terms','ch_meet','ch_done'], ONB = []; /* the getting-to-know questions moved to the first sign-in (openOnboarding) */
 const ONB_COL = { year: 'StudyYear', sem: 'Semester', goals: 'Goals', interests: 'Interests' };
 let skipTimer = null;
 function gateView(v){ W.view = v; $('#landing').hidden = v !== 'landing'; $('#wizard').hidden = v === 'landing'; $('#gate').scrollTop = 0; if (v === 'wizard') wizRender(); }
@@ -3707,13 +3731,13 @@ function startIn(){ W.mode = 'in'; gateView('wizard'); }
 ['#lnkIn','#ctaIn'].forEach(sel => $(sel).addEventListener('click', startIn));
 $('#lnkLang').addEventListener('click', () => $('#btnLang').click());
 
-function chaptersHtml(){ if (W.mode !== 'up') return ''; return CH.map((k, i) => '<span class="' + (i < W.ch ? 'done' : i === W.ch ? 'cur' : '') + '">' + (i+1) + ' · ' + t(k) + '</span>').join(''); }
+function chaptersHtml(){ if (W.mode !== 'up') return ''; return CH.map((k, i) => [k, i]).filter(c => c[0] !== 'ch_meet' || ONB.length).map((c, n) => '<span class="' + (c[1] < W.ch ? 'done' : c[1] === W.ch ? 'cur' : '') + '">' + (n + 1) + ' · ' + t(c[0]) + '</span>').join(''); }
 const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="off" d="M4 4l16 16"/></svg>';
 function field(id, key, type, extra){ const pw = type === 'password'; return '<label class="f"><span>' + t(key) + '</span><input id="' + id + '" type="' + type + '"' + (pw ? ' class="pw"' : '') + ' ' + (extra || '') + '>' + (pw ? '<button type="button" class="eye" data-for="' + id + '" aria-pressed="false" aria-label="' + esc(t('g_show')) + '">' + EYE + '</button>' : '') + '<span class="tick">✓</span><span class="err" id="e_' + id + '"></span></label>'; }
 function seg(name, opts){ return '<div class="seg">' + opts.map(o => '<label><input type="radio" name="' + name + '" value="' + o[0] + '"' + (W.d[name] === o[0] ? ' checked' : '') + '><span>' + t(o[1]) + '</span></label>').join('') + '</div>'; }
 function recordStrip(cur){ const cols = ONB.map(k => [k, ONB_COL[k]]); return '<div class="record"><div class="rh">' + cols.map(c => '<span>' + c[1] + '</span>').join('') + '</div><div class="rr">' + cols.map(c => { const v = W.d[c[0]]; const cls = c[0] === cur ? 'cur' : (v ? '' : 'empty'); const txt = v ? esc(String(v).slice(0,16)) + (String(v).length > 16 ? '…' : '') : (W.skipped[c[0]] ? 'NULL' : '…'); return '<span class="' + cls + '">' + txt + '</span>'; }).join('') + '</div></div>'; }
 function navBtns(nextKey, showBack, skippable){ return '<div class="skiprow">' + (showBack ? '<button type="button" class="gbtn ghost" id="wBack">' + t('w_back') + '</button>' : '<span></span>') + '<div class="controls">' + (skippable ? '<button type="button" class="gbtn ghost skip" id="wSkip">' + t('w_skip') + '</button>' : '') + '<button type="submit" class="go" id="gGo">' + t(nextKey) + '</button></div></div>'; }
-function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FirstName', d.first], ['LastName', d.last], ['BirthDate', d.birth], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ...(ONB.includes('year') ? [['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL']] : []), ['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL'], ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map((r, i) => '<div class="rr2" style="--i:' + i + '"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
+function reviewTable(){ const d = W.d; const rows = [['Email', d.email], ['FirstName', d.first], ['LastName', d.last], ['BirthDate', d.birth], ['PasswordHash', 'bcrypt(••••••••)'], ['Consent', 'TRUE'], ...(ONB.includes('year') ? [['StudyYear', d.year || 'NULL'], ['Semester', d.sem || 'NULL']] : []), ...(ONB.length ? [['Goals', d.goals || 'NULL'], ['Interests', d.interests || 'NULL']] : []), ['RegisteredAt', 'SYSDATETIME()']]; return '<div class="record">' + rows.map((r, i) => '<div class="rr2" style="--i:' + i + '"><span>' + r[0] + '</span><span' + (r[1] === 'NULL' ? ' class="empty"' : '') + '>' + esc(r[1]) + '</span></div>').join('') + '</div>'; }
 
 function wizProgress(){ const total = 7 + ONB.length; let done = 0; if (W.mode !== 'up') done = 0; else if (W.ch === 0) done = W.sub; else if (W.ch === 1) done = 5; else if (W.ch === 2) done = 6 + W.sub; else done = 6 + ONB.length; const bar = $('#wprogI'); if (bar) bar.style.width = (W.mode !== 'up' ? 0 : Math.round(100 * (done + 1) / total)) + '%'; $('.wprog').hidden = W.mode !== 'up'; }
 function wizRender(){
@@ -3724,10 +3748,10 @@ function wizRender(){
   } else if (W.mode === 'reset') {
     h = '<div class="wstep"><h2>' + t('fp_h') + '</h2><p class="why">' + t('fp_why') + '</p>' + field('gEmail','g_email','email','autocomplete="email" dir="ltr" value="' + esc(W.d.email) + '"') + navBtns('fp_go', false, false) + '<button type="button" class="gbtn ghost" id="wToIn2">' + t('fp_back') + '</button></div>'; focus = 'gEmail'; captcha = true;
   } else if (W.ch === 0) {
-    const subs = [['gEmail','g_email','email','autocomplete="email" dir="ltr"','d_email_why','email'], ['gPass','g_pass','password','autocomplete="new-password" dir="ltr"','d_pass_why','pass'], ['gFirst','g_first','text','autocomplete="given-name" maxlength="30"','d_first_why','first'], ['gLast','g_last','text','autocomplete="family-name" maxlength="30"','d_last_why','last'], ['gBirth','g_birth','date','dir="ltr" min="1926-01-01" max="2012-12-31"','d_birth_why','birth']];
+    const subs = [['gEmail','g_email','email','autocomplete="email" dir="ltr"','d_email_why','email'], ['gPass','g_pass','password','autocomplete="new-password" dir="ltr"','d_pass_why','pass'], ['gFirst','g_first','text','autocomplete="given-name" maxlength="30"','d_first_why','first'], ['gLast','g_last','text','autocomplete="family-name" maxlength="30"','d_last_why','last'], ['gBirth','g_birth','date','dir="ltr" min="1926-01-01" max="2012-12-31"',null,'birth']];
     const sd = subs[W.sub];
     const extraField = W.sub === 0 ? '<div class="estat" id="gEmailSt" role="status"></div>' : W.sub === 1 ? field('gPass2', 'g_pass2', 'password', 'autocomplete="new-password" dir="ltr" value="' + esc(W.d.pass2) + '"') : '';
-    h = '<div class="wstep"><h2>' + t('dt_h') + '</h2><p class="why">' + t(sd[4]) + '</p>' + field(sd[0], sd[1], sd[2], sd[3] + ' value="' + esc(W.d[sd[5]]) + '"') + extraField + navBtns('w_next', W.sub > 0, false) + '<button type="button" class="gbtn ghost" id="wToIn">' + t('up_to_in') + '</button></div>'; focus = sd[0];
+    h = '<div class="wstep"><h2>' + t(W.sub <= 1 ? 'dt_h_acc' : 'dt_h') + '</h2>' + (sd[4] ? '<p class="why">' + t(sd[4]) + '</p>' : '') + field(sd[0], sd[1], sd[2], sd[3] + ' value="' + esc(W.d[sd[5]]) + '"') + extraField + navBtns('w_next', W.sub > 0, false) + '<button type="button" class="gbtn ghost" id="wToIn">' + t('up_to_in') + '</button></div>'; focus = sd[0];
   } else if (W.ch === 1) {
     h = '<div class="wstep"><h2>' + t('tm_h') + '</h2><p class="why">' + t('tm_why') + '</p><ul class="tsum">' + ['t_s1','t_s2','t_s3','t_s4'].map(k => '<li>' + t(k) + '</li>').join('') + '</ul><label class="consent"><input type="checkbox" id="gConsent"' + (W.d.consent ? ' checked' : '') + '><span>' + t('g_consent') + '</span></label>' + navBtns('w_next', true, false) + '</div>';
   } else if (W.ch === 2) {
@@ -3785,8 +3809,8 @@ function renderEmailState(){
   if (st === 'taken') { $('#gStIn').addEventListener('click', startIn); $('#gStReset').addEventListener('click', () => { W.mode = 'reset'; gateView('wizard'); }); }
   const out = $('#gOut'); if (out && W.mode === 'up' && W.ch === 0 && W.sub === 0) out.innerHTML = st === 'free' || st === 'taken' ? '<span class="c">SELECT COUNT(*) FROM Students WHERE Email = \'' + esc(EC.email) + '\';</span><br><b style="color:' + (st === 'free' ? '#6BD09A' : '#F28B7E') + '">→ ' + (st === 'free' ? '0' : '1') + '</b>' : '';
 }
-function wizAdvance(){ const nf = $('#gFirst'), nl = $('#gLast'); if (nf) nf.value = W.d.first; if (nl) nl.value = W.d.last; if (W.ch === 0 && W.sub < 4) W.sub++; else if (W.ch === 0) { W.ch = 1; W.sub = 0; } else if (W.ch === 1) { W.ch = 2; W.sub = 0; } else if (W.ch === 2 && W.sub < ONB.length - 1) W.sub++; else if (W.ch === 2) { W.ch = 3; W.sub = 0; } wizRender(); }
-function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) { W.ch = 0; W.sub = 4; } else if (W.ch === 2 && W.sub > 0) W.sub--; else if (W.ch === 2) { W.ch = 1; W.sub = 0; } else if (W.ch === 3) { W.ch = 2; W.sub = ONB.length - 1; } wizRender(); }
+function wizAdvance(){ const nf = $('#gFirst'), nl = $('#gLast'); if (nf) nf.value = W.d.first; if (nl) nl.value = W.d.last; if (W.ch === 0 && W.sub < 4) W.sub++; else if (W.ch === 0) { W.ch = 1; W.sub = 0; } else if (W.ch === 1) { W.ch = ONB.length ? 2 : 3; W.sub = 0; } else if (W.ch === 2 && W.sub < ONB.length - 1) W.sub++; else if (W.ch === 2) { W.ch = 3; W.sub = 0; } wizRender(); }
+function wizBack(){ if (W.ch === 0 && W.sub > 0) W.sub--; else if (W.ch === 1) { W.ch = 0; W.sub = 4; } else if (W.ch === 2 && W.sub > 0) W.sub--; else if (W.ch === 2) { W.ch = 1; W.sub = 0; } else if (W.ch === 3) { if (ONB.length) { W.ch = 2; W.sub = ONB.length - 1; } else { W.ch = 1; W.sub = 0; } } wizRender(); }
 function persuade(){ const d = el('div','persuade'); d.innerHTML = '<div><h3>' + t('p_h') + '</h3><p>' + t('p_body') + '</p><div class="controls"><button type="button" class="gbtn primary" id="pStay">' + t('p_stay') + '</button><button type="button" class="gbtn ghost" id="pSkip">' + t('p_skip') + '</button></div></div>'; document.body.appendChild(d); $('#pStay').addEventListener('click', () => { d.remove(); const f = $('#gText'); if (f) f.focus(); }); $('#pSkip').addEventListener('click', () => { d.remove(); const k = ONB[W.sub]; W.skipped[k] = true; W.d[k] = ''; wizAdvance(); }); }
 
 function renderLive(){
@@ -3924,13 +3948,13 @@ function gateRefresh(){ renderLanding(); if (W.view === 'wizard') { wizRender();
 async function loadProfile(){ if (!sb || !session || !session.user) return; try { const { data } = await sb.from('profiles').select('full_name, study_year, semester, role').eq('id', session.user.id).maybeSingle(); profile = data || { full_name: (session.user.user_metadata || {}).full_name || session.user.email }; } catch(e) { profile = { full_name: session.user.email }; }
   try { const { data: st } = await sb.from('profiles').select('status,status_note').eq('id', session.user.id).maybeSingle(); if (st) Object.assign(profile, st); } catch(e) {}
   /* personal details: optional columns (onboarding and names migrations), each read on its own so a missing one does not hide the rest */
-  for (const cols of ['first_name,last_name,birth_date', 'goals,interests']) { try { const { data: dt, error } = await sb.from('profiles').select(cols).eq('id', session.user.id).maybeSingle(); if (dt && !error) Object.assign(profile, dt); } catch(e) {} } }
+  for (const cols of ['first_name,last_name,birth_date', 'goals,interests', 'studying,institution,level,onboarded_at']) { try { const { data: dt, error } = await sb.from('profiles').select(cols).eq('id', session.user.id).maybeSingle(); if (dt && !error) Object.assign(profile, dt); } catch(e) {} } }
 function onSession(){
   if (session && profile && profile.status === 'blocked') { if (sb) { try { sb.auth.signOut(); } catch(e) {} } session = null; profile = null; location.hash = '#signin'; setTimeout(() => gateMsg(t('g_blocked'), true), 400); }
   const on = !!session; $('#gate').hidden = on; $('#userChip').hidden = !on; document.documentElement.classList.toggle('gated', !on); if (on) { window.scrollTo({top:0}); setTimeout(() => updateNav(false), 50); }
   const isTeacher = !!(profile && profile.role === 'teacher'); $('#btnDash').hidden = !(on && isTeacher); $('#btnPresent').hidden = !isTeacher; $('#btnTeacher').hidden = !isTeacher; /* lecturer tools are for staff only, in every edition */
   if (on) { if (sb && session.user) { const uid = session.user.id; if (load('dbs_uid', null) !== uid) { clearUserData(); store('dbs_uid', uid); } }
-    const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; applyPrefs(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); savedPopup(); }); logVisit(); } else { setUnit('home'); sideNotice(); savedPopup(); } }
+    const name = (profile && profile.full_name) || ''; $('#userName').textContent = name; applyPrefs(); if (isTeacher && !teacher) { teacher = true; applyLang(); } markDay(); if (sb && session.user) { pullProgress().then(() => { applyLang(); setUnit('home'); sideNotice(); if (!maybeWelcome()) savedPopup(); }); logVisit(); } else { setUnit('home'); sideNotice(); if (!maybeWelcome()) savedPopup(); } }
   else { W.busy = false; if (location.hash === '#signup') startUp(); else if (location.hash === '#signin') startIn(); else gateView('landing'); startDemo(); if (built) { $('#gate').classList.add('built'); $('#gateLogo').classList.add('show'); } }
 }
 $('#btnOut').addEventListener('click', async () => { if (sb) await sb.auth.signOut(); session = null; profile = null; clearUserData(); onSession(); });
@@ -3954,7 +3978,7 @@ async function pullProgress(){
 /* ---- teacher dashboard: filters, KPIs, charts, sortable table with column picker, notes, CSV ---- */
 $('#btnDash').addEventListener('click', openDash);
 const D = { rows: [], f: { q: '', from: '', to: '', active: 'all', sem: 'all', year: 'all', minex: 0 }, sort: { k: 'joined', dir: -1 }, cols: load('dbs_dash_cols', ['name','email','year','sem','joined','last','visits','sec','qi','qr','ex','note','status']) };
-const DCOLS = [['name','d_c_name'],['first','d_first'],['lname','d_last'],['email','d_c_email'],['birth','d_birth'],['age','d_age'],['year','d_c_year'],['sem','d_c_sem'],['joined','d_c_joined'],['last','d_c_last'],['visits','d_visits'],['lastvisit','d_lastvisit'],['status','d_status'],['sec','d_c_sec'],['qi','d_c_qi'],['qr','d_c_qr'],['ex','d_c_ex'],['goals','d_c_goals'],['int','d_c_int'],['note','d_note']];
+const DCOLS = [['name','d_c_name'],['first','d_first'],['lname','d_last'],['email','d_c_email'],['birth','d_birth'],['age','d_age'],['year','d_c_year'],['sem','d_c_sem'],['joined','d_c_joined'],['last','d_c_last'],['visits','d_visits'],['lastvisit','d_lastvisit'],['status','d_status'],['sec','d_c_sec'],['qi','d_c_qi'],['qr','d_c_qr'],['ex','d_c_ex'],['goals','d_c_goals'],['int','d_c_int'],['stud','d_c_stud'],['inst','d_c_inst'],['lvl','d_c_lvl'],['note','d_note']];
 const fmtDT = v => v ? String(v).slice(0,16).replace('T',' ') : '';
 const dayKey = v => String(v).slice(0,10);
 async function loadDash(){
@@ -3965,7 +3989,7 @@ async function loadDash(){
   const visitsBy = {}; (ev || []).forEach(e => { (visitsBy[e.user_id] = visitsBy[e.user_id] || []).push(e.at); });
   D.visits = ev || [];
   D.rows = (roster || []).map(u => { const p = byUser[u.id] || {}; const qi = p.dbs_quiz_intro || {}, qr = p.dbs_quiz_ra || {}; const age = u.birth_date ? Math.floor((Date.now() - new Date(u.birth_date).getTime()) / (365.25 * 86400000)) : '';
-    return { id: u.id, name: u.full_name, first: u.first_name || '', lname: u.last_name || '', email: u.email, birth: u.birth_date || '', age, year: u.study_year || '', sem: u.semester || '', joined: fmtDT(u.created_at), joinedTs: u.created_at ? new Date(u.created_at).getTime() : 0, last: fmtDT(u.last_active), lastTs: u.last_active ? new Date(u.last_active).getTime() : 0, visits: +u.visits || 0, lastvisit: fmtDT(u.last_visit), lastvisitTs: u.last_visit ? new Date(u.last_visit).getTime() : 0, sec: Object.keys(p.dbs_visited || {}).length, qiN: Object.values(qi).filter(x => x && x.ok).length, qrN: Object.values(qr).filter(x => x && x.ok).length, exN: Object.values(p.dbs_ra_ex || {}).filter(x => x && x.solved).length, goals: u.goals || '', int: u.interests || '', note: u.note || '', status: u.status || 'active', snote: u.status_note || '' }; });
+    return { id: u.id, name: u.full_name, first: u.first_name || '', lname: u.last_name || '', email: u.email, birth: u.birth_date || '', age, year: u.study_year || '', sem: u.semester || '', stud: u.studying == null ? '' : t(u.studying ? 'ob_yes' : 'ob_no'), inst: u.institution || '', lvl: u.level ? t('ob_lv' + u.level) : '', joined: fmtDT(u.created_at), joinedTs: u.created_at ? new Date(u.created_at).getTime() : 0, last: fmtDT(u.last_active), lastTs: u.last_active ? new Date(u.last_active).getTime() : 0, visits: +u.visits || 0, lastvisit: fmtDT(u.last_visit), lastvisitTs: u.last_visit ? new Date(u.last_visit).getTime() : 0, sec: Object.keys(p.dbs_visited || {}).length, qiN: Object.values(qi).filter(x => x && x.ok).length, qrN: Object.values(qr).filter(x => x && x.ok).length, exN: Object.values(p.dbs_ra_ex || {}).filter(x => x && x.solved).length, goals: u.goals || '', int: u.interests || '', note: u.note || '', status: u.status || 'active', snote: u.status_note || '' }; });
   D.rows.forEach(r => { r.qi = r.qiN + '/4'; r.qr = r.qrN + '/3'; r.ex = r.exN + '/12'; });
 }
 function dashFiltered(){ const f = D.f; const now = Date.now(); const q = f.q.toLowerCase(); return D.rows.filter(r => (!q || (r.name + ' ' + r.email).toLowerCase().includes(q)) && (!f.from || dayKey(r.joined) >= f.from) && (!f.to || dayKey(r.joined) <= f.to) && (f.active === 'all' || Math.max(r.lastTs, r.lastvisitTs) >= now - (+f.active) * 86400000) && (f.sem === 'all' || r.sem === f.sem) && (f.year === 'all' || String(r.year) === f.year) && r.exN >= (+f.minex || 0)); }
@@ -4060,7 +4084,7 @@ function renderMe(){
   const pg = $('#mePage'); if (!pg) return; const pr = profile || {}, campus = EDITION === 'campus', live = !!(sb && session && session.user), staff = pr.role === 'teacher';
   const full = (pr.full_name || '').trim(), first = pr.first_name || full.split(' ')[0] || '', last = pr.last_name || full.split(' ').slice(1).join(' ');
   pg.innerHTML = '<div class="me-wrap">'
-    + '<div class="me-head"><span id="meAvBig"></span><div class="who"><b id="meName">' + esc(full) + '</b><span>' + esc(meEmail()) + '</span></div><button type="button" class="btn small primary" id="meClose">' + t('d_close') + '</button></div>'
+    + '<div class="me-head"><span id="meAvBig"></span><div class="who"><b id="meName">' + esc(full) + '</b><span>' + esc(meEmail()) + '</span></div><button type="button" class="btn small ghost" id="meTour">' + t('me_tour') + '</button><button type="button" class="btn small primary" id="meClose">' + t('d_close') + '</button></div>'
     + '<section class="me-card"><h3>' + t('me_look') + '</h3>'
     + '<div class="me-lbl" id="meAvL">' + t('me_avatar') + '</div><div class="me-avgrid" role="radiogroup" aria-labelledby="meAvL" id="meAv"></div>'
     + '<div class="me-lbl" id="meBgL">' + t('me_bg') + '</div><div class="me-swgrid" role="radiogroup" aria-labelledby="meBgL" id="meBg"></div>'
@@ -4068,13 +4092,14 @@ function renderMe(){
     + '<section class="me-card"><h3>' + t('me_details') + '</h3><div class="me-row">'
     + meField('meFirst', 'g_first', 'text', first, 'maxlength="30" autocomplete="given-name"') + meField('meLast', 'g_last', 'text', last, 'maxlength="30" autocomplete="family-name"')
     + meField('meBirth', 'g_birth', 'date', pr.birth_date || '', 'dir="ltr" min="1926-01-01" max="2012-12-31"') + meField('meEmail', 'g_email', 'email', meEmail(), 'dir="ltr" readonly')
-    + (campus ? meSelect('meYear', 'd_c_year', [['1','g_y1'],['2','g_y2'],['3','g_y3'],['4','g_y4']], pr.study_year) + meSelect('meSem', 'd_c_sem', [['A','g_semA'],['B','g_semB']], pr.semester) : '')
-    + '</div>' + meArea('meGoals', 'd_c_goals', pr.goals) + meArea('meInt', 'd_c_int', pr.interests)
+    + meSelect('meStud', 'ob_stud_f', [['1','ob_yes'],['0','ob_no']], pr.studying == null ? '' : pr.studying ? '1' : '0') + meField('meInst', 'ob_inst_f', 'text', pr.institution || '', 'list="meInstList" maxlength="80"')
+    + meSelect('meYear', 'ob_year_f', YEARS.map(y => [String(y), 'ob_y' + y]), pr.study_year) + meSelect('meLevel', 'ob_level_f', LEVELS.map(v => [String(v), 'ob_lv' + v]), pr.level)
+    + '</div>' + meArea('meGoals', 'ob_goals_f', pr.goals) + '<datalist id="meInstList">' + INSTITUTIONS.uni.concat(INSTITUTIONS.col, INSTITUTIONS.more).map(v => '<option value="' + esc(v) + '">').join('') + '</datalist>'
     + '<div class="controls"><button type="button" class="btn primary" id="meSave">' + t('me_save') + '</button><span class="me-hint" id="meMsg" role="status"></span></div></section>'
     + '<section class="me-card"><h3>' + t('me_pass') + '</h3>' + (live ? '<p class="me-hint">' + t('me_pass_why') + '</p><div id="mePw"></div>' : '<p class="me-hint">' + t('me_demo') + '</p>') + '</section>'
     + (staff ? '' : '<section class="me-card"><h3>' + t('me_del') + '</h3><p class="me-hint">' + t('me_del_why') + '</p><div id="meDel"></div></section>')
     + '</div>';
-  $('#meClose').addEventListener('click', closeMe); $('#meSave').addEventListener('click', meSave);
+  $('#meClose').addEventListener('click', closeMe); $('#meSave').addEventListener('click', meSave); $('#meTour').addEventListener('click', () => startTour(false));
   renderMeLook(); if (live) mePwStart(); if (!staff) meDelStart();
 }
 function renderMeLook(focusGroup){
@@ -4095,15 +4120,15 @@ async function meSave(){
   const okF = NAME_RE.test(first), okL = NAME_RE.test(last), okB = !birth || validBirth(birth);
   meErr('meFirst', okF ? '' : 'e_name'); meErr('meLast', okL ? '' : 'e_name'); meErr('meBirth', okB ? '' : 'e_birth');
   if (!okF || !okL || !okB) return;
-  const full = first + ' ' + last, pay = { full_name: full, first_name: first, last_name: last, birth_date: birth || null, goals: v('meGoals').trim() || null, interests: v('meInt').trim() || null };
-  if (EDITION === 'campus') { pay.study_year = v('meYear') ? +v('meYear') : null; pay.semester = v('meSem') || null; }
+  const full = first + ' ' + last, pay = { full_name: full, first_name: first, last_name: last, birth_date: birth || null, goals: v('meGoals').trim() || null };
+  pay.studying = v('meStud') === '1' ? true : v('meStud') === '0' ? false : null; pay.institution = v('meInst').trim() || null; pay.study_year = v('meYear') ? +v('meYear') : null; pay.level = v('meLevel') ? +v('meLevel') : null;
   const btn = $('#meSave'), msg = $('#meMsg'); btn.disabled = true; msg.textContent = t('g_working');
   try {
     if (sb && session && session.user) {
       const upd = body => sb.from('profiles').update(body).eq('id', session.user.id).select('id');
       let { data, error } = await upd(pay);
       /* until the names migration runs, only the original columns exist: save what the table has */
-      if (error && /column|schema/i.test(error.message || '')) { const base = { full_name: full }; if ('study_year' in pay) { base.study_year = pay.study_year; base.semester = pay.semester; } ({ data, error } = await upd(base)); }
+      if (error && /column|schema/i.test(error.message || '')) ({ data, error } = await upd({ full_name: full, study_year: pay.study_year, goals: pay.goals }));
       if (error || !data || !data.length) throw error || new Error('not saved');
     }
     profile = Object.assign(profile || {}, pay); if (!sb) store('dbs_profile', profile);
@@ -4187,6 +4212,115 @@ function newPasswordPrompt(){
   });
 }
 function cleanAuthUrl(){ try { history.replaceState(null, '', location.pathname); } catch(e){} }
+
+/* =========================== FIRST SIGN-IN: getting to know you, then a short tour of the page =========================== */
+const INSTITUTIONS = {
+  uni: ['האוניברסיטה העברית בירושלים', 'הטכניון – מכון טכנולוגי לישראל', 'אוניברסיטת תל אביב', 'אוניברסיטת בר-אילן', 'אוניברסיטת חיפה', 'אוניברסיטת בן-גוריון בנגב', 'אוניברסיטת אריאל', 'אוניברסיטת רייכמן', 'האוניברסיטה הפתוחה', 'מכון ויצמן למדע'],
+  col: ['אפקה – המכללה האקדמית להנדסה בתל אביב', 'בצלאל – אקדמיה לאמנות ועיצוב', 'בראודה – המכללה האקדמית להנדסה בכרמיאל', 'הקריה האקדמית אונו', 'המכללה האקדמית אחוה', 'המכללה האקדמית אשקלון', 'המכללה האקדמית גליל מערבי', 'המכללה האקדמית הדסה ירושלים', 'המכללה האקדמית כנרת', 'המכללה האקדמית להנדסה סמי שמעון (SCE)', 'המכללה האקדמית נתניה', 'המכללה האקדמית ספיר', 'המכללה האקדמית עמק יזרעאל', 'המכללה האקדמית צפת', 'המכללה האקדמית תל אביב-יפו', 'המכללה האקדמית תל-חי', 'המכללה למינהל', 'המרכז האקדמי כרמל', 'המרכז האקדמי לב (JCT)', 'המרכז האקדמי למשפט ועסקים', 'המרכז האקדמי פרס', 'המרכז האקדמי רופין', 'מכון טכנולוגי חולון (HIT)', 'עזריאלי – המכללה האקדמית להנדסה ירושלים', 'שנקר – הנדסה. עיצוב. אמנות.', 'בית ברל – המכללה האקדמית', 'מכללת אורנים', 'מכללת גורדון', 'מכללת דוד ילין', 'מכללת לוינסקי-וינגייט', 'סמינר הקיבוצים'].sort((a, b) => a.localeCompare(b, 'he')),
+  more: ['תיכון', 'לימודי הנדסאים (מכללה טכנולוגית)', 'קורס או בוטקאמפ'],
+};
+const LEVELS = [1, 2, 3, 4, 5], YEARS = [1, 2, 3, 4, 5];
+const OB = { i: 0, d: {}, later: false };
+/* true when something opens (so the saved-progress popup waits for another day) */
+function maybeWelcome(){
+  if (!session || !profile || profile.role === 'teacher') return false;
+  const p = prefs();
+  if (!p.onboarded && !OB.later) { setTimeout(openOnboarding, 900); return true; }
+  if (!p.tourDone) { setTimeout(startTour, 900); return true; }
+  return false;
+}
+function obSteps(){ return ['studying'].concat(OB.d.studying ? ['inst', 'year'] : [], ['goals', 'level']); }
+function openOnboarding(){
+  if ($('#obPage')) return; OB.i = 0; OB.d = {};
+  const m = el('div', 'ob-page'); m.id = 'obPage'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'obH');
+  m.innerHTML = '<div class="ob-card"><div class="ob-top"><span class="eyebrow">' + t('ob_eyebrow') + '</span><div class="ob-prog"><i id="obProg"></i></div></div><div id="obStep"></div></div>';
+  document.body.appendChild(m); requestAnimationFrame(() => m.classList.add('in')); obRender();
+}
+function obRender(){
+  const box = $('#obStep'); if (!box) return; const steps = obSteps(), k = steps[OB.i], d = OB.d;
+  $('#obProg').style.width = Math.round(100 * (OB.i + 1) / steps.length) + '%';
+  const card = (val, label, on) => '<button type="button" class="ob-opt" role="radio" aria-checked="' + on + '" data-v="' + val + '">' + label + '</button>';
+  let h = '', next = false;
+  if (k === 'studying') h = '<h2 id="obH">' + t('ob_studying') + '</h2><div class="ob-opts two" role="radiogroup">' + card('1', t('ob_yes'), d.studying === true) + card('0', t('ob_no'), d.studying === false) + '</div>';
+  else if (k === 'inst') { const opt = v => '<option' + (d.inst === v ? ' selected' : '') + '>' + esc(v) + '</option>';
+    h = '<h2 id="obH">' + t('ob_inst') + '</h2><label class="me-f"><select id="obInst"><option value="">' + t('ob_pick') + '</option>'
+      + '<optgroup label="' + esc(t('ob_g_uni')) + '">' + INSTITUTIONS.uni.map(opt).join('') + '</optgroup><optgroup label="' + esc(t('ob_g_col')) + '">' + INSTITUTIONS.col.map(opt).join('') + '</optgroup><optgroup label="' + esc(t('ob_g_more')) + '">' + INSTITUTIONS.more.map(opt).join('') + '</optgroup>'
+      + '<option value="other"' + (d.inst === 'other' ? ' selected' : '') + '>' + t('lv_other') + '</option></select></label>'
+      + '<label class="me-f" id="obOtherL"' + (d.inst === 'other' ? '' : ' hidden') + '><span>' + t('ob_other_l') + '</span><input id="obOther" type="text" maxlength="80" value="' + esc(d.instOther || '') + '"></label>'; next = true; }
+  else if (k === 'year') h = '<h2 id="obH">' + t('ob_year') + '</h2><div class="ob-opts" role="radiogroup">' + YEARS.map(y => card(y, t('ob_y' + y), d.year === y)).join('') + '</div>';
+  else if (k === 'goals') { h = '<h2 id="obH">' + t('ob_goals') + '</h2><p class="me-hint">' + t('ob_optional') + '</p><label class="me-f"><textarea id="obGoals" maxlength="400" placeholder="' + esc(t('ob_goals_ph')) + '">' + esc(d.goals || '') + '</textarea></label>'; next = true; }
+  else if (k === 'level') h = '<h2 id="obH">' + t('ob_level') + '</h2><div class="ob-opts" role="radiogroup">' + LEVELS.map(v => card(v, t('ob_lv' + v), d.level === v)).join('') + '</div>';
+  h += '<div class="ob-nav"><div class="controls">' + (next ? '<button type="button" class="btn primary" id="obNext">' + t('w_next') + '</button>' : '') + (OB.i > 0 ? '<button type="button" class="btn ghost" id="obBack">' + t('w_back') + '</button>' : '') + '</div><button type="button" class="ob-later" id="obLater">' + t('ob_later') + '</button></div>';
+  box.innerHTML = h;
+  const advance = () => { if (OB.i < obSteps().length - 1) { OB.i++; obRender(); } else obFinish(); };
+  box.querySelectorAll('.ob-opt').forEach(b => b.addEventListener('click', () => {
+    const v = b.dataset.v; if (k === 'studying') d.studying = v === '1'; else if (k === 'year') d.year = +v; else if (k === 'level') d.level = +v;
+    box.querySelectorAll('.ob-opt').forEach(x => x.setAttribute('aria-checked', String(x === b))); setTimeout(advance, 260); }));
+  const inst = $('#obInst'), other = $('#obOther'), nx = $('#obNext');
+  const okInst = () => !!d.inst && (d.inst !== 'other' || (d.instOther || '').trim().length >= 2);
+  if (inst) { const sync = () => { d.inst = inst.value; d.instOther = other.value; $('#obOtherL').hidden = d.inst !== 'other'; nx.disabled = !okInst(); }; inst.addEventListener('change', () => { sync(); if (d.inst === 'other') other.focus(); }); other.addEventListener('input', sync); nx.disabled = !okInst(); }
+  if (k === 'goals') $('#obGoals').addEventListener('input', e => { d.goals = e.target.value; });
+  if (nx) nx.addEventListener('click', advance);
+  const bk = $('#obBack'); if (bk) bk.addEventListener('click', () => { OB.i--; obRender(); });
+  $('#obLater').addEventListener('click', () => { OB.later = true; obClose(); });
+  setTimeout(() => { const f = box.querySelector('[aria-checked="true"]') || box.querySelector('.ob-opt, select, textarea'); if (f) f.focus(); }, 60);
+}
+function obClose(){ const m = $('#obPage'); if (!m) return; m.classList.remove('in'); setTimeout(() => m.remove(), 300); }
+async function obFinish(){
+  const d = OB.d, now = new Date().toISOString();
+  const pay = { studying: d.studying === true, institution: d.studying ? (d.inst === 'other' ? (d.instOther || '').trim() : d.inst) || null : null, study_year: d.studying ? (d.year || null) : null, goals: (d.goals || '').trim() || null, level: d.level || null, onboarded_at: now };
+  try { if (sb && session && session.user) { const upd = body => sb.from('profiles').update(body).eq('id', session.user.id).select('id'); let { error } = await upd(pay); if (error && /column|schema/i.test(error.message || '')) await upd({ study_year: pay.study_year, goals: pay.goals }); } } catch (e) {}
+  profile = Object.assign(profile || {}, pay); if (!sb) store('dbs_profile', profile);
+  const pr = prefs(); pr.onboarded = now; store('dbs_prefs', pr);
+  obClose(); setTimeout(() => startTour(true), 350);
+}
+
+/* ---- the tour: steps are data; to change the tour when the home page changes, edit TOUR (sel = what to highlight, none = a centered note) ---- */
+const TOUR = [
+  { key: 'tour_hi' },
+  { sel: '.tabs', key: 'tour_tabs' },
+  { sel: '#helloCta', key: 'tour_start' },
+  { sel: '#homeStats', key: 'tour_stats' },
+  { sel: '#homeSessions', key: () => EDITION === 'campus' ? 'tour_meet' : 'tour_lessons' },
+  { sel: '#homeQuick', key: 'tour_quick' },
+  { sel: '#btnToc', key: 'tour_toc' },
+  { sel: '#btnMe', key: 'tour_me' },
+  { sel: '#btnLang', key: 'tour_lang' },
+  { key: 'tour_end' },
+];
+const TR = { i: 0, steps: [], thanks: false };
+function startTour(thanks){
+  closeMe(); if ($('#tour')) $('#tour').remove(); setUnit('home'); TR.i = 0; TR.thanks = !!thanks;
+  TR.steps = TOUR.filter(s => !s.sel || (document.querySelector(s.sel) && document.querySelector(s.sel).getClientRects().length));
+  const o = el('div', 'tour'); o.id = 'tour'; o.innerHTML = '<div class="tour-hole"></div><div class="tour-tip" role="dialog" aria-live="polite"><p id="tourTx"></p><div class="tour-foot"><span class="tour-n" id="tourN"></span><div class="controls"><button type="button" class="btn ghost small" id="tourPrev">' + t('tour_prev') + '</button><button type="button" class="btn primary small" id="tourNext"></button></div></div><button type="button" class="tour-skip" id="tourSkip">' + t('tour_skip') + '</button></div>';
+  document.body.appendChild(o);
+  $('#tourNext').addEventListener('click', () => { if (TR.i < TR.steps.length - 1) { TR.i++; tourShow(); } else tourEnd(); });
+  $('#tourPrev').addEventListener('click', () => { if (TR.i > 0) { TR.i--; tourShow(); } });
+  $('#tourSkip').addEventListener('click', tourEnd);
+  o.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); tourEnd(); } });
+  addEventListener('resize', tourPlace); addEventListener('scroll', tourPlace, { passive: true });
+  tourShow();
+}
+function tourShow(){
+  const s = TR.steps[TR.i], o = $('#tour'); if (!s || !o) return; const key = typeof s.key === 'function' ? s.key() : s.key;
+  $('#tourTx').innerHTML = (TR.i === 0 && TR.thanks ? t('tour_thanks') + ' ' : '') + t(key);
+  $('#tourN').textContent = t('tour_n', { i: TR.i + 1, n: TR.steps.length });
+  $('#tourPrev').hidden = TR.i === 0; $('#tourNext').textContent = t(TR.i === TR.steps.length - 1 ? 'tour_go' : 'tour_next');
+  o.classList.toggle('center', !s.sel);
+  if (s.sel) { const tg = document.querySelector(s.sel), r = tg.getBoundingClientRect(); const fixed = !!tg.closest('.top'); if (!fixed && (r.top < 90 || r.bottom > innerHeight - 40)) window.scrollTo({ top: Math.max(0, scrollY + r.top - 110), behavior: 'smooth' }); }
+  tourPlace(); setTimeout(tourPlace, 420); setTimeout(() => { const n = $('#tourNext'); if (n) n.focus(); }, 60);
+}
+function tourPlace(){
+  const o = $('#tour'); if (!o) return; const s = TR.steps[TR.i], hole = o.querySelector('.tour-hole'), tip = o.querySelector('.tour-tip'), W0 = innerWidth, H0 = innerHeight, pad = 8, gap = 12;
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  if (!s || !s.sel) { tip.style.left = Math.round((W0 - tw) / 2) + 'px'; tip.style.top = Math.round((H0 - th) / 2) + 'px'; return; }
+  const r = document.querySelector(s.sel).getBoundingClientRect(); const top = Math.max(4, r.top - pad), bot = Math.min(H0 - 4, r.bottom + pad);
+  Object.assign(hole.style, { left: (r.left - pad) + 'px', top: top + 'px', width: (r.width + pad * 2) + 'px', height: Math.max(0, bot - top) + 'px' });
+  let y = bot + gap; if (y + th > H0 - gap) y = top - gap - th; if (y < gap) y = Math.max(gap, H0 - th - gap);
+  const x = Math.min(W0 - tw - gap, Math.max(gap, r.left + r.width / 2 - tw / 2));
+  tip.style.left = Math.round(x) + 'px'; tip.style.top = Math.round(y) + 'px';
+}
+function tourEnd(){ const o = $('#tour'); if (o) o.remove(); removeEventListener('resize', tourPlace); removeEventListener('scroll', tourPlace); const pr = prefs(); pr.tourDone = true; store('dbs_prefs', pr); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
 /* ---- captcha (Cloudflare Turnstile), live site only ---- */
 function ensureCaptcha(){ if (!window.turnstile || captchaWidget !== null || !$('#gCaptcha')) return; try { captchaWidget = window.turnstile.render('#gCaptcha', { sitekey: DBS_CONFIG.turnstileSiteKey, theme: 'dark', language: lang === 'he' ? 'he' : 'en', callback: tok => { captchaToken = tok; validateStep(false); }, 'expired-callback': () => { captchaToken = ''; validateStep(false); }, 'error-callback': () => { captchaToken = ''; validateStep(false); } }); } catch(e) {} }
