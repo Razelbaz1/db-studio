@@ -733,6 +733,14 @@ html[data-bg="sand"][data-theme="dark"]{--ground:#17140E}html[data-bg="sky"][dat
 .su-card .su-tip{font-size:.85rem;color:#6F817D}
 .su-card .gbtn{margin-top:.5rem;min-width:8rem}
 .su-fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:101}
+.modal.lv>div{max-width:520px;max-height:90vh}
+.lv-opts{display:flex;flex-direction:column;gap:.4rem}
+.lv-opt{display:flex;align-items:center;gap:.6rem;padding:.5rem .75rem;border:1px solid var(--line);border-radius:10px;cursor:pointer;min-height:44px;font-size:.95rem;transition:border-color .2s,background .2s}
+.lv-opt:hover{border-color:var(--accent)}
+.lv-opt.on{border-color:var(--accent);background:var(--accent-soft)}
+.lv-opt input{accent-color:var(--accent);width:1.05rem;height:1.05rem;margin:0;flex:none}
+.lv-trans{font-size:.8rem}
+.lv-hr{border:0;border-top:1px solid var(--line);margin:.2rem 0;width:100%}
 .gate .fp-link{align-self:flex-end;margin-top:-.5rem;padding:.2rem .4rem;min-height:36px;font-size:.88rem}
 /* LTR fields (email, password) in the RTL form: the check mark goes to the side the text does not start from */
 .gate[dir="rtl"] .f input[dir="ltr"]{padding-right:2.3rem}
@@ -1408,7 +1416,7 @@ d_c_name:"שם", d_c_email:"אימייל", d_c_year:"שנה", d_c_sem:"סמסט�
 sync_on:"ההתקדמות נשמרת לחשבון",
 
 ex3_h2:"תרגילים 7 עד 12", ex3_lede:"Self-Join ושאלות ברמת מבחן. אותם כללים: רמז אחרי ניסיון, הפתרון אחרי שניים.", nav_r_ex2:"תרגילים 7 עד 12", ref_ride:"הסכמה: RideOn", ref_toy:"הטבלאות: Students, Courses, Enroll", ls_intro1:"למה בסיס נתונים", ls_intro2:"סכמה ושאילתה ראשונה", ls_intro3:"בדיקה עצמית", ls_ra1:"σ ו-π: בחירה והטלה", ls_ra2:"∪ ∩ − ו-×: קבוצות ומכפלה", ls_ra3:"⋈ ו-ρ: צירוף וכינוי", ls_ra4:"÷ חילוק, וקריאת ביטוי", ls_ra5:"RideOn והמחשבון", ls_ra6:"תרגילים 1 עד 6", ls_ra7:"תרגילים 7 עד 12", ls_ra8:"בדיקה עצמית", ls_min:"{m} דק'", ls_upnext:"הבא בתור", ls_next:"לשיעור הבא", ls_next_ch:"לפרק הבא", ls_home:"חזרה לבית", ls_more:"זה הכל לעכשיו. השיעורים הבאים בדרך.", ls_count:"{n} שיעורים · {m} דק'", ch_n:"פרק {n}", ls_later:"בהמשך הקורס",
-me_title:"אזור אישי", me_look:"מראה", me_avatar:"אווטאר", me_av_ini:"האות הראשונה של השם", me_bg:"צבע רקע", bg_mint:"מנטה", bg_sand:"חול", bg_sky:"שמיים", bg_lilac:"לילך", bg_rose:"ורד", bg_stone:"אבן", me_mode:"תצוגה", me_m_system:"כמו במכשיר", me_m_light:"יום", me_m_dark:"לילה", me_m_auto:"לפי שעה", me_m_auto_s:"יום בין 07:00 ל-19:00, לילה בשאר השעות.", me_details:"פרטים אישיים", me_save:"שמירה", me_saved:"נשמר.", me_pass:"סיסמה", me_pass_why:"נשלח קוד לאימייל שלכם, ואיתו קובעים סיסמה חדשה.", me_send:"שלחו לי קוד", me_sent:"שלחנו קוד ל-{e}.", me_resend:"שליחה מחדש", me_code:"הקוד מהאימייל", me_new:"סיסמה חדשה", me_new2:"שוב, לאימות", me_update:"עדכון סיסמה", me_pw_ok:"הסיסמה עודכנה.", me_demo:"במצב הדגמה אין סיסמה לשנות.", e_code:"הקוד לא נכון או שפג תוקפו.", e_same:"זו הסיסמה הנוכחית. בחרו אחרת.", e_match:"הסיסמאות לא זהות.", e_wait:"אפשר לבקש שוב בעוד דקה.", g_forgot:"שכחתי סיסמה", fp_h:"איפוס סיסמה", fp_why:"נשלח קישור לאיפוס לאימייל שנרשמתם איתו.", fp_go:"שליחת קישור", fp_ok:"אם האימייל רשום אצלנו, שלחנו אליו קישור לאיפוס.", fp_back:"חזרה לכניסה", fp_demo:"במצב הדגמה לא נשלחים מיילים.", fp_expired:"הקישור כבר לא בתוקף. אפשר לבקש קישור חדש.", np_h:"סיסמה חדשה", me_del:"מחיקת החשבון", me_del_why:"מוחק את החשבון, את ההתקדמות ואת כל מה שנשמר. אי אפשר לבטל את זה.", me_del_word:"מחיקה", me_del_type:"כדי לאשר, כתבו: {w}", me_del_go:"מחיקה לצמיתות", me_cancel:"ביטול", me_deleted:"החשבון נמחק.", lq_reset:"קישור איפוס יוצא לאימייל",
+me_title:"אזור אישי", me_look:"מראה", me_avatar:"אווטאר", me_av_ini:"האות הראשונה של השם", me_bg:"צבע רקע", bg_mint:"מנטה", bg_sand:"חול", bg_sky:"שמיים", bg_lilac:"לילך", bg_rose:"ורד", bg_stone:"אבן", me_mode:"תצוגה", me_m_system:"כמו במכשיר", me_m_light:"יום", me_m_dark:"לילה", me_m_auto:"לפי שעה", me_m_auto_s:"יום בין 07:00 ל-19:00, לילה בשאר השעות.", me_details:"פרטים אישיים", me_save:"שמירה", me_saved:"נשמר.", me_pass:"סיסמה", me_pass_why:"נשלח קוד לאימייל שלכם, ואיתו קובעים סיסמה חדשה.", me_send:"שלחו לי קוד", me_sent:"שלחנו קוד ל-{e}.", me_resend:"שליחה מחדש", me_code:"הקוד מהאימייל", me_new:"סיסמה חדשה", me_new2:"שוב, לאימות", me_update:"עדכון סיסמה", me_pw_ok:"הסיסמה עודכנה.", me_demo:"במצב הדגמה אין סיסמה לשנות.", e_code:"הקוד לא נכון או שפג תוקפו.", e_same:"זו הסיסמה הנוכחית. בחרו אחרת.", e_match:"הסיסמאות לא זהות.", e_wait:"אפשר לבקש שוב בעוד דקה.", g_forgot:"שכחתי סיסמה", fp_h:"איפוס סיסמה", fp_why:"נשלח קישור לאיפוס לאימייל שנרשמתם איתו.", fp_go:"שליחת קישור", fp_ok:"אם האימייל רשום אצלנו, שלחנו אליו קישור לאיפוס.", fp_back:"חזרה לכניסה", fp_demo:"במצב הדגמה לא נשלחים מיילים.", fp_expired:"הקישור כבר לא בתוקף. אפשר לבקש קישור חדש.", np_h:"סיסמה חדשה", me_del:"מחיקת החשבון", me_del_why:"מוחק את החשבון, את ההתקדמות ואת כל מה שנשמר. אי אפשר לבטל את זה.", me_del_word:"מחיקה", me_del_type:"כדי לאשר, כתבו: {w}", me_del_go:"מחיקה לצמיתות", me_cancel:"ביטול", me_deleted:"החשבון נמחק.", lv_h:"עצוב לנו שבחרתם לעזוב 🙁", lv_sub:"תוכלו לספר לנו למה? אפשר לבחור יותר מסיבה אחת.", lv_content:"אין מספיק חומר לתרגול", lv_easy:"החומר לא תואם את הרמה שציפיתי: קל מדי", lv_hard:"החומר לא תואם את הרמה שציפיתי: קשה מדי למתחילים", lv_done:"השלמתי את הקורס", lv_tech:"בעיות טכניות", lv_other:"אחר", lv_note:"רוצים לפרט? זה לא חובה, אבל זה עוזר לנו להשתפר.", lv_note_other:"מה הסיבה?", lv_trans:"התשובות נשמרות בלי שם ובלי אימייל, ומשמשות רק לשיפור הקורס.", lv_stay:"בעצם, נשארים", lq_reset:"קישור איפוס יוצא לאימייל",
 },
 en: {
 brand_sub:"Databases and SQL, from zero", tab_home:"Home", tab_intro:"Intro", tab_ra:"Relational Algebra",
@@ -1649,7 +1657,7 @@ d_c_name:"Name", d_c_email:"Email", d_c_year:"Year", d_c_sem:"Semester", d_c_joi
 sync_on:"Progress is saved to your account",
 
 ex3_h2:"Exercises 7 to 12", ex3_lede:"Self-joins and exam-level questions. Same rules: a hint after one attempt, the solution after two.", nav_r_ex2:"Exercises 7–12", ref_ride:"Schema: RideOn", ref_toy:"Tables: Students, Courses, Enroll", ls_intro1:"Why a database", ls_intro2:"Schema and a first query", ls_intro3:"Self-check", ls_ra1:"σ and π: select and project", ls_ra2:"∪ ∩ − and ×: sets and product", ls_ra3:"⋈ and ρ: join and rename", ls_ra4:"÷ division, and reading an expression", ls_ra5:"RideOn and the calculator", ls_ra6:"Exercises 1–6", ls_ra7:"Exercises 7–12", ls_ra8:"Self-check", ls_min:"{m} min", ls_upnext:"Up next", ls_next:"Next lesson", ls_next_ch:"Next chapter", ls_home:"Back home", ls_more:"That's all for now. More lessons are on the way.", ls_count:"{n} lessons · {m} min", ch_n:"Chapter {n}", ls_later:"Later in the course",
-me_title:"My area", me_look:"Look", me_avatar:"Avatar", me_av_ini:"Your initial", me_bg:"Background", bg_mint:"Mint", bg_sand:"Sand", bg_sky:"Sky", bg_lilac:"Lilac", bg_rose:"Rose", bg_stone:"Stone", me_mode:"Display", me_m_system:"Like my device", me_m_light:"Day", me_m_dark:"Night", me_m_auto:"By the hour", me_m_auto_s:"Day from 07:00 to 19:00, night the rest of the time.", me_details:"Personal details", me_save:"Save", me_saved:"Saved.", me_pass:"Password", me_pass_why:"We'll email you a code; use it to set a new password.", me_send:"Send me a code", me_sent:"We sent a code to {e}.", me_resend:"Send again", me_code:"Code from the email", me_new:"New password", me_new2:"Again, to confirm", me_update:"Update password", me_pw_ok:"Password updated.", me_demo:"Demo mode has no password to change.", e_code:"The code is wrong or has expired.", e_same:"That's your current password. Pick another.", e_match:"The passwords don't match.", e_wait:"You can ask again in a minute.", g_forgot:"Forgot password", fp_h:"Reset password", fp_why:"We'll send a reset link to the email you signed up with.", fp_go:"Send link", fp_ok:"If this email is registered, we sent it a reset link.", fp_back:"Back to sign in", fp_demo:"Demo mode sends no emails.", fp_expired:"That link is no longer valid. You can request a new one.", np_h:"New password", me_del:"Delete account", me_del_why:"Deletes the account, the progress and everything saved. This cannot be undone.", me_del_word:"delete", me_del_type:"To confirm, type: {w}", me_del_go:"Delete for good", me_cancel:"Cancel", me_deleted:"The account was deleted.", lq_reset:"a reset link goes out to the email",
+me_title:"My area", me_look:"Look", me_avatar:"Avatar", me_av_ini:"Your initial", me_bg:"Background", bg_mint:"Mint", bg_sand:"Sand", bg_sky:"Sky", bg_lilac:"Lilac", bg_rose:"Rose", bg_stone:"Stone", me_mode:"Display", me_m_system:"Like my device", me_m_light:"Day", me_m_dark:"Night", me_m_auto:"By the hour", me_m_auto_s:"Day from 07:00 to 19:00, night the rest of the time.", me_details:"Personal details", me_save:"Save", me_saved:"Saved.", me_pass:"Password", me_pass_why:"We'll email you a code; use it to set a new password.", me_send:"Send me a code", me_sent:"We sent a code to {e}.", me_resend:"Send again", me_code:"Code from the email", me_new:"New password", me_new2:"Again, to confirm", me_update:"Update password", me_pw_ok:"Password updated.", me_demo:"Demo mode has no password to change.", e_code:"The code is wrong or has expired.", e_same:"That's your current password. Pick another.", e_match:"The passwords don't match.", e_wait:"You can ask again in a minute.", g_forgot:"Forgot password", fp_h:"Reset password", fp_why:"We'll send a reset link to the email you signed up with.", fp_go:"Send link", fp_ok:"If this email is registered, we sent it a reset link.", fp_back:"Back to sign in", fp_demo:"Demo mode sends no emails.", fp_expired:"That link is no longer valid. You can request a new one.", np_h:"New password", me_del:"Delete account", me_del_why:"Deletes the account, the progress and everything saved. This cannot be undone.", me_del_word:"delete", me_del_type:"To confirm, type: {w}", me_del_go:"Delete for good", me_cancel:"Cancel", me_deleted:"The account was deleted.", lv_h:"We are sad to see you go 🙁", lv_sub:"Could you tell us why? You can pick more than one.", lv_content:"Not enough material to practice", lv_easy:"Not the level I expected: too easy", lv_hard:"Not the level I expected: too hard for beginners", lv_done:"I finished the course", lv_tech:"Technical problems", lv_other:"Other", lv_note:"Want to say more? Optional, but it helps us improve.", lv_note_other:"What is the reason?", lv_trans:"Answers are stored without your name or email, and are used only to improve the course.", lv_stay:"Actually, I will stay", lq_reset:"a reset link goes out to the email",
 }};
 
 /* =========================== CAMPUS LAYER =========================== */
@@ -4116,19 +4124,35 @@ async function meUpdatePw(){
   catch (e) { msg.textContent = t(authErr(e)); b.disabled = false; }
 }
 /* account deletion: the user types a confirmation word; the server function deletes only the caller (and never staff) */
-function meDelStart(){ const box = $('#meDel'); if (!box) return; box.innerHTML = '<div class="controls"><button type="button" class="btn me-danger" id="meDelOpen">' + t('me_del') + '</button></div>'; $('#meDelOpen').addEventListener('click', meDelConfirm); }
-function meDelConfirm(){
-  const box = $('#meDel'), word = t('me_del_word');
-  box.innerHTML = '<label class="me-f"><span>' + t('me_del_type', { w: '<b>' + word + '</b>' }) + '</span><input id="meDelWord" type="text" autocomplete="off" placeholder="' + esc(word) + '"></label>'
-    + '<div class="controls"><button type="button" class="btn me-danger" id="meDelGo" disabled>' + t('me_del_go') + '</button><button type="button" class="btn ghost" id="meDelCancel">' + t('me_cancel') + '</button><span class="me-hint" id="meDelMsg" role="status"></span></div>';
-  const inp = $('#meDelWord'), go = $('#meDelGo'); inp.addEventListener('input', () => { go.disabled = inp.value.trim().toLowerCase() !== word.toLowerCase(); });
-  go.addEventListener('click', meDelete); $('#meDelCancel').addEventListener('click', meDelStart); setTimeout(() => inp.focus(), 50);
+function meDelStart(){ const box = $('#meDel'); if (!box) return; box.innerHTML = '<div class="controls"><button type="button" class="btn me-danger" id="meDelOpen">' + t('me_del') + '</button></div>'; $('#meDelOpen').addEventListener('click', leavePopup); }
+/* leaving: why (any number of reasons, a note box opens once something is picked; stored without name or email), then the confirmation word */
+const LEAVE = ['content', 'easy', 'hard', 'done', 'tech', 'other'];
+function leavePopup(){
+  const word = t('me_del_word'), m = el('div', 'modal lv'); m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'lvH');
+  m.innerHTML = '<div><h3 id="lvH">' + t('lv_h') + '</h3><p class="me-hint">' + t('lv_sub') + '</p>'
+    + '<div class="lv-opts">' + LEAVE.map(k => '<label class="lv-opt"><input type="checkbox" value="' + k + '"><span>' + t('lv_' + k) + '</span></label>').join('') + '</div>'
+    + '<label class="me-f lv-note" hidden><span id="lvNoteL"></span><textarea id="lvNote" maxlength="1000"></textarea></label>'
+    + '<p class="me-hint lv-trans">' + t('lv_trans') + '</p><hr class="lv-hr">'
+    + '<label class="me-f"><span>' + t('me_del_type', { w: '<b>' + word + '</b>' }) + '</span><input id="lvWord" type="text" autocomplete="off" placeholder="' + esc(word) + '"></label>'
+    + '<div class="controls"><button type="button" class="btn me-danger" id="lvGo" disabled>' + t('me_del_go') + '</button><button type="button" class="btn ghost" id="lvStay">' + t('lv_stay') + '</button><span class="me-hint" id="lvMsg" role="status"></span></div></div>';
+  document.body.appendChild(m);
+  const sync = () => { const picked = [...m.querySelectorAll('.lv-opt input:checked')].map(i => i.value); m.querySelector('.lv-note').hidden = !picked.length; $('#lvNoteL').textContent = t(picked.includes('other') ? 'lv_note_other' : 'lv_note'); m.querySelectorAll('.lv-opt').forEach(l => l.classList.toggle('on', l.querySelector('input').checked)); };
+  m.querySelectorAll('.lv-opt input').forEach(i => i.addEventListener('change', sync));
+  const inp = $('#lvWord'), go = $('#lvGo'); inp.addEventListener('input', () => { go.disabled = inp.value.trim().toLowerCase() !== word.toLowerCase(); });
+  const close = () => m.remove(); $('#lvStay').addEventListener('click', close); m.addEventListener('click', e => { if (e.target === m) close(); });
+  m.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } });
+  go.addEventListener('click', () => meDelete(m)); setTimeout(() => { const f = m.querySelector('.lv-opt input'); if (f) f.focus(); }, 60);
 }
-async function meDelete(){
-  const go = $('#meDelGo'), msg = $('#meDelMsg'); go.disabled = true; msg.textContent = t('g_working');
+async function meDelete(m){
+  const go = $('#lvGo'), msg = $('#lvMsg'); go.disabled = true; msg.textContent = t('g_working');
+  const reasons = [...m.querySelectorAll('.lv-opt input:checked')].map(i => i.value), note = ($('#lvNote').value || '').trim();
   try {
-    if (sb && session && session.user) { const { error } = await sb.rpc('delete_my_account'); if (error) throw error; try { await sb.auth.signOut({ scope: 'local' }); } catch(e) {} }
-    session = null; profile = null; clearUserData(); closeMe(); onSession();
+    if (sb && session && session.user) {
+      let { error } = await sb.rpc('delete_my_account', { p_reasons: reasons, p_note: note || null });
+      if (error && (error.code === 'PGRST202' || /could not find the function/i.test(error.message || ''))) ({ error } = await sb.rpc('delete_my_account')); /* before the leave-feedback migration */
+      if (error) throw error; try { await sb.auth.signOut({ scope: 'local' }); } catch(e) {}
+    }
+    m.remove(); session = null; profile = null; clearUserData(); closeMe(); onSession();
     const d = el('div', 'toast', t('me_deleted')); d.style.zIndex = 130; document.body.appendChild(d); setTimeout(() => d.remove(), 4000);
   } catch (e) { msg.textContent = t('g_err_gen'); go.disabled = false; }
 }
